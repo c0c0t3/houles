@@ -1,0 +1,282 @@
+{% set coloris = {
+  '0001': '#E9EAE8',
+  '0544': '#F0EDE2',
+  '0384': '#DFD7C8',
+  '0663': '#F2EFDC',
+  '0025': '#F2EDD8',
+  '0526': '#F4EAE0',
+  '1308': '#EDEFEC',
+  '0569': '#DFD1BD',
+  '0808': '#B19F87',
+  '0483': '#C5A98E',
+  '0080': '#DAD4B8',
+  '0199': '#BCA686',
+  '0578': '#CDBB99',
+  '0285': '#CCC6BB',
+  '0089': '#D8D4C2',
+  '0171': '#BFA57E',
+  '0331': '#C6C0B6',
+  '0233': '#998A76',
+  '1137': '#ABA092',
+  '1300': '#C0AB8C',
+  '1385': '#A69A8A',
+  '1033': '#C4C2B9',
+  '0405': '#7A8387',
+  '0195': '#8B8E8D',
+  '0860': '#958D84',
+  '0573': '#A09E91',
+  '1257': '#908D87',
+  '0609': '#595E62',
+  '1052': '#5C595B',
+  '1153': '#BA9065',
+  '0170': '#76563C',
+  '1038': '#6C5740',
+  '0364': '#564235',
+  '0844': '#6A5542',
+  '0418': '#716151',
+  '0876': '#443731',
+  '0674': '#2F3435',
+  '0618': '#413D38',
+  '0864': '#F0E1A5',
+  '0989': '#F1DE9C',
+  '0879': '#DFD34F',
+  '1241': '#C4941F',
+  '1090': '#F3CF55',
+  '0322': '#F6C324',
+  '0586': '#F8D974',
+  '0303': '#D6B450',
+  '1398': '#FFAD4A',
+  '0601': '#C3653C',
+  '0807': '#9B5E45',
+  '0604': '#E09540',
+  '1251': '#D38B3B',
+  '0695': '#D96D39',
+  '1379': '#F3741F',
+  '0676': '#DBB960',
+  '0328': '#BC8E48',
+  '0590': '#B88E4D',
+  '0890': '#A17452',
+  '0130': '#91672C',
+  '0524': '#F1DDCF',
+  '1107': '#F0D8C3',
+  '0543': '#EFD6D5',
+  '0011': '#F2BDCD',
+  '0833': '#EACBCE',
+  '0474': '#F6D7D0',
+  '1342': '#EAAC9C',
+  '1413': '#E6BFB3',
+  '1206': '#E1907F',
+  '0218': '#CE7F75',
+  '0986': '#D4776C',
+  '1386': '#BB466F',
+  '0843': '#CC3A71',
+  '1231': '#DB8AC3',
+  '1135': '#BE427B',
+  '0846': '#A1224A',
+  '1068': '#A22E37',
+  '0825': '#B63157',
+  '1295': '#D53547',
+  '0992': '#CE2B37',
+  '0111': '#943543',
+  '1064': '#A33546',
+  '0724': '#7D3443',
+  '1019': '#AD584D',
+  '1112': '#833B3F',
+  '1243': '#6D4C5A',
+  '1102': '#4E3145',
+  '1084': '#58333E',
+  '1329': '#473053',
+  '0564': '#9993B3',
+  '0694': '#AA8BB2',
+  '1031': '#706A99',
+  '1351': '#5B4A6B',
+  '1403': '#AA709F',
+  '1367': '#953975',
+  '0506': '#6B507D',
+  '0546': '#63385E',
+  '1247': '#C3CBD9',
+  '0473': '#A4BCBF',
+  '0993': '#B7C2DA',
+  '0532': '#8F9BB8',
+  '0523': '#708FB5',
+  '1275': '#99ADBF',
+  '0767': '#A0B9BC',
+  '0670': '#5072A7',
+  '0783': '#647283',
+  '0897': '#CAD7E0',
+  '1356': '#447B8C',
+  '0296': '#516E86',
+  '0746': '#405479',
+  '1140': '#384F6B',
+  '0131': '#303F66',
+  '0247': '#405E74',
+  '1154': '#263145',
+  '1035': '#254E62',
+  '0211': '#2D677F',
+  '0520': '#C8D4D6',
+  '1061': '#9EBAB9',
+  '0016': '#83C9D2',
+  '1151': '#9BC1CC',
+  '0645': '#00A4B5',
+  '0669': '#339392',
+  '0453': '#678A93',
+  '1406': '#C1C186',
+  '0223': '#BABB96',
+  '0571': '#B4B5A5',
+  '0192': '#B5CCB8',
+  '0305': '#A7C2AC',
+  '0925': '#A3AC99',
+  '0148': '#B4BD86',
+  '0320': '#ADB69C',
+  '1348': '#C1CEC6',
+  '0525': '#8E9C4B',
+  '0607': '#5C634F',
+  '0970': '#566B43',
+  '0447': '#7B8F7E',
+  '1008': '#6D9654',
+  '1387': '#1C734B',
+  '0222': '#315D54',
+  '1024': '#867C4A',
+  '0432': '#696B4D',
+  '1312': '#EDE0CC',
+  '0332': '#C1AE9C',
+  '0507': '#664D3B',
+  '0764': '#F3C36B',
+  '0372': '#B59964',
+  '0631': '#FB8C98',
+  '0241': '#E4665C',
+  '1396': '#DBA4CC',
+  '0279': '#6D7D9B',
+  '1244': '#4C8087',
+  '1183': '#5C6D61'
+} %}
+
+{% set colorisList = [] %}
+{% for code, hex in coloris %}
+  {% set colorisList = colorisList|merge([{ value: code, label: code, color:hex }]) %}
+{% endfor %}
+
+
+<div id="coloris_modal" class="{{
+  html_classes(
+    [
+      'fixed bottom-0 inset-x-0 m:absolute m:-inset-1 bg-sand z-40',
+      'opacity-0 -translate-y-8',
+      'transition-all duration-300 ease-in-out',
+      'pointer-events-none',
+      'p-4 m:p-0',
+      'border-t border-[#E5E2DA] l:border-none'
+    ]
+  )
+  }}">
+
+  <div class="flex flex-col gap-4 m:gap-10 items-stretch">
+
+    {# MODAL TITLE // DESKTOP ONLY#}
+    <div class="hidden m:flex justify-between items-center">
+      <h2 class="text-3xl font-medium font-serif uppercase">choix du coloris</h2>
+      <button type="button"
+        class="js--close-coloris-modal size-12 ring-1 bg-transparent ring-purple text-purple rounded-lg flex items-center justify-center group">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'plus',
+          attr: {
+            class: [
+              'w-6',
+              'flex items-center justify-center',
+              'rotate-45 group-hover:rotate-[225deg] transition-transform duration-500 ease-out-expo'
+            ]
+          }
+        } %}
+      </button>
+    </div>
+
+    {# ZONES SELECTOR #}
+    <div>
+      {% include '@components/ui/shop/product-info-svp-zone.twig' with { zones: zones, close_modal_button: true } only %}
+    </div>
+
+    {# COLORIS SELECTOR WITH SEARCH #}
+    <div class="hidden l:flex justify-between items-center">
+      <span class="text-sm leading-none font-medium uppercase text-purple">Chercher votre coloris</span>
+      {% include '@components/select-choices.twig' with {
+        label: 'Coloris',
+        name: 'coloris_select',
+        flag: false,
+        color: true,
+        required: true,
+        search: true,
+        options: colorisList,
+        attr: {
+          class: class ?? 'hidden l:flex w-1/2'
+        },
+        label_attr: {
+          class: 'hidden'
+        }
+      } only %}
+    </div>
+
+    {# COLORIS PICKER #}
+    <div class="">
+      <span class="block text-xs s:text-sm leading-none font-medium uppercase text-purple mb-4">Ou sélectionnez le :</span>
+      <div class="grid grid-flow-col auto-rows-auto grid-rows-1 m:grid-rows-3 gap-2 m:flex m:flex-wrap overflow-x-auto -mx-4 px-4 l:px-px l:mx-0 py-px">
+        {% for key, value in coloris %}
+          <button class="button_color size-6 rounded-full border border-purple/20 button-selected:ring-purple button-selected:border-purple button-selected:ring-1"
+              type="button"
+              name="button"
+              style="background-color: {{ value }};"
+              data-hex="{{ value }}"
+              data-id="{{ loop.index }}"
+              data-vendorcode="{{ key }}"
+              data-matiere="1">
+            <div class="bubble_text hidden invisible">{{ key }}</div>
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="max-s:hidden">
+      <span class="text-purple text-xs s:text-sm uppercase font-medium mb-4 block">Derniers coloris sélectionnés</span>
+      <ul id="lastColorBlock" class="flex gap-2"></ul>
+    </div>
+
+    <div class="hidden m:flex gap-4">
+      {% include '@components/button.twig' with {
+        label: 'Génération aléatoire',
+        variant: 'outline',
+        icon: false,
+        attr: {
+          id: 'create_product_random',
+          type: 'button',
+          class: 'product-info-add-to-cart-button w-full l:col-span-5'
+        }
+      } only %}
+      {% include '@components/button.twig' with {
+        label: 'Sauvegarder',
+        variant: 'solid',
+        icon: 'download',
+        attr: {
+          id: 'button_save_project',
+          type: 'button',
+          class: 'product-info-add-to-cart-button w-full l:col-span-5'
+        }
+      } only %}
+      {% include '@components/button.twig' with {
+        label: 'Imprimer mon projet',
+        variant: 'outline',
+        icon: 'icon-reset',
+        icon_only: true,
+        attr: {
+          id: 'button_print_project',
+          class: 'w-full l:col-span-2 shrink-0',
+          type: 'button'
+        }
+      } only %}
+    </div>
+
+
+  </div>
+
+</div>
+
+
+

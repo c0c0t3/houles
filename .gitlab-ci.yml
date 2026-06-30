@@ -1,0 +1,47 @@
+variables:
+  NODE_VERSION: 22
+  DDEV_PROJECT_NAME: houles
+  DDEV_DEPLOY_SCRIPT: ''
+  DDEV_DEPLOY_PATHS: dist/
+  NETLIFY_URL: NETLIFY_URL
+  NETLIFY_SITE_ID: NETLIFY_SITE_ID
+
+# External job definitions
+include:
+  - project: studiometa/gitlab-ci
+    ref: 4.x
+    file:
+      - config/bot/create-merge-request.yml
+      - config/bot/gitflow-release-auto-tag.yml
+      - config/bot/update-changelog-from-renovate-merge.yml
+      - config/node/npm-install.yml
+      - config/node/eslint.yml
+      - config/node/stylelint.yml
+      - config/node/prettier.yml
+      - config/node/build.yml
+      - config/deploy/ddev/preview.yml
+      - config/deploy/ddev/preprod.yml
+      - config/deploy/netlify/production.yml
+      - config/release/gitlab.yml
+
+node_eslint:
+  variables:
+    ESLINT_ARGS: src/js/
+
+node_stylelint:
+  variables:
+    STYLELINT_ARGS: src/**/*.scss
+    STYLELINT_CUSTOM_FORMATTER: '@studiometa/stylelint-formatter-gitlab'
+
+node_prettier:
+  variables:
+    PRETTIER_ARGS: src/templates/**/*.twig
+
+node_build:
+  artifacts:
+    paths:
+      - dist/
+
+deploy_netlify_production:
+  variables:
+    NETLIFY_URL: www.houles.com

@@ -1,0 +1,41 @@
+{% extends '@layouts/default.twig' %}
+
+{% set html_attr =
+  merge_html_attributes(
+    html_attr ?? null,
+    {},
+    {
+      class: 'group/html is-on-top bg-sand'
+    }
+  )
+%}
+
+{% set is_adv = is_adv is defined and is_adv is not empty ? is_adv : false %}
+
+{% block header %}
+  {% if is_adv %}
+    {% include '@components/adv-banner.twig' %}
+  {% endif %}
+
+  {% include '@components/ui/header/header.twig' %}
+{% endblock %}
+
+{% block header_after %}
+  {% if breadcrumb_items is defined and breadcrumb_items is not empty and template != 'cms/page' %}
+    <section class="breadcrumb hidden m:block mt-4 m:mt-6">
+      <div class="container">
+        {% include '@components/breadcrumb.twig' with {
+          items: breadcrumb_items
+        } only %}
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}
+
+{% block footer_before %}
+  {% include '@components/ui/footer/prefooter.twig' %}
+{% endblock %}
+
+{% block footer %}
+  {% include '@components/ui/footer/footer.twig' %}
+{% endblock %}

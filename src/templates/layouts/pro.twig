@@ -1,0 +1,222 @@
+{% extends '@layouts/base.twig' %}
+
+{% set main_attributes =
+  merge_html_attributes(
+    main_attr ?? {},
+    {},
+    {
+      class: 'bg-sand-darker'
+    }
+  )
+%}
+
+{% set menu_items = [
+  {
+    label: 'Mon compte',
+    url: '/espace-pro/compte/',
+    children: [
+      {
+        label: 'Tableau de bord',
+        url: '/espace-pro/compte/'
+      },
+      {
+        label: 'Mes infos',
+        url: '/espace-pro/compte/infos/'
+      },
+      {
+        label: 'Commandes & devis',
+        url: '/espace-pro/compte/commandes-et-devis/',
+        badge: {
+          label: 'factures à payer'
+        }
+      },
+      {
+        label: 'Paramètres du compte',
+        url: '/espace-pro/compte/paramètres/'
+      },
+      {
+        icon: 'logout',
+        label: 'Se déconnecter',
+        url: '/logout'
+      }
+    ]
+  },
+  {
+    label: 'Mes projets SVP',
+    url: '/espace-pro/projets-svp/',
+    badge: {
+      label: '1'
+    }
+  },
+  {
+    label: "Ma liste d'envies",
+    url: '/espace-pro/liste-envies/'
+  },
+  {
+    label: 'Documents',
+    url: '/espace-pro/documents/'
+  }
+] %}
+
+{% set current_path = page().href %}
+{% set current_menu_item = null %}
+
+{% block header_after %}{% endblock %}
+
+{% block body %}
+  <div class="s:container s:grid s:grid-cols-[auto_1fr] pt-4 s:py-10 gap-8">
+    <aside class="max-s:sticky max-s:top-16 max-s:z-10 max-s:container s:w-50 m:w-[18rem] bg-sand">
+      <nav class="relative s:sticky s:top-24 s:border-t s:border-brown/20 max-s:-mx-4 before:absolute before:inset-x-0 before:bottom-0 before:h-px before:w-full before:bg-brown/20">
+        <ul data-component="ScrollableNavigation"
+          class="max-s:flex max-s:items-center max-s:justify-start s:divide-y s:divide-brown/20 s:space-y-2 text-purple uppercase text-sm leading-none font-medium max-w-full disable-scrollbars overflow-x-auto max-s:px-1">
+          {% for item in menu_items %}
+            {% if item.url in current_path %}
+              {% set current_menu_item = item %}
+            {% endif %}
+            <li class="max-s:shrink-0 max-s:px-3 s:py-4">
+              <a data-ref="links[]"
+                href="{{ item.url }}"
+                class="{{
+                html_classes(
+                  [
+                    'group/link',
+                    'relative flex items-center justify-start gap-2',
+                    'before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-transparent before:[&.is-active]:bg-brown s:before:hidden',
+                    {
+                      'is-active': item.url in current_path
+                    }
+                  ]
+                )
+                }}">
+                {% if item.icon is defined %}
+                  {% include '@ui/Icon/Icon.twig' with {
+                    name: item.icon,
+                    attr: {
+                      class: 'size-6'
+                    }
+                  } %}
+                {% endif %}
+                <span class="{{
+                  html_classes(
+                    [
+                      'py-6 s:py-2',
+                      item.url in current_path
+                        ? 's:underline-effect-on'
+                        : 's:underline-effect-off s:group-hover/link:underline-effect-on'
+                    ]
+                  )
+                  }}">
+                  {{ item.label }}
+                </span>
+                {% if item.badge is defined %}
+                  {% include '@components/badge.twig' with {
+                    label: item.badge.label,
+                    attr: {
+                      class: 'bg-white s:bg-sand-darker text-purple -my-1 max-s:hidden'
+                    }
+                  } %}
+                {% endif %}
+              </a>
+              {% if item.children is defined %}
+                <ul class="max-s:hidden py-2 text-purple-light uppercase text-sm leading-none font-medium">
+                  {% for subitem in item.children %}
+                    <li>
+                      <a href="{{ subitem.url }}"
+                        class="{{
+                        html_classes(
+                          [
+                            'flex items-center justify-start gap-2 py-2 hover:text-purple',
+                            {
+                              'text-purple': current_path == subitem.url
+                            }
+                          ]
+                        )
+                        }}">
+                        {% if subitem.icon is defined %}
+                          {% include '@ui/Icon/Icon.twig' with {
+                            name: subitem.icon,
+                            attr: {
+                              class: 'size-5 -my-1'
+                            }
+                          } %}
+                        {% endif %}
+                        <span>{{ subitem.label }}</span>
+                        {% if subitem.badge is defined %}
+                          {% include '@components/badge.twig' with {
+                            label: subitem.badge.label,
+                            attr: {
+                              class: 'bg-white s:bg-sand-darker text-purple -my-1'
+                            }
+                          } %}
+                        {% endif %}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </aside>
+    <main {{ html_attributes(main_attributes) }}>
+      {% block before_content %}
+        {% if current_menu_item.children is defined %}
+          {% set current_menu_subitem = null %}
+          <div class="s:hidden pt-8 container">
+            <div class="relative">
+              <select data-component="Action"
+                data-option-on:change="window.location.href = target.$el.value"
+                class="block w-full px-6 py-4 text-sm font-sans font-medium leading-6 uppercase bg-transparent ring-1 ring-current rounded-lg appearance-none">
+                {% for subitem in current_menu_item.children %}
+                  {% if current_path == subitem.url %}
+                    {% set current_menu_subitem = subitem %}
+                  {% endif %}
+                  {% set option_attributes = {
+                    value: subitem.url,
+                    selected: current_path == subitem.url
+                  } %}
+                  <option {{ html_attributes(option_attributes) }}>{{ subitem.label }}</option>
+                {% endfor %}
+              </select>
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'select-caret',
+                attr: {
+                  class: 'absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none size-6 text-purple [&>svg]:w-full [&>svg]:h-full'
+                }
+              } %}
+              {% if current_menu_subitem.badge is defined %}
+                {% include '@components/badge.twig' with {
+                  label: current_menu_subitem.badge.label,
+                  attr: {
+                    class: 'absolute right-12 top-1/2 -translate-y-1/2 pointer-events-none bg-white s:bg-sand-darker text-purple'
+                  }
+                } %}
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endblock %}
+
+      <div class="max-s:container pt-8 pb-10 s:p-10 flex flex-col gap-8">
+        <div class="max-s:hidden">
+          {% include '@components/breadcrumb.twig' with {
+            items: breadcrumb_items
+          } only %}
+        </div>
+        {% if title is defined %}
+          {% block title %}
+            <h1 class="text-2xl s:text-4xl font-serif text-gray font-light uppercase">
+              {{ title }}
+            </h1>
+          {% endblock %}
+        {% endif %}
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </div>
+{% endblock %}
+
+{% block footer_before %}{% endblock %}
+
+{% block footer %}{% endblock %}

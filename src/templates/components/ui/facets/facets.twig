@@ -1,0 +1,233 @@
+{% set trier = {
+  title: 'Trier par',
+  name: 'sort',
+  options: [
+    {
+      label: 'Pertinence',
+      value: 'pertinence',
+      counter: 10
+    },
+    {
+      label: 'Nouveautés en premier',
+      value: 'new'
+    },
+    {
+      label: 'Prix : croissant',
+      value: 'price-asc'
+    },
+    {
+      label: 'Prix : décroissant',
+      value: 'price-desc'
+    },
+    {
+      label: 'Nom (A à Z)',
+      value: 'name-asc'
+    },
+    {
+      label: 'Nom (Z à A)',
+      value: 'name-desc'
+    }
+  ]
+} %}
+
+{% set categories = {
+  title: 'Catégories',
+  options: [
+    {
+      id: 'category-1',
+      label: 'Embrasse 1 gland',
+      counter: 10
+    },
+    {
+      id: 'category-2',
+      label: 'Embrasse 2 gland',
+      counter: 8
+    },
+    {
+      id: 'category-3',
+      label: 'Embrasse cuir',
+      counter: 12
+    },
+    {
+      id: 'category-4',
+      label: 'Embrasse Cercle',
+      counter: 15
+    }
+  ]
+} %}
+
+{% set collections = {
+  title: 'Collections',
+  options: [
+    {
+      id: 'antica',
+      label: 'ANTICA',
+      counter: 10
+    },
+    {
+      id: 'asara',
+      label: 'ASARA',
+      counter: 8
+    },
+    {
+      id: 'beaugency',
+      label: 'BEAUGENCY',
+      counter: 12,
+      tag: 'Nouvelle collection'
+    },
+    {
+      id: 'diva',
+      label: 'DIVA',
+      counter: 15
+    },
+    {
+      id: 'double-corde',
+      label: 'DOUBLE CORDE & GALONS - DOUBLE CORD & BRAIDS',
+      counter: 10
+    },
+    {
+      id: 'duchesse',
+      label: 'DUCHESSE',
+      counter: 8
+    },
+    {
+      id: 'ebony',
+      label: 'EBONY',
+      counter: 1
+    },
+    {
+      id: 'era',
+      label: 'ERA',
+      tag: 'Soldes',
+      counter: 3
+    },
+    {
+      id: 'fleurs-de-lin',
+      label: 'FLEURS DE LIN',
+      counter: 10
+    },
+    {
+      id: 'franges-hautes',
+      label: 'FRANGES HAUTES - LONG CUT FRINGES',
+      counter: 8
+    },
+    {
+      id: 'franges-mousse',
+      label: 'FRANGES MOUSSE - MOSS FRINGES'
+    },
+    {
+      id: 'gallery',
+      label: 'GALLERY'
+    },
+    {
+      id: 'galliera',
+      label: 'GALLIERA'
+    },
+    {
+      id: 'galon-brode-greco',
+      label: 'GALON BRODÉ - EMBROIDERED BRAID "GRECO"'
+    },
+    {
+      id: 'galon-brode-leopard',
+      label: 'GALON BRODÉ - EMBROIDERED BRAID "LEOPARD"'
+    },
+    {
+      id: 'galons-1',
+      label: 'GALONS - BRAIDS & TAPES'
+    },
+    {
+      id: 'galons-2',
+      label: 'GALONS - BRAIDS & TAPES 2'
+    },
+    {
+      id: 'imperiale',
+      label: 'IMPERIALE'
+    },
+    {
+      id: 'izi',
+      label: 'IZI'
+    },
+    {
+      id: 'leopard',
+      label: 'LEOPARD'
+    },
+    {
+      id: 'les-marquises',
+      label: 'LES MARQUISES'
+    },
+    {
+      id: 'lily',
+      label: 'LILY'
+    },
+    {
+      id: 'lounge-metal',
+      label: 'LOUNGE METAL'
+    },
+    {
+      id: 'luxury',
+      label: 'LUXURY'
+    },
+    {
+      id: 'lezarde-crete',
+      label: 'LÉZARDE CRETE'
+    },
+    {
+      id: 'lezardes',
+      label: 'LÉZARDES - GIMPS'
+    }
+  ]
+} %}
+
+{% set styles = {
+  title: 'Styles',
+  options: [
+    {
+      id: 'style-1',
+      label: 'Classique'
+    },
+    {
+      id: 'style-2',
+      label: 'Contemporain'
+    },
+    {
+      id: 'style-3',
+      label: 'Intemporel'
+    }
+  ]
+} %}
+
+<section class="{{ class }}">
+  <div class="container">
+    <div class="flex items-center justify-end">
+      {% if current_tags %}
+        <div class="hidden m:flex items-center justify-start flex-1 gap-2">
+          {% for tag in current_tags %}
+            <button class="hidden m:block text-sm text-purple uppercase font-medium tracking-wider leading-none border border-purple ring-purple hover:ring-1 rounded-lg p-4">
+              {{ tag.name }}
+            </button>
+          {% endfor %}
+          {% include '@components/button.twig' with {
+            label: 'Voir plus',
+            variant: 'link',
+            icon: false,
+            attr: {
+              type: 'button',
+              data_component: 'Action',
+              data_option_target: 'Panel(#facets)',
+              data_option_effect: 'target.open()',
+              class: 'ml-4'
+            }
+          } only %}
+        </div>
+      {% endif %}
+      <button data-component="Action"
+        data-option-target="Panel(#facets)"
+        data-option-effect="target.open()"
+        class="text-sm rounded-lg text-purple border border-purple ring-purple hover:ring-1 uppercase font-medium tracking-wider leading-none p-4 shrink-0">
+        Filtres
+      </button>
+    </div>
+  </div>
+</section>
+
+{% include '@components/modal/facets.twig' %}

@@ -1,0 +1,159 @@
+{% extends '@layouts/base.twig' %}
+
+{% set images = [
+  {
+    alt: 'Nouvelle Collection Salone FW/25',
+    src: '/assets/hero.jpg'
+  },
+  {
+    alt: 'Boom',
+    src: '/assets/blog-2.jpg'
+  },
+  {
+    alt: 'Shooroom',
+    src: '/assets/shooroom.jpg'
+  }
+] %}
+
+{% block body %}
+  {# HERO #}
+  <section class="post-hero my-10 m:mt-24 m:mb-40">
+    <div class="container">
+      <div class="grid grid-cols-12">
+        <div class="col-start-2 col-span-10 space-y-4 text-center">
+          <time class="text-xs uppercase tracking-widest text-brown font-medium" datetime="2018-07-07">10 Février 2025</time>
+          <h1 class="font-serif text-3xl s:text-4xl m:text-6xl l:text-7xl uppercase leading-xtight text-gray">Houlès, un siècle d’histoire raconté dans notre livre</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="post-gallery mb-16 m:mb-32">
+    <div class="container">
+      {% if (images|length) > 1 %}
+        <div data-component="Slider"
+          data-option-mode="left"
+          data-option-fit-bounds
+          data-option-contain
+          class="relative max-w-full overflow-hidden">
+          <div data-component="SliderDrag"
+            data-ref="wrapper"
+            tabindex="0"
+            class="hero relative z-1 whitespace-nowrap select-none flex flex-row flex-nowrap [&>*]:cursor-grab aspect-square xs:aspect-video">
+            {% for slide in images %}
+              <article data-component="SliderItem"
+                class="homepage-hero__item shrink-0 w-full h-auto flex flex-col justify-end xl:justify-center items-center relative pt-40 l:pt-20 pb-14">
+                {% include '@ui/Figure/Figure.twig' with {
+                  src: slide.src,
+                  width: 500,
+                  height: 400,
+                  alt: slide.alt,
+                  absolute: true,
+                  fit: 'cover',
+                  attr: {
+                    class: ['w-full', 'absolute', 'inset-0'],
+                    data_option_enter_from: 'opacity-0',
+                    data_option_enter_active: 'transition duration-500'
+                  },
+                  img_attr: {
+                    class: ['w-full', '', 'object-cover', 'opacity-0']
+                  }
+                } %}
+              </article>
+            {% endfor %}
+          </div>
+          <div data-component="SliderDots"
+            data-option-enter-to="is-active"
+            data-option-enter-keep
+            class="absolute bottom-0 left-1/2 -translate-x-1/2 space-x-2 z-10">
+            {% for slide in images %}
+              <button type="button" data-ref="dots[]" class="group/dot h-10 w-10">
+                <span class="block w-full h-0.5 bg-white opacity-30 group-[&.is-active]/dot:opacity-100 group-hover/dot:opacity-75 transition-opacity duration-300 ease-out-quad"></span>
+                <span class="sr-only">Go to slide #{{ loop.index }}</span>
+              </button>
+            {% endfor %}
+          </div>
+          <button title="Prev"
+            type="button"
+            data-component="SliderBtn"
+            data-option-prev
+            class="rounded cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed text-white hidden m:block absolute top-1/2 -translate-y-1/2 left-4 z-10 py-4">
+            {% include '@ui/Icon/Icon.twig' with {
+              name: 'arrow-line-desktop',
+              attr: {
+                class: ['w-14', 'block', 'rotate-180']
+              }
+            } %}
+          </button>
+          <button title="Next"
+            type="button"
+            data-component="SliderBtn"
+            data-option-next
+            class="rounded cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed text-white hidden m:block absolute top-1/2 -translate-y-1/2 right-4 z-10 py-4">
+            {% include '@ui/Icon/Icon.twig' with {
+              name: 'arrow-line-desktop',
+              attr: {
+                class: ['w-14', 'block']
+              }
+            } %}
+          </button>
+          <button aria-label="Zoomed gallery"
+            data-component="Action"
+            data-option-target="Panel(#gallery-photos-{{ number }})"
+            data-option-effect="target.open()"
+            class="size-12 s:size-14 absolute z-10 right-4 bottom-4 m:right-8 m:bottom-8 bg-white ring-purple text-purple rounded-lg flex items-center justify-center">
+            {% include '@ui/Icon/Icon.twig' with {
+              name: 'icon-scale',
+              attr: {
+                data_ref: 'open[]',
+                class: ['w-5 s:w-6', 'flex', 'items-center', 'justify-center']
+              }
+            } %}
+          </button>
+        </div>
+        {% include '@components/photo-gallery.twig' with {
+          id: 'gallery-photos-' ~ number,
+          product_images: images
+        } %}
+      {% else %}
+        {% include '@ui/Figure/Figure.twig' with {
+          src: images[0].src,
+          width: 500,
+          height: 400,
+          alt: images[0].alt,
+          fit: 'cover',
+          attr: {
+            class: ['aspect-square xs:aspect-video']
+          },
+          inner_attr: {
+            class: ['w-full', 'aspect-square xs:aspect-video h-full']
+          }
+        } %}
+      {% endif %}
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <div class="grid xs:grid-cols-12">
+        <div class=" xs:col-start-2 xs:col-span-10 m:col-start-4 m:col-span-6">
+          <div class="prose">
+            <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</h2>
+            <p>Lorem ipsum dolor, sit amet <a href="#">consectetur adipisicing elit</a>. Temporibus repudiandae nulla iste neque minima, porro assumenda corporis placeat beatae totam animi debitis nostrum consectetur eos inventore, quaerat natus distinctio illo.</p>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus repudiandae nulla iste neque minima, porro assumenda corporis placeat beatae totam animi debitis nostrum consectetur eos inventore, quaerat natus distinctio illo.</p>
+            <ul>
+              <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</li>
+              <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</li>
+              <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</li>
+            </ul>
+            <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</h3>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus repudiandae nulla iste neque minima, porro assumenda corporis placeat beatae totam animi debitis nostrum consectetur eos inventore, quaerat natus distinctio illo.</p>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus repudiandae nulla iste neque minima, porro assumenda corporis placeat beatae totam animi debitis nostrum consectetur eos inventore, quaerat natus distinctio illo.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  {% include '@components/bloc-latest-blog-posts.twig' with {
+    title: 'Vous aimerez aussi',
+  } %}
+{% endblock %}

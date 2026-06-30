@@ -1,0 +1,31 @@
+<div class="s:bg-sand-darker py-4 s:py-2 max-s:border-b max-s:border-brown/20">
+  <div class="container flex max-s:flex-col s:items-center justify-between max-s:gap-4">
+    <div class="flex items-center gap-2">
+      <p class="text-gray-dark uppercase text-sm font-medium">Accès adv</p>
+      <p class="text-brown uppercase text-sm font-medium">Service informatique</p>
+    </div>
+    <div class="flex s:items-center max-s:flex-col s:gap-6 max-s:gap-4">
+      <form class="flex items-center gap-2">
+        <input type="text"
+          placeholder="N° de client..."
+          class="block w-full font-sans font-medium text-sm leading-6 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-2 px-4 focus-visible:bg-white appearance-none" />
+        <button class="btn btn--simple !py-2 !px-4" type="submit">OK</button>
+      </form>
+      <div class="flex items-center gap-2">
+        <p class="text-gray-dark uppercase text-sm font-medium">Client en cours</p>
+        <p class="text-brown uppercase text-sm font-medium">N4510100</p>
+      </div>
+    </div>
+    <a href="/logout"
+      class="text-gray-dark uppercase text-sm font-medium underline-effect-off hover:underline-effect-on !flex items-center gap-2 max-s:self-end">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'logout',
+        attr: {
+          class: ['[&>svg]:size-5'],
+          aria_hidden: true
+        }
+      } only %}
+      <span class="hidden s:block">Se déconnecter</span>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<section class="py-10 m:py-24">
+  <div class="container">
+    <div class="grid s:grid-cols-12 gap-10">
+      <div class="s:col-span-6">
+        {% include '@ui/Figure/Figure.twig' with {
+          src: product_mood.images[0].src,
+          width: product_mood.images[0].width,
+          height: product_mood.images[0].height,
+          attr: {
+            data_option_enter_from: 'opacity-0',
+            data_option_enter_active: 'transition duration-500'
+          },
+          inner_attr: {
+            class: 'bg-vp-bg'
+          },
+          img_attr: {
+            class: 'opacity-0'
+          }
+        } %}
+      </div>
+      <div class="s:col-span-5 s:col-start-8 l:col-span-3 l:col-start-10 flex flex-col justify-between">
+        <p>{{ product_mood.description }}</p>
+        {% include '@ui/Figure/Figure.twig' with {
+          src: product_mood.images[1].src,
+          width: product_mood.images[1].width,
+          height: product_mood.images[1].height,
+          attr: {
+            class: 'hidden s:block',
+            data_option_enter_from: 'opacity-0',
+            data_option_enter_active: 'transition duration-500'
+          },
+          inner_attr: {
+            class: 'bg-vp-bg'
+          },
+          img_attr: {
+            class: 'opacity-0'
+          }
+        } %}
+      </div>
+    </div>
+  </div>
+</section>

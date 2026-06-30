@@ -1,0 +1,35 @@
+.choices {
+  @apply w-full mb-0;
+}
+
+.has-tooltip-modal {
+  .choices {
+    @apply -mr-2;
+  }
+}
+
+.choices__inner {
+  @apply block w-full font-sans font-medium text-sm leading-6 !rounded-lg bg-transparent text-purple  !py-3 !px-5 border border-purple focus-visible:bg-white appearance-none;
+}
+
+.choices__list--dropdown,
+.choices__list[aria-expanded] {
+  @apply border-none !rounded-lg ring-purple ring-1 mt-1 z-10;
+}
+
+.choices__item {
+  @apply text-purple flex items-center gap-2;
+}
+
+.is-flipped .choices__list--dropdown,
+.is-flipped .choices__list[aria-expanded] {
+  @apply border-none !rounded-lg ring-purple ring-1 mb-1;
+}
+
+/* Special case for inline fields without modal tooltip, alignement purposes */
+.is-inline.has-not-tooltip-modal {
+  input,
+  .choices {
+    @apply s:ml-8 s:mr-1;
+  }
+}

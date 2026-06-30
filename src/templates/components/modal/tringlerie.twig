@@ -1,0 +1,211 @@
+{% set cart_lines = [
+  {
+    id: 1,
+    title: 'Gland de clé',
+    img: '/assets/products/36249_9150_P3_1.jpg',
+    code: '32051-9300',
+    quantity: 1
+  },
+  {
+    id: 3,
+    title: 'Auro - Configuration de tringlerie 180,00cm',
+    img: '/assets/products/32031_9700_L3_1.jpg',
+    code: '32052-9600',
+    quantity: 1
+  },
+  {
+    id: 2,
+    title: '2 EMBOUTS "STRIO" Ø 35MM FINITION MÉTALLISÉE',
+    img: '/assets/products/36249_9017_P3_1.jpg',
+    code: '32053-9400',
+    quantity: 2
+  },
+  {
+    id: 1,
+    title: 'Gland de clé',
+    img: '/assets/products/36249_9150_P3_1.jpg',
+    code: '32051-9300',
+    quantity: 1
+  },
+  {
+    id: 3,
+    title: 'Auro - Configuration de tringlerie 180,00cm',
+    img: '/assets/products/32031_9700_L3_1.jpg',
+    code: '32052-9600',
+    quantity: 1
+  },
+  {
+    id: 2,
+    title: '2 EMBOUTS "STRIO" Ø 35MM FINITION MÉTALLISÉE',
+    img: '/assets/products/36249_9017_P3_1.jpg',
+    code: '32053-9400',
+    quantity: 2
+  }
+] %}
+
+{% embed '@components/modal/Panel.twig'
+  with {
+    attr: {
+      id: 'tringlerie'
+    },
+    position: 'right',
+    attr: {
+      class: 'h-screen'
+    },
+    overlay_attr: {
+      class: 'z-50 bg-black/20 absolute inset-0'
+    },
+    wrapper_attr: {
+      class: 'p-4 m:p-6 z-50 items-center'
+    },
+    container_attr: {
+      class: 'h-screen w-full max-w-2xl rounded bg-sand !overflow-hidden flex justify-stretch'
+    },
+    content_attr: {
+      class: 'p-4 s:p-6 m:p-8 w-full flex flex-col'
+    }
+  }
+%}
+  {% block open %}{% endblock %}
+  {% block close %}{% endblock %}
+  {% block content %}
+    <div class="h-full flex flex-col">
+      {# Tringlerie Modal Header #}
+      <div class="flex items-center justify-between shrink-0 mb-6">
+        <h2 class="font-serif text-2xl m:text-3xl uppercase leading-none text-gray">
+          Set de tringlerie
+        </h2>
+        {% include '@components/modal/close-modal-button.twig' with {
+          attr: {
+            data_ref: 'close[]',
+            type: 'button'
+          }
+        } only %}
+      </div>
+
+      {# Tringlerie Modal Content #}
+      <form data-simplebar class="flex flex-col pt-4 p-px flex-1 overflow-auto">
+        <p class="mb-6">
+          Pour ajouter un set de tringlerie, saisissez le code correspondant à votre produit et
+          choisissez un coloris
+        </p>
+        <div class="grid grid-cols-12 gap-x-3 gap-y-6">
+          <div class="col-span-6 flex items-start relative flex-col gap-2 s:gap-3 has-not-tooltip-modal">
+            <label class="text-sm leading-none font-medium uppercase text-purple"
+              for="code-207134275">
+              Code produit *
+            </label>
+            <div class="relative w-full">
+              <input class="block w-full font-sans font-medium text-sm leading-6 border border-purple rounded-lg bg-transparent text-purple py-4 px-6 focus-visible:bg-white appearance-none"
+                placeholder="Ex : 32051-9300"
+                required=""
+                id="code-207134275"
+                name="code" />
+              <button type="button"
+                title="Lancer la recherche"
+                class="bg-purple hover:bg-purple-light text-sand p-1 m:px-2 m:py-2 absolute top-1/2 -translate-y-1/2 right-1.5 rounded-md">
+                {% include '@ui/Icon/Icon.twig' with {
+                  name: 'icon-search-',
+                  attr: {
+                    class: 'block size-8 [&>svg]:size-full'
+                  }
+                } only %}
+              </button>
+            </div>
+          </div>
+
+          {% include '@components/select-choices.twig' with {
+            label: 'Coloris',
+            attr: {
+              class: 'col-span-4'
+            },
+            name: 'rails',
+            required: true,
+            options: [
+              {
+                label: '1',
+                value: '1',
+                selected: true
+              },
+              {
+                label: '2',
+                value: '2'
+              },
+              {
+                label: '3',
+                value: '3'
+              },
+              {
+                label: '4',
+                value: '4'
+              },
+              {
+                label: '5',
+                value: '5'
+              }
+            ]
+          } only %}
+          <div class="col-span-2 flex justify-end items-end">
+            <button type="button"
+              title="Supprimer"
+              class="p-1 size-14 flex items-center justify-center bg-purple text-white rounded-lg hover:text-gray transition-colors duration-300 ease-out-quad">
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'trash',
+                attr: {
+                  class: 'block size-6 [&>svg]:size-full'
+                }
+              } only %}
+              <span class="sr-only">Supprimer</span>
+            </button>
+          </div>
+        </div>
+        <div class="mt-6">
+          {% include '@components/table/tringlerie-table.twig' with {
+            rows: cart_lines
+          } only %}
+        </div>
+        <div class="mt-6">
+          <div class="col-span-4 flex items-center gap-2 s:gap-3">
+            <label class="text-sm font-medium uppercase text-purple" for="set_quantity">
+              Nombre de sets à ajouter
+            </label>
+
+            <input {{
+              html_attributes({
+                type: 'number',
+                name: 'set_quantity',
+                value: '1',
+                class: 'block w-16 font-sans font-medium text-sm leading-6 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-2 pl-6 pr-2 focus-visible:bg-white appearance-none text-right'
+              })
+              }} />
+          </div>
+          <div class="col-span-4 flex items-center gap-2 s:gap-3">
+            <label class="text-sm font-medium uppercase text-purple" for="coupe_tube">
+              Ajouter une coupe de tube sur-mesure
+            </label>
+            <input {{
+              html_attributes({
+                type: 'number',
+                name: 'coupe_tube',
+                value: '1',
+                class: 'block w-16 font-sans font-medium text-sm leading-6 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-2 pl-6 pr-2 focus-visible:bg-white appearance-none text-right'
+              })
+              }} />
+            <span class="text-sm font-medium uppercase text-purple">cm</span>
+          </div>
+        </div>
+        {# Facets Modal Footer #}
+        <div class="flex flex-col s:flex-row gap-4 s:gap-8 pt-4 s:pt-6 m:pt-8">
+          {% include '@components/button.twig' with {
+            label: ' ces articles au panier',
+            variant: 'solid',
+            attr: {
+              type: 'submit',
+              class: 'w-full flex-1'
+            }
+          } only %}
+        </div>
+      </form>
+    </div>
+  {% endblock %}
+{% endembed %}

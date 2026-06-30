@@ -1,0 +1,45 @@
+<article data-component="SliderItem"
+  class="aspect-[312/427] shrink-0 relative w-[48%] m:w-1/4 bg-purple text-white group/card-collection overflow-hidden">
+  {% include '@ui/Figure/Figure.twig' with {
+    src: src,
+    width: 600,
+    height: 600,
+    alt: title,
+    absolute: true,
+    fit: 'cover',
+    attr: {
+      class: ['w-full', 'h-full'],
+      data_option_enter_from: 'opacity-0',
+      data_option_enter_active: 'transition duration-500'
+    },
+    img_attr: {
+      class: [
+        'w-full',
+        'h-full',
+        'object-cover',
+        'opacity-0',
+        'group-hover/card-collection:scale-105',
+        'transition-transform ease-in-out duration-1000'
+      ]
+    }
+  } %}
+  <a href="{{ link }}"
+    class="absolute inset-0 duration-500 ease-out-quad transition-transform m:translate-y-8 m:group-hover/card-collection:translate-y-0 p-4 m:p-8 flex flex-col justify-end items-center space-y-2.5 m:space-y-6 bg-gradient-to-t from-black/30 to-transparent text-center">
+    <span class="block rounded bg-brown-light text-purple uppercase text-xxs l:text-xs font-medium p-1 l:p-2">
+      {{ categoryTitle }}
+    </span>
+    <span class="block font-serif font-light leading-xtight text-2xl m:text-4xl uppercase whitespace-normal">
+      {{ title }}
+    </span>
+    {% include '@ui/Icon/Icon.twig' with {
+      name: 'arrow-line-desktop',
+      attr: {
+        class: [
+          'w-14 block opacity-0',
+          'transition-opacity duration-500 ease-out-quad',
+          'group-hover/card-collection:opacity-100'
+        ]
+      }
+    } %}
+  </a>
+</article>

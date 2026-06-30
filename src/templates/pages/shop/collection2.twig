@@ -1,0 +1,374 @@
+{% extends '@layouts/base.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Passementerie',
+    url: '/passementerie'
+  },
+  {
+    label: 'Salone',
+    url: '/passementerie/salone'
+  }
+] %}
+
+{% set products = [
+  {
+    name: 'Embrasse 1 gland',
+    collection: 'ZELDA',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: true,
+    image_main: '/assets/products/32031_9700_L3_1.jpg',
+    image_hover: '/assets/products/6644cbbd61180.jpg',
+    tags: ['-20%'],
+    reference: '1234567890',
+    is_new: true,
+    stock: '40',
+    is_in_stock: true
+  },
+  {
+    name: 'EMBRASSE 2 GLANDS 35CM',
+    collection: 'ZELDA',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: false,
+    image_main: '/assets/products/36249_9017_P3_1.jpg',
+    tags: ['-20%', 'Boom'],
+    reference: '1234567890',
+    is_new: false,
+    stock: '40',
+    is_in_stock: true
+  },
+  {
+    name: '2 EMBOUTS "AQUA" Ø 19MM',
+    collection: 'ACEA DESIGN',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: true,
+    image_main: '/assets/products/36249_9150_P3_1.jpg',
+    image_hover: '/assets/products/67ecf18679a90.jpg',
+    reference: '1234567890',
+    is_new: false,
+    stock: '40',
+    is_in_stock: false
+  }
+] %}
+
+{% set current_tags = [
+  {
+    name: 'Embrasse'
+  },
+  {
+    name: 'Raphia'
+  },
+  {
+    name: 'Jute'
+  }
+] %}
+
+{% block body %}
+  <main>
+    {# HERO #}
+    <section class="collection-hero mb-10 m:mb-24 xxl:max-w-screen-xxl xxl:mx-auto s:-mt-[9.5rem] m:relative">
+      <div class="container">
+        <div class="grid m:grid-cols-2 gap-4">
+          {# Col Right / Media #}
+          <div class="collection-hero__media m:order-last col-span-1 aspect-square xs:aspect-video m:aspect-auto ">
+            {% include '@ui/FigureVideo/FigureVideo.twig' with {
+              src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+              poster: '/assets/shooroom.jpg',
+              width: 640,
+              height: 360,
+              absolute: true,
+              fit: 'cover',
+              attr: {
+                data_option_enter_from: 'opacity-0',
+                data_option_enter_active: 'transition duration-500',
+                class: 'relative m:absolute m:right-0 m:top-0 m:bottom-0 m:left-1/2'
+              },
+              inner_attr: {
+                class: 'w-full '
+              },
+              img_attr: {
+                class: 'opacity-0'
+              }
+            } only %}
+
+            <div class="absolute right-6 bottom-6 z-50">
+              {% embed '@components/modal/Panel.twig'
+                with {
+                  position: 'top',
+                  overlay_attr: {
+                    class: 'z-50 bg-black/20 absolute inset-0'
+                  },
+                  wrapper_attr: {
+                    class: 'p-4 m:p-6 z-50 items-center '
+                  },
+                  container_attr: {
+                    class: 'w-full max-w-2xl rounded bg-white'
+                  }
+                }
+              %}
+                {% block open %}
+                  <button class="size-14 ring-1 bg-white ring-purple rounded-lg flex items-center justify-center">
+                    {% include '@ui/Icon/Icon.twig' with {
+                      name: 'icon-scale',
+                      attr: {
+                        data_ref: 'open[]',
+                        class: ['w-8', 'flex', 'items-center', 'justify-center']
+                      }
+                    } %}
+                  </button>
+                {% endblock %}
+                {% block close %}
+                  <div class="flex justify-end px-6 pt-6">
+                    {% include '@ui/Button/Button.twig' with {
+                      label: 'Fermer',
+                      attr: {
+                        data_ref: 'close[]'
+                      }
+                    } %}
+                  </div>
+                {% endblock %}
+                {% block content %}
+                  <div class="relative aspect-video w-full [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:absolute [&_iframe]:top-0 [&_iframe]:left-0">
+                    <iframe class="aspect-video w-full"
+                      width="560"
+                      height="315"
+                      src="https://www.youtube-nocookie.com/embed/DXQgkA4Uje0"
+                      title="YouTube video player"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allowfullscreen></iframe>
+                  </div>
+                {% endblock %}
+              {% endembed %}
+            </div>
+          </div>
+
+          {# Col Left / Content #}
+          <div class="collection-hero__content order-2 col-span-1 text-center w-full m:max-w-lg mx-auto flex flex-col items-center justify-center px-4 m:px-0 gap-12 m:mt-56 m:mb-44">
+            <div class="space-y-4">
+              <span class="inline-block rounded bg-brown-light text-purple uppercase text-xs font-medium p-2">
+                Nouvelle collection
+              </span>
+              <h1 class="font-serif text-2xl m:text-5xl uppercase leading-none text-gray w-full">
+                Double corde & Galons doubles cordre & brains
+              </h1>
+              <p class="text-xs text-brown uppercase font-medium tracking-wider leading-none">
+                1110 produits
+              </p>
+            </div>
+            <div class="h-px w-full bg-brown/20"></div>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugiat facilis
+              eligendi, id ipsum, doloribus vero mollitia, voluptatibus aliquid excepturi molestias!
+              Maiores cum iste qui nemo assumenda corporis itaque beatae!
+            </p>
+            <div class="flex flex-col s:flex-row gap-6 items-center justify-center">
+              {% include '@components/button.twig' with {
+                label: 'Voir tous nos projets',
+                variant: 'link',
+                invert: false,
+                icon: 'download',
+                attr: {
+                  type: 'submit'
+                }
+              } only %}
+              <div class="hidden m:block h-8 w-px bg-brown/20"></div>
+              {% include '@components/button.twig' with {
+                label: 'Voir tous nos projets',
+                variant: 'link',
+                invert: false,
+                icon: 'download',
+                attr: {
+                  type: 'submit'
+                }
+              } only %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {# Collection Mood #}
+    {% include '@components/slider-mood-collection.twig' %}
+
+    {# LISTING PRODUCTS #}
+    <section class="my-8 m:my-20">
+      <div class="container">
+        <h2 class="font-serif text-3xl s:text-4xl m:text-6xl uppercase leading-xtight mb-10 m:mb-14">
+          Galons
+        </h2>
+        <div class="search-results grid grid-cols-2 s:grid-cols-3 m:grid-cols-4 gap-4 m:gap-8">
+          {% set total_display = 4 %}
+          {% set product_count = products|length %}
+
+          {% for i in 0..total_display - 1 %}
+            {% set product = products[i % product_count] %}
+            {% set cycle_position = i + 1 %}
+
+            {% embed '@components/ui/card/card-listing-product.twig'
+              with product|merge({
+                name: product.name,
+                collection: product.collection,
+                url: product.url,
+                regular_price: product.regular_price,
+                sale_price: product.sale_price,
+                is_sale: product.is_sale,
+                image_main: product.image_main,
+                image_hover: product.image_hover,
+                reference: product.reference,
+                is_in_stock: product.is_in_stock,
+                stock: product.stock,
+                is_new: product.is_new,
+                tags: product.tags,
+                attr: {
+                  class: {
+                    ' ': cycle_position >= 1 and cycle_position <= 8,
+                    'm:col-span-2 m:row-span-2': cycle_position == 9,
+                    'm:col-start-3': cycle_position == 10,
+                    'm:col-start-4': cycle_position == 11,
+                    'm:col-start-3 m:row-start-4': cycle_position == 12,
+                    'm:col-start-4 m:row-start-4': cycle_position == 13,
+                    'm:row-start-5': cycle_position >= 14 and cycle_position <= 17,
+                    'm:row-start-6': cycle_position == 18,
+                    'm:row-start-6': cycle_position == 19,
+                    ' ': cycle_position == 20,
+                    ' ': cycle_position == 21,
+                    'm:row-start-7': cycle_position == 22,
+                    'm:row-start-7': cycle_position == 23,
+                    'm:col-start-1 m:row-start-8': cycle_position == 24,
+                    'm:col-start-2 m:row-start-8': cycle_position == 25,
+                    'm:row-start-9': cycle_position >= 27 and cycle_position <= 30
+                  }
+                }
+              })
+            %}
+
+            {% endembed %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    {# LISTING PRODUCTS #}
+    <section class="my-8 m:my-20">
+      <div class="container">
+        <h2 class="font-serif text-3xl s:text-4xl m:text-6xl uppercase leading-xtight mb-10 m:mb-14">
+          Sets de cartes
+        </h2>
+        <div class="search-results grid grid-cols-2 m:grid-cols-4 m:grid-rows-4 gap-4 m:gap-8">
+          {% set total_display = 13 %}
+          {% set product_count = products|length %}
+
+          {% for i in 0..total_display - 1 %}
+            {% set product = products[i % product_count] %}
+            {% set cycle_position = i + 1 %}
+
+            {# PUSH COLLECTION PLACE 26 #}
+            {% if cycle_position == 26 %}
+              <article class="hidden m:block m:col-span-2 m:row-span-2 m:col-start-3 m:row-start-7 relative text-white p-4 m:p-8">
+                {% include '@ui/Figure/Figure.twig' with {
+                  src: push_collection.image,
+                  absolute: true,
+                  fit: 'cover',
+                  attr: {
+                    class: 'h-full w-full',
+                    data_option_enter_from: 'opacity-0',
+                    data_option_enter_active: 'transition duration-500'
+                  },
+                  inner_attr: {
+                    class: 'bg-vp-bg'
+                  },
+                  img_attr: {
+                    class: ''
+                  }
+                } %}
+                <div class="absolute inset-0 from-black/50 to-black/0 bg-gradient-to-t"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-end p-4 m:p-8 gap-6">
+                  <span class="block rounded bg-brown-light text-purple uppercase text-xs font-medium p-2">
+                    {{ push_collection.tag }}
+                  </span>
+                  <span class="block text-white text-center font-serif font-light leading-xtight text-2xl m:text-4xl uppercase whitespace-normal">
+                    {{ push_collection.title }}
+                  </span>
+
+                  {% include '@components/button.twig' with {
+                    label: push_collection.anchor,
+                    href: push_collection.link,
+                    variant: 'link',
+                    invert: true,
+                    icon: false
+                  } only %}
+                </div>
+              </article>
+            {% endif %}
+
+            {% embed '@components/ui/card/card-listing-product.twig'
+              with product|merge({
+                name: product.name,
+                collection: product.collection,
+                url: product.url,
+                regular_price: product.regular_price,
+                sale_price: product.sale_price,
+                is_sale: product.is_sale,
+                image_main: product.image_main,
+                image_hover: product.image_hover,
+                reference: product.reference,
+                is_in_stock: product.is_in_stock,
+                stock: product.stock,
+                is_new: product.is_new,
+                tags: product.tags,
+                push_product: cycle_position == 13,
+                attr: {
+                  class: {
+                    ' ': cycle_position >= 1 and cycle_position <= 8,
+                    ' ': cycle_position == 9,
+                    ' ': cycle_position == 10,
+                    'm:col-start-1 m:row-start-4': cycle_position == 11,
+                    'm:col-start-2 m:row-start-4': cycle_position == 12,
+                    'm:col-span-2 m:row-span-2 m:col-start-3 m:row-start-3': cycle_position == 13
+                  }
+                }
+              })
+            %}
+
+            {% endembed %}
+          {% endfor %}
+        </div>
+        <div class="mb-28 mt-14">
+          {% include '@components/pagination.twig' with {
+            current_page: 1,
+            total_pages: 23,
+            base_url: '/shop/resultats-recherche.html'
+          } only %}
+        </div>
+      </div>
+    </section>
+
+    {# ABOUT COLLECTION #}
+    <section class="m:mb-16">
+      <div class="container">
+        <div class="grid grid-cols-1 m:grid-cols-12 gap-4 mb-10 m:mb-16">
+          <h2 class="font-serif text-3xl s:text-4xl m:text-6xl uppercase leading-xtight m:col-span-4">
+            À propos de la collection
+          </h2>
+          <div class="m:col-span-5 m:col-start-8 text-base">
+            Pretium integer faucibus sed aliquet aliquam tincidunt. Sit urna cras non a pharetra ac.
+            Arcu nisl urna amet placerat augue eget non nibh. Massa ultrices ac enim risus aenean
+            mauris urna. Accumsan faucibus libero tortor facilisis placerat quisque faucibus tellus.
+            Lobortis dapibus mattis tincidunt condimentum sit turpis morbi et ut. Elit sit purus
+            ullamcorper sollicitudin. Pretium proin nascetur gravida nulla vitae quis odio nulla. Ut
+            eget lorem feugiat morbi sit. Amet nisi netus arcu cursus nunc.
+          </div>
+        </div>
+        <div class="h-px w-full bg-gradient-to-r from-gray to-transparent"></div>
+      </div>
+    </section>
+  </main>
+{% endblock %}

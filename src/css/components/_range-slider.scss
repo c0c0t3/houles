@@ -1,0 +1,54 @@
+/* stylelint-disable */
+
+.noUi-target {
+  @apply shadow-none !border-none h-1 bg-gray/20 rounded-lg;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+  @apply hidden;
+}
+
+.noUi-touch-area {
+  @apply bg-purple w-5 h-5 rounded-full;
+}
+
+.noUi-handle {
+  @apply border-none shadow-none;
+}
+
+.noUi-connect {
+  @apply bg-purple;
+
+}
+
+.noUi-horizontal .noUi-handle {
+  @apply  bg-transparent -translate-y-0.5;
+}
+
+.noUi-tooltip {
+  @apply border-none text-purple !left-1/2 !m-0 !p-0 !translate-x-0;
+}
+
+.noUi-origin {
+  @apply -translate-y-2;
+
+  .noUi-touch-area {
+    @apply absolute left-1/2
+  }
+}
+.noUi-origin + .noUi-origin {
+  .noUi-touch-area {
+    @apply absolute -left-[3px];
+  }
+}
+
+.noUi-tooltip.with-units:after {
+  content: var(--units);
+}
+
+.noUi-origin + .noUi-origin {
+  .noUi-tooltip {
+    transform: translateX(-100%) !important;
+  }
+}

@@ -1,0 +1,72 @@
+{% set accordionButtonClass =
+  'group py-6 flex justify-between items-center w-full cursor-pointer text-sm uppercase font-medium text-purple'
+%}
+
+{% set accordionButtonIcon2 %}
+  <div data-ref="accordionButtonIcon"
+    class="accordion-button-icon w-6 h-6 relative transition-transform duration-500">
+    <span class="accordion-button-icon-line absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block w-4 h-px bg-purple"></span>
+    <span class="accordion-button-icon-line-2 absolute rotate-90 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block w-4 h-px bg-purple transition-all"></span>
+  </div>
+{% endset %}
+
+<div data-simplebar class="h-full">
+  <ul data-ref="StoreLocator.b2b" class=" px-2 m:px-6 ">
+    {% for continent in b2b %}
+      {% embed '@components/ui/accordion-item.twig'
+        with {
+          accordionButtonClass: accordionButtonClass,
+          accordionButtonAnchor: continent.continent_name,
+          accordionButtonIcon: accordionButtonIcon2,
+          button_attr: {
+            class: 'hover:bg-purple/10 px-4 transition-colors duration-500 !h-auto border-b border-brown-light'
+          },
+          attr: {
+            class: 'h-auto'
+          }
+        }
+      %}
+        {% block content %}
+          <div class=" pl-4">
+            {# Cas 1 : continent → countries → distributors #}
+            {% if continent.countries is defined %}
+              {% for country in continent.countries %}
+                {% embed '@components/ui/accordion-item.twig'
+                  with {
+                    accordionButtonClass: accordionButtonClass,
+                    accordionButtonAnchor: country.name,
+                    accordionButtonIcon: accordionButtonIcon2
+                  }
+                %}
+                  {% block content %}
+                    <ul class=" divide-y divide-brown-light">
+                      {% for distributor in country.distributors %}
+                        <li>
+                          {% include '@components/ui/distributors/distributor-card.twig' with {
+                            country: distributor
+                          } %}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endblock %}
+                {% endembed %}
+              {% endfor %}
+
+              {# Cas 2 : continent → distributors directement #}
+            {% elseif continent.distributors is defined %}
+              <ul class="border-t border-brown-light divide-y divide-brown-light">
+                {% for distributor in continent.distributors %}
+                  <li>
+                    {% include '@components/ui/distributors/distributor-card.twig' with {
+                      country: distributor
+                    } %}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        {% endblock %}
+      {% endembed %}
+    {% endfor %}
+  </ul>
+</div>

@@ -1,0 +1,79 @@
+{% set current_variant_position = 0 %}
+
+<div data-component="VariantPicker" class="mb-10">
+  {% for item in product_variant.items %}
+    {% if item.current %}
+    {% set current_variant_position = loop.index0 %}
+      <p class="text-sm text-purple tracking-widest uppercase font-medium mb-4">
+        {{ product_variant.name }}
+        <span data-ref="currentVariant" class="text-brown">{{ item.label }}</span>
+      </p>
+    {% endif %}
+  {% endfor %}
+
+  <div class="flex flex-wrap gap-2">
+    {% for variant_item in product_variant.items %}
+      {% set current_index = loop.index0 %}
+      <div {{ current_index >= number_of_items_to_show ? 'data-ref="morevariant[]"' : '' }} role="button" class="flex items-center group/variant {{ current_index >= number_of_items_to_show and current_variant_position < 10 ? 'hidden' : '' }}" >
+        <label for="{{ variant_item.value }}-{{ current_index }}" class="flex w-full cursor-pointer items-center">
+          <div class="relative flex items-center cursor-pointer">
+            <input data-ref="variantInput[]"
+              type="radio"
+              class="peer appearance-none"
+              data-label="{{ variant_item.label }}"
+              name="{{ product_variant.name }}"
+              value="{{ variant_item.value }}"
+              id="{{ variant_item.value }}-{{ current_index }}"
+              {{ variant_item.current ? 'checked' : '' }} />
+
+            {% if variant_item.image %}
+              <span class="size-12 m:size-[72px] bg-sand-darker rounded-full overflow-hidden ring-1 ring-purple/20 peer-checked:ring-purple peer-checked:ring-2">
+                <img src="{{ variant_item.image }}"
+                  alt="{{ variant_item.label }}"
+                  class="size-full object-cover mix-blend-multiply object-left" />
+              </span>
+            {% elseif variant_item.color %}
+              <span style="background-color: {{ variant_item.color }};" class="size-12 bg-sand-darker rounded-full overflow-hidden ring-1 ring-purple/20 peer-checked:ring-purple peer-checked:ring-2">
+              </span>
+            {% else %}
+              <span class="relative flex items-center justify-center gap-2 px-4 group-has-[input:checked]/variant:pl-10 transition-all duration-300 py-2.5 bg-sand-darker rounded-lg overflow-hidden ring-1 ring-purple/20 peer-checked:ring-purple peer-checked:ring-2">
+                <svg class="group-has-[input:checked]/variant:scale-100 absolute left-4 scale-0 transition-transform group-has-[input:checked]/variant:duration-500 group-has-[input:checked]/variant:delay-200 duration-100 ease-in-out"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1.75731 7.75731L5.99995 12L13 5" stroke="#533B3B" stroke-width="1.5" />
+                </svg>
+                {{ variant_item.label }}
+              </span>
+            {% endif %}
+          </div>
+        </label>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if product_variant.items|length > number_of_items_to_show %}
+    <div class="flex items-center gap-2">
+      {% include '@components/button.twig' with {
+        label: 'Voir plus',
+        icon: false,
+        attr: {
+          'data-ref': 'morevariantbutton',
+          class: current_variant_position > 10 ? '' : 'hidden'
+        },
+        variant: 'link'
+      } only %}
+      {% include '@components/button.twig' with {
+        label: 'Voir moins',
+        variant: 'link',
+        icon: false,
+        attr: {
+          'data-ref': 'hidevariantbutton',
+          class: current_variant_position > 10 ? 'hidden' : '',
+        },
+      } only %}
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,276 @@
+{% extends '@layouts/pro.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Mon compte',
+    url: '/espace-pro/compte/'
+  },
+  {
+    label: 'Mes infos',
+    url: '/espace-pro/compte/infos/'
+  }
+] %}
+
+{% set title = 'Mes infos' %}
+
+{% set addresses = [
+  {
+    type: 'billing',
+    fullname: 'Andre Houles et Cie',
+    line_1: '5 Avenue de la Marseillaise',
+    line_2: null,
+    zip: '67000',
+    city: 'Strasbourg',
+    country: 'France',
+    is_default: true
+  },
+  {
+    type: 'shipping',
+    fullname: 'Andre Houles et Cie',
+    line_1: '2 Chemin de la Coudrette',
+    line_2: null,
+    zip: '77123',
+    city: 'Noisy-sur-École',
+    country: 'France',
+    is_default: true
+  },
+  {
+    type: 'shipping',
+    fullname: 'Andre Houles et Cie',
+    line_1: '2 Chemin de la Coudrette',
+    line_2: null,
+    zip: '77123',
+    city: 'Noisy-sur-École',
+    country: 'France',
+    is_default: false
+  },
+  {
+    type: 'shipping',
+    fullname: 'Andre Houles et Cie',
+    line_1: '2 Chemin de la Coudrette',
+    line_2: null,
+    zip: '77123',
+    city: 'Noisy-sur-École',
+    country: 'France',
+    is_default: false
+  }
+] %}
+
+{% block content %}
+  <div class="grid grid-cols-1 m:grid-cols-2 m:grid-cols-3 auto-rows-fr gap-6 s:gap-8">
+    {% set billing_address_count = 0 %}
+    {% set shipping_address_count = 0 %}
+    {% for address in addresses %}
+      {% if address.type == 'billing' %}
+        {% set billing_address_count = billing_address_count + 1 %}
+      {% else %}
+        {% set shipping_address_count = shipping_address_count + 1 %}
+      {% endif %}
+      <div class="flex flex-col justify-between bg-white text-gray p-6 s:p-8 space-y-6">
+        <div class="{{
+          html_classes(
+            [
+              'space-y-6',
+              {
+                'pb-5': not (address.is_default and address.type == 'shipping')
+              }
+            ]
+          )
+          }}">
+          <div>
+            <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">
+              {% if address.type == 'billing' %}
+                Mon adresse de facturation {{ shipping_address_count > 1 ? shipping_address_count }}
+              {% else %}
+                Mon adresse de livraison {{ shipping_address_count > 1 ? shipping_address_count }}
+              {% endif %}
+            </h2>
+            <p class="text-2xl font-serif font-light uppercase leading-snug">
+              {{ address.fullname }}
+            </p>
+          </div>
+          <address class="not-italic uppercase">
+            <p>
+              {{ address.line_1 }}<br />
+              {% if address.line_2 %}
+                {{ address.line_2 }}<br />
+              {% endif %}
+              {{ address.zip }} {{ address.city }}<br />
+              {{ address.country }}
+            </p>
+          </address>
+          {% if address.is_default and address.type == 'shipping' %}
+            <p class="flex items-center gap-2 text-sm text-brown">
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'check',
+                attr: {
+                  class: 'w-4 h-4'
+                }
+              } %}
+              <span>Adresse de livraison par défaut</span>
+            </p>
+          {% elseif address.type == 'shipping' %}
+            <button type="button" class="flex items-center gap-2 text-sm text-brown">
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'plus',
+                attr: {
+                  class: 'w-4 h-4 *:size-full'
+                }
+              } %}
+              <span>Utiliser par défaut</span>
+            </button>
+          {% endif %}
+        </div>
+        <div class="flex flex-col justify-end gap-3 p-1 min-h-32">
+          {% if not address.is_default %}
+            {% embed '@components/modal/confirm.twig'
+              with {
+                phrase: 'Voulez-vous vraiment supprimer cette adresse ?',
+                container_attr: {
+                  class: 'bg-sand text-gray s:ring-1 s:ring-brown/20 w-full max-w-xl'
+                },
+                onclick: 'alert("Action effectuée !")'
+              }
+            %}
+              {% block close %}{% endblock %}
+              {% block open %}
+                {% include '@components/button.twig' with {
+                  label: 'Supprimer',
+                  variant: 'outline',
+                  icon: 'cross',
+                  attr: {
+                    class: 'w-full',
+                    data_ref: 'open[]',
+                    type: 'button'
+                  }
+                } %}
+              {% endblock %}
+            {% endembed %}
+          {% endif %}
+          {% embed '@components/modal/form-address.twig'
+            with {
+              address: address
+            }
+          %}
+            {% block open %}
+              {% include '@components/button.twig' with {
+                label: 'Modifier',
+                icon: 'pencil',
+                attr: {
+                  data_ref: 'open[]',
+                  class: 'w-full'
+                }
+              } only %}
+            {% endblock %}
+          {% endembed %}
+        </div>
+      </div>
+    {% endfor %}
+    {% embed '@components/modal/form-address.twig' %}
+      {% block open %}
+        {% include '@components/button.twig' with {
+          label: 'Ajouter une adresse',
+          icon: 'plus',
+          variant: 'link',
+          attr: {
+            data_ref: 'open[]',
+            class: 'p-6 s:p-8 w-full h-full !bg-white !text-gray'
+          }
+        } only %}
+      {% endblock %}
+    {% endembed %}
+  </div>
+  <div class="bg-white text-gray p-6 s:p-8 space-y-8">
+    <div>
+      <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">
+        Ma carte de paiement par défaut
+      </h2>
+      <p class="mb-6 text-2xl font-serif font-light uppercase leading-snug">Cordonnier Benoit</p>
+      <p>
+        VISA<br />
+        ****-****-****-9935<br />
+        Expiration : 02/2025
+      </p>
+    </div>
+
+    {% embed '@components/modal/confirm.twig'
+      with {
+        phrase: 'Voulez-vous vraiment supprimer cette carte ?',
+        container_attr: {
+          class: 'bg-sand text-gray s:ring-1 s:ring-brown/20 w-full max-w-xl'
+        },
+        onclick: 'alert("confirmé !")'
+      }
+    %}
+      {% block close %}{% endblock %}
+      {% block open %}
+        {% include '@components/button.twig' with {
+          label: 'Supprimer cette carte',
+          variant: 'link',
+          attr: {
+            class: 'relative z-1 border border-white',
+            'data-ref': 'open[]',
+            type: 'button'
+          }
+        } %}
+      {% endblock %}
+    {% endembed %}
+  </div>
+  {% embed '@components/modal/Panel.twig'
+    with {
+      title: 'Ajouter une carte',
+      attr: {
+        id: 'add_new_card'
+      },
+      position: 'top',
+      overlay_attr: {
+        class: 'z-50 bg-black/20 absolute inset-0'
+      },
+      wrapper_attr: {
+        class: 'p-4 m:p-6 z-50 items-center'
+      },
+      container_attr: {
+        class: 'w-full max-w-2xl rounded bg-sand !overflow-hidden flex justify-stretch'
+      },
+      content_attr: {
+        class: 'p-4 s:p-6 m:p-8 w-full flex flex-col'
+      }
+    }
+  %}
+    {% block close %}{% endblock %}
+    {% block open %}
+      {% include '@components/button.twig' with {
+        label: 'Ajouter une carte',
+        variant: 'solid',
+        icon: 'plus',
+        attr: {
+          class: 'relative z-1 border border-white',
+          'data-ref': 'open[]',
+          type: 'button'
+        }
+      } %}
+    {% endblock %}
+    {% block content_modal %}
+      {% include '@components/modal/form-add-card.twig' %}
+    {% endblock %}
+    {% block content_footer %}
+      {% include '@components/button.twig' with {
+        label: 'Annuler',
+        variant: 'link',
+        icon: false,
+        attr: {
+          'data-ref': 'close[]',
+          type: 'button'
+        }
+      } only %}
+      {% include '@components/button.twig' with {
+        label: 'Ajouter',
+        variant: 'solid',
+        attr: {
+          type: 'button',
+          class: 'w-full flex-1'
+        }
+      } only %}
+    {% endblock %}
+  {% endembed %}
+{% endblock %}

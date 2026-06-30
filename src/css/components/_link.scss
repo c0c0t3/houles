@@ -1,0 +1,8 @@
+.link {
+  @apply underline-effect-on;
+
+  &:hover,
+  &:focus {
+    @apply underline-effect-off;
+  }
+}

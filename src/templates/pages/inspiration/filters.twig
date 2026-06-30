@@ -1,0 +1,22 @@
+
+
+<section class="{{ class }}">
+  <div class="container">
+    <div class="flex items-center justify-end gap-8">
+
+      {# Bouton filtres actifs si filtres actis, comme dans une collection #}
+      <div class="flex-1 flex items-center justify-start"></div>
+      
+      <button data-component="Action"
+        data-option-target="Panel(#facets)"
+        data-option-effect="target.open()"
+        class="text-sm rounded-lg text-purple border border-purple ring-purple hover:ring-1 uppercase font-medium tracking-wider leading-none p-4 shrink-0">
+        Filtres
+      </button>
+    </div>
+  </div>
+</section>
+
+{% include '@pages/inspiration/modal-filters-inspiration.twig' %}
+
+

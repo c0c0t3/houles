@@ -1,0 +1,32 @@
+{% set id = id|default(name ~ '-' ~ random()) %}
+{% set attributes =
+  merge_html_attributes(
+    attr ?? null,
+    {},
+    {
+      class: 'inline-flex items-center cursor-pointer ' ~ (attr.class|default(''))
+    }
+  )
+%}
+
+<label {{ html_attributes(attributes) }}>
+  <input id="{{ id }}" name="{{ name }}" type="checkbox" value="" class="sr-only peer" />
+  <div class="{{
+    html_classes(
+      [
+        'relative w-7 h-4 peer',
+        'bg-white ring-1 ring-purple',
+        'peer-focus:outline-none',
+        'rounded-full',
+        'peer-checked:after:translate-x-full',
+        'peer-checked:after:border-white',
+        'after:absolute after:top-[2px] after:start-[2px] after:bg-purple',
+        'after:rounded-full after:h-3 after:w-3 after:transition-all',
+        'peer-checked:after:bg-white',
+        'peer-checked:bg-purple'
+      ]
+    )
+    }}"></div>
+
+  <span class="ms-3 text-xs font-medium normal-case {{ labelClass }}">{{ label }}</span>
+</label>

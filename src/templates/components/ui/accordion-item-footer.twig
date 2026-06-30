@@ -1,0 +1,27 @@
+{% if titleStyle is defined and titleStyle == 'serif' %}
+  {% set titleClass = 'text-lg font-serif' %}
+{% else %}
+  {% set titleClass = 'text-xs font-medium' %}
+{% endif %}
+
+<div data-component="AccordionItem">
+  <button data-ref="accordionButton" class="w-full flex justify-between items-center tracking-wide">
+    <span class="group py-6 w-full cursor-pointer uppercase text-brown-light text-left {{
+      titleClass
+      }}">
+      {{ accordionButtonAnchor }}
+    </span>
+
+    {# Plus Icon #}
+    <div data-ref="accordionButtonIcon"
+      class="accordion-button-icon l:hidden w-6 h-6 relative transition-transform duration-500">
+      <span class="accordion-button-icon-line absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block w-4 h-px bg-white"></span>
+      <span class="accordion-button-icon-line-2 absolute rotate-90 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block w-4 h-px bg-white transition-all"></span>
+    </div>
+  </button>
+  <div data-ref="accordionContent"
+    class="max-h-0 l:max-h-none overflow-hidden transition-all duration-300 ease-in-out group-[.is-active]:max-h-screen">
+    {{ accordionContent }}
+  </div>
+</div>
+<div class="w-full l:hidden h-px bg-gradient-to-r from-purple-light via-white to-purple-light"></div>

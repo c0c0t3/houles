@@ -1,0 +1,9 @@
+.hero {
+  .title {
+    @apply text-white uppercase font-light font-serif s:text-clamp text-6xl leading-none s:leading-[0.95] flex gap-x-8 flex-wrap xs:flex-col items-center justify-center text-center whitespace-normal;
+
+    span {
+      @apply text-center m:block m:odd:-translate-x-1/4 m:even:translate-x-1/4;
+    }
+  }
+}

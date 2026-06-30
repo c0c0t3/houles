@@ -1,0 +1,111 @@
+{% extends '@layouts/pro.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Mon compte',
+    url: '/espace-pro/compte/'
+  },
+  {
+    label: 'Commandes & devis',
+    url: '/espace-pro/compte/commandes-et-devis/'
+  },
+  {
+    label: 'Regler mes factures'
+  }
+] %}
+
+{% set title = 'Regler mes factures' %}
+
+{% block before_content %}
+  <div class="s:hidden pt-8 container">
+    {% include '@components/button.twig' with {
+      label: 'Retour',
+      href: '/espace-pro/compte/commandes-et-devis/',
+      variant: 'outline',
+      icon: 'arrow-line-mobile',
+      icon_attr: {
+        class: 'size-[1lh] [&>svg]:w-full [&>svg]:h-full rotate-180'
+      }
+    } only %}
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">
+      Mes factures à régler
+    </h2>
+    {% include '@components/table/payments.twig' with {
+      isSummary: true,
+      rows: [
+        {
+          id: '5625191',
+          date_facture: '2025-04-09',
+          date_echeance: '2025-04-09',
+          amount: 275.4
+        },
+        {
+          id: '5625192',
+          date_facture: '2025-04-09',
+          date_echeance: '2025-04-09',
+          amount: 500.6
+        },
+        {
+          id: '5625193',
+          date_facture: '2025-04-09',
+          date_echeance: '2025-04-09',
+          amount: 245.4
+        }
+      ]
+    } only %}
+  </div>
+  {% set line_content %}
+    <br />
+    {% include '@components/field-toggle.twig' with {
+      attr: {
+        class: 'mt-2'
+      },
+      label: 'Utiliser le solde créditeur',
+      name: 'use_credit'
+    } only %}
+  {% endset %}
+  <div class="max-w-md w-full self-end space-y-10">
+    {% include '@components/price-lines.twig' with {
+      alignement: 'left',
+      lines: [
+        {
+          label: 'Solde créditeur',
+          value: 0,
+          content: line_content
+        },
+        {
+          label: 'Total ttc',
+          value: 281.57
+        },
+        {
+          label: 'Total ttc à payer',
+          value: 281.57
+        }
+      ]
+    } only %}
+    {% embed '@components/modal/payments.twig'
+      with {
+        search: '5 Avenue de la Marseillaise, 67000 Strasbourg',
+        attr: {
+          data_option_move: 'body'
+        }
+      }
+    %}
+      {% block open %}
+        {% include '@components/button.twig' with {
+          label: 'Accèder au mode de paiement',
+          variant: 'solid',
+          attr: {
+            data_ref: 'open[]',
+            class: 'float-right'
+          }
+        } %}
+      {% endblock %}
+    {% endembed %}
+  </div>
+{% endblock %}

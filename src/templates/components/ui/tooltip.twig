@@ -1,0 +1,39 @@
+{% set tooltip_attributes =
+  merge_html_attributes({
+    data_component: 'Tooltip',
+    style: {
+      left: left ?? '0',
+      top: top ?? '0'
+    }
+  })
+%}
+
+{% set button_attributes =
+  merge_html_attributes({
+    data_ref: 'button',
+    type: 'button',
+    style: {
+      left: '0',
+      top: '0'
+    }
+  })
+%}
+
+<div {{ html_attributes(tooltip_attributes) }}
+  aria-expanded="false"
+  class="absolute z-10 group aria-expanded:z-[999]">
+  <button {{ html_attributes(button_attributes) }}
+    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-2 text-sm bg-white text-gray rounded-full z-20 group-aria-expanded:rotate-[225deg] duration-500 transition-transform ease-in-out">
+    {% include '@ui/Icon/Icon.twig' with {
+      name: 'plus',
+      attr: {
+        class: 'size-6 *:size-full'
+      }
+    } %}
+  </button>
+  <div class="absolute z-10 pointer-events-none group-aria-expanded:pointer-events-auto"
+    data-ref="content"
+    role="tooltip">
+    {% block content %}{% endblock %}
+  </div>
+</div>

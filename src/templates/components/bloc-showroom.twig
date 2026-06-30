@@ -1,0 +1,51 @@
+<section class="showroom_component relative min-h-screen h-screen m:h-auto py-11 m:py-16 flex items-end">
+  {% include '@ui/Figure/Figure.twig' with {
+    src: '/assets/shooroom.jpg',
+    width: width,
+    height: height,
+    alt: alt,
+    absolute: true,
+    fit: 'cover',
+    attr: {
+      class: ['w-full', 'h-full', 'absolute', 'inset-0', 'pointer-events-none'],
+      data_option_enter_from: 'opacity-0',
+      data_option_enter_active: 'transition duration-500'
+    },
+    img_attr: {
+      class: ['w-full', 'h-full', 'object-cover', 'opacity-0']
+    }
+  } %}
+  <div class="container relative z-10">
+    <div class="flex items-end justify-end">
+      <div class="bg-purple-light w-full text-white px-6 py-8 m:p-12 max-w-[427px]">
+        <h2 class="text-3xl s:text-4xl m:text-6xl font-serif leading-none font-light uppercase mb-6">
+          Nos showrooms
+        </h2>
+        <ul class="font-sans text-sm font-medium uppercase space-y-4 mb-28">
+          <li>5 showrooms à travers le monde</li>
+          <li>280 Revendeurs agréés</li>
+        </ul>
+        <div class="flex flex-col items-start gap-4">
+          {% include '@components/button.twig' with {
+            label: 'Découvrir nos showrooms',
+            variant: 'solid',
+            invert: true,
+            href: '/pages/showrooms.html',
+            attr: {
+              type: 'submit'
+            }
+          } only %}
+          {% include '@components/button.twig' with {
+            label: 'Voir nos points de vente',
+            href: '/pages/points-de-vente.html',
+            variant: 'link',
+            invert: true,
+            attr: {
+              type: 'submit'
+            }
+          } only %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

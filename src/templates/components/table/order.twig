@@ -1,0 +1,195 @@
+{% extends '@components/table/default.twig' %}
+
+{% set head_row_attr = {
+  class: 'max-m:hidden'
+} %}
+
+{% set row_attr = {
+  class: 'max-m:relative max-m:grid max-m:grid-cols-3 max-m:gap-4 max-m:*:p-0 max-m:pb-6 max-m:pt-10'
+} %}
+
+{% set cell_attr_required = {
+  class: 'text-brown text-xs font-sans font-medium align-top'
+} %}
+
+{% set columns = [
+  {
+    label: 'Visuel',
+    key: 'img',
+    head_cell_attr: {
+      class: 'sr-only'
+    },
+    cell_attr: {
+      class: 'max-m:row-span-3'
+    }
+  },
+  {
+    label: 'Code article',
+    key: 'code',
+    cell_attr: {
+      class: 'max-m:col-span-2'
+    }
+  },
+  {
+    label: 'Désignation',
+    key: 'name',
+    cell_attr: {
+      class: 'max-m:col-span-2'
+    }
+  },
+  {
+    label: 'Quantité commandée',
+    key: 'quantity',
+    head_cell_attr: {
+      class: 'text-right'
+    },
+    cell_attr: {
+      class: 'm:text-right'
+    }
+  },
+  {
+    label: 'Quantité expédiée',
+    key: 'quantity_shipped',
+    head_cell_attr: {
+      class: 'text-right'
+    },
+    cell_attr: {
+      class: 'm:text-right'
+    }
+  },
+  {
+    label: 'Prix unitaire',
+    key: 'price',
+    head_cell_attr: {
+      class: 'text-right'
+    },
+    cell_attr: {
+      class: 'm:text-right max-m:col-start-2'
+    }
+  },
+  {
+    label: 'Prix total',
+    key: 'total',
+    head_cell_attr: {
+      class: 'text-right'
+    },
+    cell_attr: {
+      class: 'm:text-right max-m:col-start-3'
+    }
+  }
+] %}
+
+{% block cell_img %}
+  {% if value %}
+    <div class="ring-inset ring-1 ring-brown/20 p-px size-24">
+      <img src="{{ value }}"
+        alt=""
+        class="size-full object-contain bg-sand-darker"
+        loading="lazy" />
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block cell_name %}
+  <div class="space-y-2">
+    {% if row.collection is defined %}
+      <p class="text-xs font-sans font-medium uppercase text-brown">{{ row.collection }}</p>
+    {% endif %}
+    <h3 class="text-xs font-sans font-medium uppercase text-gray !mt-0">
+      {% if row.href is defined %}
+        <a href="{{ row.href }}">{{ row.title }}</a>
+      {% else %}
+        {{ row.title }}
+      {% endif %}
+    </h3>
+    {% if row.description %}
+      <p class="text-xxs font-sans font-medium leading-4 text-brown">{{ row.description }}</p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block subcell_name %}
+  <div class="space-y-2">
+    {% if subrow.collection is defined %}
+      <p class="text-xs font-sans font-medium uppercase text-brown">{{ subrow.collection }}</p>
+    {% endif %}
+    <h3 class="text-xs font-sans font-medium uppercase text-brown !mt-0">
+      {% if subrow.href is defined %}
+        <a href="{{ subrow.href }}">{{ subrow.title }}</a>
+      {% else %}
+        {{ subrow.title }}
+      {% endif %}
+    </h3>
+    {% if subrow.description %}
+      <p class="text-xxs font-sans font-medium leading-4 text-brown">{{ subrow.description }}</p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block cell_quantity %}
+  <p class="text-sm font-sans font-medium leading-4 uppercase text-gray">
+    <span class="m:sr-only">Quantité<br /></span>{{ value }}
+  </p>
+{% endblock %}
+
+{% block subcell_quantity %}
+  <p class="text-xs font-sans font-medium leading-4 uppercase text-brown">
+    <span class="m:sr-only">Quantité<br /></span>{{ value }}
+  </p>
+{% endblock %}
+
+{% block cell_quantity_shipped %}
+  {% if value %}
+    <p class="text-sm font-sans font-medium leading-4 uppercase text-gray">
+      <span class="m:sr-only">Expédiée<br /></span>{{ value }}
+    </p>
+  {% endif %}
+{% endblock %}
+
+{% block subcell_quantity_shipped %}
+  {% if value %}
+    <p class="text-xs font-sans font-medium leading-4 uppercase text-brown">
+      <span class="m:sr-only">Expédiée<br /></span>{{ value }}
+    </p>
+  {% endif %}
+{% endblock %}
+
+{% block cell_price %}
+  <p class="text-sm leading-4 font-sans font-medium uppercase text-gray">
+    <span class="m:sr-only">Prix unitaire<br /></span>{{ value|number_format(2, ',', '.') }}&nbsp;€&nbsp;HT
+  </p>
+  <p class="text-xxs leading-4 font-sans font-medium uppercase text-brown">
+    {{ (value * 1.2)|number_format(2, ',', '.') }}&nbsp;€&nbsp;TTC
+  </p>
+{% endblock %}
+
+{% block subcell_price %}
+  <p class="text-xs leading-4 font-sans font-medium uppercase text-brown">
+    <span class="m:sr-only">Prix unitaire<br /></span>{{ value|number_format(2, ',', '.') }}&nbsp;€&nbsp;HT
+  </p>
+  <p class="text-xxs leading-4 font-sans font-medium uppercase text-brown">
+    {{ (value * 1.2)|number_format(2, ',', '.') }}&nbsp;€&nbsp;TTC
+  </p>
+{% endblock %}
+
+{% block cell_total %}
+  <p class="text-sm font-sans font-medium leading-4 uppercase text-gray">
+    <span class="m:sr-only">Prix total<br /></span>{{
+      (row.price * row.quantity)|number_format(2, ',', '.')
+    }}&nbsp;€&nbsp;HT
+  </p>
+  <p class="text-xxs font-sans font-medium leading-4 uppercase text-brown">
+    {{ (row.price * row.quantity * 1.2)|number_format(2, ',', '.') }}&nbsp;€&nbsp;TTC
+  </p>
+{% endblock %}
+
+{% block subcell_total %}
+  <p class="text-xs font-sans font-medium leading-4 uppercase text-brown">
+    <span class="m:sr-only">Prix total<br /></span>{{
+      (subrow.price * subrow.quantity)|number_format(2, ',', '.')
+    }}&nbsp;€&nbsp;HT
+  </p>
+  <p class="text-xxs font-sans font-medium leading-4 uppercase text-brown">
+    {{ (subrow.price * subrow.quantity * 1.2)|number_format(2, ',', '.') }}&nbsp;€&nbsp;TTC
+  </p>
+{% endblock %}

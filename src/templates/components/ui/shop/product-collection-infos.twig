@@ -1,0 +1,107 @@
+<section class="py-10 m:py-28">
+  <div class="container">
+    <div class="grid m:grid-cols-12 gap-8">
+      {% if designer and designer_image %}
+        <div class="m:col-span-4 flex m:flex-col items-center justify-start m:justify-center gap-4 m:gap-8">
+          {% embed '@ui/Figure/Figure.twig'
+            with {
+              src: designer_image,
+              alt: 'designer',
+              width: '120',
+              height: '120',
+              attr: {
+                class: ['max-s:!max-w-20 w-full']
+              },
+              img_attr: {
+                class: ['aspect-square', 'rounded-full']
+              },
+              inline: true,
+              caption: ''
+            }
+          %}
+
+          {% endembed %}
+          <div class="flex flex-col justify-center m:text-center space-y-2">
+            <span class="text-xs text-brown font-medium tracking-wider uppercase">Designer</span>
+            <span class="text-base text-gray">{{ designer }}</span>
+          </div>
+        </div>
+      {% endif %}
+      <div class="m:col-start-5 m:col-span-8">
+        {# Collection infos #}
+        <blockquote class="card-quotation__content space-y-6 mb-8 m:mb-0">
+          <cite class="block card-quotation__content-author font-sans text-xs not-italic text-brown font-medium tracking-wider uppercase">
+            La collection {{ name }}
+          </cite>
+          <p class="card-quotation__content-text font-serif text-2xl m:text-4xl text-gray uppercase leading-xtight">
+            {{ description }}
+          </p>
+        </blockquote>
+
+        {# Collection links #}
+        <div class="flex flex-col m:flex-row items-start m:items-center gap-4 m:gap-6 mt-2 m:mt-12">
+          {% if catalog %}
+            {% include '@components/button.twig' with {
+              label: 'Télécharger le catalogue',
+              href: 'catalog',
+              variant: 'outline'
+            } only %}
+          {% endif %}
+          {% if video %}
+            {% embed '@components/modal/Panel.twig'
+              with {
+                position: 'top',
+                overlay_attr: {
+                  class: 'z-50 bg-black/20 absolute inset-0'
+                },
+                wrapper_attr: {
+                  class: 'p-4 m:p-6 z-50 items-center '
+                },
+                container_attr: {
+                  class: 'w-full max-w-2xl rounded bg-white'
+                },
+                attr: {
+                  id: 'video'
+                }
+              }
+            %}
+              {% block open %}
+                {% include '@components/button.twig' with {
+                  label: 'Voir la video de présentation',
+                  type: 'button',
+                  variant: 'link',
+                  attr: {
+                    data_ref: 'open[]'
+                  }
+                } only %}
+              {% endblock %}
+              {% block close %}
+                <div class="flex justify-end px-6 py-6">
+                  {% include '@ui/Button/Button.twig' with {
+                    label: 'Fermer',
+                    attr: {
+                      data_ref: 'close[]'
+                    }
+                  } %}
+                </div>
+              {% endblock %}
+              {% block content %}
+                <div class="relative aspect-video w-full">
+                  <iframe class="w-full h-full absolute top-0 left-0"
+                    width="560"
+                    height="315"
+                    src="https://www.youtube-nocookie.com/embed/{{ video }}"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen></iframe>
+                </div>
+              {% endblock %}
+            {% endembed %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

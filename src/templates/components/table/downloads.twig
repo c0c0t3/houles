@@ -1,0 +1,61 @@
+{% extends '@components/table/default.twig' %}
+
+{% set row_attr = {
+  class: 'relative *:has-[a:hover]:!text-gray *:transition-colors *:duration-300 *:ease-out-quad'
+} %}
+
+{% set columns = [
+  {
+    label: 'Nom',
+    key: 'name'
+  },
+  {
+    label: 'Type',
+    key: 'type',
+    head_cell_attr: {
+      class: 'text-left s:w-[8rem]'
+    },
+    cell_attr: {
+      class: 's:w-[8rem]'
+    }
+  },
+  {
+    label: 'Télécharger',
+    key: 'actions',
+    head_cell_attr: {
+      class: 'text-right s:w-[8rem] max-s:hidden'
+    },
+    cell_attr: {
+      class: 'text-right s:w-[8rem]'
+    }
+  }
+] %}
+
+{% block cell_type %}
+  {{ value }}
+  -{% set units = ['octets', 'Ko', 'Mo', 'Go', 'To'] %}
+  {% set size = row.size %}
+  {% set unitIndex = 0 %}
+
+  {% for i in 0..4 %}
+    {% if size >= 1024 and i < 4 %}
+      {% set size = size / 1024 %}
+      {% set unitIndex = unitIndex + 1 %}
+    {% endif %}
+  {% endfor %}
+
+  {% if unitIndex == 0 %}
+    {{ size|round(0) }}{{ units[unitIndex] }}
+  {% else %}
+    {{ size|round(2) }}{{ units[unitIndex] }}
+  {% endif %}
+{% endblock %}
+
+{% block cell_actions %}
+  <a href="#" class="after:block after:absolute after:inset-0">
+    {% include '@ui/Icon/Icon.twig' with {
+      name: 'download'
+    } %}
+    <span class="sr-only">Télécharger</span>
+  </a>
+{% endblock %}

@@ -1,0 +1,69 @@
+<div id="sticky-add-to-cart"
+  class="fixed w-full s:w-fit xxl:1/3 bottom-0 right-0 s:pb-6 s:px-12 z-20 translate-y-full transition duration-500"
+  data-component="ProductStickyBar">
+  <div class="bg-sand ring-1 ring-brown/20">
+    <div class="relative flex items-center s:items-stretch justify-between">
+      {# Product Image #}
+      <div class="items-center flex gap-2 bg-sand-darker aspect-[83/104]">
+        <img src="/assets/products/36249_9150_P3_1.jpg"
+          alt=""
+          class="object-contain size-20 object-center mix-blend-multiply"
+          loading="lazy" />
+      </div>
+
+      {# Product Info #}
+      <div class="flex-1 flex flex-col space-y-1 m:space-y-2 m:py-4 px-2 m:px-6">
+        {# Product Title #}
+        <span class="font-serif text-2xl l:text-3xl uppercase leading-none text-purple line-clamp-1">
+          {{ title }}
+        </span>
+
+        {# Product Variant #}
+        <div class="flex items-center gap-1">
+          {% for variant in product_variants %}
+            {% for item in variant.items %}
+              {% if item.current is defined and item.current %}
+                <span class="text-brown uppercase font-medium text-xs tracking-widest">
+                  {{ item.label }} {# Affiche le nom de l'item sélectionné #}
+                </span>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </div>
+
+        {# Product Price #}
+        <span class="text-gray uppercase font-medium text-xs tracking-widest">{{ price }} €</span>
+      </div>
+
+      {# Qty #}
+      <div class="flex items-center">
+        {% if qty_type == 'select' %}
+          <select id="list"
+            name="list"
+            class="block col-span-3 m:col-span-2 px-6 py-4 text-sm font-sans font-medium leading-6 bg-transparent ring-1 ring-current rounded-lg appearance-none">
+            {% for i in 1..10 %}
+              <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+          </select>
+        {% else %}
+          <input class="block col-span-3 m:col-span-2 font-sans font-medium text-sm leading-6 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-4 pl-6 pr-2 focus-visible:bg-white appearance-none"
+            value="1"
+            name="line[1][quantity]"
+            type="number" />
+        {% endif %}
+      </div>
+
+      {# Product Add to Cart #}
+      <div class="flex items-center p-4">
+        <button class="size-12 s:size-14 flex items-center justify-center rounded-lg bg-purple text-white">
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'add-to-cart',
+            attr: {
+              class: 'w-5 s:w-8 *:size-full'
+            }
+          } %}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

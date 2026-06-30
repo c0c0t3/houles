@@ -1,0 +1,58 @@
+<section class="bg-purple-light text-white py-12 m:py-24 relative cursor-pointer">
+  <div class="container">
+    <div class="m:absolute m:z-10 m:inset-0 m:flex m:flex-col m:justify-center m:items-center m:pointer-events-none">
+      <h2 class="m:text-center m:mx-auto m:max-w-xl font-serif font-light text-3xl m:text-7xl leading-none uppercase mb-10 m:mb-0">
+        Projets d'exceptions
+      </h2>
+    </div>
+    <div class="grid m:grid-cols-12">
+      <div class="col-span-5">
+        {% include '@components/ui/card/card-project.twig' with {
+          src: '/assets/projet1.jpg',
+          alt: 'Un prohet Houlès',
+          title: 'Hôtel 1 Place Vendôme - Paris, France',
+          link: '/project-1',
+          class: 'hidden m:flex',
+          invert: false,
+          width: 537,
+          height: 763
+        } %}
+      </div>
+      <div class="col-span-5 m:col-start-8 space-y-10">
+        {% include '@components/ui/card/card-project.twig' with {
+          src: '/assets/projet2.jpg',
+          title: 'Hôtel 1 Place Vendôme - Paris, France',
+          alt: 'Un prohet Houlès 2',
+          link: '/project-1',
+          class: '',
+          width: 400,
+          height: 400,
+          invert: true
+        } %}
+        <p class="s:w-4/5">
+          Architectes, décorateurs et tapissiers nous confient des projets résidentiels et
+          prestigieux. Nos créations subliment des lieux d’exception tels que le Château de
+          Versailles, le Palais d’Égmont ou l’Élysée. Découvrez quelques-unes de nos réalisations.
+        </p>
+        <div class="flex flex-col m:flex-row items-center gap-6">
+          {% include '@components/button.twig' with {
+            label: 'Nous contacter',
+            variant: 'solid',
+            invert: true,
+            attr: {
+              type: 'submit'
+            }
+          } only %}
+          {% include '@components/button.twig' with {
+            label: 'Voir tous nos projets',
+            variant: 'link',
+            invert: true,
+            attr: {
+              type: 'submit'
+            }
+          } only %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

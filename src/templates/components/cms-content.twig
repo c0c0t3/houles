@@ -1,0 +1,154 @@
+{# HOW TO USE
+images : array of images
+title : string
+content : string
+invert : boolean, default false (text left), true (text right)
+#}
+{% set number = random() %}
+{% set id = 'cms-content-' ~ number %}
+{% set invert = invert|default(false) %}
+{% set button_align = button_align|default('row') %}
+
+{% set attributes =
+  merge_html_attributes(
+    attr ?? null,
+    {},
+    {
+      class: 'my-20 m:my-40',
+      id: id
+    }
+  )
+%}
+
+{% if button_align == 'row' %}
+  {% set button_align_class = 'flex-row justify-start' %}
+{% else %}
+  {% set button_align_class = 'flex-col items-start' %}
+{% endif %}
+
+{% if invert %}
+  {% set invert_class = 'flex-col-reverse m:flex-row-reverse m:justify-between m:items-center' %}
+{% else %}
+  {% set invert_class = 'flex-col-reverse m:flex-row m:justify-between m:items-center' %}
+{% endif %}
+
+<section {{ html_attributes(attributes) }}>
+  <div class="container">
+    <div class="flex gap-6 {{ invert_class }} ">
+      {# Content #}
+      <div class="content w-full m:w-2/5 flex flex-col gap-6 m:gap-10">
+        <h2 class="font-serif text-3xl m:text-6xl leading-tight uppercase">{{ title }}</h2>
+        {% block content %}
+          {{ content|raw }}
+        {% endblock %}
+      </div>
+
+      {# Images #}
+      <div class="w-full m:w-1/2 bg-sand-darker h-full relative">
+        {% if (images|length) > 1 %}
+          <div data-component="Slider"
+            data-option-mode="left"
+            data-option-fit-bounds
+            data-option-contain
+            class="relative max-w-full overflow-hidden">
+            <div data-component="SliderDrag"
+              data-ref="wrapper"
+              tabindex="0"
+              class="hero relative z-1 whitespace-nowrap select-none flex flex-row flex-nowrap [&>*]:cursor-grab aspect-square m:aspect-[656/952]">
+              {% for slide in images %}
+                <article data-component="SliderItem"
+                  class="homepage-hero__item shrink-0 w-full h-auto flex flex-col justify-end xl:justify-center items-center relative pt-40 l:pt-20 pb-14 relative">
+                  {% include '@ui/Figure/Figure.twig' with {
+                    src: slide.src,
+                    width: 500,
+                    height: 400,
+                    alt: slide.alt,
+                    absolute: true,
+                    fit: 'cover',
+                    attr: {
+                      class: ['w-full', 'absolute', 'inset-0'],
+                      data_option_enter_from: 'opacity-0',
+                      data_option_enter_active: 'transition duration-500'
+                    },
+                    img_attr: {
+                      class: ['w-full', '', 'object-cover', 'opacity-0']
+                    }
+                  } %}
+                  <div class="absolute z-10 bottom-0 left-0 w-full h-1/2 bg-gradient-to-b from-transparent to-black/50"></div>
+                  <div class="absolute z-10 inset-0 bg-black/20"></div>
+                </article>
+              {% endfor %}
+            </div>
+            <div data-component="SliderDots"
+              data-option-enter-to="is-active"
+              data-option-enter-keep
+              class="absolute bottom-0 left-1/2 -translate-x-1/2 space-x-2 z-10">
+              {% for slide in images %}
+                <button type="button" data-ref="dots[]" class="group/dot h-10 w-10">
+                  <span class="block w-full h-0.5 bg-white opacity-30 group-[&.is-active]/dot:opacity-100 group-hover/dot:opacity-75 transition-opacity duration-300 ease-out-quad"></span>
+                  <span class="sr-only">Go to slide #{{ loop.index }}</span>
+                </button>
+              {% endfor %}
+            </div>
+            <button title="Prev"
+              type="button"
+              data-component="SliderBtn"
+              data-option-prev
+              class="rounded cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed text-white hidden m:block absolute top-1/2 -translate-y-1/2 left-4 z-10 py-4">
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'arrow-line-desktop',
+                attr: {
+                  class: ['w-14', 'block', 'rotate-180']
+                }
+              } %}
+            </button>
+            <button title="Next"
+              type="button"
+              data-component="SliderBtn"
+              data-option-next
+              class="rounded w-14 cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed text-white hidden m:block absolute top-1/2 -translate-y-1/2 right-4 z-10 py-4">
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'arrow-line-desktop',
+                attr: {
+                  class: ['w-14', 'block']
+                }
+              } %}
+            </button>
+            <button aria-label="Zoomed gallery"
+              data-component="Action"
+              data-option-target="Panel(#gallery-photos-{{ number }})"
+              data-option-effect="target.open()"
+              class="size-12 text-purple s:size-14 absolute z-10 right-4 bottom-4 m:right-8 m:bottom-8 bg-white ring-purple rounded-lg flex items-center justify-center">
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'icon-scale',
+                attr: {
+                  data_ref: 'open[]',
+                  class: ['w-5 s:w-6', 'flex', 'items-center', 'justify-center']
+                }
+              } %}
+            </button>
+          </div>
+          {% include '@components/photo-gallery.twig' with {
+            id: 'gallery-photos-' ~ number,
+            product_images: images
+          } %}
+        {% else %}
+          {% include '@ui/Figure/Figure.twig' with {
+            src: images[0].src,
+            width: 500,
+            height: 400,
+            alt: images[0].alt,
+            fit: 'cover',
+            attr: {
+              class: ['aspect-square m:aspect-[656/952]']
+            },
+            inner_attr: {
+              class: ['w-full', 'aspect-square m:aspect-[656/952] h-full']
+            }
+          } %}
+        {% endif %}
+      </div>
+      {# End images #}
+    </div>
+  </div>
+</section>

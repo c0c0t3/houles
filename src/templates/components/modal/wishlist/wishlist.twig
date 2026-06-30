@@ -1,0 +1,105 @@
+{% embed '@components/modal/Panel.twig'
+  with {
+    attr: {
+      id: 'wishlist'
+    },
+    position: 'right',
+    overlay_attr: {
+      class: 'bg-black/20 absolute inset-0'
+    },
+    wrapper_attr: {
+      class: 'p-4 m:p-6 z-50 items-center'
+    },
+    container_attr: {
+      class: 'w-full max-w-2xl rounded bg-sand !overflow-hidden flex justify-stretch'
+    },
+    content_attr: {
+      class: 'p-4 s:p-6 m:p-8 w-full flex flex-col'
+    }
+  }
+%}
+  {% block open %}{% endblock %}
+  {% block close %}{% endblock %}
+  {% block content %}
+    <form id="wishlist-form" class="h-full flex flex-col">
+      {# Facets Modal Header #}
+      <div class="flex items-center justify-between shrink-0 mb-6">
+        <h2 class="font-serif text-2xl m:text-3xl uppercase leading-none text-gray">
+          Ajouter à une liste d’envies
+        </h2>
+        {% include '@components/modal/close-modal-button.twig' with {
+          attr: {
+            data_ref: 'close[]',
+            type: 'button'
+          }
+        } only %}
+      </div>
+
+      {# Facets Modal Content #}
+      <div data-simplebar class="flex flex-col pt-4 p-px flex-1 overflow-auto">
+        <span class="block mb-4 text-sm font-medium text-purple uppercase">
+          Mes listes d'envies
+        </span>
+
+        <div class="flex flex-col gap-6">
+          {% include '@components/ui/shop/wishlist-input.twig' with {
+            image: '/assets/products/36249_9150_P3_1.jpg',
+            href: '/espace-pro/liste-envies/',
+            title: 'Produit 1',
+            number: 10
+          } only %}
+
+          {% include '@components/ui/shop/wishlist-input.twig' with {
+            image: '/assets/products/36249_9150_P3_1.jpg',
+            href: '/espace-pro/liste-envies/',
+            title: 'Produit 1',
+            number: 10
+          } only %}
+
+          {% include '@components/ui/shop/wishlist-input.twig' with {
+            image: '/assets/products/36249_9150_P3_1.jpg',
+            href: '/espace-pro/liste-envies/',
+            title: 'Produit 1',
+            number: 10
+          } only %}
+          {% include '@components/ui/shop/wishlist-input.twig' with {
+            image: '/assets/products/36249_9150_P3_1.jpg',
+            href: '/espace-pro/liste-envies/',
+            title: 'Produit 1',
+            number: 10
+          } only %}
+          {% include '@components/ui/shop/wishlist-input.twig' with {
+            image: '/assets/products/36249_9150_P3_1.jpg',
+            href: '/espace-pro/liste-envies/',
+            title: 'Produit 1',
+            number: 10
+          } only %}
+        </div>
+      </div>
+
+      {# Facets Modal Footer #}
+      <div class="flex flex-col s:flex-row gap-4 s:gap-8 pt-4 s:pt-6 m:pt-8">
+        {% include '@components/button.twig' with {
+          label: 'Créer une nouvelle liste',
+          variant: 'link',
+          icon: 'plus',
+          attr: {
+            'data-component': 'Action',
+            'data-option-target': 'Panel(#wishlist-new-list)',
+            'data-option-effect': 'target.open()',
+            type: 'button',
+            class: 'w-full flex-1'
+          }
+        } only %}
+        {% include '@components/button.twig' with {
+          label: 'Valider la sélection',
+          variant: 'solid',
+          attr: {
+            type: 'submit',
+            class: 'w-full flex-1'
+          }
+        } only %}
+      </div>
+    </form>
+  {% endblock %}
+{% endembed %}

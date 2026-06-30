@@ -1,0 +1,184 @@
+{% extends '@layouts/checkout.twig' %}
+
+{% set title = 'Mon panier' %}
+
+{% set cart_lines = [
+  {
+    id: 1,
+    title: 'Gland de clé',
+    description: '- coupe de 12,00cm en partant de la gauche<br>- coupe de 6,00cm en partant de la droite',
+    href: '#produit-1',
+    img: '/assets/espace-pro/produit-1.jpg',
+    collection: 'Imperial',
+    code: '32053-9600',
+    status: {
+      label: 'En stock (3)',
+      type: 'warning',
+      tooltip: 'En stock à partir du 16 octobre 2025'
+    },
+    price: 16.2,
+    quantity: 1
+  },
+  {
+    id: 3,
+    title: 'Auro - Configuration de tringlerie 180,00cm',
+    href: '#configuration-3',
+    img: '/assets/espace-pro/produit-1.jpg',
+    code: '32053-9600',
+    status: {
+      label: 'En stock',
+      type: 'success'
+    },
+    price: 234.34,
+    can_configure: true,
+    quantity: 1,
+    options: [
+      {
+        id: 4,
+        title: '2 supports doubles extensibles 195mm mur ø 31mm + 16mm',
+        code: '66787-14',
+        status: {
+          label: 'En stock (3)',
+          type: 'warning'
+        },
+        price: 45.65,
+        quantity: 1
+      },
+      {
+        id: 5,
+        title: 'Jambe de force',
+        code: '66491-14',
+        status: {
+          label: 'En stock (3)',
+          type: 'warning'
+        },
+        price: 21.73,
+        quantity: 2
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: '2 EMBOUTS "STRIO" Ø 35MM FINITION MÉTALLISÉE',
+    href: '#produit-2',
+    img: '/assets/espace-pro/produit-2.jpg',
+    collection: 'Villa',
+    code: '32053-9600',
+    status: {
+      label: 'En stock (68)',
+      type: 'success'
+    },
+    price: 75.6,
+    quantity: 2
+  }
+] %}
+
+{% set searchResults = [
+  {
+    id: 1,
+    title: 'Gland de clé',
+    img: '/assets/products/36249_9150_P3_1.jpg',
+    code: '32051-9300',
+    price: 16.2,
+    quantity: 1
+  },
+  {
+    id: 3,
+    title: 'Auro - Configuration de tringlerie 180,00cm',
+    img: '/assets/products/32031_9700_L3_1.jpg',
+    code: '32052-9600',
+    price: 234.34,
+    quantity: 1
+  },
+  {
+    id: 2,
+    title: '2 EMBOUTS "STRIO" Ø 35MM FINITION MÉTALLISÉE',
+    img: '/assets/products/36249_9017_P3_1.jpg',
+    code: '32053-9400',
+    price: 75.6,
+    quantity: 2
+  }
+] %}
+
+{% block content %}
+  <form data-component="Cart" class="w-full relative flex items-center justify-between rounded-lg">
+    {% include '@ui/Icon/Icon.twig' with {
+      name: 'icon-search-',
+      attr: {
+        class: 'hidden m:block size-10 block shrink-0 [&>svg]:size-ful text-brown absolute left-3'
+      }
+    } only %}
+    <input data-ref="searchCart"
+      class="{{
+      html_classes(
+        [
+          'flex-1 text-gray bg-sand-darker pl-4 pr-16 m:pl-16 m:pr-40 py-4 rounded-lg ',
+          'focus:ring-2  focus:ring-brown focus:outline-none',
+          'search-cancel:hidden'
+        ]
+      )
+      }}"
+      type="search"
+      placeholder="Ajout rapide par référence ou nom d’article" />
+    {% include '@components/modal/cart-quick-add.twig' with searchResults %}
+  </form>
+
+  <div class="space-y-6">
+    {% include '@components/table/cart.twig' with {
+      rows: cart_lines
+    } only %}
+    <div class="flex s:flex-row flex-col-reverse s:justify-between s:items-center gap-6 pt-6 border-t border-brown/20">
+      {% include '@components/button.twig' with {
+        label: 'Vider le panier',
+        icon: 'cross',
+        variant: 'link'
+      } only %}
+      <form action="" method="post" class="flex items-center gap-3">
+        <input {{
+          html_attributes({
+            type: 'text',
+            name: 'discount_code',
+            placeholder: 'Ajouter un code promo',
+            class: 'block w-full font-sans font-medium text-sm leading-6 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-4 px-6 focus-visible:bg-white appearance-none'
+          })
+          }} />
+        {% include '@components/button.twig' with {
+          label: 'Ajouter',
+          icon: false,
+          variant: 'outline'
+        } only %}
+      </form>
+    </div>
+  </div>
+  <div class="space-y-6">
+    <h2 class="text-base font-sans font-medium leading-snug text-purple text-right">
+      Total Panier
+    </h2>
+    {% include '@components/price-lines.twig' with {
+      lines: [
+        {
+          label: 'Total Ht',
+          value: 234.64
+        },
+        {
+          label: 'TVA 20,00%',
+          value: 46.93
+        },
+        {
+          label: 'Total ttc',
+          value: 281.57
+        }
+      ]
+    } only %}
+  </div>
+  <div class="grid s:grid-cols-2 gap-4">
+    {% include '@components/button.twig' with {
+      label: 'Recevoir un devis',
+      variant: 'outline'
+    } only %}
+    {% include '@components/button.twig' with {
+      label: 'Commander',
+      href: '/checkout/2-livraison.html'
+    } only %}
+  </div>
+{% endblock %}

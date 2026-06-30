@@ -1,0 +1,35 @@
+<section class="hero overflow-hidden relative h-screen -mt-20 s:-mt-36 m:-mt-[7.125rem] pt-28 m:pt-40 m:pb-24 pb-4 bg-sand-darker text-white">
+  {% include '@ui/Figure/Figure.twig' with {
+    src: pagehero.image,
+    width: 500,
+    height: 400,
+    alt: slide.alt,
+    absolute: true,
+    fit: 'cover',
+    attr: {
+      class: ['w-full', 'absolute', 'inset-0'],
+      data_option_enter_from: 'opacity-0',
+      data_option_enter_active: 'transition duration-500'
+    },
+    img_attr: {
+      class: ['w-full', '', 'object-cover', 'opacity-0']
+    }
+  } %}
+  <div class="gradients pointer-events-none">
+    <div class="absolute inset-x-0 top-0 h-44 bg-gradient-to-t from-transparent to-black/30"></div>
+    <div class="absolute inset-y-0 right-0 aspect-square bg-gradient-to-tl from-black/30 from-20% via-transparent via-50% to-transparent to-100%"></div>
+    <div class="absolute inset-0 bg-black/30"></div>
+  </div>
+  <div class="relative container flex flex-col h-full justify-between items-stretch">
+    {% include '@components/breadcrumb.twig' with {
+      items: breadcrumb_items,
+      color: 'sand'
+    } only %}
+    <h1 class="title max-w-xl mx-auto">{{ pagehero.title }}</h1>
+    <div class="grid m:grid-cols-12">
+      <div class="col-span-3 col-start-10 text-base font-sans leading-snug">
+        {{ pagehero.subtitle }}
+      </div>
+    </div>
+  </div>
+</section>

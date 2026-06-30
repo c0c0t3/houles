@@ -1,0 +1,227 @@
+{% extends '@layouts/pro.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Mon compte',
+    url: '/espace-pro/compte/'
+  },
+  {
+    label: 'Paramètres',
+    url: '/espace-pro/compte/paramètres/'
+  }
+] %}
+
+{% set title = 'Paramètres du compte' %}
+
+{% block content %}
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">
+      Mes préférences de notifications par e-mail
+    </h2>
+    <form action="" method="post" class="flex flex-col gap-6">
+      {% include '@components/field.twig' with {
+        label: 'Adresse e-mail utilisée pour les notifications',
+        name: 'notifications_email',
+        type: 'email',
+        placeholder: 'email@example.com',
+        required: true
+      } only %}
+
+      <div class="grid s:grid-cols-2 gap-6">
+        {% embed '@components/field.twig'
+          with {
+            label: 'Confirmation de commande envoyée à',
+            name: 'notifications_email',
+            type: 'email',
+            placeholder: 'email@example.com',
+            required: true
+          }
+        %}
+          {% block label %}
+            <div class="flex items-center">
+              <input id="enable_order_confirm_email"
+                type="checkbox"
+                name="use_as_contact_email"
+                class="size-4 rounded-none cursor-pointer accent-purple"
+                checked />
+              <label for="enable_order_confirm_email"
+                class="text-sm font-medium uppercase text-purple cursor-pointer pl-2">
+                {{ label ~ (required ? ' *' : '') }}
+              </label>
+            </div>
+            <label for="{{ id }}" class="sr-only">
+              Adresse e-mail utilisée pour les confirmations de commande
+            </label>
+          {% endblock %}
+        {% endembed %}
+
+        {% embed '@components/field.twig'
+          with {
+            label: 'Notification d’expédition envoyée à',
+            name: 'shipping_email',
+            type: 'email',
+            placeholder: 'email@example.com',
+            required: true
+          }
+        %}
+          {% block label %}
+            <div class="flex items-center">
+              <input id="enable_shipping_email"
+                type="checkbox"
+                name="use_as_contact_email"
+                class="size-4 rounded-none cursor-pointer accent-purple"
+                checked />
+              <label for="enable_shipping_email"
+                class="text-sm font-medium uppercase text-purple cursor-pointer pl-2">
+                {{ label ~ (required ? ' *' : '') }}
+              </label>
+            </div>
+            <label for="{{ id }}" class="sr-only">
+              Adresse e-mail utilisée pour les notifications d’expédition
+            </label>
+          {% endblock %}
+        {% endembed %}
+
+        {% embed '@components/field.twig'
+          with {
+            label: 'Factures envoyée à',
+            name: 'invoice_email',
+            type: 'email',
+            placeholder: 'email@example.com',
+            required: true
+          }
+        %}
+          {% block label %}
+            <div class="flex items-center">
+              <input id="enable_invoice_email"
+                type="checkbox"
+                name="use_as_contact_email"
+                class="size-4 rounded-none cursor-pointer accent-purple"
+                checked />
+              <label for="enable_invoice_email"
+                class="text-sm font-medium uppercase text-purple cursor-pointer pl-2">
+                {{ label ~ (required ? ' *' : '') }}
+              </label>
+            </div>
+            <label for="{{ id }}" class="sr-only">Adresse e-mail utilisée pour les factures</label>
+          {% endblock %}
+        {% endembed %}
+
+        {% embed '@components/field.twig'
+          with {
+            label: 'Newsletter envoyée à',
+            name: 'newsletter_email',
+            type: 'email',
+            placeholder: 'email@example.com',
+            required: true
+          }
+        %}
+          {% block label %}
+            <div class="flex items-center">
+              <input id="enable_newsletter_email"
+                type="checkbox"
+                name="use_as_contact_email"
+                class="size-4 rounded-none cursor-pointer accent-purple"
+                checked />
+              <label for="enable_newsletter_email"
+                class="text-sm font-medium uppercase text-purple cursor-pointer pl-2">
+                {{ label ~ (required ? ' *' : '') }}
+              </label>
+            </div>
+            <label for="{{ id }}" class="sr-only">
+              Adresse e-mail utilisée pour les newsletters
+            </label>
+          {% endblock %}
+        {% endembed %}
+      </div>
+      {% include '@components/button.twig' with {
+        label: 'Enregistrer les modifications',
+        variant: 'solid',
+        attr: {
+          type: 'submit',
+          class: 'mt-6'
+        }
+      } only %}
+    </form>
+  </div>
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    <h2 class="text-base font-sans font-medium leading-snug text-purple">Mes infos de connexion</h2>
+    <form action="" method="post" class="flex flex-col gap-6">
+      <legend class="text-lg font-serif font-light uppercase text-purple">
+        Modifier mon mot de passe
+      </legend>
+      {% include '@components/field.twig' with {
+        label: 'Mot de passe actuel',
+        name: 'password',
+        type: 'password',
+        required: true
+      } only %}
+      {% include '@components/field.twig' with {
+        label: 'Nouveau mot de passe',
+        name: 'new_password',
+        type: 'password',
+        required: true
+      } only %}
+      {% include '@components/field.twig' with {
+        label: 'Confirmation',
+        name: 'confirm_password',
+        type: 'password',
+        required: true
+      } only %}
+      {% include '@components/button.twig' with {
+        label: 'Enregistrer les modifications',
+        variant: 'solid',
+        attr: {
+          type: 'submit',
+          class: 'mt-6'
+        }
+      } only %}
+    </form>
+    <form action="" method="post" class="flex flex-col gap-6">
+      <legend class="text-lg font-serif font-light uppercase text-purple">
+        Modifier mon adresse e-mail de connexion
+      </legend>
+      {% include '@components/field.twig' with {
+        label: 'Adresse e-mail actuelle',
+        name: 'email',
+        type: 'email',
+        required: true
+      } only %}
+      {% include '@components/field.twig' with {
+        label: 'Nouvelle adresse e-mail',
+        name: 'new_email',
+        type: 'email',
+        required: true
+      } only %}
+      {% include '@components/field.twig' with {
+        label: 'Confirmation',
+        name: 'new_email',
+        type: 'email',
+        required: true
+      } only %}
+      {% include '@components/field.twig' with {
+        label: 'Mot de passe',
+        name: 'password',
+        type: 'password',
+        required: true
+      } only %}
+      <div class="flex items-center">
+        <input id="use_as_contact_email"
+          type="checkbox"
+          name="use_as_contact_email"
+          class="size-4 rounded-none cursor-pointer accent-purple" />
+        <label for="use_as_contact_email" class="font-medium text-gray cursor-pointer pl-2">
+          Faire de cet email mon nouvel email de contact.
+        </label>
+      </div>
+      {% include '@components/button.twig' with {
+        label: 'Enregistrer les modifications',
+        variant: 'solid',
+        attr: {
+          type: 'submit',
+          class: 'mt-6'
+        }
+      } only %}
+    </form>
+  </div>
+{% endblock %}

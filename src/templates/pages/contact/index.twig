@@ -1,0 +1,195 @@
+{% extends '@layouts/base.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Passementerie',
+    url: '/passementerie'
+  },
+  {
+    label: 'Embrasses',
+    url: '/passementerie/embrasses'
+  }
+] %}
+
+{% block body %}
+  {# HERO #}
+  <section class="my-10 m:mt-24 m:mb-36">
+    <div class="container">
+      <div class="flex flex-col items-center justify-center">
+        <h1 class="font-serif text-3xl s:text-4xl m:text-6xl l:text-7xl uppercase leading-none text-gray">Nous contacter</h1>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <div class="grid grid-cols-1 m:grid-cols-12 gap-6 m:gap-8">
+        <form action="" method="post" class="  l:col-start-2 m:col-span-8 l:col-span-6 flex flex-col gap-8 w-full max-w-[45.75rem] mx-auto">
+          <h2 class="text-2xl s:text-3xl m:text-4xl font-serif text-gray font-light uppercase leading-tight mt-10">Vous avez une question, un projet ?
+          Ecrivez-nous.</h2>
+          <p class="text-lg">Nos équipes se tiennent à votre disposition pour répondre à vos besoins dans un délais de 24 à 48h maximum.</p>
+          <p class="text-sm text-brown uppercase font-medium tracking-widest leading-tight">Les champs marqués * sont obligatoires.</p>
+          <div class="grid s:grid-cols-2 gap-x-3 gap-y-6">
+            {# {% include '@components/field.twig' with {
+              label: 'N° de Siren',
+              name: 'siren',
+              required: true,
+              attr: {
+                class: 's:col-span-2'
+              }
+            } only %}
+            {% include '@components/field.twig' with {
+              label: 'Raison sociale',
+              name: 'company',
+              required: true,
+              attr: {
+                class: 's:col-span-2'
+              }
+            } only %} #}
+            {% include '@components/field.twig' with {
+              label: 'Nom',
+              name: 'lastname',
+              required: true
+            } only %}
+            {% include '@components/field.twig' with {
+              label: 'Prénom',
+              name: 'firstname',
+              required: true
+            } only %}
+            {% include '@components/select-choices.twig' with {
+              label: 'Vous êtes',
+              name: 'type',
+              required: true,
+              attr: {
+                class: 's:col-span-2'
+              },
+              options: [
+                {
+                  label: 'Un professionnel',
+                  value: 'type_pro',
+                  selected: true
+                },
+                {
+                  label: 'Un particulier',
+                  value: 'type_particulier'
+                }
+              ]
+            } only %}
+            {% include '@components/field.twig' with {
+              label: 'N° SIREN',
+              name: 'siren',
+              type: 'number',
+              required: true,
+              attr: {
+                class: 's:col-span-2'
+              },
+              input_attr: {
+                class: 'input-number-only'
+              }
+            } only %}
+            {% include '@components/select-countries.twig' %}
+            {% include '@components/field.twig' with {
+              label: 'Ville',
+              name: 'city',
+              required: true
+            } only %}
+
+            {% include '@components/field.twig' with {
+              label: 'N° de téléphone',
+              name: 'phone',
+              type: 'tel',
+              required: true,
+              tooltip_content: 'La langue des documents est utilisée pour la création de votre compte et pour la récupération de votre mot de passe.',
+              attr: {
+                class: 'grow'
+              },
+              input_attr: {
+                'data-component': 'Phone'
+              }
+            } only %}
+            {% include '@components/field.twig' with {
+              label: 'Adresse e-mail',
+              name: 'email',
+              type: 'email',
+              required: true
+            } only %}
+            {% include '@components/select-choices.twig' with {
+              label: 'Objet de la demande',
+              name: 'object',
+              required: true,
+              attr: {
+                class: 's:col-span-2'
+              },
+              options: [
+                {
+                  label: 'Objet 1',
+                  value: 'no',
+                  selected: true
+                },
+                {
+                  label: 'Objet 2',
+                  value: 'yes'
+                }
+              ]
+            } only %}
+            {% include '@components/field.twig' with {
+              label: 'Message',
+              type: 'textarea',
+              input_attr: {
+                rows: 5
+              },
+              attr: {
+                class: 's:col-span-2'
+              },
+              name: 'message'
+            } only %}
+
+
+          </div>
+          <div class="grid s:grid-cols-2 gap-x-3">
+            {% include '@components/button.twig' with {
+              label: 'Valider l’inscription',
+              variant: 'solid',
+              attr: {
+                type: 'submit',
+              }
+            } only %}
+          </div>
+        </form>
+        <div class="l:col-start-9 m:col-span-4">
+          <div class="sticky top-28 bg-purple-light m:aspect-square w-full p-4 l:p-8 xl:p-12 flex flex-col gap-8 justify-between text-white">
+            <h2 class="text-2xl s:text-3xl m:text-4xl font-serif font-light uppercase leading-tight">Nos coordonnées</h2>
+            <div class="flex flex-col gap-10">
+              <div>
+                <div class="flex items-center gap-2 text-brown-light">
+                  {% include '@ui/Icon/Icon.twig' with {
+                    name: 'icon-mobile',
+                    attr: {
+                      class: ['[&>svg]:size-5'],
+                      aria_hidden: true
+                    }
+                  } only %}
+                  <p class="text-sm font-medium uppercase tracking-widest">PAR TÉLÉPHONE</p>
+                </div>
+                <p>Du lundi au vendredi de 9h00 à 16h30<br>
+                +33 (0)1 60 39 62 00</p>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 text-brown-light">
+                  {% include '@ui/Icon/Icon.twig' with {
+                    name: 'icon-mail',
+                    attr: {
+                      class: ['[&>svg]:size-5'],
+                      aria_hidden: true
+                    }
+                  } only %}
+                  <p class="text-sm font-medium uppercase tracking-widest">PAR Mail</p>
+                </div>
+                <a class="hover:underline" href="mailto:infos@houles.com">infos@houles.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

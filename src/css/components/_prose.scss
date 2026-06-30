@@ -1,0 +1,23 @@
+.prose {
+  @apply space-y-6 l:space-y-10;
+
+  h2 {
+    @apply text-3xl s:text-4xl font-serif uppercase tracking-widest text-gray leading-tight;
+  }
+
+  h3 {
+    @apply text-xl s:text-2xl font-serif uppercase tracking-widest text-gray leading-tight;
+  }
+
+  ul {
+    @apply list-disc list-inside;
+  }
+
+  p {
+    @apply text-base text-gray;
+  }
+
+  a {
+    @apply text-purple underline font-medium;
+  }
+}

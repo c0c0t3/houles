@@ -1,0 +1,20 @@
+{% set attributes =
+  merge_html_attributes(
+    attr ?? null,
+    {
+      class: ['m:mb-16']
+    }
+  )
+%}
+
+<section {{ attributes }}>
+  <div class="container">
+    <div class="grid grid-cols-1 m:grid-cols-12 gap-4 mb-10 m:mb-16">
+      <h2 class="font-serif text-3xl s:text-4xl m:text-6xl uppercase leading-xtight m:col-span-4">
+        {{ title }}
+      </h2>
+      <div class="m:col-span-5 m:col-start-8 text-base">{% block content %}{% endblock %}</div>
+    </div>
+    <div class="h-px w-full bg-gradient-to-r from-gray to-transparent"></div>
+  </div>
+</section>

@@ -1,0 +1,33 @@
+<div class="flex items-center justify-start gap-2">
+  <button data-component="BurgerMenu"
+    data-option-mode="click"
+    type="button"
+    class="relative z-2 burger-btn flex items-center focus:outline-0"
+    aria-label="Ouvrir le menu">
+    <div class="relative size-10 flex flex-col gap-2 items-center justify-center">
+      <span class="w-8 m:w-10 h-px bg-current"></span>
+      <span class="w-8 m:w-10 h-px bg-current"></span>
+    </div>
+    <span class="relative uppercase text-sm">
+      <span data-ref="OpenLabel" class="pl-4 hidden m:block">Menu</span>
+      <span data-ref="CloseLabel" class="pl-4 hidden">Fermer</span>
+    </span>
+  </button>
+
+  {# SEARCH #}
+  <button data-component="Action"
+    data-option-target="Panel(#searchbox)"
+    data-option-effect="target.open()"
+    type="button"
+    title="Recherche"
+    class="w-10 block m:hidden">
+    {% include '@ui/Icon/Icon.twig' with {
+      name: 'icon-search-',
+      attr: {
+        class: 'size-10 block [&>svg]:size-full'
+      }
+    } only %}
+    <span class="sr-only">Imprimer</span>
+  </button>
+  <div class="search_mobile flex items-center justify-center m:hidden"></div>
+</div>

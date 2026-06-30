@@ -1,0 +1,37 @@
+<header data-component="Header"
+  class="sticky top-0 z-20 s:py-4 s:container s:pointer-events-none max-s:group-[&.is-home]/html:-top-4">
+  <div data-ref="innerHeader"
+    class="{{
+    html_classes(
+      [
+        'flex items-center justify-between',
+        'relative grid grid-cols-[1fr_auto_1fr] py-2 max-s:group-[&.is-home]/html:pt-6 s:py-4 px-4 s:px-6',
+        's:ring-1 s:ring-brown/20 bg-sand text-gray',
+        'max-s:before:absolute max-s:before:inset-x-0 max-s:before:bottom-0 max-s:before:h-px max-s:before:w-full max-s:before:bg-brown/20 max-s:group-[&.is-on-top.is-home]/html:before:hidden',
+        'group-[&.is-on-top.is-home]/html:ring-0 group-[&.is-on-top.is-home]/html:bg-transparent group-[&.is-on-top.is-home]/html:text-white',
+        'transition-colors duration-300 ease-out-quad',
+        's:pointer-events-auto',
+        'group'
+      ]
+    )
+    }}">
+    {% include '@components/ui/header/header-nav.twig' %}
+    {% include '@components/ui/header/header-left.twig' %}
+    <a href="/"
+      class="group/link flex justify-center items-center -m-2 s:-m-4 p-2 s:p-4 hover:opacity-75 transition-opacity duration-300 ease-out-quad">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'logo-houles',
+        attr: {
+          class: [
+            'block h-12 s:h-[3.125rem] w-auto',
+            'group-[&.is-on-top.is-home]/html:scale-[1.4]',
+            'transition-transform duration-300 ease-out-quad',
+            '[&>svg]:w-auto [&>svg]:h-full'
+          ]
+        }
+      } %}
+      <span class="sr-only">Retour à l'accueil</span>
+    </a>
+    {% include '@components/ui/header/header-right.twig' %}
+  </div>
+</header>

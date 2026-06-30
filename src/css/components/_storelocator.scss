@@ -1,0 +1,65 @@
+// Geocoder
+#geocoder {
+  @apply m:mx-8 border-none;
+}
+
+#geocoder .mapboxgl-ctrl-geocoder {
+  @apply w-full border border-gray bg-sand-darker outline-none border-none rounded-lg focus:border-gray focus:border;
+  max-width: none;
+  border-radius: 2px !important;
+  box-shadow: unset;
+
+  svg {
+    display: none;
+  }
+}
+
+#geocoder .mapboxgl-ctrl-geocoder--input {
+  @apply transition duration-300 text-base bg-transparent border-none outline-none text-gray placeholder:text-gray/70;
+  height: auto !important;
+  padding: theme('spacing.3') theme('spacing.10') theme('spacing.3') theme('spacing.4') !important;
+
+  &:focus {
+    @apply border-gray;
+  }
+}
+
+.marker {
+  background-image: url('data:image/svg+xml,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="%23EDE9E6"/><path d="M14.2561 11.4616H9.75041V7.19922H8V16.7992H9.75041V11.9388H14.2561V16.7992H16V7.19922H14.2561V11.4616Z" fill="white"/></svg>');
+}
+
+.marker--retailer {
+  background-image: url('data:image/svg+xml,<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="black"/><circle cx="8" cy="8" r="3" fill="white"/></svg>');
+}
+
+.mapboxgl-ctrl-group {
+  background: black !important;
+  box-shadow: none !important;
+
+  .mapboxgl-ctrl-geolocate {
+    display: none;
+  }
+
+  button {
+    width: 40px !important;
+    height: 40px !important;
+
+    @apply bg-purple-light;
+
+    &.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon {
+      background-image: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.9987 3.33203V16.6654M16.6654 9.9987H3.33203" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>') !important;
+    }
+
+    &.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon {
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.6654 10H3.33203" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>') !important;
+    }
+  }
+}
+
+.mapboxgl-popup-close-button {
+  @apply right-1.5;
+}
+
+.mapboxgl-popup-content {
+  @apply pr-4;
+}

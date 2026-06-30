@@ -1,0 +1,86 @@
+<section data-component="Slider"
+  data-option-mode="left"
+  data-option-fit-bounds
+  data-option-contain
+  class="overflow-hidden max-w-screen py-10 m:py-16">
+  <div class="container">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-3xl s:text-4xl m:text-6xl font-serif text-gray font-light uppercase">
+        Vous aimerez aussi
+      </h2>
+      <div class="hidden m:block">
+        {% include '@components/button.twig' with {
+          label: 'Voir plus de glands de clés',
+          href: '/shop/collection.html',
+          variant: 'link',
+          icon_position: 'start'
+        } %}
+      </div>
+    </div>
+    <div data-component="SliderDrag"
+      data-ref="wrapper"
+      tabindex="0"
+      class="homepage-hero relative z-1 whitespace-nowrap select-none h-full flex flex-row flex-nowrap [&>*]:cursor-grab gap-2 m:gap-8">
+      {% for product in related_products %}
+        <div data-component="SliderItem" class="w-4/5 s:w-1/4 shrink-0">
+          {% include '@components/ui/card/card-listing-product.twig' with {
+            name: product.name,
+            collection: product.collection,
+            url: product.url,
+            regular_price: product.regular_price,
+            sale_price: product.sale_price,
+            is_sale: product.is_sale,
+            image_main: product.image_main,
+            image_hover: product.image_hover,
+            reference: product.reference,
+            is_in_stock: product.is_in_stock,
+            stock: product.stock,
+            is_new: product.is_new,
+            tags: product.tags
+          } %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="flex items-center justify-between mt-10 gap-8">
+      <div class="buttons hidden m:flex items-center gap-4">
+        <button title="Prev"
+          type="button"
+          data-component="SliderBtn"
+          data-option-prev
+          class="cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-50 block text-purple py-2">
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'arrow-line-desktop',
+            attr: {
+              class: ['rotate-180', 'w-14', 'block']
+            }
+          } %}
+        </button>
+        <button title="Next"
+          type="button"
+          data-component="SliderBtn"
+          data-option-next
+          class="cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-50 block text-purple py-2">
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'arrow-line-desktop',
+            attr: {
+              class: ['w-14', 'block']
+            }
+          } %}
+        </button>
+      </div>
+      <div data-component="SliderProgress"
+        class="w-full rounded bg-gradient-to-r from-gray/20 to-transparent overflow-hidden flex-1 h-px relative">
+        <div class="h-px bg-purple rounded origin-left duration-1000 transition ease-in-out before:content-[''] before:absolute before:w-1/4 before:h-full before:bg-purple before:translate-x-full before:right-0 before:top-0"
+          data-ref="progress"></div>
+      </div>
+    </div>
+    <div class="m:hidden mt-6 flex justify-center">
+      {% include '@components/button.twig' with {
+        label: 'Voir plus de glands de clés',
+        href: '/shop/collection.html',
+        variant: 'link',
+        icon_position: 'start'
+      } %}
+    </div>
+  </div>
+</section>

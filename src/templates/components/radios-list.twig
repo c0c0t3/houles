@@ -1,0 +1,83 @@
+{% set id = id|default(name ~ '-' ~ random()) %}
+<ul class="flex flex-col s:grid s:grid-cols-[auto_1fr_auto] s:gap-x-8 -space-y-px">
+  {% set first_available = null %}
+  {% for option in options %}
+    {% if not first_available and not option.disabled %}
+      {% set first_available = option %}
+    {% endif %}
+    <li class="{{
+      html_classes(
+        [
+          'group/radio-item flex flex-col s:col-span-3 s:grid s:grid-cols-subgrid',
+          'has-[input[type=radio]:checked]:bg-purple has-[input[type=radio]:checked]:text-white',
+          {
+            'bg-white text-purple ring-1 ring-inset ring-brown/20': not option.disabled,
+            'bg-brown/20 text-brown/50': option.disabled
+          }
+        ]
+      )
+      }}">
+      <div class="relative flex flex-col s:col-span-3 s:grid s:grid-cols-subgrid p-8">
+        <div>
+          <label for="{{ id }}_{{ loop.index }}"
+            class="{{
+            html_classes(
+              [
+                'flex justify-start items-center gap-2 min-h-6',
+                'text-base font-sans font-medium leading-snug',
+                'after:absolute after:inset-0',
+                {
+                  'cursor-pointer': not option.disabled,
+                  'cursor-not-allowed': option.disabled
+                }
+              ]
+            )
+            }}">
+            <input {{
+              html_attributes({
+                id: id ~ '_' ~ loop.index,
+                type: 'radio',
+                name: name,
+                value: option.value,
+                checked: first_available == option,
+                disabled: option.disabled ?? false,
+                class: 'accent-purple size-4'
+              })
+              }} />
+            {{ option.label }}
+          </label>
+        </div>
+        {% block description %}
+          <p class="{{
+            html_classes(
+              [
+                'text-xs font-sans uppercase tracking-wide font-medium',
+                {
+                  'text-brown group-has-[input[type=radio]:checked]/radio-item:text-brown-light': not option.disabled,
+                  'text-brown/50': option.disabled
+                }
+              ]
+            )
+            }}">
+            <span class="min-h-6 flex items-center">
+              {% if option.disabled and disabled_description %}
+                {{ disabled_description }}
+              {% else %}
+                {{ option.description }}
+              {% endif %}
+            </span>
+          </p>
+        {% endblock %}
+        {% block append %}{% endblock %}
+      </div>
+      {% if option.feature or block('details_' ~ option.value) is defined %}
+        <div class="group-has-[input[type=radio]:not(:checked)]/radio-item:hidden flex flex-col s:col-span-3 p-8 pt-0">
+          <div class="flex items-center justify-between gap-4">
+            <p>{{ option.feature }}</p>
+            {{ block('details_' ~ option.value) }}
+          </div>
+        </div>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

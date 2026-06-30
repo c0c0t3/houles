@@ -1,0 +1,56 @@
+{% set slides = [
+  {
+    title: 'Héritage et Expertise',
+    description: "Depuis 1928, Houlès incarne l'excellence dans la passementerie et la décoration d'intérieur."
+  },
+  {
+    title: 'qualité produit',
+    description: 'Nous garantissons des produits durables et finis avec soin, comme les accessoires pour rideaux.'
+  },
+  {
+    title: 'Innovation et Design',
+    description: 'Houlès propose des collections modernes et innovantes, en collaboration avec des designers.'
+  },
+  {
+    title: 'Service Client et Support',
+    description: 'Un service client réactif et des solutions personnalisées pour vos projets.'
+  }
+] %}
+
+<section class="prefooter max-w-full overflow-hidden">
+  <div class="container">
+    <div data-component="Slider"
+      data-option-mode="left"
+      data-option-fit-bounds
+      data-option-contain
+      class="space-y-4 py-20">
+      <div data-component="SliderDrag"
+        data-ref="wrapper"
+        data-option-active-breakpoints="xxs xs s"
+        tabindex="0"
+        class="flex flex-nowrap">
+        {% for slide in slides %}
+          <div data-component="SliderItem"
+            class="shrink-0 px-4 m:px-8 w-full xs:w-1/2 m:w-1/4 text-center space-y-2">
+            <h3 class="font-serif text-lg uppercase leading-none text-gray tracking-wide">
+              {{ slide.title }}
+            </h3>
+            <p class="font-sans text-base text-gray">{{ slide.description }}</p>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div data-component="SliderDots"
+        data-option-enter-to="is-active"
+        data-option-enter-keep
+        class="space-x-4 m:hidden flex items-center justify-center">
+        {% for slide in slides %}
+          <button type="button" data-ref="dots[]" class="group/dot h-10 w-10">
+            <span class="block w-full h-0.5 bg-brown opacity-30 group-[&.is-active]/dot:opacity-100 group-hover/dot:opacity-75 transition-opacity duration-300 ease-out-quad"></span>
+            <span class="sr-only">Go to slide #{{ loop.index }}</span>
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,98 @@
+{% extends '@layouts/base.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Passementerie',
+    url: '/passementerie'
+  },
+  {
+    label: 'Embrasses',
+    url: '/passementerie/embrasses'
+  }
+] %}
+
+{% set posts = [
+  {
+    title: 'CHIC DU BLEU !',
+    link: '/blog/article.html',
+    src: '/assets/blog.jpg',
+    src_width: 427,
+    src_height: 408,
+    categoryTitle: 'Actualité'
+  },
+  {
+    title: 'Houlès, un siècle d’histoire raconté dans notre livre',
+    link: '/blog/article.html',
+    src: '/assets/blog-2.jpg',
+    src_width: 427,
+    src_height: 528,
+    categoryTitle: 'Actualité'
+  },
+  {
+    title: 'Les passementeries Houlès à l’École Boulle',
+    link: '/blog/article.html',
+    src: '/assets/blog-3.jpg',
+    src_width: 427,
+    src_height: 407,
+    categoryTitle: 'Actualité'
+  },
+  {
+    title: 'CHIC DU BLEU !',
+    link: '/blog/article.html',
+    src: '/assets/mood1.png',
+    src_width: 300,
+    src_height: 300,
+    categoryTitle: 'Actualité'
+  },
+  {
+    title: 'Houlès, un siècle d’histoire raconté dans notre livre',
+    link: '/blog/article.html',
+    src: '/assets/projet2.jpg',
+    src_width: 427,
+    src_height: 380,
+    categoryTitle: 'Actualité'
+  },
+  {
+    title: 'Les passementeries Houlès à l’École Boulle',
+    link: '/blog/article.html',
+    src: '/assets/shooroom.jpg',
+    src_width: 427,
+    src_height: 500,
+    categoryTitle: 'Actualité'
+  }
+] %}
+
+{% block body %}
+  {# HERO #}
+  <section class="my-10 m:mt-24 m:mb-36">
+    <div class="container">
+      <div class="flex flex-col items-center justify-center">
+        <h1 class="font-serif text-3xl s:text-4xl m:text-6xl l:text-7xl uppercase leading-none text-gray">Actualites</h1>
+      </div>
+    </div>
+  </section>
+  <section class="">
+    <div class="container">
+      <div class="grid xs:grid-cols-2 s:grid-cols-3 gap-10 l:gap-x-8 l:gap-y-16 border-t border-brown/20 pt-7 m:pt-14">
+        {% for i in 0..11%}
+          {% set post = posts[i % posts|length] %}
+          {% include '@components/ui/card/card-post.twig' with {
+            title: post.title,
+            categoryTitle: post.categoryTitle,
+            src: post.src,
+            link: post.link,
+            src_width: post.src_width,
+            src_height: post.src_height
+          } %}
+        {% endfor %}
+      </div>
+      <div class=" my-8 l:mt-14 l:mb-24">
+        {% include '@components/pagination.twig' with {
+          current_page: 1,
+          total_pages: 23,
+          base_url: '/espace-pro/compte/commandes-et-devis/'
+        } only %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

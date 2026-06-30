@@ -1,0 +1,31 @@
+
+
+
+<div role="button" class="flex w-full items-center" {% if filter %}data-filter="{{ filter }}"{% endif %}>
+  <label for="{{ id }}" class="flex w-full cursor-pointer items-center py-2">
+    <div class="inline-flex items-center">
+      <label class="relative flex items-center cursor-pointer" for="{{ id }}">
+        <input data-ref="facetsRadio[]"
+          name="{{ name }}"
+          type="radio"
+          class="peer h-5 w-5 cursor-pointer appearance-none rounded-full border border-purple checked:border-purple transition-all"
+          id="{{ id }}" />
+        <span class="absolute bg-purple w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
+      </label>
+      <label class="ml-2 text-purple cursor-pointer text-base font-medium flex items-center gap-2"
+        for="{{ id }}">
+        {{ label }}
+        {% if counter %}
+          <span class="inline-block text-xs uppercase font-medium text-gray rounded bg-brown-light py-0.5 px-2">
+            {{ counter }}
+          </span>
+        {% endif %}
+        {% if tag %}
+          <span class="inline-block text-xxs italic uppercase font-medium text-gray">
+            {{ tag }}
+          </span>
+        {% endif %}
+      </label>
+    </div>
+  </label>
+</div>

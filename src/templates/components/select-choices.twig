@@ -1,0 +1,101 @@
+{% set id = id|default(name ~ '-' ~ random()) %}
+{% set required = required|default(false) %}
+
+{% set inline = inline|default(false) %}
+{% set attributes =
+  merge_html_attributes(
+    attr ?? null,
+    {},
+    {
+      class: 'flex flex-col items-start relative'
+        ~ (not inline ? ' flex-col' : ' m:flex-row m:items-center is-inline')
+        ~ ' gap-2 s:gap-3'
+        ~ (tooltip_modal ? ' has-tooltip-modal' : ' has-not-tooltip-modal')
+    }
+  )
+%}
+
+{% set label_attributes =
+  merge_html_attributes(
+    label_attr ?? null,
+    {},
+    {
+      for: id,
+      class: 'text-sm leading-none font-medium uppercase text-purple'
+        ~ (inline ? ' w-full pr-8 s:pr-0 s:w-1/3 shrink-0' : '')
+    }
+  )
+%}
+
+<div {{ html_attributes(attributes) }}>
+  {% if tooltip_content %}
+    <div class="relative w-fit flex items-center gap-2">
+      <label {{ html_attributes(label_attributes) }}>{{ label ~ (required ? ' *' : '') }}</label>
+      {% embed '@components/ui/basic-tooltip.twig'
+        with {
+          tooltip_content: tooltip_content
+        }
+      %}
+
+      {% endembed %}
+    </div>
+  {% else %}
+    <label {{ html_attributes(label_attributes) }}>{{ label ~ (required ? ' *' : '') }}</label>
+    {% if tooltip_modal %}
+      <svg class="absolute right-0 s:relative size-6 s:size-10 -translate-y-1.5 s:translate-y-0"
+        data-component="Action"
+        data-option-target="Modal(#tooltip-{{ id }})"
+        data-option-effect="target.open()"
+        class="w-5 h-5 shrink-0"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor">
+        <path fill-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+          clip-rule="evenodd" />
+      </svg>
+    {% endif %}
+  {% endif %}
+  <select data-search="{{ search ? 'true' : 'false' }}"
+    class="block w-full font-sans font-medium text-sm leading-6 border border-purple !rounded-lg bg-transparent text-purple !py-4 !px-6 focus-visible:bg-white appearance-none"
+    name="{{ name }}"
+    data-component="ChoicesSelect">
+    {% for option in options %}
+      {% if flag %}
+        <option data-custom-html="<span class='fflag fflag-{{ option.country }} ff-sm'></span> {{
+          option.label
+          }}"
+          value="{{ option.value }}"
+          {{ option.selected ? 'selected' : '' }}>
+          {{ option.label }}
+        </option>
+      {% elseif color %}
+        <option data-custom-html="<span style='background-color: {{
+          option.color
+          }};' class='size-6 rounded-full border border-purple'></span> {{ option.label }}"
+          value="{{ option.value }}"
+          {{ option.selected ? 'selected' : '' }}>
+          {{ option.label }}
+          <span class="hidden">{{ option.color }}</span>
+        </option>
+      {% else %}
+        <option value="{{ option.value }}" {{ option.selected ? 'selected' : '' }}>
+          {{ option.label }}
+        </option>
+      {% endif %}
+    {% endfor %}
+  </select>
+  {% if tooltip_modal %}
+    {% embed '@components/modal/modal-tooltip.twig'
+      with {
+        attr: {
+          id: 'tooltip-' ~ id
+        }
+      }
+    %}
+      {% block content %}
+        {{ tooltip_modal }}
+      {% endblock %}
+    {% endembed %}
+  {% endif %}
+</div>

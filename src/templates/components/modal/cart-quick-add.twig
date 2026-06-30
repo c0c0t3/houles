@@ -1,0 +1,29 @@
+<div data-ref="cartQuickAdd"
+  data-simplebar
+  class="group-[&.is-quick-add-active]/html:pointer-events-auto group-[&.is-quick-add-active]/html:opacity-100 group-[&.is-quick-add-active]/html:translate-y-0 opacity-0 pointer-events-none translate-y-8 transition-all duration-300 absolute z-10 inset-x-0 mt-2 top-full max-h-96 bg-sand flex flex-col gap-2 overflow-auto ring-1 ring-purple/20 rounded-lg">
+  {% for article in searchResults %}
+    <article id="quick-add-{{ article.id }}"
+      class="cursor-pointer group flex items-center p-2 gap-4 text-xs uppercase font-medium hover:bg-sand-darker">
+      <div class="shrink-0 ring-inset ring-1 ring-brown/20 p-px size-24 bg-sand-darker group-hover:bg-white">
+        <img src="{{ article.img }}"
+          alt=""
+          class="size-full object-contain mix-blend-multiply"
+          loading="lazy" />
+      </div>
+      <div class="grid m:grid-cols-12 flex-1">
+        <span data-ref="code[]" class="col-span-2 text-sm font-medium text-purple uppercase">
+          {{ article.code }}
+        </span>
+        <span data-ref="title[]" class="col-span-8 text-sm font-medium text-purple uppercase">
+          {{ article.title }}
+        </span>
+        <span class="col-span-1 text-sm font-medium text-purple uppercase">
+          {{ article.quantity }}
+        </span>
+        <span class="col-span-1 text-sm font-medium text-purple uppercase">
+          {{ (article.price * 1.2)|number_format(2, ',', '.') }}&nbsp;€&nbsp;TTC
+        </span>
+      </div>
+    </article>
+  {% endfor %}
+</div>

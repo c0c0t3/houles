@@ -1,0 +1,100 @@
+<div class="flex items-center justify-end space-x-2 relative">
+  {# LANGUAGE #}
+  <div class="header-right__language hidden m:block">
+    <nav data-component="Menu" class="relative inline-block">
+      <button data-component="MenuBtn"
+        class="text-xs uppercase font-medium flex items-center gap-1">
+        <span>FR</span>
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'chevron',
+          attr: {
+            class: 'size-3 block',
+            'data-ref': 'chevron'
+          }
+        } %}
+      </button>
+      <div data-component="MenuList"
+        data-option-enter-from="transform scale-95 opacity-0 pointer-events-none"
+        data-option-enter-active="transition duration-200 ease-out-expo"
+        data-option-leave-active="transition duration-200 ease-out-expo"
+        data-option-leave-to="transform scale-95 opacity-0 pointer-events-none"
+        class="z-10 w-80 absolute top-full mt-4 left-0 origin-top-left transform scale-95 opacity-0 pointer-events-none p-4 m:p-8 bg-white ring-1 ring-purple rounded-lg">
+        {% include '@components/ui/header/header-country-lang.twig' %}
+      </div>
+    </nav>
+  </div>
+
+  {# STORES #}
+  <div class="header-right__store items-center justify-center hidden m:flex">
+    <a href="/US-fr/houles-dans-le-monde" title="Nos boutiques" class="block size-10">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'icon-store',
+        attr: {
+          class: 'size-10 block [&>svg]:size-full'
+        }
+      } only %}
+      <span class="sr-only">Imprimer</span>
+    </a>
+  </div>
+
+  {# SEARCH #}
+  <div class="header-right__search items-center justify-center">
+    {% include '@components/ui/header/header-search.twig' %}
+  </div>
+
+  {# USER #}
+  <div class="header-right__user flex items-center justify-center m:static">
+    <nav data-component="Menu" data-option-mode="hover" class="inline-block">
+      <button data-component="MenuBtn"
+        class="text-xs uppercase font-medium flex items-center gap-1 s:py-4">
+        <svg aria-hidden="true"
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          fill="none"
+          class="size-3 flex-shrink-0">
+          <circle cx="6" cy="6" r="4" fill="#5C8871" />
+        </svg>
+        <span class="hidden m:block">Espace pro</span>
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'icon-user',
+          attr: {
+            class: ['w-10', 'block', '-mt-0.5', 'mx-auto', 'm:hidden']
+          }
+        } %}
+      </button>
+      <div data-component="MenuList"
+        data-option-enter-from="transform translate-y-8 opacity-0 pointer-events-none"
+        data-option-enter-active="transition duration-200 ease-out-expo"
+        data-option-leave-active="transition duration-200 ease-out-expo"
+        data-option-leave-to="transform translate-y-8 opacity-0 pointer-events-none"
+        class="z-10 w-56 absolute top-full s:translate-y-px pt-3 s:pt-4 -right-4 translate-x-px s:translate-x-px m:-right-6 origin-top-right transform opacity-0 pointer-events-none">
+        <ul class="space-y-4 hover:[&_a]:underline [&>li]:pt-4 divide-y divide-gray/20 uppercase font-medium text-xs text-gray border border-purple/20 px-4 bg-sand">
+          <li><a href="/espace-pro/compte/"><span>Mon compte</span></a></li>
+          <li>
+            <a href="/espace-pro/compte/commandes-et-devis/"><span>Commandes & devis</span></a>
+          </li>
+          <li><a href="/espace-pro/compte/liste-envies/"><span>Liste d'envies</span></a></li>
+          <li><a href="/espace-pro/compte/infos/"><span>Mes informations</span></a></li>
+          <li class="pb-4"><a href="/logout/"><span>Se déconnecter</span></a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  {# CART #}
+  <div class="header-right__cart flex items-center justify-center">
+    <div class="w-px h-6 bg-gray/20 mx-4 hidden m:block"></div>
+    <a href="/US-fr/houles-dans-le-monde" title="Panier" class="block relative">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'icon-cart',
+        attr: {
+          class: ['w-5', 'block', '-mt-0.5', 'mx-auto', '[&>svg]:w-5']
+        }
+      } %}
+      <span class="absolute mt-0.5 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-xs font-medium">
+        4
+      </span>
+    </a>
+  </div>
+</div>

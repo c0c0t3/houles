@@ -1,0 +1,184 @@
+.btn {
+  @apply font-sans font-medium text-sm leading-6 uppercase;
+  @apply ring-1 ring-inset rounded-lg;
+  @apply bg-purple text-sand ring-purple;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: theme('spacing.2');
+  padding-top: theme('spacing.4');
+  padding-right: theme('spacing.6');
+  padding-bottom: theme('spacing.4');
+  padding-left: theme('spacing.6');
+  cursor: pointer;
+
+  &.btn--small {
+    padding-top: theme('spacing.2');
+    padding-right: theme('spacing.6');
+    padding-bottom: theme('spacing.2');
+    padding-left: theme('spacing.6');
+  }
+
+  &.btn--invert {
+    @apply bg-sand text-purple ring-sand;
+  }
+
+  &.btn--reverse {
+    flex-direction: row-reverse;
+  }
+
+  &.btn--outline {
+    @apply bg-transparent text-purple border border-purple ring-0;
+
+    &.btn--invert {
+      @apply bg-transparent text-sand ring-sand;
+    }
+  }
+
+  &.btn--link {
+    @apply bg-transparent text-purple ring-0 rounded-none;
+    padding-right: 0;
+    padding-left: 0;
+
+    &.btn--invert {
+      @apply bg-transparent text-sand;
+    }
+
+    > span:not(.icon) {
+      @apply underline-effect-on;
+    }
+
+    &:has(span.icon),
+    &.btn--simple {
+      > span:not(.icon)::after {
+        @apply transition-transform duration-300 ease-out-quad;
+      }
+
+      &:hover,
+      &:focus-visible {
+        > span:not(.icon) {
+          @apply underline-effect-off;
+        }
+      }
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:has(span.icon:only-child) {
+    width: theme('spacing.14');
+    height: theme('spacing.14');
+    padding: 0;
+  }
+
+  &:not(:has(span.icon)):not(.btn--simple) {
+    gap: 0;
+
+    &::before,
+    &::after {
+      content: '';
+      width: theme('spacing.10');
+      height: 1px;
+      background-repeat: no-repeat;
+      background-size: theme('spacing.10') 1px;
+      transition: background-position 0.3s theme('transitionTimingFunction.out-quad');
+    }
+
+    &::before {
+      background-image: linear-gradient(
+        to right,
+        currentColor theme('spacing.6'),
+        transparent theme('spacing.6')
+      );
+      background-position: calc(theme('spacing.10') * -1) 0;
+    }
+
+    &::after {
+      background-image: linear-gradient(
+        to left,
+        currentColor theme('spacing.6'),
+        transparent theme('spacing.6')
+      );
+    }
+
+    &.btn--small {
+      &::before,
+      &::after {
+        width: theme('spacing.8');
+        background-size: theme('spacing.8') 1px;
+      }
+    }
+
+    > * {
+      transition: transform 0.3s theme('transitionTimingFunction.out-quad');
+    }
+
+    &:not(.btn--reverse) {
+      > * {
+        margin-left: calc(theme('spacing.10') * -1);
+      }
+    }
+
+    &.btn--reverse {
+      flex-direction: row;
+
+      &::before {
+        background-position: 0 0;
+      }
+
+      &::after {
+        background-position: theme('spacing.10') 0;
+      }
+
+      > * {
+        margin-right: calc(theme('spacing.10') * -1);
+      }
+    }
+
+    &:not(:disabled) {
+      &:hover,
+      &:focus-visible {
+        &::before {
+          background-position: 0 0;
+        }
+
+        &::after {
+          background-position: theme('spacing.10') 0;
+        }
+
+        > * {
+          transform: translateX(theme('spacing.10'));
+        }
+      }
+
+      &.btn--reverse {
+        &:hover,
+        &:focus-visible {
+          &::before {
+            background-position: calc(theme('spacing.10') * -1) 0;
+          }
+
+          &::after {
+            background-position: 0 0;
+          }
+
+          > * {
+            transform: translateX(calc(theme('spacing.10') * -1));
+          }
+        }
+      }
+    }
+  }
+
+  &:has(span.icon):not(.btn--link),
+  &.btn--simple:not(.btn--link) {
+    @apply transition-colors duration-300 ease-out-quad;
+
+    &:hover,
+    &:focus-visible {
+      @apply bg-purple-light ring-purple-light text-sand;
+    }
+  }
+}

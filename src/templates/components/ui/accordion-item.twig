@@ -1,0 +1,36 @@
+{% set attributes =
+  merge_html_attributes(
+    attr ?? null,
+    {},
+    {
+      data_component: 'AccordionItem',
+      class: ''
+    }
+  )
+%}
+
+{% set button_attributes =
+  merge_html_attributes(
+    button_attr ?? null,
+    {},
+    {
+      type: 'button',
+      data_ref: 'accordionButton',
+      class: 'w-full flex justify-between items-center tracking-wide group/accordionitem'
+    }
+  )
+%}
+
+<div {{ html_attributes(attributes) }}>
+  <button {{ html_attributes(button_attributes) }}>
+    <span class="{{ accordionButtonClass }}">{{ accordionButtonAnchor }}</span>
+    {% if accordionButtonIcon2 %}
+      {{ accordionButtonIcon2 }}
+    {% endif %}
+  </button>
+  <div data-ref="accordionContent"
+    class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+    {% block content %}{% endblock %}
+    {{ accordionContent }}
+  </div>
+</div>

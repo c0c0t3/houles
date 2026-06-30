@@ -1,0 +1,91 @@
+{% extends '@components/modal/default.twig' %}
+
+{% block content %}
+  <form class="flex flex-col gap-8">
+    <div class="space-y-6 max-m:space-y-4">
+      <h3 class="text-2xl m:text-3xl font-serif text-gray font-light uppercase text-center">
+        Récapitulatif
+      </h3>
+      <div>
+        <span class="font-sans text-lg uppercase font-medium leading-snug text-purple mb-4 block">
+          Carte bancaire
+        </span>
+        <div class="rounded-lg ring-1 ring-gray/20 p-6 mb-12 space-y-4">
+          {% include '@components/field.twig' with {
+            label: 'Nom complet',
+            name: 'name',
+            type: 'text',
+            required: true
+          } only %}
+          {% include '@components/field.twig' with {
+            label: 'Numéro de carte',
+            name: 'card_number',
+            type: 'number',
+            required: true
+          } only %}
+          <div class="grid s:grid-cols-2 gap-4 w-full">
+            {% include '@components/field.twig' with {
+              label: "Date d'expiration",
+              name: 'expiration_date',
+              type: 'date',
+              required: true,
+              input_attr: {
+                class: 'w-full flex-1'
+              }
+            } only %}
+            {% include '@components/field.twig' with {
+              label: 'CCV',
+              name: 'ccv',
+              type: 'number',
+              required: true,
+              input_attr: {
+                class: 'w-full flex-1'
+              }
+            } only %}
+          </div>
+        </div>
+        {% include '@components/table/payments.twig' with {
+          isSummary: false,
+          rows: [
+            {
+              id: '5625191',
+              date_facture: '2025-04-09',
+              date_echeance: '2025-04-09',
+              amount: 275.4
+            },
+            {
+              id: '5625191',
+              date_facture: '2025-04-09',
+              date_echeance: '2025-04-09',
+              amount: 500.6
+            },
+            {
+              id: '5625191',
+              date_facture: '2025-04-09',
+              date_echeance: '2025-04-09',
+              amount: 245.4
+            }
+          ]
+        } only %}
+      </div>
+      <div class="flex max-m:flex-col justify-end pt-6 gap-6">
+        {% include '@components/button.twig' with {
+          label: 'Annuler',
+          variant: 'link',
+          icon: false,
+          attr: {
+            'data-ref': 'close[]',
+            type: 'button'
+          }
+        } only %}
+        {% include '@components/button.twig' with {
+          label: 'Procéder au paiement',
+          variant: 'solid',
+          attr: {
+            type: 'submit'
+          }
+        } only %}
+      </div>
+    </div>
+  </form>
+{% endblock %}

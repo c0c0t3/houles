@@ -1,0 +1,126 @@
+{% extends '@layouts/pro.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Documents',
+    url: '/espace-pro/documents/'
+  }
+] %}
+
+{% set title = 'Documents' %}
+
+{% block content %}
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">Tarifs</h2>
+    {% include '@components/table/downloads.twig' with {
+      rows: [
+        {
+          name: 'Tarif public 2025',
+          type: 'pdf',
+          size: 4304477808
+        },
+        {
+          name: 'Tarif public 2025',
+          type: 'excel',
+          size: 26214400
+        },
+        {
+          name: 'Tarif public tringlerie 2025',
+          type: 'pdf',
+          size: 26214400
+        },
+        {
+          name: 'Tarif Pro tringlerie 2025',
+          type: 'pdf',
+          size: 43008
+        }
+      ]
+    } only %}
+  </div>
+
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">
+      Conditions générales de Ventes
+    </h2>
+    {% include '@components/table/downloads.twig' with {
+      rows: [
+        {
+          name: 'Conditions générales de Ventes',
+          type: 'pdf',
+          size: 26214400
+        }
+      ]
+    } only %}
+  </div>
+
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">Catalogues</h2>
+    {% include '@components/table/downloads.twig' with {
+      rows: [
+        {
+          name: 'catalogue général de passementerie 2025',
+          type: 'pdf',
+          size: 131072000
+        },
+        {
+          name: 'Catalogue passementerie « salone » 2025',
+          type: 'pdf',
+          size: 131072000
+        },
+        {
+          name: 'Catalogue passementerie « asara » 2024',
+          type: 'pdf',
+          size: 131072000
+        },
+        {
+          name: 'Catalogue passementerie « galons - braids & tapes »',
+          type: 'pdf',
+          size: 131072000
+        },
+        {
+          name: 'Catalogue passementerie « palma » 2024',
+          type: 'pdf',
+          size: 131072000
+        },
+        {
+          name: 'Catalogue passementerie « volanges » 2023',
+          type: 'pdf',
+          size: 131072000
+        },
+        {
+          name: 'Catalogue passementerie « franges mousse » 2023',
+          type: 'pdf',
+          size: 131072000
+        }
+      ]
+    } only %}
+  </div>
+
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">Brochures</h2>
+    {% include '@components/table/downloads.twig' with {
+      rows: [
+        {
+          name: 'Brochure passementerie « salone » 2025',
+          type: 'pdf',
+          size: 131072000
+        },
+        {
+          name: 'Brochure passementerie « palma » 2025',
+          type: 'pdf',
+          size: 131072000
+        },
+        {
+          name: 'Brochure passementerie « asara » 2025',
+          type: 'pdf',
+          size: 131072000
+        },
+        {
+          name: 'Brochure passementerie « volanges » 2025',
+          type: 'pdf',
+          size: 131072000
+        }
+      ]
+    } only %}
+  </div>
+{% endblock %}

@@ -1,0 +1,141 @@
+{#
+Pour avoir des décalages, il faut entourer les parties de titre dans des span
+
+Type video : necessite un poster et une source
+Type image : necessite un src
+
+#}
+
+{% set slides = [
+  {
+    type: 'image',
+    alt: 'Nouvelle Collection Salone FW/25',
+    title: '<h1 class="title">
+            <span>Nouvelle</span>
+            <span>Collection</span>
+            <span>Salone</span>
+            <span>FW/25</span>
+        </h1>',
+    buttonLink: '/projects',
+    buttonAnchor: 'Découvrir la collection',
+    src: '/assets/hero.jpg'
+  },
+  {
+    type: 'video',
+    alt: 'Nouvelle Collection Salone FW/25',
+    title: '<h2 class="title">Ceci est un titre centré long et alors ?</h2>',
+    buttonLink: '/products',
+    buttonAnchor: 'Découvrir la collection',
+    poster: 'https://picsum.photos/1000/1000?random=3',
+    source: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+  },
+  {
+    type: 'image',
+    alt: 'Boom',
+    title: '<h2 class="title">Hello World</h2>',
+    src: '/assets/hero.jpg'
+  }
+] %}
+
+<section data-component="Slider"
+  data-option-mode="left"
+  data-option-fit-bounds
+  data-option-contain
+  class="relative max-w-full overflow-hidden -mt-20 s:-mt-[7.125rem] bg-brown-light">
+  <div data-component="SliderDrag"
+    data-ref="wrapper"
+    tabindex="0"
+    class="hero relative z-1 whitespace-nowrap select-none flex flex-row flex-nowrap [&>*]:cursor-grab h-screen">
+    {% for slide in slides %}
+      <article data-component="SliderItem"
+        class="homepage-hero__item shrink-0 w-full h-auto flex flex-col justify-end xl:justify-center items-center relative pt-40 l:pt-20 pb-14">
+        {% if slide.type == 'image' %}
+          {% include '@ui/Figure/Figure.twig' with {
+            src: slide.src,
+            width: 500,
+            height: 400,
+            alt: slide.alt,
+            absolute: true,
+            fit: 'cover',
+            attr: {
+              class: ['w-full', 'absolute', 'inset-0'],
+              data_option_enter_from: 'opacity-0',
+              data_option_enter_active: 'transition duration-500'
+            },
+            img_attr: {
+              class: ['w-full', '', 'object-cover', 'opacity-0']
+            }
+          } %}
+        {% else %}
+          {% include '@ui/FigureVideo/FigureVideo.twig' with {
+            src: slide.source,
+            poster: slide.poster,
+            width: 640,
+            height: 360,
+            absolute: true,
+            fit: 'cover',
+            attr: {
+              data_option_enter_from: 'opacity-0',
+              data_option_enter_active: 'transition duration-500'
+            },
+            inner_attr: {
+              class: 'w-full '
+            },
+            img_attr: {
+              class: 'opacity-0'
+            }
+          } %}
+        {% endif %}
+        <div class="homepage-hero__item-gradient-top absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-black/30 to-transparent"></div>
+        <div class="homepage-hero__item-gradient-full absolute inset-0 bg-black/30"></div>
+        <div class="homepage-hero__item-content relative flex flex-col items-center justify-center gap-10 aspect-[9/16] xs:aspect-auto l:max-h-screen">
+          <div class="container">{{ slide.title }}</div>
+          {% if slide.buttonAnchor %}
+            {% include '@components/button.twig' with {
+              label: slide.buttonAnchor,
+              href: slide.buttonLink,
+              variant: 'solid',
+              invert: true,
+              icon_position: 'end'
+            } %}
+          {% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+  <div data-component="SliderDots"
+    data-option-enter-to="is-active"
+    data-option-enter-keep
+    class="absolute bottom-0 left-1/2 -translate-x-1/2 space-x-2 z-10">
+    {% for slide in slides %}
+      <button type="button" data-ref="dots[]" class="group/dot h-10 w-10">
+        <span class="block w-full h-0.5 bg-white opacity-30 group-[&.is-active]/dot:opacity-100 group-hover/dot:opacity-75 transition-opacity duration-300 ease-out-quad"></span>
+        <span class="sr-only">Go to slide #{{ loop.index }}</span>
+      </button>
+    {% endfor %}
+  </div>
+  <button title="Prev"
+    type="button"
+    data-component="SliderBtn"
+    data-option-prev
+    class="rounded cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed text-white hidden m:block absolute top-1/2 -translate-y-1/2 left-4 z-10 py-4">
+    {% include '@ui/Icon/Icon.twig' with {
+      name: 'arrow-line-desktop',
+      attr: {
+        class: ['w-14', 'block', 'rotate-180']
+      }
+    } %}
+  </button>
+  <button title="Next"
+    type="button"
+    data-component="SliderBtn"
+    data-option-next
+    class="rounded cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed text-white hidden m:block absolute top-1/2 -translate-y-1/2 right-4 z-10 py-4">
+    {% include '@ui/Icon/Icon.twig' with {
+      name: 'arrow-line-desktop',
+      attr: {
+        class: ['w-14', 'block']
+      }
+    } %}
+  </button>
+</section>

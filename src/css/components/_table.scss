@@ -1,0 +1,48 @@
+.dl-horizontal {
+  @apply -mb-6 s:grid s:grid-cols-2;
+}
+
+.ie7 dl {
+  overflow: hidden;
+}
+
+dt,
+dd {
+  @apply box-border py-5 s:py-6;
+}
+
+dd ~ dt {
+  @apply border-t border-purple/20;
+}
+
+dd {
+  @apply py-3 s:py-6 text-base;
+}
+
+dd ~ dd {
+  @apply s:border-t border-purple/20;
+}
+
+dt {
+  @apply first:border-t-0 uppercase text-xs font-medium pb-0 s:pb-6 leading-normal flex items-center;
+}
+
+.ie7 dt {
+  padding-bottom: 10px;
+  clear: both;
+}
+
+.ie7 dd {
+  // margin-left: 40%;
+  overflow: hidden;
+}
+
+dd:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.row2 + dd:after {
+  content: none;
+}

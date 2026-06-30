@@ -1,0 +1,129 @@
+{% if push_product %}
+  {% set aspect_ratio = 'aspect-auto absolute inset-0' %}
+  {% set card_class = 'absolute inset-0 h-full overflow-hidden flex flex-col justify-between' %}
+{% else %}
+  {% set aspect_ratio = 'aspect-[312/400]' %}
+  {% set card_class = 'relative' %}
+{% endif %}
+
+{% set attributes =
+  merge_html_attributes(
+    attr ?? {},
+    {},
+    {
+      class: 'relative'
+    }
+  )
+%}
+
+<div {{ html_attributes(attributes) }}>
+  <article class="product-card group/card {{card_class}} cursor-pointer bg-sand ring-0 ring-gray/10 overflow-hidden">
+    {# CARD HEADER images #}
+    <header class="product-card__header relative bg-sand-darker flex-1">
+      <figure class="product-card__image {{ aspect_ratio }}">
+        <div class="product-card__image--main bg-sand-darker h-full w-full">
+          <img class="object-contain w-full h-full mix-blend-multiply"
+            loading="lazy"
+            src="{{ image_main }}"
+            alt="{{ name|e('html_attr') }}" />
+        </div>
+        {% if image_hover %}
+          <div class="product-card__image--hover bg-sand-darker h-full w-full absolute inset-0 pointer-events-none opacity-0 group-hover/card:opacity-100 group-hover/card:pointer-events-auto transition-opacity duration-300">
+            <img class="object-cover w-full h-full mix-blend-multiply"
+              loading="lazy"
+              src="{{ image_hover }}"
+              alt="{{ name|e('html_attr') }}" />
+          </div>
+        {% endif %}
+
+        {# Badges #}
+        <div class="product-card__badges absolute top-0 inset-x-0 z-1 flex items-center justify-start flex-wrap p-2 gap-2 pointer-events-none">
+          {% if is_new %}
+            {% include '@components/badge.twig' with {
+              label: 'Nouveauté',
+              attr: {
+                class: 'bg-brown-light text-purple'
+              }
+            } only %}
+          {% endif %}
+          {% for tag in tags %}
+            {% include '@components/badge.twig' with {
+              label: tag,
+              attr: {
+                class: 'bg-sand text-purple'
+              }
+            } only %}
+          {% endfor %}
+        </div>
+      </figure>
+
+      {# Card infos Hover #}
+      <div class="{{
+        html_classes(
+          [
+            'product-card__infos',
+            'absolute inset-x-4 bottom-4',
+            'p-4 bg-white',
+            'translate-y-8 opacity-0 pointer-events-none',
+            'group-hover/card:translate-y-0 group-hover/card:opacity-100 group-hover/card:pointer-events-auto',
+            'transition-all duration-300',
+            'divide-x divide-gray/20',
+            'text-brown text-xxs uppercase tracking-wide font-medium',
+            'flex items-center justify-between',
+            'border border-gray/20'
+          ]
+        )
+        }}">
+        <span class="flex-1">REF : {{ reference }}</span>
+        <div class="flex-1 flex items-center justify-end gap-2">
+          {% if is_in_stock %}
+            {% set fill_color = '#5C8871' %}
+          {% else %}
+            {% set fill_color = '#E9304C' %}
+          {% endif %}
+
+          <svg aria-hidden="true"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            class="size-3 flex-shrink-0">
+            <circle cx="6" cy="6" r="4" fill="{{ fill_color }}" />
+          </svg>
+
+          {% if is_in_stock and stock > 0 %}
+            <span class="">STOCK : {{ stock }} PE</span>
+          {% elseif stock == 0 %}
+            <span class="">STOCK : <span class="text-red">0</span> PE</span>
+          {% else %}
+            <span class="">NC</span>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    {# CARD CONTENT #}
+    <div class="product-card__content shrink-0 flex flex-col m:flex-row items-stretch gap-4 m:gap-2 justify-between py-4">
+      <div class="flex flex-col justify-end space-y-2">
+        <p class="text-xs font-sans font-medium leading-none uppercase text-brown">
+          {{ collection }}
+        </p>
+        <span class="text-sm font-sans font-medium leading-none uppercase text-gray">
+          {{ name }}
+        </span>
+      </div>
+      <div class="flex flex-col m:justify-end m:text-right space-y-1">
+        {% if sale_price and is_sale %}
+          <p class="text-xxs bg-gree font-sans font-medium leading-none uppercase text-brown line-through tracking-widest">
+            {{ sale_price }}&nbsp;€&nbsp;HT
+          </p>
+        {% endif %}
+        <p class="text-sm font-sans font-medium leading-none uppercase text-gray tracking-widest">
+          {{ regular_price }}&nbsp;€&nbsp;HT
+        </p>
+      </div>
+    </div>
+
+    <a href="{{ url }}" class="absolute inset-0"></a>
+  </article>
+</div>

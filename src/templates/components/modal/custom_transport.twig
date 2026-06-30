@@ -1,0 +1,66 @@
+{% extends '@components/modal/default.twig' %}
+
+{% block content %}
+  <form action="" method="post" class="flex flex-col gap-8 py-8 w-full max-w-[45.75rem] mx-auto">
+    <div class="grid s:grid-cols-2 gap-x-3 gap-y-6">
+      <h3 class="s:col-span-2 text-xl m:text-3xl font-serif text-gray font-light uppercase text-center">
+        Les informations de votre transporteur
+      </h3>
+      <div class="s:col-span-2 space-y-4">
+        {% include '@components/select-choices.twig' with {
+          label: 'Choix du transporteur',
+          name: 'transport_name',
+          required: true,
+          options: [
+            {
+              label: 'UPS',
+              value: 'ups'
+            },
+            {
+              label: 'DHL',
+              value: 'dhl'
+            },
+            {
+              label: 'Fedex',
+              value: 'fedex'
+            },
+            {
+              label: 'GLS',
+              value: 'gls'
+            }
+          ]
+        } only %}
+      </div>
+      {% include '@components/field.twig' with {
+        label: 'N° du compte transporteur',
+        name: 'transport_number',
+        placeholder: 'Numéro de compte',
+        required: true,
+        attr: {
+          class: 's:col-span-2'
+        }
+      } only %}
+
+      {# checbox pour traitementpre rapide #}
+      {% include '@components/ui/facets/checkbox.twig' with {
+        id: 'quick_processing',
+        label: 'Préparation rapide'
+      } %}
+    </div>
+    <p class="text-xs text-gray">
+      Texte de renseignement facultatif... <a href="" class="underline hover:no-underline">
+        Lien vers plus de détails ou CGV
+      </a>.
+    </p>
+    <div class="grid s:grid-cols-2 gap-x-3">
+      {% include '@components/button.twig' with {
+        label: 'Valider l’inscription',
+        variant: 'solid',
+        attr: {
+          type: 'submit',
+          class: 's:col-start-2'
+        }
+      } only %}
+    </div>
+  </form>
+{% endblock %}

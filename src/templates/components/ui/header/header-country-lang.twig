@@ -1,0 +1,40 @@
+<form class="flex flex-col gap-4 m:gap-6">
+  {% include '@components/select-countries.twig' with {
+    label: 'Pays',
+    name: 'country',
+    required: true,
+    search: true,
+    attr: {
+      class: 's:col-span-2'
+    }
+  } only %}
+  {% include '@components/select-choices.twig' with {
+    label: 'Langue',
+    name: 'language',
+    options: [
+      {
+        label: 'Français',
+        value: 'fr'
+      },
+      {
+        label: 'English',
+        value: 'en'
+      },
+      {
+        label: 'Español',
+        value: 'es'
+      },
+      {
+        label: 'Italiano',
+        value: 'it'
+      }
+    ]
+  } only %}
+  {% include '@components/button.twig' with {
+    label: 'Appliquer',
+    variant: 'solid',
+    attr: {
+      type: 'submit'
+    }
+  } only %}
+</form>

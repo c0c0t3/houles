@@ -1,0 +1,30 @@
+{% extends '@layouts/base.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Passementerie',
+    url: '/passementerie'
+  },
+  {
+    label: 'Embrasses',
+    url: '/passementerie/embrasses'
+  }
+] %}
+
+{% block body %}
+  {# HERO #}
+  <section class="my-10 m:mt-24 m:mb-36">
+    <div class="container">
+      <div class="flex flex-col items-center justify-center">
+        <h1 class="font-serif text-3xl s:text-4xl m:text-6xl l:text-7xl uppercase leading-none text-gray">Nous contacter</h1>
+      </div>
+    </div>
+  </section>
+  <section>
+      <div data-component="Syh" class="">
+        <div class="container">
+            <div class="steps">Config</div>
+        </div>
+      </div>
+  </section>
+{% endblock %}

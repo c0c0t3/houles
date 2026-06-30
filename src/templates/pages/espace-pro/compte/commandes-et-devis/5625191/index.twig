@@ -1,0 +1,237 @@
+{% extends '@layouts/pro.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Mon compte',
+    url: '/espace-pro/compte/'
+  },
+  {
+    label: 'Commandes & devis',
+    url: '/espace-pro/compte/commandes-et-devis/'
+  },
+  {
+    label: 'N°5625191',
+    url: '/espace-pro/compte/commandes-et-devis/5625191/'
+  }
+] %}
+
+{% set addresses = [
+  {
+    type: 'billing',
+    fullname: 'Andre Houles et Cie',
+    street: '5 Avenue de la Marseillaise',
+    zip: '67000',
+    city: 'Strasbourg',
+    country: 'France',
+    is_default: true
+  },
+  {
+    type: 'shipping',
+    fullname: 'Andre Houles et Cie',
+    street: '2 Chemin de la Coudrette',
+    zip: '77123',
+    city: 'Noisy-sur-École',
+    country: 'France',
+    is_default: true
+  }
+] %}
+
+{% set title = 'Commande N°5625191' %}
+
+{% set order_lines = [
+  {
+    id: 1,
+    title: 'Gland de clé',
+    description: '- coupe de 12,00cm en partant de la gauche<br>- coupe de 6,00cm en partant de la droite',
+    href: '#produit-1',
+    img: '/assets/espace-pro/produit-1.jpg',
+    collection: 'Imperial',
+    code: '32053-9600',
+    status: {
+      label: 'En stock (3)',
+      type: 'warning'
+    },
+    price: 16.2,
+    quantity: 1,
+    quantity_shipped: 1
+  },
+  {
+    id: 3,
+    title: 'Auro - Configuration de tringlerie 180,00cm',
+    href: '#configuration-3',
+    img: '/assets/espace-pro/produit-1.jpg',
+    code: '32053-9600',
+    status: {
+      label: 'En stock',
+      type: 'success'
+    },
+    price: 234.34,
+    quantity: 1,
+    quantity_shipped: 1,
+    options: [
+      {
+        id: 4,
+        title: '2 supports doubles extensibles 195mm mur ø 31mm + 16mm',
+        code: '66787-14',
+        status: {
+          label: 'En stock (3)',
+          type: 'warning'
+        },
+        price: 45.65,
+        quantity: 1
+      },
+      {
+        id: 5,
+        title: 'Jambe de force',
+        code: '66491-14',
+        status: {
+          label: 'En stock (3)',
+          type: 'warning'
+        },
+        price: 21.73,
+        quantity: 2
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: '2 EMBOUTS "STRIO" Ø 35MM FINITION MÉTALLISÉE',
+    href: '#produit-2',
+    img: '/assets/espace-pro/produit-2.jpg',
+    collection: 'Villa',
+    code: '32053-9600',
+    status: {
+      label: 'En stock (68)',
+      type: 'success'
+    },
+    price: 75.6,
+    quantity: 2,
+    quantity_shipped: 2
+  }
+] %}
+
+{% block before_content %}
+  <div class="s:hidden pt-8 container">
+    {% include '@components/button.twig' with {
+      label: 'Retour',
+      href: '/espace-pro/compte/commandes-et-devis/',
+      variant: 'outline',
+      icon: 'arrow-line-mobile',
+      icon_attr: {
+        class: 'size-[1lh] [&>svg]:w-full [&>svg]:h-full rotate-180'
+      }
+    } only %}
+  </div>
+{% endblock %}
+
+{% block title %}
+  <div>
+    <div class="flex justify-between items-center flex-wrap gap-4 mb-3">
+      <h1 class="text-2xl s:text-4xl font-serif text-gray font-light uppercase flex justify-start items-center gap-2">
+        <span>{{ title }}</span>
+        {% include '@components/status.twig' with {
+          label: 'Expédiée',
+          type: 'success'
+        } only %}
+      </h1>
+      <div class="flex items-center gap-2">
+        {% include '@components/button.twig' with {
+          label: 'Supprimer la commande',
+          variant: 'outline',
+          icon_only: true,
+          icon: 'trash'
+        } only %}
+        {% include '@components/button.twig' with {
+          label: 'Éditer la commande',
+          variant: 'outline',
+          icon_only: true,
+          icon: 'edit'
+        } only %}
+        {% include '@components/button.twig' with {
+          label: 'Télécharger la facture',
+          href: '/facture-5625191.pdf',
+          attr: {
+            target: '_blank',
+            title: 'Facture N°5625191'
+          },
+          icon: 'download',
+          icon_only: true
+        } only %}
+      </div>
+    </div>
+    <p>Date&nbsp;: 29/11/2023</p>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="bg-white text-gray p-6 s:p-8 space-y-6">
+    <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">
+      Suivi de la commande
+    </h2>
+    <div class="flex justify-between items-center gap-6 s:gap-8">
+      <div>
+        <p>Bon de livraison 796724</p>
+        <p>250042107301759142</p>
+      </div>
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'logo-dpd',
+        attr: {
+          class: '[&>svg]:h-12 [&>svg]:w-auto'
+        }
+      } only %}
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 s:grid-cols-2 gap-6 s:gap-8">
+    {% for address in addresses %}
+      <div class="bg-white text-gray p-6 s:p-8 space-y-6">
+        <div>
+          <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">
+            {{ address.type == 'billing' ? 'Adresse de facturation' : 'Adresse de livraison' }}
+          </h2>
+          <p class="text-2xl font-serif font-light uppercase leading-snug">
+            {{ address.fullname }}
+          </p>
+        </div>
+        <address class="not-italic uppercase">
+          <p>
+            {{ address.street }}<br />
+            {{ address.zip }} {{ address.city }}<br />
+            {{ address.country }}
+          </p>
+        </address>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    {% include '@components/table/order.twig' with {
+      rows: order_lines
+    } only %}
+
+    {% include '@components/price-lines.twig' with {
+      lines: [
+        {
+          label: 'Net marchandises HT',
+          value: 108
+        },
+        {
+          label: 'Forfait transport',
+          value: 15
+        },
+        {
+          label: 'Montant taxable',
+          value: 123
+        },
+        {
+          label: 'TVA 20,00%',
+          value: 24.6
+        },
+        {
+          label: 'Total ttc',
+          value: 147.6
+        }
+      ]
+    } only %}
+  </div>
+{% endblock %}

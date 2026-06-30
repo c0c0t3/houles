@@ -1,0 +1,79 @@
+{% extends '@components/table/default.twig' %}
+
+{% set head_row_attr = {
+  class: 'max-s:grid max-s:grid-cols-3'
+} %}
+
+{% set row_attr = {
+  class: 'max-s:grid max-s:grid-cols-3 max-s:py-6 max-s:*:p-0 max-s:gap-y-3'
+} %}
+
+{% set columns = [
+  {
+    label: 'Numéro',
+    key: 'id'
+  },
+  {
+    label: 'Date',
+    key: 'date'
+  },
+  {
+    label: 'Total',
+    key: 'amount',
+    head_cell_attr: {
+      class: 'text-left max-s:text-right'
+    },
+    cell_attr: {
+      class: 'text-left max-s:text-right'
+    }
+  },
+  {
+    label: 'État',
+    key: 'status',
+    head_cell_attr: {
+      class: 'text-left max-s:hidden'
+    },
+    cell_attr: {
+      class: 'text-left max-s:max-s:col-span-2'
+    }
+  },
+  {
+    label: 'Informations',
+    key: 'informations',
+    head_cell_attr: {
+      class: 'text-left max-s:hidden'
+    },
+    cell_attr: {
+      class: 'text-left max-s:hidden'
+    }
+  },
+  {
+    label: 'Détail',
+    key: 'actions',
+    head_cell_attr: {
+      class: 'text-right max-s:hidden'
+    },
+    cell_attr: {
+      class: 'text-right'
+    }
+  }
+] %}
+
+{% block cell_date %}
+  {{ value|date('d/m/Y') }}
+{% endblock %}
+{% block cell_amount %}
+  EUR&nbsp;{{ value|number_format(2, ',', '.') }}
+{% endblock %}
+{% block cell_status %}
+  {% include '@components/status.twig' with {
+    label: value.label,
+    type: value.type
+  } %}
+{% endblock %}
+{% block cell_actions %}
+  {% include '@components/link.twig' with {
+    label: 'Voir',
+    href: '/espace-pro/compte/commandes-et-devis/' ~ row.id
+  } only %}
+{% endblock %}

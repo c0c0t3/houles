@@ -1,0 +1,29 @@
+{% extends '@layouts/base.twig' %}
+
+{% set html_attr =
+  merge_html_attributes(
+    html_attr ?? null,
+    {},
+    {
+      class: 'group/html is-on-top bg-sand'
+    }
+  )
+%}
+
+{% block header %}
+  {% if is_adv %}
+    {% include '@components/adv-banner.twig' %}
+  {% endif %}
+
+  {% include '@components/ui/header/header.twig' %}
+{% endblock %}
+
+{% block header_after %}{% endblock %}
+
+{% block footer_before %}
+  {% include '@components/ui/footer/prefooter.twig' %}
+{% endblock %}
+
+{% block footer %}
+  {% include '@components/ui/footer/footer.twig' %}
+{% endblock %}

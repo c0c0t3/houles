@@ -1,0 +1,136 @@
+{% set attributes =
+  merge_html_attributes(
+    attr ?? null,
+    {},
+    {
+      class: 'w-full'
+    }
+  )
+%}
+
+<table {{ html_attributes(attributes) }}>
+  {% if not no_head %}
+    <thead>
+      <tr {{
+        html_attributes(
+          merge_html_attributes(
+            head_row_attr ?? null,
+            {},
+            head_row_attr_required
+              ?? {
+                class: '*:pb-6 *:px-1 first:*:pl-0 last:*:pr-0'
+              }
+          )
+        )
+        }}>
+        {% for column in columns %}
+          <th {{
+            html_attributes(
+              merge_html_attributes(
+                column.head_cell_attr ?? null,
+                head_cell_attr
+                  ?? {
+                    class: 'text-left'
+                  },
+                head_cell_attr_required
+                  ?? {
+                    class: 'text-xs font-sans font-medium tracking-wider'
+                  }
+              )
+            )
+            }}>
+            {{ column.label }}
+          </th>
+        {% endfor %}
+      </tr>
+    </thead>
+  {% endif %}
+  <tbody>
+    {% for row in rows %}
+      <tr {{
+        html_attributes(
+          merge_html_attributes(
+            row_attr ?? null,
+            {},
+            row_attr_required
+              ?? {
+                class: 'border-t border-brown/20 *:py-6 *:last:pb-0 *:px-1 first:*:pl-0 last:*:pr-0 text-brown hover:text-gray transition-colors duration-300 ease-out-quad'
+              }
+          )
+        )
+        }}>
+        {% block row %}
+          {% for column in columns %}
+            <td {{
+              html_attributes(
+                merge_html_attributes(
+                  column.cell_attr ?? null,
+                  cell_attr ?? {},
+                  cell_attr_required
+                    ?? {
+                      class: 'uppercase text-inherit text-xs font-sans font-medium'
+                    }
+                )
+              )
+              }}>
+              {% set value = row[column.key] %}
+              {% if block('cell_' ~ column.key) is defined %}
+                {{ block('cell_' ~ column.key) }}
+              {% else %}
+                {% block cell %}
+                  {{ value }}
+                {% endblock %}
+              {% endif %}
+            </td>
+          {% endfor %}
+        {% endblock %}
+      </tr>
+      {% if row.options %}
+        {% for subrow in row.options %}
+          <tr {{
+            html_attributes(
+              merge_html_attributes(
+                subrow_attr ?? row_attr ?? null,
+                {},
+                subrow_attr_required ?? row_attr_required
+                  ?? {
+                    class: '*:py-6 *:last:pb-0 *:px-1 first:*:pl-0 last:*:pr-0'
+                  }
+              )
+            )
+            }}>
+            {% block subrow %}
+              {% for column in columns %}
+                <td {{
+                  html_attributes(
+                    merge_html_attributes(
+                      column.subcell_attr ?? column.cell_attr ?? null,
+                      subcell_attr ?? cell_attr ?? {},
+                      subcell_attr_required ?? cell_attr_required
+                        ?? {
+                          class: 'uppercase text-brown text-xs font-sans font-medium'
+                        }
+                    )
+                  )
+                  }}>
+                  {% set value = subrow[column.key] %}
+                  {% if block('subcell_' ~ column.key) is defined %}
+                    {{ block('subcell_' ~ column.key) }}
+                  {% elseif block('cell_' ~ column.key) is defined %}
+                    {% set row = subrow %}
+                    {% set is_sub = true %}
+                    {{ block('cell_' ~ column.key) }}
+                  {% else %}
+                    {% block subcell %}
+                      {{ value }}
+                    {% endblock %}
+                  {% endif %}
+                </td>
+              {% endfor %}
+            {% endblock %}
+          </tr>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>

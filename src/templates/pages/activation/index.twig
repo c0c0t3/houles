@@ -1,0 +1,42 @@
+{% extends '@layouts/base.twig' %}
+
+{% block body %}
+  <div class="container flex flex-col items-center justify-center">
+    <form action="" method="post" class="flex flex-col gap-8 py-8 w-full max-w-[45.75rem] mx-auto">
+      <h1 class="text-4xl font-serif text-gray font-light uppercase text-center">
+        Première connexion
+      </h1>
+      {% include '@components/callout.twig' with {
+        title: '<strong>Vous êtes déjà client ?</strong><br>Veuillez indiquer votre numéro de compte client Houlès ou votre adresse email.<br>Nous vous enverrons alors un lien pour terminer l’inscription.'
+      } only %}
+      <div class="grid s:grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-6">
+        {% include '@components/field.twig' with {
+          label: 'Adresse e-mail',
+          name: 'email',
+          type: 'email'
+        } only %}
+        <div class="flex items-center justify-center text-brown text-sm s:pt-7">
+          <span>— OU —</span>
+        </div>
+        {% include '@components/field.twig' with {
+          label: 'N° de client',
+          name: 'client_number'
+        } only %}
+        <div class="flex s:col-span-3 justify-end">
+          {% include '@components/button.twig' with {
+            label: 'Valider',
+            variant: 'solid',
+            attr: {
+              type: 'submit',
+              class: 's:col-start-3'
+            }
+          } only %}
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block footer_before %}{% endblock %}
+
+{% block footer %}{% endblock %}

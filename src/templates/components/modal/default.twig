@@ -1,0 +1,149 @@
+{#
+/**
+ * @file
+ * Modal component.
+ *
+ * @param array $attr
+ *   Use it to customize the root element attributes.
+ * @param array $modal_attr
+ *   Use it to customize the modal element attributes.
+ * @param array $overlay_attr
+ *   Use it to customize the overlay element attributes.
+ * @param array $wrapper_attr
+ *   Use it to customize the wrapper element attributes.
+ * @param array $container_atrr
+ *   Use it to customize the container element attributes.
+ * @param array $content_atrr
+ *   Use it to customize the content element attributes.
+ *
+ * @block $open
+ *   Use this block to customize the open trigger button.
+ * @block $close
+ *   Use this block to customize the close trigger button.
+ * @block $content
+ *   Use this block to set the modal's content.
+ */
+#}
+
+{# Root attributes #}
+{% set attributes =
+  merge_html_attributes(
+    attr ?? null,
+    {
+      data_component: 'Modal'
+    }
+  )
+%}
+
+{# Modal attributes #}
+{% set modal_attributes =
+  merge_html_attributes(
+    modal_attr ?? null,
+    {
+      class: 'z-50 group/modal fixed inset-0'
+    },
+    {
+      data_ref: 'modal',
+      role: 'dialog',
+      aria_modal: true,
+      aria_hidden: true,
+      style: {
+        opacity: '0',
+        pointer_events: 'none',
+        visibility: 'hidden'
+      }
+    }
+  )
+%}
+
+{# Overlay attributes #}
+{% set overlay_attributes =
+  merge_html_attributes(
+    overlay_attr ?? null,
+    {
+      class: 'z-under absolute inset-0 bg-black/20'
+    },
+    {
+      data_ref: 'overlay',
+      tabindex: '-1'
+    }
+  )
+%}
+
+{% set wrapper_attributes =
+  merge_html_attributes(
+    wrapper_attr ?? null,
+    {
+      class: 'absolute inset-0 flex items-center justify-center'
+    },
+    {
+      class: 'pointer-events-none'
+    }
+  )
+%}
+
+{# Container attributes #}
+{% set container_attributes =
+  merge_html_attributes(
+    container_attr ?? null,
+    {
+      class: 'bg-sand text-gray s:ring-1 s:ring-brown/20 w-full max-w-[45.75rem]'
+    },
+    {
+      data_ref: 'container',
+      class: 'z-above relative max-h-full overflow-x-hidden overflow-y-auto pointer-events-auto'
+    }
+  )
+%}
+
+{# Content attributes #}
+{% set content_attributes =
+  merge_html_attributes(
+    content_attr ?? null,
+    {
+      class: 'max-w-3xl px-4 m:px-6 pb-10'
+    },
+    {
+      data_ref: 'content'
+    }
+  )
+%}
+
+<div {{ html_attributes(attributes) }}>
+  {% block open %}
+    {% include '@components/button.twig' with {
+      label: 'Ouvrir',
+      attr: {
+        data_ref: 'open[]'
+      }
+    } only %}
+  {% endblock %}
+  <div data-id="modal_attributes" {{ html_attributes(modal_attributes) }}>
+    <div data-id="overlay_attributes" {{ html_attributes(overlay_attributes) }}></div>
+    <div data-id="wrapper_attributes" {{ html_attributes(wrapper_attributes) }}>
+      <div data-id="container_attributes" {{ html_attributes(container_attributes) }}>
+        {% block close %}
+          <div class="sticky top-0 p-1 flex justify-end bg-gradient-to-b from-sand to-transparent pointer-events-none">
+            <button type="button"
+              data-ref="close[]"
+              title="Fermer"
+              aria-label="Fermer"
+              class="p-1 hover:opacity-50 transition-opacity duration-300 ease-out-quad pointer-events-auto">
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'cross',
+                attr: {
+                  class: 'size-6'
+                }
+              } %}
+            </button>
+          </div>
+        {% endblock %}
+        <div data-id="content_attributes"  {{ html_attributes(content_attributes) }}>
+          {% block content %}
+            No content.
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

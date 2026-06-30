@@ -1,0 +1,276 @@
+{% extends '@layouts/page.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'page CMS',
+    url: '/cms/page/'
+  }
+] %}
+
+{% set html_attr = {
+  class: 'is-home bg-sand'
+} %}
+
+{% set pagehero = {
+  title: 'Titre de la page CMS',
+  subtitle: 'Consectetur tortor morbi vestibulum quis. Mauris diam neque auctor hac non ut sodales gravida fusce. A tellus fames pellentesque.',
+  image: '/assets/hero.jpg'
+} %}
+
+{% set pagecontent = {
+  title: 'Titre du contenu',
+  content: 'Consectetur tortor morbi vestibulum quis. Mauris diam neque auctor hac non ut sodales gravida fusce. A tellus fames pellentesque.'
+} %}
+
+{% set other_pages = [
+  {
+    title: 'A propos',
+    link: '/shop/collection.html',
+    src: '/assets/card-collection.jpg',
+    categoryTitle: 'Passementerie'
+  },
+  {
+    title: "Projets d'exception et alors çà fait quoi ?",
+    link: '/shop/collection.html',
+    src: '/assets/card-collection-1.jpg',
+    categoryTitle: 'Tringlerie'
+  }
+] %}
+
+{% block body %}
+  <main>
+    {% include '@components/page-hero.twig' with pagehero %}
+    <div class="flex gap-20 m:gap-40"></div>
+
+    {# CMS CONTENT #}
+    {% embed '@components/cms-content.twig'
+      with {
+        invert: true,
+        title: 'Titre du contenu',
+        images: [
+          {
+            alt: 'Nouvelle Collection Salone FW/25',
+            src: '/assets/hero.jpg'
+          },
+          {
+            alt: 'Boom',
+            src: '/assets/blog-2.jpg'
+          },
+          {
+            alt: 'Shooroom',
+            src: '/assets/shooroom.jpg'
+          }
+        ]
+      }
+    %}
+      {% block content %}
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem ad laudantium veniam
+          quas, illo, et explicabo molestias nemo rem iure nostrum! Magni eius dicta aut
+          consequuntur, quasi impedit eaque incidunt.
+        </p>
+        <div class="flex flex-col m:flex-row items-center gap-6">
+          {% include '@components/button.twig' with {
+            label: 'Nous contacter',
+            variant: 'solid',
+            attr: {
+              type: 'submit'
+            }
+          } only %}
+          {% include '@components/button.twig' with {
+            label: 'Voir tous nos projets',
+            variant: 'outline',
+            icon: 'icon-heart',
+            attr: {
+              type: 'submit'
+            }
+          } only %}
+        </div>
+      {% endblock %}
+    {% endembed %}
+
+    {# CMS CONTENT #}
+    {% embed '@components/cms-content.twig'
+      with {
+        invert: false,
+        title: 'Titre du contenu',
+        images: [
+          {
+            alt: 'Nouvelle Collection Salone FW/25',
+            src: '/assets/hero.jpg'
+          }
+        ]
+      } only
+    %}
+      {% block content %}
+        <p>
+          Mauris ac odio venenatis, pulvinar sapien ac, semper erat. Aenean congue nisi eu velit
+          venenatis ullamcorper. Proin sed euismod justo. Aliquam erat volutpat. Aliquam erat
+          volutpat. Nam sed leo ultricies, viverra enim quis, iaculis sem. Pellentesque tellus sem,
+          gravida vitae dolor ut, vehicula fermentum ex. Mauris vel urna aliquet, blandit velit eu,
+          convallis sapien. Duis et porta leo. Sed luctus arcu at enim condimentum commodo.
+          Vestibulum sit amet hendrerit dolor. Nullam aliquam sapien augue, nec viverra velit congue
+          ut. Nulla sit amet accumsan justo, vitae luctus elit. Sed blandit risus arcu, non commodo
+          purus eleifend id. Suspendisse congue mi ut volutpat rhoncus. Nullam malesuada feugiat
+          arcu vitae luctus.
+        </p>
+        <p>
+          Mauris ac odio venenatis, pulvinar sapien ac, semper erat. Aenean congue nisi eu velit
+          venenatis ullamcorper. Proin sed euismod justo. Aliquam erat volutpat. Aliquam erat
+          volutpat. Nam sed leo ultricies, viverra enim quis, iaculis sem. Pellentesque tellus sem,
+          gravida vitae dolor ut, vehicula fermentum ex. Mauris vel urna aliquet, blandit velit eu,
+          convallis sapien. Duis et porta leo. Sed luctus arcu at enim condimentum commodo.
+          Vestibulum sit amet hendrerit dolor. Nullam aliquam sapien augue, nec viverra velit congue
+          ut. Nulla sit amet accumsan justo, vitae luctus elit. Sed blandit risus arcu, non commodo
+          purus eleifend id. Suspendisse congue mi ut volutpat rhoncus. Nullam malesuada feugiat
+          arcu vitae luctus.
+        </p>
+
+        <div class="flex flex-col m:flex-row items-center gap-6">
+          {% include '@components/button.twig' with {
+            label: 'Nous contacter',
+            variant: 'solid',
+            icon: 'plus',
+            attr: {
+              type: 'submit'
+            }
+          } only %}
+          {% include '@components/button.twig' with {
+            label: 'Voir tous nos projets',
+            variant: 'outline',
+            attr: {
+              type: 'submit'
+            }
+          } only %}
+        </div>
+      {% endblock %}
+    {% endembed %}
+
+    {# Collection Mood #}
+    {# Collection Mood #}
+    {% embed '@components/slider-mood-collection.twig'
+      with {
+        title: 'Titre de la section',
+        attr: {
+          class: 'my-20 m:my-40'
+        }
+      }
+    %}
+      {% block description %}
+        <p class="text-base m:col-start-7 m:col-span-6">
+          Pretium integer faucibus sed aliquet aliquam tincidunt. Sit urna cras non a pharetra ac.
+          Arcu nisl urna amet placerat augue eget non nibh. Massa ultrices ac enim risus aenean
+          mauris urna. Accumsan faucibus libero tortor facilisis placerat quisque faucibus tellus.
+          Lobortis dapibus mattis tincidunt condimentum sit turpis morbi et ut. Elit sit purus
+          ullamcorper sollicitudin. Pretium proin nascetur gravida nulla vitae quis odio nulla. Ut
+          eget lorem feugiat morbi sit.
+        </p>
+      {% endblock %}
+    {% endembed %}
+
+    {# CMS CONTENT #}
+    {% embed '@components/cms-content.twig'
+      with {
+        invert: true,
+        title: 'Titre du contenu',
+        images: [
+          {
+            alt: 'Nouvelle Collection Salone FW/25',
+            src: '/assets/hero.jpg'
+          }
+        ]
+      } only
+    %}
+      {% block content %}
+        <p>
+          Mauris ac odio venenatis, pulvinar sapien ac, semper erat. Aenean congue nisi eu velit
+          venenatis ullamcorper. Proin sed euismod justo. Aliquam erat volutpat. Aliquam erat
+          volutpat. Nam sed leo ultricies, viverra enim quis, iaculis sem. Pellentesque tellus sem,
+          gravida vitae dolor ut, vehicula fermentum ex. Mauris vel urna aliquet, blandit velit eu,
+          convallis sapien. Duis et porta leo. Sed luctus arcu at enim condimentum commodo.
+          Vestibulum sit amet hendrerit dolor. Nullam aliquam sapien augue, nec viverra velit congue
+          ut. Nulla sit amet accumsan justo, vitae luctus elit. Sed blandit risus arcu, non commodo
+          purus eleifend id. Suspendisse congue mi ut volutpat rhoncus. Nullam malesuada feugiat
+          arcu vitae luctus.
+        </p>
+        <ul class="list-disc pl-6 mb-6">
+          <li>Mauris ac odio venenatis, pulvinar sapien ac, semper erat</li>
+          <li>Aenean congue nisi eu velit venenatis ullamcorper</li>
+          <li>Proin sed euismod justo, aliquam erat volutpat</li>
+          <li>Nam sed leo ultricies, viverra enim quis</li>
+          <li>Pellentesque tellus sem, gravida vitae dolor ut</li>
+          <li>Mauris vel urna aliquet, blandit velit eu</li>
+        </ul>
+
+        <div class="flex flex-col m:flex-row items-center gap-6">
+          {% include '@components/button.twig' with {
+            label: 'Nous contacter',
+            icon: 'icon-heart',
+            variant: 'outline',
+            href: '/shop/collection.html'
+          } only %}
+        </div>
+      {% endblock %}
+    {% endembed %}
+
+    {# CMS CONTENT #}
+    {% embed '@components/cms-content.twig'
+      with {
+        title: 'Titre du contenu',
+        images: [
+          {
+            alt: 'Nouvelle Collection Salone FW/25',
+            src: '/assets/hero.jpg'
+          }
+        ]
+      } only
+    %}
+      {% block content %}
+        <p>
+          Mauris ac odio venenatis, pulvinar sapien ac, semper erat. Aenean congue nisi eu velit
+          venenatis ullamcorper. Proin sed euismod justo. Aliquam erat volutpat. Aliquam erat
+          volutpat. Nam sed leo ultricies, viverra enim quis, iaculis sem. Pellentesque tellus sem,
+          gravida vitae dolor ut, vehicula fermentum ex. Mauris vel urna aliquet, blandit velit eu,
+          convallis sapien. Duis et porta leo. Sed luctus arcu at enim condimentum commodo.
+          Vestibulum sit amet hendrerit dolor. Nullam aliquam sapien augue, nec viverra velit congue
+          ut. Nulla sit amet accumsan justo, vitae luctus elit. Sed blandit risus arcu, non commodo
+          purus eleifend id. Suspendisse congue mi ut volutpat rhoncus. Nullam malesuada feugiat
+          arcu vitae luctus.
+        </p>
+        <ul class="list-disc pl-6 mb-6">
+          <li>Mauris ac odio venenatis, pulvinar sapien ac, semper erat</li>
+          <li>Aenean congue nisi eu velit venenatis ullamcorper</li>
+        </ul>
+
+        <div class="flex flex-col items-start gap-6">
+          {% include '@components/button.twig' with {
+            label: 'Nous contacter',
+            icon: 'icon-heart',
+            variant: 'outline',
+            href: '/shop/collection.html'
+          } only %}
+        </div>
+      {% endblock %}
+    {% endembed %}
+  </main>
+{% endblock %}
+
+{% block body_after %}
+  <section>
+    <div class="container">
+      <h2 class="text-3xl s:text-4xl m:text-6xl font-serif text-gray font-light uppercase mb-8 m:mb-14">
+        Vous aimerez aussi
+      </h2>
+      <div class="grid grid-cols-2 gap-4 m:gap-6">
+        {% for page in other_pages %}
+          {% include '@components/ui/card/card-page.twig' with {
+            title: page.title,
+            categoryTitle: page.categoryTitle,
+            src: page.src,
+            link: page.link
+          } %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

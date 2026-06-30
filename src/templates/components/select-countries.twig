@@ -1,0 +1,159 @@
+{% set options =
+  options|default(
+    [
+      {
+        label: 'Österreich',
+        value: 'AT',
+        country: 'AT'
+      },
+      {
+        label: 'Great Britain',
+        value: 'GB',
+        country: 'GB'
+      },
+      {
+        label: 'België / Belgique / Belgien',
+        value: 'BE',
+        country: 'BE'
+      },
+      {
+        label: 'България',
+        value: 'BG',
+        country: 'BG'
+      },
+      {
+        label: 'Hrvatska',
+        value: 'HR',
+        country: 'HR'
+      },
+      {
+        label: 'Κύπρος',
+        value: 'CY',
+        country: 'CY'
+      },
+      {
+        label: 'Česká republika',
+        value: 'CZ',
+        country: 'CZ'
+      },
+      {
+        label: 'Danmark',
+        value: 'DK',
+        country: 'DK'
+      },
+      {
+        label: 'Eesti',
+        value: 'EE',
+        country: 'EE'
+      },
+      {
+        label: 'Suomi',
+        value: 'FI',
+        country: 'FI'
+      },
+      {
+        label: 'France',
+        value: 'FR',
+        selected: true,
+        country: 'FR'
+      },
+      {
+        label: 'Deutschland',
+        value: 'DE',
+        country: 'DE'
+      },
+      {
+        label: 'Ελλάδα',
+        value: 'GR',
+        country: 'GR'
+      },
+      {
+        label: 'Magyarország',
+        value: 'HU',
+        country: 'HU'
+      },
+      {
+        label: 'Éire',
+        value: 'IE',
+        country: 'IE'
+      },
+      {
+        label: 'Italia',
+        value: 'IT',
+        country: 'IT'
+      },
+      {
+        label: 'Latvija',
+        value: 'LV',
+        country: 'LV'
+      },
+      {
+        label: 'Lietuva',
+        value: 'LT',
+        country: 'LT'
+      },
+      {
+        label: 'Lëtzebuerg',
+        value: 'LU',
+        country: 'LU'
+      },
+      {
+        label: 'Malta',
+        value: 'MT',
+        country: 'MT'
+      },
+      {
+        label: 'Nederland',
+        value: 'NL',
+        country: 'NL'
+      },
+      {
+        label: 'Polska',
+        value: 'PL',
+        country: 'PL'
+      },
+      {
+        label: 'Portugal',
+        value: 'PT',
+        country: 'PT'
+      },
+      {
+        label: 'România',
+        value: 'RO',
+        country: 'RO'
+      },
+      {
+        label: 'Slovensko',
+        value: 'SK',
+        country: 'SK'
+      },
+      {
+        label: 'Slovenija',
+        value: 'SI',
+        country: 'SI'
+      },
+      {
+        label: 'España',
+        value: 'ES',
+        country: 'ES'
+      },
+      {
+        label: 'Sverige',
+        value: 'SE',
+        country: 'SE'
+      }
+    ]
+  )
+%}
+
+{% include '@components/select-choices.twig' with {
+  label: 'Pays',
+  name: 'country',
+  flag: true,
+  required: true,
+  search: true,
+  options: options,
+  attr: {
+    class: class ?? 's:col-span-1'
+  }
+} only %}

@@ -1,0 +1,28 @@
+{% set attributes =
+  merge_html_attributes(
+    attr ?? null,
+    {},
+    {
+      class: 'flex flex-col m:flex-row m:justify-between m:items-center gap-3 p-3 rounded bg-sand-darker text-purple'
+    }
+  )
+%}
+
+<div {{ html_attributes(attributes) }}>
+  <div class="flex justify-start items-center grow gap-2.5">
+    {% include '@ui/Icon/Icon.twig' with {
+      name: icon ?? 'info',
+      attr: {
+        class: 'size-5 *:size-full text-brown shrink-0'
+      }
+    } only %}
+    <div class="font-sans font-medium text-xs uppercase tracking-wide grow">{{ title }}</div>
+  </div>
+  {% if links %}
+    <div class="flex flex-col m:flex-row m:justify-end items-end m:items-center gap-3 m:gap-5">
+      {% for link in links %}
+        {% include '@components/link.twig' with link only %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

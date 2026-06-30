@@ -1,0 +1,255 @@
+{% set media = {
+  title: 'Trier par Media',
+  name: 'filter',
+  options: [
+    {
+      label: 'Photo',
+      value: 'photo',
+      counter: 8,
+      filter: '.photo'
+    },
+    {
+      label: 'Video',
+      value: 'video',
+      counter: 2,
+      filter: '.video'
+    }
+  ]
+} %}
+
+{# filter dans option doit avoir un . devant, cela agit comme un selecteur CSS pour isotope.js #}
+
+{% set categories = {
+  title: 'Categories',
+  name: 'filter',
+  options: [
+    {
+      label: 'Embrasse',
+      value: 'embrasse',
+      counter: 8,
+      filter: '.embrasse'
+    },
+    {
+      label: 'Agrement',
+      value: 'agrement',
+      counter: 2,
+      filter: '.agrement'
+    },
+    {
+      label: 'Cables',
+      value: 'cables',
+      counter: 6,
+      filter: '.cables'
+    },
+    {
+      label: 'Galons',
+      value: 'galons',
+      counter: 6,
+      filter: '.galons'
+    },
+    {
+      label: 'Lezardes',
+      value: 'lezardes',
+      counter: 6,
+      filter: '.lezardes'
+    }
+  ]
+} %}
+
+{% set collections = {
+  title: 'Collections',
+  name: 'filter',
+  options: [
+    {
+      id: 'antica',
+      label: 'ANTICA',
+      counter: 10,
+      filter: '.antica',
+    },
+    {
+      id: 'asara',
+      label: 'ASARA',
+      counter: 8,
+      filter: '.asara',
+    },
+    {
+      id: 'duchesse',
+      label: 'DUCHESSE',
+      counter: 8,
+      filter: '.duchesse',
+    },
+  ]
+} %}
+
+
+{% embed '@components/modal/Panel.twig'
+  with {
+    attr: {
+      id: 'facets',
+      data_component: 'Panel Facets'
+    },
+    position: 'right',
+    overlay_attr: {
+      class: 'z-50 bg-black/20 absolute inset-0'
+    },
+    wrapper_attr: {
+      class: 'p-4 m:p-6 z-50 items-center'
+    },
+    container_attr: {
+      class: 'w-full max-w-2xl rounded bg-sand !overflow-hidden flex justify-stretch'
+    },
+    content_attr: {
+      class: 'data-filters-container p-4 s:p-6 m:p-8 w-full flex flex-col'
+    }
+  }
+%}
+  {% block open %}{% endblock %}
+  {% block close %}{% endblock %}
+  {% block content %}
+    <form data-ref="facetsForm" class="h-full flex flex-col">
+      {% set accordionButtonClass =
+        'group py-6 flex justify-between items-center w-full cursor-pointer text-sm uppercase font-medium text-purple'
+      %}
+
+      {% set accordionButtonIcon2 %}
+        <div data-ref="accordionButtonIcon"
+          class="accordion-button-icon w-6 h-6 relative transition-transform duration-500">
+          <span class="accordion-button-icon-line absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block w-4 h-px bg-purple"></span>
+          <span class="accordion-button-icon-line-2 absolute rotate-90 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block w-4 h-px bg-purple transition-all"></span>
+        </div>
+      {% endset %}
+
+      {# Facets Modal Header #}
+      <div class="flex items-center justify-between shrink-0 mb-6">
+        <h2 class="font-serif text-2xl m:text-3xl uppercase leading-none text-gray">
+          Filtrer les inspirations
+        </h2>
+        {% include '@components/modal/close-modal-button.twig' with {
+          attr: {
+            data_ref: 'close[]',
+            type: 'button'
+          }
+        } only %}
+      </div>
+
+      <div data-simplebar class="flex flex-col pt-4 p-px flex-1 overflow-auto">
+        {# MEDIA #}
+        <div class="border-b border-brown/20 last:border-none first:border-t">
+          {% embed '@components/ui/accordion-item.twig'
+            with {
+              accordionButtonClass: accordionButtonClass,
+              accordionButtonAnchor: media.title,
+              accordionButtonIcon: accordionButtonIcon2
+            }
+          %}
+            {% block content %}
+              <div class="pb-6">
+                {% for sortby in media.options %}
+                  {# category: media.category permet de declencher les filtres isotope #}
+                  {% include '@components/ui/facets/radio.twig' with {
+                    id: sortby.value,
+                    label: sortby.label,
+                    name: media.name,
+                    counter: sortby.counter,
+                    tag: sortby.tag,
+                    filter: sortby.filter,
+                  } %}
+                {% endfor %}
+              </div>
+            {% endblock %}
+          {% endembed %}
+        </div>
+
+        {# CATÉGORIES #}
+        <div class="border-b border-brown/20 last:border-none first:border-t">
+          {% embed '@components/ui/accordion-item.twig'
+            with {
+              accordionButtonClass: accordionButtonClass,
+              accordionButtonAnchor: categories.title,
+              accordionButtonIcon: accordionButtonIcon2
+            }
+          %}
+            {% block content %}
+              <div class="pb-6">
+                <div class="flex flex-col">
+                  {% for category in categories.options %}
+                    {% include '@components/ui/facets/radio.twig' with {
+                      id: category.value,
+                      label: category.label,
+                      name: categories.name,
+                      counter: category.counter,
+                      tag: category.tag,
+                      filter: category.filter,
+                    } %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endblock %}
+          {% endembed %}
+        </div>
+
+        {# COLLECTIONS #}
+        <div class="border-b border-brown/20 last:border-none first:border-t">
+          {% embed '@components/ui/accordion-item.twig'
+            with {
+              accordionButtonClass: accordionButtonClass,
+              accordionButtonAnchor: collections.title,
+              accordionButtonIcon: accordionButtonIcon2
+            }
+          %}
+            {% block content %}
+              <div class="pb-6">
+                <div class="flex flex-col">
+                  {% for collection in collections.options %}
+                    {# category: media.category permet de declencher les filtres isotope #}
+                    {% include '@components/ui/facets/radio.twig' with {
+                      id: collection.value,
+                      label: collection.label,
+                      name: collections.name,
+                      counter: collection.counter,
+                      tag: collection.tag,
+                      filter: collection.filter,
+                    } %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endblock %}
+          {% endembed %}
+        </div>
+
+        {# ADD OTHER FILTERS HERE #}
+
+      </div>
+
+      {# Facets Modal Footer #}
+      <div class="flex  gap-4 s:gap-8 pt-4 s:pt-6 m:pt-8">
+        <button data-filter="*" type="button" class="size-14 ring-1 ring-purple rounded-lg m:hidden flex items-center justify-center">
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'icon-reset',
+            attr: {
+              class: ['w-8', 'flex', 'items-center', 'justify-center']
+            }
+          } %}
+        </button>
+        {% include '@components/button.twig' with {
+          label: 'Effacer les filtres',
+          variant: 'link',
+          icon: false,
+          attr: {
+            type: 'button',
+            'data-filter':'*',
+            class: 'hidden m:block'
+          }
+        } only %}
+        {% include '@components/button.twig' with {
+          label: 'Filtrer',
+          variant: 'solid',
+          attr: {
+            type: 'submit',
+            class: 'flex-1'
+          }
+        } only %}
+      </div>
+    </form>
+  {% endblock %}
+{% endembed %}

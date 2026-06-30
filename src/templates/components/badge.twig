@@ -1,0 +1,15 @@
+{% set attributes =
+  merge_html_attributes(
+    attr ?? {},
+    {
+      class: 'bg-sand-darker text-purple'
+    },
+    {
+      class: [
+        'inline-flex justify-center items-center gap-2.5 px-1.5 py-1 rounded',
+        'text-xxs font-medium font-sans uppercase leading-[10px] tracking-wide'
+      ]
+    }
+  )
+%}
+<span {{ html_attributes(attributes) }}>{{ label }}</span>

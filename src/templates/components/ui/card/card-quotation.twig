@@ -1,0 +1,63 @@
+{#
+* Card quotation component.
+*
+* @param string $author_src : URL de l'image de l'auteur
+* @param string $author_alt : Texte alternatif de l'image
+* @param int $author_src_width : Largeur de l'image en pixels
+* @param int $author_src_height : Hauteur de l'image en pixels
+* @param string $author_blockquote : Citation de l'auteur
+* @param string $author_name : Nom de l'auteur
+*
+* @param array $cta aka "Premier bouton" {
+*   @param string $label : Texte du bouton principal
+*   @param string $href : URL du bouton principal
+*   @param array $attr : Attributs du bouton principal
+* }
+*
+* @param array $cta2 aka "Deuxième bouton" {
+*   @param string $label : Texte du bouton secondaire (optionnel)
+*   @param string $href : URL du bouton secondaire (optionnel)
+*   @param array $attr : Attributs du bouton secondaire (optionnel)
+* }
+*
+*/
+#}
+
+<figure class="card-quotation flex flex-col items-center justify-center gap-6 max-w-5xl mx-auto text-center">
+  {% include '@ui/Figure/Figure.twig' with {
+    src: author_src,
+    alt: author_alt,
+    width: author_src_width,
+    height: author_src_height,
+    img_attr: {
+      class: ['aspect-square', 'rounded-full']
+    },
+    inline: true
+  } %}
+  <blockquote class="card-quotation__content space-y-6">
+    <p class="card-quotation__content-text font-serif text-3xl s:text-4xl m:text-6xl text-gray uppercase leading-xtight">
+      {{ author_blockquote }}
+    </p>
+    <cite class="block card-quotation__content-author font-sans text-base not-italic">
+      {{ author_name }}
+    </cite>
+  </blockquote>
+  <div class="flex items-center justify-center gap-6 mt-2 m:mt-6">
+    {% if cta.label %}
+      {% include '@components/button.twig' with {
+        label: cta.label,
+        href: cta.href,
+        attr: cta.attr,
+        variant: cta.variant
+      } only %}
+    {% endif %}
+    {% if cta2.label %}
+      {% include '@components/button.twig' with {
+        label: cta2.label,
+        href: cta2.href,
+        attr: cta2.attr,
+        variant: cta2.variant
+      } only %}
+    {% endif %}
+  </div>
+</figure>

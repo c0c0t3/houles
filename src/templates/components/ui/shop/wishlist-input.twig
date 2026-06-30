@@ -1,0 +1,25 @@
+<div class="border border-[#E5E2DA] flex items-stretch -m-px">
+  <div class="shrink-0 relative">
+    <div class="w-20 aspect-square bg-sand-darker border border-[#E5E2DA] absolute top-4 left-0 -translate-x-px translate-y-px"></div>
+    <div class="bg-sand-darker mb-4 ml-4 relative ring-1 ring-[#E5E2DA]">
+      <img src="{{ image }}"
+        alt="{{ title }}"
+        class="w-20 aspect-square object-contain relative mix-blend-multiply" />
+    </div>
+  </div>
+  <div class="flex-1 p-3 m:p-6 pr-0 space-y-2 flex flex-col justify-center">
+    <p class="text-sm font-medium text-purple uppercase">{{ title }}</p>
+    <p class="text-xs text-brown uppercase font-medium">{{ number }} références</p>
+  </div>
+  <div class="shrink-0 p-3 m:p-6 flex flex-col justify-center">
+    <button type="button"
+      class="size-10 m:size-14 ring-1 hover:bg-purple/5 bg-white ring-purple rounded-lg flex items-center justify-center">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'plus',
+        attr: {
+          class: ['w-6 m:w-8', 'flex', 'items-center', 'justify-center']
+        }
+      } %}
+    </button>
+  </div>
+</div>

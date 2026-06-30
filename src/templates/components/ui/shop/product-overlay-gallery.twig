@@ -1,0 +1,84 @@
+{% embed '@components/modal/Panel.twig'
+  with {
+    position: 'top',
+    attr: {
+      id: 'zoomed-gallery'
+    },
+    overlay_attr: {
+      class: 'z-50 bg-black/80 absolute inset-0'
+    },
+    wrapper_attr: {
+      class: 'p-4 m:p-6 z-50 items-center '
+    },
+    container_attr: {
+      class: 'w-full max-w-2xl rounded bg-transparent !overflow-visible'
+    }
+  }
+%}
+  {% block open %}{% endblock %}
+  {% block close %}
+    <button type="button"
+      data-ref="close[]"
+      class="size-12 ring-1 bg-white ring-purple text-purple rounded-lg flex items-center justify-center group absolute right-0 z-50">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'plus',
+        attr: {
+          class: [
+            'w-6',
+            'flex items-center justify-center',
+            'rotate-45 group-hover:rotate-[225deg] transition-transform duration-500 ease-out-expo'
+          ]
+        }
+      } %}
+    </button>
+  {% endblock %}
+  {% block content %}
+    <div data-component="Slider"
+      ata-option-mode="left"
+      data-option-fit-bounds
+      data-option-contain
+      class="relative">
+      {# Slider Drag #}
+      <div data-component="SliderDrag"
+        data-ref="wrapper"
+        tabindex="0"
+        class="homepage-hero relative z-1 whitespace-nowrap overflow-hidden w-full select-none h-full flex flex-nowrap items-stretch gap-2 m:gap-8">
+        {% for product_image in product_images %}
+          <div data-component="SliderItem" class="w-full shrink-0 flex items-center justify-center">
+            <div class="relative">
+              <img src="{{ product_image.src }}"
+                alt="{{ product_image.alt }}"
+                class="max-h-[calc(100svh-6rem)] h-[800px] w-auto max-w-full object-contain mix-blend-multiply bg-white" />
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {# Slider Nav #}
+      <button title="Prev"
+        type="button"
+        data-component="SliderBtn"
+        data-option-prev
+        class="rounded cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed text-white hidden m:block absolute top-1/2 -translate-y-1/2 right-full mr-4 z-10 py-4">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'arrow-line-desktop',
+          attr: {
+            class: ['w-14', 'block', 'rotate-180']
+          }
+        } %}
+      </button>
+      <button title="Next"
+        type="button"
+        data-component="SliderBtn"
+        data-option-next
+        class="rounded cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed text-white hidden m:block absolute top-1/2 -translate-y-1/2 left-full ml-4 z-10 py-4">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'arrow-line-desktop',
+          attr: {
+            class: ['w-14', 'block']
+          }
+        } %}
+      </button>
+    </div>
+  {% endblock %}
+{% endembed %}

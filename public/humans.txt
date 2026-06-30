@@ -1,0 +1,13 @@
+/* TEAM */
+Agency: Studio Meta
+Site: https://studiometa.fr
+GitHub: https://github.com/studiometa
+Twitter: @studiometa
+Location: Strasbourg, FR
+
+
+/* SITE */
+Last update: 2025/06/02
+Template: Twig
+Components: @studiometa/js-toolkit, @studiometa/ui, TailwindCSS
+Software: GitLab, Netlify, PHPCS, PHPStan, Prettier, ESLint

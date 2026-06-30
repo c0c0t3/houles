@@ -1,0 +1,35 @@
+{#
+/**
+ * @file
+ * Link component.
+ *
+ * @param string $label
+ * @param string $tag
+ * @param string $href
+ * @param array $attr
+ */
+#}
+
+{# Customizable tag with a default value. #}
+{% set tag =
+  tag|default(href is defined or (attr is defined and attr.href is defined) ? 'a' : 'button')
+%}
+
+{# Final attributes are a merge of the defaults, the given and then the required #}
+{% set attributes =
+  merge_html_attributes(
+    attr ?? null,
+    {
+      type: tag == 'button' ? 'button' : false,
+      href: tag == 'a' and href is defined ? href : false,
+      title: title ?? label
+    },
+    {
+      class: ['link', 'text-xs font-medium text-gray uppercase']
+    }
+  )
+%}
+
+{% html_element tag with attributes %}
+  {{ label }}
+{% end_html_element %}

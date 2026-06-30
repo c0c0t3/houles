@@ -1,0 +1,50 @@
+<article data-component="SliderItem"
+  class="aspect-square shrink-0 relative space-y-4 w-2/3 m:w-2/5 bg-purple group/card-category overflow-hidden">
+  {% include '@ui/Figure/Figure.twig' with {
+    src: src,
+    width: 600,
+    height: 600,
+    alt: title,
+    absolute: true,
+    fit: 'cover',
+    attr: {
+      class: ['w-full', 'h-full'],
+      data_option_enter_from: 'opacity-0',
+      data_option_enter_active: 'transition duration-500'
+    },
+    img_attr: {
+      class: [
+        'w-full h-full',
+        'object-cover',
+        'opacity-0',
+        'group-hover/card-category:scale-105',
+        'transition-transform ease-in-out duration-1000'
+      ]
+    }
+  } %}
+  <a href="{{ link }}"
+    class="absolute inset-0 p-4 m:p-8 flex flex-col justify-end space-y-2.5 m:space-y-6 bg-gradient-to-t from-black/30 to-transparent">
+    <span class="text-white font-serif font-light text-2xl m:text-4xl uppercase">{{ title }}</span>
+    <div class="flex items-center justify-between w-full">
+      <span class="text-white font-medium uppercase text-xs m:text-base">
+        {{ nbrCollection }} collections
+      </span>
+      <button class="text-white w-fit hidden opacity-0 -translate-x-full group-hover/card-category:translate-x-0 group-hover/card-category:opacity-100 transition-all duration-500 ease-out-quad m:block">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'arrow-line-desktop',
+          attr: {
+            class: ['w-14 block']
+          }
+        } %}
+      </button>
+      <button class="text-white w-6 block m:hidden">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'arrow-line-mobile',
+          attr: {
+            class: ['w-6 block']
+          }
+        } %}
+      </button>
+    </div>
+  </a>
+</article>

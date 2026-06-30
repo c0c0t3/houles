@@ -1,0 +1,19 @@
+{% extends '@layouts/checkout.twig' %}
+
+{% set title = 'Merci pour votre commande' %}
+
+{% block content %}
+  <div class="space-y-3 text-center">
+    <p>
+      Votre commande a bien été passé, vous recevrez un mail de confirmation d’ici quelques minutes.
+    </p>
+    <p class="font-medium">Livraison prévue entre le 13/05 et le 15/05/2025</p>
+  </div>
+  <div class="flex justify-center">
+    {% include '@components/button.twig' with {
+      label: 'Retour au site',
+      variant: 'outline',
+      href: '/'
+    } only %}
+  </div>
+{% endblock %}

@@ -1,0 +1,271 @@
+{% extends '@components/table/default.twig' %}
+
+{% set can_edit = can_edit is defined ? can_edit : true %}
+
+{% set head_row_attr = {
+  class: 'max-m:hidden'
+} %}
+
+{% set row_attr = {
+  class: 'max-m:relative max-m:grid max-m:grid-cols-3 max-m:gap-4 max-m:*:p-0 max-m:pb-6 max-m:pt-10'
+} %}
+
+{% set cell_attr_required = {
+  class: 'text-brown text-xs font-sans font-medium align-top'
+} %}
+
+{% set columns = [
+  {
+    label: 'Visuel',
+    key: 'img',
+    head_cell_attr: {
+      class: 'sr-only'
+    },
+    cell_attr: {
+      class: 'max-m:row-span-3'
+    }
+  },
+  {
+    label: 'Code article',
+    key: 'code',
+    cell_attr: {
+      class: 'max-m:col-span-2'
+    }
+  },
+  {
+    label: 'Désignation',
+    key: 'name',
+    cell_attr: {
+      class: 'max-m:col-span-2'
+    }
+  },
+  {
+    label: 'Disponibilité',
+    key: 'status',
+    cell_attr: {
+      class: can_edit ? 'max-m:col-span-2 !align-middle uppercase' : 'max-m:col-span-2 uppercase'
+    },
+    subcell_attr: {
+      class: 'max-m:col-span-2 uppercase'
+    }
+  },
+  {
+    label: 'Quantité',
+    key: 'quantity',
+    cell_attr: {
+      class: can_edit ? '!align-middle' : ''
+    },
+    subcell_attr: {
+      class: ''
+    }
+  },
+  {
+    label: 'Prix unitaire',
+    key: 'price',
+    head_cell_attr: {
+      class: 'text-right'
+    },
+    cell_attr: {
+      class: 'm:text-right'
+    }
+  },
+  {
+    label: 'Prix total',
+    key: 'total',
+    head_cell_attr: {
+      class: 'text-right'
+    },
+    cell_attr: {
+      class: 'm:text-right'
+    }
+  }
+] %}
+
+{% block cell_img %}
+  {% if value %}
+    <div class="ring-inset ring-1 ring-brown/20 p-px size-24">
+      <img src="{{ value }}"
+        alt=""
+        class="size-full object-contain bg-sand-darker"
+        loading="lazy" />
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block cell_name %}
+  <div class="space-y-2">
+    {% if row.collection is defined %}
+      <p class="text-xs font-sans font-medium uppercase text-brown">{{ row.collection }}</p>
+    {% endif %}
+    <h3 class="text-xs font-sans font-medium uppercase text-gray !mt-0">
+      {% if row.href is defined %}
+        <a href="{{ row.href }}">{{ row.title }}</a>
+      {% else %}
+        {{ row.title }}
+      {% endif %}
+    </h3>
+    {% if row.description %}
+      <p class="text-xxs font-sans font-medium leading-4 text-brown">{{ row.description }}</p>
+    {% endif %}
+
+    {% if can_edit %}
+      <input {{
+        html_attributes({
+          type: 'text',
+          name: 'line[' ~ row.id ~ '][note]',
+          placeholder: 'Commentaire',
+          value: '',
+          class: 'block w-full max-w-64 font-sans font-medium text-xs leading-4 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-3 px-3 focus-visible:bg-white appearance-none'
+        })
+        }} />
+    {% endif %}
+
+    {% if row.can_configure %}
+      <div data-component="Populate"
+        data-option-limit="2"
+        class="text-xs font-sans font-medium text-brown space-y-2">
+        <button type="button" data-ref="add" class="flex items-center gap-1">
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'plus',
+            attr: {
+              class: 'size-4 [&>svg]:size-full'
+            }
+          } only %}Ajouter une coupe de tube sur mesure
+        </button>
+        <template data-ref="template">
+          <li class="flex items-center gap-2">
+            <span>
+              -
+              <label for="cut_at">Couper à</label>
+              <input type="number"
+                id="cut_at"
+                name="cut_at[]"
+                min="0"
+                value="0"
+                class="w-10 font-sans font-medium text-xs bg-transparent text-purple ring-purple focus-visible:bg-white appearance-none text-right border-b border-brown border-dashed" />
+              <label for="cut_from">cm depuis</label>
+              <select name="cut_from[]" id="cut_from" class="border-b border-brown border-dashed">
+                <option value="right" selected>droite</option>
+                <option value="left">gauche</option>
+              </select>
+            </span>
+            <button type="button"
+              data-ref="remove[]"
+              class="hover:text-gray transition-colors duration-300 ease-out-quad">
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'trash',
+                attr: {
+                  class: 'size-3 [&>svg]:size-full'
+                }
+              } only %}
+            </button>
+            <button type="button" class="bg-purple text-white text-xs uppercase font-sans font-medium px-2 py-1 rounded">Ajouter</button>
+          </li>
+        </template>
+        <ul data-ref="target" class="list-disc list-inside space-y-1 pl-5 empty:hidden"></ul>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block subcell_name %}
+  <div class="space-y-2">
+    {% if subrow.collection is defined %}
+      <p class="text-xs font-sans font-medium uppercase text-brown">{{ subrow.collection }}</p>
+    {% endif %}
+    <h3 class="text-xs font-sans font-medium uppercase text-brown !mt-0">
+      {% if subrow.href is defined %}
+        <a href="{{ subrow.href }}">{{ subrow.title }}</a>
+      {% else %}
+        {{ subrow.title }}
+      {% endif %}
+    </h3>
+    {% if subrow.description %}
+      <p class="text-xxs font-sans font-medium leading-4 text-brown">{{ subrow.description }}</p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block cell_status %}
+  {% include '@components/status.twig' with {
+    label: value.label,
+    type: value.type,
+    tooltip: value.tooltip
+  } %}
+{% endblock %}
+
+{% block cell_quantity %}
+  {% if can_edit %}
+    <div class="flex items-center gap-2">
+      <input {{
+        html_attributes({
+          type: 'number',
+          name: 'line[' ~ row.id ~ '][quantity]',
+          value: value,
+          class: 'block w-16 font-sans font-medium text-sm leading-6 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-4 pl-6 pr-2 focus-visible:bg-white appearance-none text-right'
+        })
+        }} />
+      <button type="button"
+        title="Supprimer"
+        class="p-1 -m-1 hover:text-gray transition-colors duration-300 ease-out-quad">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'trash',
+          attr: {
+            class: 'size-5 [&>svg]:size-full'
+          }
+        } only %}
+        <span class="sr-only">Supprimer</span>
+      </button>
+    </div>
+  {% else %}
+    <p class="text-sm font-sans font-medium leading-4 uppercase text-gray text-right">
+      <span class="m:sr-only">Quantité<br /></span>{{ value }}
+    </p>
+  {% endif %}
+{% endblock %}
+
+{% block subcell_quantity %}
+  <p class="text-xs font-sans font-medium leading-4 uppercase text-brown text-right">
+    <span class="m:sr-only">Quantité<br /></span>{{ value }}
+  </p>
+{% endblock %}
+
+{% block cell_price %}
+  <p class="text-sm leading-4 font-sans font-medium uppercase text-gray">
+    <span class="m:sr-only">Prix unitaire<br /></span>{{ value|number_format(2, ',', '.') }}&nbsp;€&nbsp;HT
+  </p>
+  <p class="text-xxs leading-4 font-sans font-medium uppercase text-brown">
+    {{ (value * 1.2)|number_format(2, ',', '.') }}&nbsp;€&nbsp;TTC
+  </p>
+{% endblock %}
+
+{% block subcell_price %}
+  <p class="text-xs leading-4 font-sans font-medium uppercase text-brown">
+    <span class="m:sr-only">Prix unitaire<br /></span>{{ value|number_format(2, ',', '.') }}&nbsp;€&nbsp;HT
+  </p>
+  <p class="text-xxs leading-4 font-sans font-medium uppercase text-brown">
+    {{ (value * 1.2)|number_format(2, ',', '.') }}&nbsp;€&nbsp;TTC
+  </p>
+{% endblock %}
+
+{% block cell_total %}
+  <p class="text-sm font-sans font-medium leading-4 uppercase text-gray">
+    <span class="m:sr-only">Prix total<br /></span>{{
+      (row.price * row.quantity)|number_format(2, ',', '.')
+    }}&nbsp;€&nbsp;HT
+  </p>
+  <p class="text-xxs font-sans font-medium leading-4 uppercase text-brown">
+    {{ (row.price * row.quantity * 1.2)|number_format(2, ',', '.') }}&nbsp;€&nbsp;TTC
+  </p>
+{% endblock %}
+
+{% block subcell_total %}
+  <p class="text-xs font-sans font-medium leading-4 uppercase text-brown">
+    <span class="m:sr-only">Prix total<br /></span>{{
+      (subrow.price * subrow.quantity)|number_format(2, ',', '.')
+    }}&nbsp;€&nbsp;HT
+  </p>
+  <p class="text-xxs font-sans font-medium leading-4 uppercase text-brown">
+    {{ (subrow.price * subrow.quantity * 1.2)|number_format(2, ',', '.') }}&nbsp;€&nbsp;TTC
+  </p>
+{% endblock %}

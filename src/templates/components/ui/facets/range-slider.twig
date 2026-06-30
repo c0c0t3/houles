@@ -1,0 +1,27 @@
+<div class="mt-8 relative"
+  data-component="RangeInputSlider"
+  data-units=" {{ units }}"
+  data-name="{{ name }}"
+  data-min="{{ min }}"
+  data-max="{{ max }}"
+  data-default-min="{{ defaultMin }}"
+  data-default-max="{{ defaultMax }}">
+  <span class="absolute left-0 top-4 text-xs text-purple uppercase font-medium">
+    {{ min }} {{ units }}
+  </span>
+  <span class="absolute right-0 top-4 text-xs text-purple uppercase font-medium">
+    {{ max }} {{ units }}
+  </span>
+  <input class="hidden"
+    data-ref="inputMin"
+    name="{{ name }}_min"
+    type="number"
+    name=""
+    id="{{ name }}_min" />
+  <input class="hidden"
+    data-ref="inputMax"
+    name="{{ name }}_max"
+    type="number"
+    name=""
+    id="{{ name }}_max" />
+</div>

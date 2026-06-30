@@ -1,0 +1,689 @@
+{% extends '@layouts/checkout.twig' %}
+
+{% set title = 'Livraison' %}
+
+{% set addresses = [
+  {
+    type: 'shipping',
+    fullname: 'Andre Houles et Cie',
+    line_1: '2 Chemin de la Coudrette',
+    zip: '77123',
+    city: 'Noisy-sur-École',
+    country: 'France',
+    is_default: true
+  },
+  {
+    type: 'shipping',
+    fullname: 'Andre Houles et Cie',
+    line_1: '2 Chemin de la Coudrette',
+    zip: '77123',
+    city: 'Noisy-sur-École',
+    country: 'France',
+    is_default: false
+  },
+  {
+    type: 'shipping',
+    fullname: 'Andre Houles et Cie',
+    line_1: '2 Chemin de la Coudrette',
+    zip: '77123',
+    city: 'Noisy-sur-École',
+    country: 'France',
+    is_default: false
+  }
+] %}
+
+{% set transit_addresses = [
+  {
+    type: 'transit',
+    fullname: 'Andre Houles et Cie',
+    line_1: '2 Chemin de la Coudrette',
+    zip: '77123',
+    city: 'Noisy-sur-École',
+    country: 'France',
+    is_default: true
+  },
+  {
+    type: 'transit',
+    fullname: 'Andre Houles et Cie',
+    line_1: '2 Chemin de la Coudrette',
+    zip: '77123',
+    city: 'Noisy-sur-École',
+    country: 'France',
+    is_default: false
+  }
+] %}
+
+{% set selected_relay = {
+  fullname: 'Epice riz et fantasy',
+  line_1: '14 Quai des Pêcheurs',
+  zip: '67000',
+  city: 'Strasbourg',
+  country: 'France'
+} %}
+
+{% set shipping_modes = [
+  {
+    label: 'Livraison en point relais',
+    description: '3 à 5 jours ouvrés',
+    price: 0,
+    value: 'relay'
+  },
+  {
+    label: 'Livraison standard',
+    description: '3 à 5 jours ouvrés',
+    price: 0,
+    value: 'standard',
+    feature: "Houlès s'occupe de tout <br> Plus que X heures pour que le colis parte aujourd’hui"
+  },
+  {
+    label: 'Livraison prioritaire',
+    description: '1 - 2 jours ouvrés, départ le 09/05/2025',
+    price: 19,
+    value: 'priority',
+    feature: 'La livraison prioritaire ... <br> <strong>Plus que X heures</strong> pour que le colis parte aujourd’hui'
+  },
+  {
+    label: 'Retrait au centre logistique de Saint-étienne',
+    description: '1 - 2 jours ouvrés, départ le 09/05/2025',
+    price: 19,
+    value: 'pickup-saint-etienne'
+  },
+  {
+    label: 'Je souhaite utiliser mon propre transporteur',
+    description: '1 - 2 jours ouvrés, départ le 09/05/2025',
+    price: 19,
+    value: 'custom',
+    feature: 'Demandez à votre transporteur de récupérer la commande à notre centre logistique...'
+  }
+] %}
+
+{% set shipping_services = [
+  {
+    label: 'Standard',
+    description: '3 à 5 jours ouvrés',
+    price: 0,
+    value: 'standard'
+  },
+  {
+    label: 'Prioritaire',
+    description: '1 - 2 jours ouvrés, départ le 09/05/2025',
+    price: 15,
+    value: 'priority'
+  }
+] %}
+
+{% block content %}
+  <div class="relative overflow-hidden s:px-10 s:-mx-10">
+    {% embed '@ui/Tabs/Tabs.twig'
+      with {
+        attr: {
+          data_component: 'Tabs Action',
+          data_option_on: 'enable',
+          data_option_effect: 'window.dispatchEvent(new Event("resize"))',
+          data_option_styles: {
+            btn: {
+              open: 'is-active'
+            }
+          }
+        },
+        btn_attr: {
+          style: null,
+          class: 'block p-2 group/btn text-sm uppercase text-purple-extra-light [&.is-active]:text-purple hover:text-purple-light transition-colors duration-300 ease-out-quad'
+        },
+        items: [
+          {
+            title: 'Livraison directe',
+            description: 'Livraison directe à domicile',
+            key: 'direct',
+            attr: {
+              data_option_is_open: true
+            }
+          },
+          {
+            title: 'Enlèvement',
+            description: 'Enlèvement au point relais lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.',
+            key: 'pickup'
+          },
+          {
+            title: 'Livraison transitaire',
+            description: 'Livraison transitaire',
+            key: 'transit'
+          }
+        ]
+      }
+    %}
+      {% block title_wrapper %}
+        <div class="flex items-center justify-center -mt-2 mb-10">{{ parent() }}</div>
+      {% endblock %}
+      {% block title %}
+        <span class="underline-effect-off group-[&.is-active]/btn:underline-effect-on">
+          {{ item.title }}
+        </span>
+      {% endblock %}
+      {% block content %}
+        <div class="flex flex-col gap-12">
+          {% if item.key == 'direct' or item.key == 'transit' %}
+            <div class="max-w-xl mx-auto text-center"><p>{{ item.description }}</p></div>
+
+            <div data-component="Slider"
+              data-option-mode="left"
+              data-option-fit-bounds
+              data-option-contain
+              class="-mx-4 m:-mx-10 px-4 m:px-10 overflow-hidden">
+              <h2 class="mb-6 text-base font-sans font-medium leading-snug text-purple">
+                Adresse de livraison
+              </h2>
+              <div data-component="SliderDrag"
+                data-ref="wrapper"
+                tabindex="0"
+                class="relative z-1 select-none flex flex-row flex-nowrap items-stretch cursor-grab gap-x-6 m:gap-x-8">
+                {% for address in addresses %}
+                  <div data-component="SliderItem"
+                    class="{{
+                    html_classes(
+                      [
+                        'group/card relative shrink-0 w-80',
+                        'flex flex-col justify-between',
+                        'p-6 s:p-8 space-y-6',
+                        'bg-white text-gray',
+                        'has-[input:checked]:bg-purple has-[input:checked]:text-white',
+                        'ring-1 ring-inset ring-brown/20 has-[input:checked]:ring-purple'
+                      ]
+                    )
+                    }}">
+                    <div class="{{
+                      html_classes(
+                        [
+                          'space-y-6',
+                          {
+                            'pb-5': not address.is_default
+                          }
+                        ]
+                      )
+                      }}">
+                      <div>
+                        <input {{
+                          html_attributes({
+                            id: (item.key == 'direct' ? 'direct' : 'transit') ~ '_shipping_address_'
+                              ~ loop.index,
+                            type: 'radio',
+                            name: (item.key == 'direct' ? 'direct' : 'transit')
+                              ~ '_shipping_address',
+                            value: 'address_' ~ loop.index,
+                            checked: address.is_default,
+                            class: 'accent-purple size-4'
+                          })
+                          }} />
+                        <label for="{{
+                          (item.key == 'direct' ? 'direct' : 'transit') ~ '_shipping_address_'
+                            ~ loop.index
+                          }}"
+                          class="block mt-5 mb-3 text-base font-sans font-medium leading-snug cursor-pointer after:absolute after:inset-0">
+                          Mon adresse de livraison {{ loop.index > 1 ? loop.index }}
+                        </label>
+                        <p class="text-2xl font-serif font-light uppercase leading-snug">
+                          {{ address.fullname }}
+                        </p>
+                      </div>
+                      <address class="not-italic uppercase">
+                        <p>
+                          {{ address.line_1 }}<br />
+                          {% if address.line_2 %}
+                            {{ address.line_2 }}<br />
+                          {% endif %}
+                          {{ address.zip }} {{ address.city }}<br />
+                          {{ address.country }}
+                        </p>
+                      </address>
+                      {% if address.is_default %}
+                        <p class="flex items-center gap-2 text-sm text-brown group-has-[input:checked]/card:text-brown-light">
+                          {% include '@ui/Icon/Icon.twig' with {
+                            name: 'check',
+                            attr: {
+                              class: 'w-4 h-4'
+                            }
+                          } %}
+                          <span>Adresse de livraison par défaut</span>
+                        </p>
+                      {% endif %}
+                    </div>
+                    <div class="flex flex-col justify-end gap-3 p-1 pt-4">
+                      {% embed '@components/modal/form-address.twig'
+                        with {
+                          attr: {
+                            data_option_move: 'body'
+                          },
+                          address: address
+                        }
+                      %}
+                        {% block open %}
+                          {% include '@components/button.twig' with {
+                            label: 'Modifier',
+                            icon: 'pencil',
+                            attr: {
+                              data_ref: 'open[]',
+                              class: 'relative z-1 border border-white w-full'
+                            }
+                          } %}
+                        {% endblock %}
+                      {% endembed %}
+                    </div>
+                  </div>
+                {% endfor %}
+                {% embed '@components/modal/form-address.twig'
+                  with {
+                    attr: {
+                      class: 'shrink-0',
+                      data_component: 'SliderItem Modal',
+                      data_option_move: 'body'
+                    }
+                  }
+                %}
+                  {% block open %}
+                    {% include '@components/button.twig' with {
+                      label: 'Ajouter une adresse',
+                      icon: 'plus',
+                      variant: 'link',
+                      attr: {
+                        data_ref: 'open[]',
+                        class: 'p-6 s:p-8 w-80 h-full !bg-white !text-gray !ring-1 !ring-inset !ring-brown/20'
+                      }
+                    } %}
+                  {% endblock %}
+                {% endembed %}
+              </div>
+              <div class="flex items-center justify-between mt-6 gap-8">
+                <div class="buttons hidden m:flex items-center gap-4">
+                  <button title="Prev"
+                    type="button"
+                    data-component="SliderBtn"
+                    data-option-prev
+                    data-option-contain
+                    class="cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-50 block text-purple py-2">
+                    {% include '@ui/Icon/Icon.twig' with {
+                      name: 'arrow-line-desktop',
+                      attr: {
+                        class: ['rotate-180', 'w-14', 'block']
+                      }
+                    } %}
+                  </button>
+                  <button title="Next"
+                    type="button"
+                    data-component="SliderBtn"
+                    data-option-next
+                    data-option-contain
+                    class="cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-50 block text-purple py-2">
+                    {% include '@ui/Icon/Icon.twig' with {
+                      name: 'arrow-line-desktop',
+                      attr: {
+                        class: ['w-14', 'block']
+                      }
+                    } %}
+                  </button>
+                </div>
+                <div data-component="SliderProgress"
+                  data-option-contain
+                  class="w-full rounded bg-gradient-to-r from-gray/20 to-transparent overflow-hidden flex-1 h-px relative">
+                  <div class="h-px bg-purple rounded origin-left duration-1000 transition ease-in-out before:content-[''] before:absolute before:w-1/4 before:h-full before:bg-purple before:translate-x-full before:right-0 before:top-0"
+                    data-ref="progress"></div>
+                </div>
+              </div>
+            </div>
+
+            {% if item.key == 'transit' %}
+              <div data-component="Slider"
+                data-option-mode="left"
+                data-option-fit-bounds
+                data-option-contain
+                class="-mx-4 m:-mx-10 px-4 m:px-10 overflow-hidden">
+                <h2 class="mb-6 text-base font-sans font-medium leading-snug text-purple">
+                  Transitaire choisi
+                </h2>
+                <div data-component="SliderDrag"
+                  data-ref="wrapper"
+                  tabindex="0"
+                  class="relative z-1 select-none flex flex-row flex-nowrap items-stretch cursor-grab gap-x-6 m:gap-x-8">
+                  {% for address in transit_addresses %}
+                    <div data-component="SliderItem"
+                      class="{{
+                      html_classes(
+                        [
+                          'group/card relative shrink-0 w-80',
+                          'flex flex-col justify-between',
+                          'p-6 s:p-8 space-y-6',
+                          'bg-white text-gray',
+                          'has-[input:checked]:bg-purple has-[input:checked]:text-white',
+                          'ring-1 ring-inset ring-brown/20 has-[input:checked]:ring-purple'
+                        ]
+                      )
+                      }}">
+                      <div class="{{
+                        html_classes(
+                          [
+                            'space-y-6',
+                            {
+                              'pb-5': not address.is_default
+                            }
+                          ]
+                        )
+                        }}">
+                        <div>
+                          <input {{
+                            html_attributes({
+                              id: 'transit_address_' ~ loop.index,
+                              type: 'radio',
+                              name: 'transit_address',
+                              value: 'address_' ~ loop.index,
+                              checked: address.is_default,
+                              class: 'accent-purple size-4'
+                            })
+                            }} />
+                          <label for="{{ 'transit_address_' ~ loop.index }}"
+                            class="block mt-5 mb-3 text-base font-sans font-medium leading-snug cursor-pointer after:absolute after:inset-0">
+                            Mon transitaire {{ loop.index > 1 ? loop.index }}
+                          </label>
+                          <p class="text-2xl font-serif font-light uppercase leading-snug">
+                            {{ address.fullname }}
+                          </p>
+                        </div>
+                        <address class="not-italic uppercase">
+                          <p>
+                            {{ address.line_1 }}<br />
+                            {% if address.line_2 %}
+                              {{ address.line_2 }}<br />
+                            {% endif %}
+                            {{ address.zip }} {{ address.city }}<br />
+                            {{ address.country }}
+                          </p>
+                        </address>
+                        {% if address.is_default %}
+                          <p class="flex items-center gap-2 text-sm text-brown group-has-[input:checked]/card:text-brown-light">
+                            {% include '@ui/Icon/Icon.twig' with {
+                              name: 'check',
+                              attr: {
+                                class: 'w-4 h-4'
+                              }
+                            } %}
+                            <span>Transitaire par défaut</span>
+                          </p>
+                        {% endif %}
+                      </div>
+                      <div class="flex flex-col justify-end gap-3 p-1 pt-4">
+                        {% embed '@components/modal/form-address.twig'
+                          with {
+                            attr: {
+                              data_option_move: 'body'
+                            },
+                            address: address
+                          }
+                        %}
+                          {% block open %}
+                            {% include '@components/button.twig' with {
+                              label: 'Modifier',
+                              icon: 'pencil',
+                              attr: {
+                                data_ref: 'open[]',
+                                class: 'relative z-1 border border-white w-full'
+                              }
+                            } %}
+                          {% endblock %}
+                        {% endembed %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                  {% embed '@components/modal/form-address.twig'
+                    with {
+                      attr: {
+                        class: 'shrink-0',
+                        data_component: 'SliderItem Modal',
+                        data_option_move: 'body'
+                      }
+                    }
+                  %}
+                    {% block title %}
+                      Ajouter un transitaire
+                    {% endblock %}
+                    {% block open %}
+                      {% include '@components/button.twig' with {
+                        label: 'Ajouter un transitaire',
+                        icon: 'plus',
+                        variant: 'link',
+                        attr: {
+                          data_ref: 'open[]',
+                          class: 'p-6 s:p-8 w-80 h-full !bg-white !text-gray !ring-1 !ring-inset !ring-brown/20'
+                        }
+                      } %}
+                    {% endblock %}
+                  {% endembed %}
+                </div>
+                <div class="flex items-center justify-between mt-6 gap-8">
+                  <div class="buttons hidden m:flex items-center gap-4">
+                    <button title="Prev"
+                      type="button"
+                      data-component="SliderBtn"
+                      data-option-prev
+                      data-option-contain
+                      class="cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-50 block text-purple py-2">
+                      {% include '@ui/Icon/Icon.twig' with {
+                        name: 'arrow-line-desktop',
+                        attr: {
+                          class: ['rotate-180', 'w-14', 'block']
+                        }
+                      } %}
+                    </button>
+                    <button title="Next"
+                      type="button"
+                      data-component="SliderBtn"
+                      data-option-next
+                      data-option-contain
+                      class="cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-50 block text-purple py-2">
+                      {% include '@ui/Icon/Icon.twig' with {
+                        name: 'arrow-line-desktop',
+                        attr: {
+                          class: ['w-14', 'block']
+                        }
+                      } %}
+                    </button>
+                  </div>
+                  <div data-component="SliderProgress"
+                    data-option-contain
+                    class="w-full rounded bg-gradient-to-r from-gray/20 to-transparent overflow-hidden flex-1 h-px relative">
+                    <div class="h-px bg-purple rounded origin-left duration-1000 transition ease-in-out before:content-[''] before:absolute before:w-1/4 before:h-full before:bg-purple before:translate-x-full before:right-0 before:top-0"
+                      data-ref="progress"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h2 class="mb-6 text-base font-sans font-medium leading-snug text-purple">
+                  Document
+                </h2>
+                {% include '@components/radios-list.twig' with {
+                  options: [
+                    {
+                      label: 'Je n’ai pas besoin du document EX1',
+                      value: 'true'
+                    },
+                    {
+                      label: 'J’ai besoin du document EX1',
+                      description: 'Il s’agit d’un document pour les commandes de plus de 1000€ qui peut être etabli sur demande',
+                      value: 'false'
+                    }
+                  ],
+                  name: 'need_ex1'
+                } only %}
+              </div>
+            {% endif %}
+
+            <div>
+              <h2 class="mb-6 text-base font-sans font-medium leading-snug text-purple">
+                Mode de livraison
+              </h2>
+              {% embed '@components/radios-list.twig'
+                with {
+                  options: shipping_modes,
+                  name: (item.key == 'direct' ? 'direct' : 'transit') ~ '_shipping_mode',
+                  disabled_description: 'Non disponible pour cette commande'
+                }
+              %}
+                {% block append %}
+                  {% if not option.disabled %}
+                    <p class="text-right text-sm font-sans uppercase font-medium leading-snug">
+                      <span class="min-h-6 flex items-center">
+                        {% if option.price <= 0 %}
+                          Gratuit
+                        {% else %}
+                          {{ option.price|number_format(2, ',', '.') }}&nbsp;€&nbsp;HT
+                        {% endif %}
+                      </span>
+                    </p>
+                  {% endif %}
+                {% endblock %}
+                {% block details_relay %}
+                  <div class="flex items-center justify-between gap-4 w-full">
+                    <p class="text-sm font-sans uppercase font-medium leading-snug">
+                      {{ selected_relay.fullname }}<br />
+                      {{ selected_relay.line_1 }}<br />
+                      {% if selected_relay.line_2 %}
+                        {{ selected_relay.line_2 }}<br />
+                      {% endif %}
+                      {{ selected_relay.zip }} {{ selected_relay.city }}, {{ selected_relay.country }}
+                    </p>
+                    {% embed '@components/modal/relay-selection.twig'
+                      with {
+                        search: '5 Avenue de la Marseillaise, 67000 Strasbourg',
+                        attr: {
+                          data_option_move: 'body'
+                        }
+                      }
+                    %}
+                      {% block open %}
+                        {% include '@components/button.twig' with {
+                          label: selected_relay
+                            ? 'Choisir un autre point relais'
+                            : 'Choisir un point relais',
+                          variant: 'outline',
+                          invert: true,
+                          attr: {
+                            data_ref: 'open[]'
+                          }
+                        } %}
+                      {% endblock %}
+                    {% endembed %}
+                  </div>
+                {% endblock %}
+                {% block details_custom %}
+                  <div class="flex justify-end">
+                    {# Quand un client selectionne son propre transporteur #}
+                    {% embed '@components/modal/custom_transport.twig'
+                      with {
+                        search: '5 Avenue de la Marseillaise, 67000 Strasbourg',
+                        attr: {
+                          data_option_move: 'body'
+                        }
+                      }
+                    %}
+                      {% block open %}
+                        {% include '@components/button.twig' with {
+                          label: 'Infos supplémentaires',
+                          variant: 'outline',
+                          invert: true,
+                          attr: {
+                            data_ref: 'open[]'
+                          }
+                        } %}
+                      {% endblock %}
+                    {% endembed %}
+                  </div>
+                {% endblock %}
+              {% endembed %}
+            </div>
+
+            <div class="space-y-8">
+              <h2 class="text-base font-sans font-medium leading-snug text-purple">
+                Options d'expédition
+              </h2>
+              <div class="space-y-5">
+                <div class="flex items-center">
+                  <input id="{{ (item.key == 'direct' ? 'direct' : 'transit') ~ '_ship_once' }}"
+                    type="checkbox"
+                    name="{{ (item.key == 'direct' ? 'direct' : 'transit') ~ '_ship_once' }}"
+                    class="size-4 rounded-none cursor-pointer accent-purple" />
+                  <label for="{{ (item.key == 'direct' ? 'direct' : 'transit') ~ '_ship_once' }}"
+                    class="font-medium text-gray cursor-pointer pl-2">
+                    Expédier la commande en une seule fois
+                  </label>
+                </div>
+                <div class="flex items-center">
+                  <input id="{{
+                    (item.key == 'direct' ? 'direct' : 'transit')
+                      ~ '_ship_no_invoice'
+                    }}"
+                    type="checkbox"
+                    name="{{ (item.key == 'direct' ? 'direct' : 'transit') ~ '_ship_no_invoice' }}"
+                    class="size-4 rounded-none cursor-pointer accent-purple" />
+                  <label for="{{
+                    (item.key == 'direct' ? 'direct' : 'transit')
+                      ~ '_ship_no_invoice'
+                    }}"
+                    class="font-medium text-gray cursor-pointer pl-2">
+                    Ne pas joindre la facture au colis
+                  </label>
+                </div>
+              </div>
+              <div class="grid s:grid-cols-2 gap-6">
+                {% include '@components/field.twig' with {
+                  label: 'Votre référence de commande',
+                  name: (item.key == 'direct' ? 'direct' : 'transit') ~ '_order_reference'
+                } only %}
+                {% include '@components/field.twig' with {
+                  label: 'Ajouter un commentaire ou une note',
+                  name: (item.key == 'direct' ? 'direct' : 'transit') ~ '_order_note'
+                } only %}
+              </div>
+              <p class="font-medium">Livraison prévue entre le 13/05 et le 15/05/2025</p>
+            </div>
+          {% elseif item.key == 'pickup' %}
+            <div>
+              <div class="max-w-xl mx-auto text-center"><p>{{ item.description }}</p></div>
+              <h2 class="mb-6 text-base font-sans font-medium leading-snug text-purple">Service</h2>
+              {% embed '@components/radios-list.twig'
+                with {
+                  options: shipping_services,
+                  name: 'shipping_service',
+                  disabled_description: 'Non disponible pour cette commande'
+                }
+              %}
+                {% block append %}
+                  {% if not option.disabled %}
+                    <p class="text-right text-sm font-sans uppercase font-medium leading-snug">
+                      <span class="min-h-6 flex items-center">
+                        {% if option.price <= 0 %}
+                          Gratuit
+                        {% else %}
+                          {{ option.price|number_format(2, ',', '.') }}&nbsp;€&nbsp;HT
+                        {% endif %}
+                      </span>
+                    </p>
+                  {% endif %}
+                {% endblock %}
+              {% endembed %}
+            </div>
+          {% endif %}
+        </div>
+      {% endblock %}
+    {% endembed %}
+  </div>
+
+  <div class="grid s:grid-cols-2 gap-4">
+    {% include '@components/button.twig' with {
+      label: 'Précédent',
+      href: '/checkout/1-panier.html',
+      variant: 'outline'
+    } only %}
+    {% include '@components/button.twig' with {
+      label: 'Suivant',
+      href: '/checkout/3-paiement.html'
+    } only %}
+  </div>
+{% endblock %}

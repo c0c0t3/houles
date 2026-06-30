@@ -1,0 +1,179 @@
+{% extends '@layouts/pro.twig' %}
+
+{% set main_attr = {
+  data_component: 'NavigableSections'
+} %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Mes projets SVP',
+    url: '/espace-pro/projets-svp/'
+  }
+] %}
+
+{% set title = 'Mes projets “stylisez vos passementeries”' %}
+
+{% set sections = [
+  {
+    title: 'Projets sauvegardés',
+    anchor: 'projets-sauvegardés',
+    can_edit: true,
+    actions: [
+      {
+        label: 'Je ne souhaite pas commander mon set',
+        variant: 'outline'
+      },
+      {
+        label: 'Commander le(s) set(s) échantillonnage'
+      }
+    ],
+    projects: [
+      {
+        name: 'Projet test fidélisation',
+        status: {
+          label: 'En attente de la commande du set échantillonnage',
+          type: 'warning'
+        },
+        img: '/assets/espace-pro/produit-1.jpg',
+        id: '123456'
+      },
+      {
+        name: 'Projet 03',
+        status: {
+          label: 'En attente de la commande du set échantillonnage',
+          type: 'warning'
+        },
+        img: '/assets/espace-pro/produit-2.jpg',
+        id: '123456'
+      },
+      {
+        name: 'Projet 02',
+        status: {
+          label: 'En attente de la commande du set échantillonnage',
+          type: 'warning'
+        },
+        img: '/assets/espace-pro/produit-3.jpg',
+        id: '123456'
+      },
+      {
+        name: 'Projet test',
+        status: {
+          label: 'En attente de la commande du set échantillonnage',
+          type: 'warning'
+        },
+        img: '/assets/espace-pro/produit-4.jpg',
+        id: '123456'
+      },
+      {
+        name: 'Projet',
+        status: {
+          label: 'En attente de la commande du set échantillonnage',
+          type: 'warning'
+        },
+        img: '/assets/espace-pro/produit-5.jpg',
+        id: '123456'
+      }
+    ]
+  },
+  {
+    title: 'Projets en cours',
+    anchor: 'projets-en-cours',
+    can_edit: false,
+    actions: [
+      {
+        label: 'Estimer mon projet'
+      }
+    ],
+    projects: [
+      {
+        name: 'Projet test fidélisation',
+        status: {
+          label: 'En attente de l’estimation',
+          type: 'warning'
+        },
+        img: '/assets/espace-pro/produit-1.jpg',
+        id: '123456'
+      },
+      {
+        name: 'Projet 02',
+        status: {
+          label: 'En attente de l’estimation',
+          type: 'warning'
+        },
+        img: '/assets/espace-pro/produit-2.jpg',
+        id: '123456'
+      }
+    ]
+  },
+  {
+    title: 'Projets terminés',
+    anchor: 'projets-terminés',
+    can_edit: false,
+    projects: [
+      {
+        name: 'Projet test fidélisation',
+        status: {
+          label: 'Terminé',
+          type: 'success'
+        },
+        img: '/assets/espace-pro/produit-5.jpg',
+        id: '123456'
+      }
+    ]
+  }
+] %}
+
+{% block content %}
+  <nav class="sticky top-[7.875rem] s:top-24 z-10 bg-sand-darker before:absolute before:inset-x-0 before:bottom-0 before:h-px before:w-full before:bg-brown/20 overflow-hidden max-s:-mx-4">
+    <ul data-ref="linksContainer"
+      class="flex justify-start items-center gap-2 min-w-full max-w-full max-s:px-1 s:-mx-3 overflow-x-auto pt-3 s:pt-4 disable-scrollbars">
+      {% for section in sections %}
+        <li class="flex-shrink-0">
+          <a data-ref="links[]"
+            href="#{{ section.anchor }}"
+            class="relative block text-sm font-sans font-medium uppercase leading-snug text-brown/20 [&.is-active]:text-brown pb-5 s:pb-6 pt-2 px-3 before:absolute before:inset-x-3 before:bottom-0 before:h-px before:bg-transparent before:[&.is-active]:bg-brown transition-colors duration-300 ease-out-quad before:transition-colors before:duration-300 before:ease-out-quad">
+            {{ section.title }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  {% for section in sections %}
+    <section {{
+      html_attributes({
+        id: section.anchor,
+        data_component: 'NavigableSection',
+        data_option_intersection_observer: {
+          threshold: 0.5
+        },
+        class: 'bg-white text-gray p-6 s:p-8 space-y-10'
+      })
+      }}>
+      <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">
+        {{ section.title }}
+      </h2>
+      {% include '@components/table/projects.twig' with {
+        can_edit: section.can_edit,
+        rows: section.projects
+      } only %}
+      {% if (section.actions|length) > 0 %}
+        <div class="{{
+          html_classes(
+            [
+              'grid gap-4',
+              {
+                'grid-cols-1 s:grid-cols-2': (section.actions|length) > 1,
+                'grid-cols-1': (section.actions|length) == 1
+              }
+            ]
+          )
+          }}">
+          {% for action in section.actions %}
+            {% include '@components/button.twig' with action only %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </section>
+  {% endfor %}
+{% endblock %}

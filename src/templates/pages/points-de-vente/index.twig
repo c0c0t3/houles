@@ -1,0 +1,1205 @@
+{% extends '@layouts/page.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Nos points de vente',
+    url: '/points-de-vente/'
+  }
+] %}
+
+{% set html_attr = {
+  class: 'bg-sand'
+} %}
+
+{% set b2c = [
+  {
+    name: 'Showroom Houlès',
+    address: '13 rue du Mail',
+    postcode: '75003',
+    city: 'Paris',
+    phone: '+ 33 (0) 1 83 79 06 00',
+    email: 'showroom.ruedumail@houles.com',
+    lat: 48.8566,
+    lng: 2.3522,
+    products: [
+      {
+        name: 'Tringlerie',
+      },
+      {
+        name: 'Passementerie',
+      },
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Autres choses',
+      }
+    ],
+  },
+  {
+    name: 'Premier',
+    address: '6A rue bach',
+    postcode: '67310',
+    city: 'WASSELONNE',
+    phone: '+ 33 (0) 1 44 15 92 99',
+    email: 'atelier.premier@gmail.com',
+    lat: 48.642567,
+    lng: 7.459639,
+    showroom: true,
+    products: [
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ]
+  },
+  {
+    name: 'Cabinet Jean Louis Deniot',
+    address: '39 Quai d\'Orsay',
+    postcode: '75007',
+    city: 'Paris',
+    phone: '+ 33 (0) 1 45 44 04 65',
+    email: 'valerie@deniot.com',
+    lat: 48.642355,
+    lng: 7.459394,
+    products: [
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ]
+  },
+  {
+    name: 'Milena Assis',
+    address: '5 rue Chaptal',
+    postcode: '75009',
+    city: 'Paris',
+    phone: '+ 33 (0) 6 72 66 82 46',
+    email: 'milenalaureassis@gmail.com',
+    lat: 48.642786,
+    lng: 7.458783,
+    products: [
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ]
+  },
+  {
+    name: 'SARL Clémentine Messie',
+    address: '11 rue Bouchardon',
+    postcode: '75011',
+    city: 'Paris',
+    phone: '+ 33 (0) 1 48 06 93 82',
+    email: 'adv2@clementinemessie.com',
+    lat: 48.640438,
+    lng: 7.443079,
+    products: [
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ]
+  },
+  {
+    name: 'Sophie la Tapisserie',
+    address: '35 rue Marx Dormoy',
+    postcode: '75018',
+    city: 'Paris',
+    phone: '+ 33 (0) 6 63 64 78 60',
+    email: 'sophie@petitesmainsalacarte.com',
+    products: [
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ]
+  },
+  {
+    name: 'Showroom Houlès',
+    address: '13 rue du Mail',
+    postcode: '75002',
+    city: 'Paris',
+    phone: '+ 33 (0) 1 83 79 06 00',
+    email: 'showroom.ruedumail@houles.com',
+    products: [
+      {
+        name: 'Rideaux',
+      }
+    ]
+  },
+  {
+    name: 'Showroom Houlès',
+    address: '13 rue du Mail',
+    postcode: '75003',
+    city: 'Paris',
+    phone: '+ 33 (0) 1 83 79 06 00',
+    email: 'showroom.ruedumail@houles.com',
+    products: [
+      {
+        name: 'Tringlerie',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ],
+  },
+  {
+    name: 'Premier',
+    address: '27 rue Jouffroy d\'Abbans',
+    postcode: '75017',
+    city: 'Paris',
+    phone: '+ 33 (0) 1 44 15 92 99',
+    email: 'atelier.premier@gmail.com',
+    products: [
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ]
+  },
+  {
+    name: 'Cabinet Jean Louis Deniot',
+    address: '39 Quai d\'Orsay',
+    postcode: '75007',
+    city: 'Paris',
+    phone: '+ 33 (0) 1 45 44 04 65',
+    email: 'valerie@deniot.com',
+    products: [
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ]
+  },
+  {
+    name: 'Milena Assis',
+    address: '5 rue Chaptal',
+    postcode: '75009',
+    city: 'Paris',
+    phone: '+ 33 (0) 6 72 66 82 46',
+    email: 'milenalaureassis@gmail.com',
+    products: [
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ]
+  },
+  {
+    name: 'SARL Clémentine Messie',
+    address: '11 rue Bouchardon',
+    postcode: '75011',
+    city: 'Paris',
+    phone: '+ 33 (0) 1 48 06 93 82',
+    email: 'adv2@clementinemessie.com',
+    products: [
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ]
+  },
+  {
+    name: 'Sophie la Tapisserie',
+    address: '35 rue Marx Dormoy',
+    postcode: '75018',
+    city: 'Paris',
+    phone: '+ 33 (0) 6 63 64 78 60',
+    email: 'sophie@petitesmainsalacarte.com',
+    products: [
+      {
+        name: 'Rideaux',
+      },
+      {
+        name: 'Passementerie',
+      }
+    ]
+  },
+  {
+    name: 'Showroom Houlès',
+    address: '13 rue du Mail',
+    postcode: '75002',
+    city: 'Paris',
+    phone: '+ 33 (0) 1 83 79 06 00',
+    email: 'showroom.ruedumail@houles.com',
+    products: [
+      {
+        name: 'Rideaux',
+      }
+    ]
+  }
+] %}
+
+{% set b2b = [
+  {
+    continent_name: 'Afrique',
+    countries: [
+      {
+        name: 'Maroc',
+        distributors: [
+          {
+            name: 'BISSATE',
+            address: '152 Boulevard d\'Anfa',
+            city: 'CASABLANCA',
+            country: 'MAROC',
+            phone: '212223931',
+            fax: '21222393144',
+            email: 'bissate@menara.ma',
+            lat: 31.791702,
+            lng: -7.092620
+          }
+        ]
+      },
+      {
+        name: 'Tunisie',
+        distributors: [
+          {
+            name: 'Centrale Accessoires',
+            address: '14 rue des Diamants\nCité la Gazelle',
+            postcode: '2083',
+            city: 'Ariana - Tunis',
+            country: 'TUNISIE',
+            phone: '0021671763631',
+            email: 'a.arif@centraletunisie.com',
+            lat:	33.886917,
+            lng: 9.537499
+          }
+        ]
+      },
+      {
+        name: 'Autres pays',
+        distributors: [
+          {
+            name: 'Houlès Export Department',
+            address: '2, chemin de la Coudrette',
+            postcode: '77123',
+            city: 'NOISY SUR ECOLE',
+            country: 'FRANCE',
+            phone: '+ 33 1 60 39 62 02',
+            email: 'export@houles.com',
+            lat: 22.132715,
+            lng: 3.066955
+          }
+        ]
+      }
+    ]
+  },
+  {
+    continent_name: 'Amérique du Sud',
+    countries: [
+      {
+        name: 'Brésil',
+        distributors: [
+          {
+            name: 'CASALILLE COMERCIO E DECORACOES LTDA',
+            address: 'Rua Joaquim Floriano, 72\nRoom 124',
+            city: 'SAO PAULO',
+            country: 'BRÉSIL',
+            phone: '0055 (11) 94373-9805',
+            email: 'atendimento@casalille.com.br'
+          }
+        ]
+      },
+      {
+        name: 'Chili',
+        distributors: [
+          {
+            name: 'DECORIMPOR LTDA',
+            address: 'Alonso De Cordova 4008',
+            city: 'VITACURA SANTIAGO',
+            country: 'CHILI',
+            phone: '(56) 23 718 800',
+            fax: '(56) 2 208 4786',
+            email: 'jpaquay@rsmaison.cl'
+          }
+        ]
+      },
+      {
+        name: 'Méxique',
+        distributors: [
+          {
+            name: 'RW LUXURY INTERIOR RESSOURCES',
+            address: 'Acuesucto Rio Honda 299\nLomas de Virreyes',
+            postcode: '11000',
+            city: 'MEXICO',
+            country: 'MÉXIQUE',
+            phone: '+55 52280-4090',
+            email: 'info@rwluxury.com.mx'
+          }
+        ]
+      },
+      {
+        name: 'Panama',
+        distributors: [
+          {
+            name: 'Houlès Export Department',
+            address: '2, chemin de la Coudrette',
+            postcode: '77123',
+            city: 'NOISY SUR ECOLE',
+            country: 'PANAMA',
+            phone: '+ 33 1 60 39 62 02',
+            email: 'export@houles.com'
+          }
+        ]
+      },
+      {
+        name: 'Autres pays',
+        distributors: [
+          {
+            name: 'Houlès Export Department',
+            address: '2, chemin de la Coudrette',
+            postcode: '77123',
+            city: 'NOISY SUR ECOLE',
+            country: 'FRANCE',
+            phone: '+ 33 1 60 39 62 02',
+            email: 'export@houles.com'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    continent_name: 'Asie',
+    countries: [
+      {
+        name: 'Chine',
+        distributors: [
+          {
+            name: 'INTOLIVING',
+            address: 'Rm. B-20, 2/F, Bldg 15, Upper East Side Central Plaza\nNo 6 North Ring Road, Chaoyang District',
+            postcode: '100016',
+            city: 'BEIJING',
+            country: 'CHINE',
+            phone: '+8610 (5250) 9008',
+            email: 'beijing@intoliving.hk'
+          },
+          {
+            name: 'CETEC',
+            address: 'Unit 02-06, 15/F Tower A, Southmark\n11 Yip Hing Street, Wong Chuk Hang',
+            city: 'Aberdeen HONG KONG',
+            country: 'CHINE',
+            phone: '(852) 2521 1325',
+            fax: '(852) 2810 1954',
+            email: 'info@cetec.com.hk'
+          }
+        ]
+      },
+      {
+        name: 'Corée du Sud',
+        distributors: [
+          {
+            name: 'DAV',
+            address: '17, Hakdong-ro 37-gil, Gangnam-gu',
+            postcode: '06053',
+            city: 'SEOUL',
+            country: 'CORÉE DU SUD',
+            phone: '+82 2 512 8590',
+            fax: '+82 2 545 2850',
+            email: 'dav@dav.kr'
+          }
+        ]
+      },
+      {
+        name: 'Inde',
+        distributors: [
+          {
+            name: 'SG Corporation',
+            address: 'Khasra 347, Ground Floor,\n100 Ft Road, Ghitorni',
+            postcode: '11003',
+            city: 'NEW DELHI',
+            country: 'INDE',
+            phone: '+91 9818832224',
+            email: 'sandeep.gupta@sgcorporation.in'
+          }
+        ]
+      },
+      {
+        name: 'Indonésie',
+        distributors: [
+          {
+            name: 'Houlès Export Department',
+            address: '2, chemin de la Coudrette',
+            postcode: '77123',
+            city: 'NOISY SUR ECOLE',
+            country: 'FRANCE',
+            phone: '+ 33 1 60 39 62 02',
+            email: 'export@houles.com'
+          }
+        ]
+      },
+      {
+        name: 'Japon',
+        distributors: [
+          {
+            name: 'Jean Marc DEPAIRE',
+            address: 'Nakanocho 1-6-5 401 Miyakojima-Ku',
+            postcode: '534-0027',
+            city: 'OSAKA',
+            country: 'JAPON',
+            phone: '+ 81-90-2199-9482',
+            fax: '+ 81-90-2199-9482',
+            email: 'houlesjapan@houles.com'
+          }
+        ]
+      },
+      {
+        name: 'Philippines',
+        distributors: [
+          {
+            name: 'ELEMENTS FINE FURNISHING FABRICS INC',
+            address: '2322 Chino Roces Avenue\n9th Floor DPC Place Building',
+            postcode: '1222',
+            city: 'MAKATI CITY',
+            country: 'PHILIPPINES',
+            phone: '+ 63 2 889 8872/74',
+            fax: '+ 63 2 889 9064',
+            email: 'patti1263@gmail.com'
+          }
+        ]
+      },
+      {
+        name: 'Singapour',
+        distributors: [
+          {
+            name: 'TATUM',
+            address: '3B Tank Road (Level 3)',
+            postcode: '238060',
+            city: 'Singapore',
+            country: 'SINGAPOUR',
+            phone: '+65 6816 7906',
+            email: 'info@tatumcompany.sg'
+          }
+        ]
+      },
+      {
+        name: 'Taiwan',
+        distributors: [
+          {
+            name: 'Eden Collection Co Ltd',
+            address: 'Rm. 306, 3F., No. 764, Sec. 5, Zhongxiao E. Rd., Xinyi Dist',
+            postcode: '10492',
+            city: 'Taipei City',
+            country: 'TAIWAN',
+            phone: '+886 2 2711 2338',
+            fax: '+886 2 2711 2679',
+            email: 'info@edencollection.com.tw'
+          }
+        ]
+      },
+      {
+        name: 'Thailande',
+        distributors: [
+          {
+            name: 'CHAROEN DECORATION',
+            address: '300 Ekkamai 16,\nKlongton Nue, Vaddhana',
+            postcode: '10110',
+            city: 'BANGKOK',
+            country: 'THAILANDE',
+            phone: '+ 66 2 381 8388 / 97',
+            fax: '+ 66 2 381 8398',
+            email: 'info@charoendecor.com'
+          }
+        ]
+      },
+      {
+        name: 'Autres pays',
+        distributors: [
+          {
+            name: 'Houlès Export Department',
+            address: '2, chemin de la Coudrette',
+            postcode: '77123',
+            city: 'NOISY SUR ECOLE',
+            country: 'FRANCE',
+            phone: '+ 33 1 60 39 62 02',
+            email: 'export@houles.com'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    continent_name: 'Canada',
+    distributors: [
+      {
+        name: 'DWA INTERIOR FURNISHINGS',
+        address: '501- 36 Ave Se',
+        postcode: 'T2G 1W5',
+        city: 'CALGARY',
+        country: 'CANADA',
+        phone: '1-403 245-4014',
+        fax: '1-403 229 1913',
+        lat: 61.066692,
+        lng: -107.991707,
+      },
+      {
+        name: 'THEO MONTREAL',
+        address: '4333 Rue Sainte-Catherine Ouest,',
+        postcode: 'H3Z 1P9',
+        city: 'MONTREAL-WESTMOUNT',
+        country: 'CANADA',
+        phone: '514-842-9116',
+        fax: '514-842-3738',
+        email: 'montreal@theodecor.com',
+        lat: 45.5031824,
+        lng: -73.5698065,
+      },
+      {
+        name: 'PRIMAVERA TORONTO, ONTARIO',
+        address: '125 TYCOS DRIVE\nUNIT 2, ONTARIO',
+        postcode: 'M6B 1W6',
+        city: 'TORONTO',
+        country: 'CANADA',
+        phone: '416 921 3334',
+        email: 'info@primavera.ca',
+        lat: 43.653482,
+        lng: -79.383935,
+      }
+    ]
+  },
+  {
+    continent_name: 'Etats-Unis',
+    countries: [
+      {
+        name: 'Alaska',
+        distributors: [
+          {
+            name: 'THE DIXON GROUP',
+            address: '5701 6th Avenue S\nUnit 232',
+            postcode: 'WA 98108',
+            city: 'SEATTLE',
+            country: 'ETATS-UNIS',
+            phone: '207-767-4454',
+            email: 'info@thedixongroup.net'
+          }
+        ]
+      },
+      {
+        name: 'Alabama',
+        distributors: [
+          {
+            name: 'AINSWORTH - NOAH',
+            address: '351 Peachtree Hills Ave NE',
+            postcode: 'GA 30305',
+            city: 'ATLANTA',
+            country: 'ETATS-UNIS',
+            phone: '(404) 231 8787',
+            email: 'info@ainsworthnoah.com'
+          }
+        ]
+      },
+      {
+        name: 'Arkansas',
+        distributors: [
+          {
+            name: 'DAVID SUTHERLAND',
+            address: '1025 N. Stemmons Freeway\nSuite 340',
+            postcode: 'TX 75207',
+            city: 'DALLAS',
+            country: 'ETATS-UNIS',
+            phone: '214-742-6501',
+            fax: '214-744-2813',
+            email: 'nuz@davidsutherlandshowroom.com'
+          }
+        ]
+      },
+      {
+        name: 'Arizona',
+        distributors: [
+          {
+            name: 'TOWN',
+            address: '2716 N 68th St, Suite 2',
+            postcode: 'AZ 85257',
+            city: 'SCOTTSDALE',
+            country: 'ETATS-UNIS',
+            phone: '(480) 214-4792',
+            fax: '(602) 297-6821',
+            email: 'infoaz@townstudio.com'
+          }
+        ]
+      },
+      {
+        name: 'California',
+        distributors: [
+          {
+            name: 'SCALAMANDRE',
+            address: '8687 Melrose Ave. Ste B617',
+            postcode: 'CA 90069',
+            city: 'LOS ANGELES',
+            country: 'ETATS-UNIS',
+            phone: '(310) 657-8275',
+            fax: '(310) 657-2191',
+            email: 'hallor@scalamandre.com'
+          },
+          {
+            name: 'GINA B & COMPANY',
+            address: '23811 Aliso Creek Rd. Ste 136',
+            postcode: 'CA 92677',
+            city: 'Laguna Niguel',
+            country: 'ETATS-UNIS',
+            phone: '(939) 643-1430',
+            email: 'petra@ginab.com'
+          },
+          {
+            name: 'EGG & DART',
+            address: '74-050 Highway 111',
+            postcode: 'CA 92260',
+            city: 'Palm Desert',
+            country: 'ETATS-UNIS',
+            phone: '760-340-3900',
+            fax: '760-340-3991',
+            email: 'cs@egg-and-dart.com'
+          },
+          {
+            name: 'HEWN',
+            address: '299 Kansas St',
+            postcode: 'CA 94103',
+            city: 'SAN FRANCISCO',
+            country: 'ETATS-UNIS',
+            phone: '(415) 962-7833',
+            email: 'danielle@hewnsf.com'
+          }
+        ]
+      },
+      {
+        name: 'Colorado',
+        distributors: [
+          {
+            name: 'EGG & DART',
+            address: '595 So. Broadway Ste 110E',
+            postcode: 'CO 80209',
+            city: 'DENVER',
+            country: 'ETATS-UNIS',
+            phone: '(303) 744-1676',
+            fax: '(303) 744-6742',
+            email: 'jamie@egg-and-dart.com'
+          }
+        ]
+      },
+      {
+        name: 'Connecticut',
+        distributors: [
+          {
+            name: 'HOULÈS NYC SHOWROOM',
+            address: '979 Third Ave Suite 919',
+            postcode: 'NY 10022',
+            city: 'NEW YORK',
+            country: 'ETATS-UNIS',
+            phone: '1 212 935 3900',
+            fax: '1 212 935 3901',
+            email: 'houlesnyc@houlesusa.com'
+          }
+        ]
+      },
+      {
+        name: 'District Of Columbia',
+        distributors: [
+          {
+            name: 'HOLLY HUNT',
+            address: '1099 14th St NW\nSuite 240',
+            postcode: '20005',
+            city: 'WASHINGTON DC',
+            country: 'ETATS-UNIS',
+            phone: '202-554-2910',
+            fax: '202-554-2911',
+            email: 'r.obermiller@HollyHunt.com'
+          }
+        ]
+      },
+      {
+        name: 'Delaware',
+        distributors: [
+          {
+            name: 'Scalamandre at Croce',
+            address: 'Design Center of Philadelphia\n1100 Ludlow Street - Suite 302',
+            postcode: 'PA 19107',
+            city: 'PHILADELPHIA',
+            country: 'ETATS-UNIS',
+            phone: '(215)-561-6160',
+            email: 'info@croceshowroom.com'
+          }
+        ]
+      },
+      {
+        name: 'Florida',
+        distributors: [
+          {
+            name: 'STARK / SCALAMANDRÉ',
+            address: '2870 Pershing Street',
+            postcode: 'FL 33020',
+            city: 'HOLLYWOOD',
+            country: 'ETATS-UNIS',
+            phone: '954-925-3500',
+            fax: '954-923-7223',
+            email: 'klund@scalamandre.com'
+          },
+          {
+            name: 'INTERIORS TRADING',
+            address: '8940 Western Way\nSuite 15',
+            postcode: 'FL 32256',
+            city: 'JACKSONVILLE',
+            country: 'ETATS-UNIS',
+            phone: '904-464-0100',
+            fax: '904-464-0700',
+            email: 'jax@floridafabric.com'
+          },
+          {
+            name: 'DESIGNERS BUYING GROUP, INC.',
+            address: '661 Maplewood Drive, Suite 1',
+            postcode: 'FL 33458',
+            city: 'JUPITER',
+            country: 'ETATS-UNIS',
+            phone: '(561) 575-9200',
+            email: 'info@dbgwholesale.com'
+          },
+          {
+            name: 'INTERNATIONAL DESIGN SOURCE - NAPLES',
+            address: '6062 Taylor Road',
+            postcode: 'FL 34109',
+            city: 'NAPLES',
+            country: 'ETATS-UNIS',
+            phone: '(239) 598 4827',
+            fax: '(239) 591 4297',
+            email: 'john@ids1.com'
+          },
+          {
+            name: 'DIXIE Textile & Supply Co',
+            address: '4555 Dardanelle Dr',
+            postcode: 'FL 32808',
+            city: 'ORLANDO',
+            country: 'ETATS-UNIS',
+            phone: '407-578-0000',
+            fax: '407-578-0003',
+            email: 'dcharaco@dixietextilesupply.com'
+          },
+          {
+            name: 'INTERIORS TRADING',
+            address: '408 Virginia Road',
+            postcode: 'FL 32803',
+            city: 'ORLANDO',
+            country: 'ETATS-UNIS',
+            phone: '(407) 228-9977',
+            fax: '(407) 228-9977',
+            email: 'mail@itc-orlando.com'
+          },
+          {
+            name: 'INTERNATIONAL DESIGN SOURCE - SARASOTA',
+            address: '1785 Northgate Blvd.',
+            postcode: 'FL 34234',
+            city: 'SARASOTA',
+            country: 'ETATS-UNIS',
+            phone: '(941) 552 2552',
+            fax: '(941) 552 2554',
+            email: 'dorna@ids1.com'
+          },
+          {
+            name: 'INTERIORS TRADING',
+            address: '315 N. Willow Street',
+            postcode: 'FL 33606',
+            city: 'TAMPA',
+            country: 'ETATS-UNIS',
+            phone: '(813) 258-6678',
+            fax: '(813) 258-6738',
+            email: 'mail@floridafabric.com'
+          }
+        ]
+      },
+      {
+        name: 'Georgia',
+        distributors: [
+          {
+            name: 'AINSWORTH - NOAH',
+            address: '351 Peachtree Hills Ave NE',
+            postcode: 'GA 30305',
+            city: 'ATLANTA',
+            country: 'ETATS-UNIS',
+            phone: '(404) 231 8787',
+            email: 'info@ainsworthnoah.com'
+          }
+        ]
+      },
+      {
+        name: 'Hawaii',
+        distributors: [
+          {
+            name: 'SCALAMANDRE',
+            address: '8687 Melrose Ave. Ste B617',
+            postcode: 'CA 90069',
+            city: 'LOS ANGELES',
+            country: 'ETATS-UNIS',
+            phone: '(310) 657-8275',
+            fax: '(310) 657-2191',
+            email: 'hallor@scalamandre.com'
+          }
+        ]
+      },
+      {
+        name: 'Iowa',
+        distributors: [
+          {
+            name: 'HOULÈS NYC',
+            country: 'ETATS-UNIS',
+            phone: '(212) 935-3900',
+            fax: '(212) 935-3901',
+            email: 'houlesnyc@houlesusa.com'
+          }
+        ]
+      },
+      {
+        name: 'Idaho',
+        distributors: [
+          {
+            name: 'IDAHO DESIGN CENTER',
+            address: '146 S. Curtis Road',
+            postcode: 'ID 83705',
+            city: 'BOISE',
+            country: 'ETATS-UNIS',
+            phone: '(208) 658-8228',
+            fax: '(208) 658-1444',
+            email: 'idc@idahodesigncenter.com'
+          },
+          {
+            name: 'THE DIXON GROUP',
+            address: '5701 6th Avenue S\nUnit 232',
+            postcode: 'WA 98108',
+            city: 'WA 98108',
+            country: 'ETATS-UNIS',
+            phone: '207-767-4454',
+            email: 'info@thedixongroup.net'
+          }
+        ]
+      },
+      {
+        name: 'Illinois',
+        distributors: [
+          {
+            name: 'Scalamandre',
+            address: '222 Merchandise Mart Plaza\nSuite 6-132',
+            postcode: 'IL 60654',
+            city: 'CHICAGO',
+            country: 'ETATS-UNIS',
+            phone: '(312) 644 9245',
+            email: 'dbrackney@scalamandre.com'
+          }
+        ]
+      },
+      {
+        name: 'Indiana',
+        distributors: [
+          {
+            name: 'Scalamandre',
+            address: '222 Merchandise Mart Plaza\nSuite 6-132',
+            postcode: 'IL 60654',
+            city: 'CHICAGO',
+            country: 'ETATS-UNIS',
+            phone: '(312) 644 9245',
+            email: 'dbrackney@scalamandre.com'
+          }
+        ]
+      },
+      {
+        name: 'Kansas',
+        distributors: [
+          {
+            name: 'Scalamandre',
+            address: '222 Merchandise Mart Plaza\nSuite 6-132',
+            postcode: 'IL 60654',
+            city: 'CHICAGO',
+            country: 'ETATS-UNIS',
+            phone: '(312) 644 9245',
+            email: 'dbrackney@scalamandre.com'
+          },
+          {
+            name: 'DESIGN & DETAIL',
+            address: '10513 W 84th Terrace',
+            postcode: 'KS 66214',
+            city: 'LENEXA',
+            country: 'ETATS-UNIS',
+            phone: '(913) 218-0012',
+            email: 'madison@designanddetailkc.com'
+          }
+        ]
+      },
+      {
+        name: 'Kentucky',
+        distributors: [
+          {
+            name: 'DECIOCCIO',
+            address: '700 West Pete Rose Way Longworth Hall',
+            postcode: 'OH 45203',
+            city: 'CINCINNATI',
+            country: 'ETATS-UNIS',
+            phone: '513-241-9573',
+            fax: '513-241-9915',
+            email: 'ashley@decioccioshowroom.com'
+          }
+        ]
+      },
+      {
+        name: 'Louisiana',
+        distributors: [
+          {
+            name: 'DAVID SUTHERLAND',
+            address: '5120 Woodway Drive\nSuite 170',
+            postcode: 'TX 77056',
+            city: 'HOUSTON',
+            country: 'ETATS-UNIS',
+            phone: '713-961-7886',
+            fax: '713-961-5664',
+            email: 'rodney@davidsutherlandshowroom.com'
+          },
+          {
+            name: 'SPRUCE',
+            address: '2043 Magazine St',
+            postcode: 'LA 70130',
+            city: 'NEW ORLEANS',
+            country: 'ETATS-UNIS',
+            phone: '504-265-0946',
+            email: 'studio@spruceshowroom.com'
+          }
+        ]
+      },
+      {
+        name: 'Massachusetts',
+        distributors: [
+          {
+            name: 'SCALAMANDRE',
+            address: '1 Design Center Place\nSuite 325',
+            postcode: 'MA 02210',
+            city: 'BOSTON',
+            country: 'ETATS-UNIS',
+            phone: '(617) 574 9261',
+            fax: '(617) 357-0145',
+            email: 'rgray@scalamandre.com'
+          }
+        ]
+      },
+      {
+        name: 'Maryland',
+        distributors: [
+          {
+            name: 'HOLLY HUNT',
+            address: '1099 14th St NW\nSuite 240',
+            postcode: '20005',
+            city: 'WASHINGTON DC',
+            country: 'ETATS-UNIS',
+            phone: '202-554-2910',
+            fax: '202-554-2911',
+            email: 'r.obermiller@HollyHunt.com'
+          }
+        ]
+      },
+      {
+        name: 'Maine',
+        distributors: [
+          {
+            name: 'SCALAMANDRE',
+            address: '1 Design Center Place\nSuite 325',
+            postcode: 'MA 02210',
+            city: 'BOSTON',
+            country: 'ETATS-UNIS',
+            phone: '(617) 574 9261',
+            fax: '(617) 357-0145',
+            email: 'rgray@scalamandre.com'
+          }
+        ]
+      },
+      {
+        name: 'Michigan',
+        distributors: [
+          {
+            name: 'Scalamandre',
+            address: '1697 Stutz Dr',
+            postcode: 'MI 48084',
+            city: 'MICHIGAN',
+            country: 'ETATS-UNIS',
+            phone: '248-643-6255',
+            email: 'boresky@scalamandre.com'
+          }
+        ]
+      },
+      {
+        name: 'Minnesota',
+        distributors: [
+          {
+            name: 'HOULÈS NYC',
+            country: 'ETATS-UNIS',
+            phone: '(212) 935-3900',
+            fax: '(212) 935-3901',
+            email: 'houlesnyc@houlesusa.com'
+          }
+        ]
+      },
+      {
+        name: 'Missouri',
+        distributors: [
+          {
+            name: 'Scalamandre',
+            address: '222 Merchandise Mart Plaza\nSuite 6-132',
+            postcode: 'IL 60654',
+            city: 'CHICAGO',
+            country: 'ETATS-UNIS',
+            phone: '(312) 644 9245',
+            email: 'dbrackney@scalamandre.com'
+          },
+          {
+            name: 'DESIGN & DETAIL',
+            address: '10513 W 84th Terrace',
+            postcode: 'KS 66214',
+            city: 'LENEXA',
+            country: 'ETATS-UNIS',
+            phone: '(913) 218-0012',
+            email: 'madison@designanddetailkc.com'
+          },
+          {
+            name: 'DESIGN & DETAIL',
+            address: '2731 Sutton Boulevard, Suite 100',
+            postcode: 'MO 63143',
+            city: 'MAPLEWOOD',
+            country: 'ETATS-UNIS',
+            phone: '314-781-3336',
+            fax: '314-781-3797',
+            email: 'info@designanddetailstl.com'
+          }
+        ]
+      },
+      {
+        name: 'Mississippi',
+        distributors: [
+          {
+            name: 'AINSWORTH - NOAH',
+            address: '351 Peachtree Hills Ave NE',
+            postcode: 'GA 30305',
+            city: 'ATLANTA',
+            country: 'ETATS-UNIS',
+            phone: '(404) 231 8787',
+            email: 'info@ainsworthnoah.com'
+          }
+        ]
+      },
+    ]
+  }
+]
+%}
+
+
+{% block body %}
+<main>
+  <section data-component="StoreLocator" data-pin-retailer="/assets/showroom-marker.png" data-pin-store="/assets/houles-marker.png" class="overflow-hidden m:flex m:items-end relative s:-mt-36 m:-mt-[7.125rem] m:bg-sand-darker m:pt-52 m:h-screen">
+    <div id="map" data-ref="container" class="map w-full bg-gray/10 s:aspect-[4/3] m:aspect-auto m:absolute m:top-0 m:left-0 h-96 s:h-auto m:w-full m:h-full">
+    </div>
+    <div class="container m:relative">
+      <div class="flex items-start justify-end m:absolute m:bottom-0 m:right-8">
+
+        {# Back #}
+        <div class="absolute top-4 m:top-0 m:right-full">
+          <button data-ref="back" class="p-4 bg-purple-light opacity-0 pointer-events-none transition-all is-active:opacity-100 is-active:pointer-events-auto">
+            {% include '@ui/Icon/Icon.twig' with {
+              name: 'chevron',
+              attr: {
+                class: 'block size-4 rotate-90 text-white [&>svg]:w-full [&>svg]:h-full'
+              }
+            } %}
+          </button>
+        </div>
+
+        {# Stores list #}
+        <div data-ref="StoreLocatorNav" class="m:h-[calc(100svh-12rem)] flex flex-col w-full m:w-[512px] l:w-[655px] bg-sand pt-4 m:pt-8">
+          <h2 class="m:px-8 font-serif text-2xl m:text-4xl uppercase leading-none text-gray mb-6">
+            Points de vente
+          </h2>
+
+
+            {# TABS START#}
+
+            <div class="relative overflow-hidden flex-1">
+              {% embed '@ui/Tabs/Tabs.twig'
+                with {
+                  attr: {
+                    data_component: 'Tabs Action',
+                    data_option_on: 'enable',
+                    data_option_effect: 'window.dispatchEvent(new Event("resize"))',
+                    data_option_styles: {
+                      btn: {
+                        open: 'is-active'
+                      }
+                    },
+                    class: 'h-full'
+                  },
+                  content_attr: {
+                    class: 'flex flex-col h-full'
+                  },
+                  btn_attr: {
+                    style: null,
+                    data_component: 'Action',
+                    data_option_target: 'StoreLocator',
+                    data_option_effect: 'action.$el.querySelector(".b2b") ? target.displayMarkers("b2b") : target.displayMarkers("b2c")',
+                    class: 'block p-2 group/btn text-sm uppercase text-purple-extra-light [&.is-active]:text-purple hover:text-purple-light transition-colors duration-300 ease-out-quad'
+                  },
+                  items: [
+                    {
+                      title: 'Professionnels',
+                      description: 'Livraison transitaire',
+                      key: 'b2b'
+                    },
+                    {
+                      title: 'Particuliers',
+                      description: 'Livraison directe à domicile',
+                      key: 'b2c',
+                      attr: {
+                        data_option_is_open: true
+                      }
+                    }
+                  ]
+                }
+              %}
+                {% block title_wrapper %}
+                  <div class="m:px-8 relative">
+                    <div class="zdzdzd flex items-center justify-end w-full mb-6">
+                      <span class="text-brown whitespace-nowrap shrink-0 uppercase font-medium text-sm">vous êtes</span>
+                      <div class="w-full flex items-center justify-end ">{{ parent() }}</div>
+                    </div>
+                  </div>
+                {% endblock %}
+                {% block title %}
+                  <span class="{{ item.key }} underline-effect-off group-[&.is-active]/btn:underline-effect-on">
+                    {{ item.title }}
+                  </span>
+                {% endblock %}
+                {% block content %}
+
+                    {% if item.key == 'b2c' %}
+                      {% include '@components/ui/distributors/b2c.twig' with b2c %}
+                    {% elseif item.key == 'b2b' %}
+                      {% include '@components/ui/distributors/b2b.twig' with b2b %}
+                    {% endif %}
+                {% endblock %}
+              {% endembed %}
+            </div>
+
+            {# TABS END #}
+
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

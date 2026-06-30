@@ -1,0 +1,88 @@
+{% extends '@layouts/base.twig' %}
+
+{% set main_attributes =
+  merge_html_attributes(
+    main_attr ?? {},
+    {},
+    {
+      class: 'bg-white max-w-[70rem] mx-auto flex flex-col gap-12 max-s:container pb-10 s:p-10 s:my-10'
+    }
+  )
+%}
+
+{% set menu_items = [
+  {
+    label: 'Panier',
+    url: '/checkout/1-panier.html'
+  },
+  {
+    label: 'Livraison',
+    url: '/checkout/2-livraison.html'
+  },
+  {
+    label: 'Paiement',
+    url: '/checkout/3-paiement.html'
+  },
+  {
+    label: 'Validation',
+    url: '/checkout/4-validation.html'
+  }
+] %}
+
+{% set current_path = page().href %}
+{% set current_menu_item = null %}
+{% set is_last_step = current_path == menu_items|last.url %}
+
+{% block body %}
+  <main {{ html_attributes(main_attributes) }}>
+    <nav class="max-s:-mx-4 bg-white max-s:sticky max-s:top-16 max-s:z-10">
+      <ul class="relative flex justify-between s:justify-center items-end gap-8 text-xs uppercase tracking-wide text-brown/40 before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-brown/20 max-s:px-4">
+        {% for item in menu_items %}
+          {% set item_class = 'relative block py-6 s:pt-0' %}
+          <li>
+            {% if current_menu_item or current_path == item.url or is_last_step %}
+              <span class="{{
+                html_classes(
+                  [
+                    item_class,
+                    {
+                      'text-purple-light after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-purple-light': current_path
+                        == item.url
+                    }
+                  ]
+                )
+                }}">
+                {{ item.label }}
+              </span>
+            {% else %}
+              <a href="{{ item.url }}"
+                class="{{
+                html_classes(
+                  [
+                    item_class,
+                    'hover:text-purple-light transition-colors duration-300 ease-out-quad'
+                  ]
+                )
+                }}">
+                {{ item.label }}
+              </a>
+            {% endif %}
+          </li>
+          {% if current_path == item.url %}
+            {% set current_menu_item = item %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </nav>
+
+    {% if title is defined %}
+      {% block title %}
+        <h1 class="text-2xl s:text-4xl font-serif text-gray font-light uppercase text-center">
+          {{ title }}
+        </h1>
+      {% endblock %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+{% endblock %}

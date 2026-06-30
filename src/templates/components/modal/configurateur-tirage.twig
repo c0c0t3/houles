@@ -1,0 +1,375 @@
+{% set tooltip_modal_longueur_config =
+  '<p>Lorsque le rail est monté avec un système de tirage, les poulies latérales dépassent de 27mm de chaque côté du rail.<br>La longueur à indiquer correspond à la <U>longueur totale du rail souhaitée</U>, « hors tout » (cache poulies compris)<br>Dans le cas d’une longueur de configuration > à 3m, nous procéderons au montage en utilisant 2 rails coupés sur mesure et en rajoutant 1 about.</p>
+<img src="/assets/rail/longueur_configuration.jpg" alt="longueur_configuration.jpg" width="300px"> '
+%}
+
+{% set tooltip_modal_rail =
+  '<p>Dans le cas d’une pose de rail « mur à mur » avec naissances murales, il faudra indiquer dans la case « Longueur de la configuration » <U>la mesure exacte entre les 2 murs, prise à la hauteur où sera posé le rail</U>.<br>Le rail sera ainsi recoupé afin d’épouser parfaitement la longueur nécessaire entre les 2 murs, en tenant compte de la profondeur des platines des naissances murales.</p><img src="/assets/rail/mur_a_mur.png" alt="mur_a_mur.png">'
+%}
+
+{% set tooltip_open_rails =
+  'Choisissez entre une ouverture simple rideau (1 seul rideau sur toute la largeur de la fenêtre) ou 2 rideaux se refermant au centre de la fenêtre.
+<div class="flex gap-8">
+  <div class="flex flex-col gap-2">
+    <p class="text-center font-medium uppercase">Simple</p>
+    <img src="/assets/rail/ouverture_rideaux_simple.png" alt="ouverture_rideaux_simple.png">
+  </div>
+  <div class="flex flex-col gap-2">
+    <p class="text-center font-medium uppercase">Double</p>
+    <img src="/assets/rail/ouverture_rideaux_double.png" alt="ouverture_rideaux_double.png">
+  </div>
+</div>'
+%}
+
+{% set tooltip_galets =
+  'Choisissez parmi notre sélection de galets ou de rouleurs (en version standard ou version Wave).<br><b>A noter :</b> les rouleurs fonctionneront mieux que les galets avec des rideaux doublés ou des rideaux de grande hauteur.<br>
+<div class="flex gap-8">
+  <div><img src="/assets/rail/galet_simple.jpg" alt="galet_simple.jpg" width="100px"></div>
+  <div><img src="/assets/rail/rouleur_silencieux.jpg" alt="rouleur_silencieux.jpg" width="100px"></div>
+  <div><img src="/assets/rail/galet_wave.jpg" alt="galet_wave.jpg" width="180px"></div>
+  <div><img src="/assets/rail/rouleur_wave.jpg" alt="rouleur_wave.jpg" width="180px"></div>
+</div>
+<b>A noter :</b> les packs Wave comprennent les galets (ou rouleurs) Wave, le ruban Wave et les agrafes escargots.
+  <div class="flex gap-8">
+    <div><img src="/assets/rail/kit_wave_galets.png" alt="kit_wave_galets.png" width="235px"></div>
+    <div><img src="/assets/rail/kit_wave_rouleurs.png" alt="kit_wave_rouleurs.png" width="210px"></div>
+  </div>
+'
+%}
+
+{% set tooltip_guide_wave =
+  'Petit accessoire permettant une finition parfaite sur les côtés du rideau à tête Wave.
+<div class="flex gap-8">
+  <div><img src="/assets/rail/configuration_wave.png" alt="configuration_wave.png"></div>
+  <ol class="text-left list-decimal">
+    <li>Galets wave</li>
+    <li>Guide wave</li>
+    <li>Agrafes escargot</li>
+    <li>Ruban wave</li>
+  </ol>
+</div>'
+%}
+
+{% set tooltip_pattes_de_retour =
+  '<b>Pattes de retour :</b> permettent de bien faire revenir le(s) rideau(x) vers le mur sur les côtés de la fenêtre et ainsi de mieux bloquer la lumière entrante.
+<div class="flex gap-8">
+  <div><img src="/assets/rail/fixation_mur.jpg" alt="fixation_mur.jpg" width="300px"></div>
+  <ol class="text-left list-decimal">
+    <li>Galets wave</li>
+    <li>Guide wave</li>
+    <li>Agrafes escargot</li>
+    <li>Ruban wave</li>
+  </ol>
+</div>'
+%}
+
+{% set tooltip_poulies_bas =
+  "<b>Poulies lestées :</b> les cordons de tirage fonctionnent mieux lorsqu'ils sont tendus. Choisissiez parmi nos 3 modèles de poulies de bas.
+<div class='flex gap-8'>
+  <div><img src='/assets/rail/tension.jpg' alt='tension.jpg' width='150px'></div>
+  <div><img src='/assets/rail/poulie_lestee.jpg' alt='poulie_lestee.jpg' width='150px'></div>
+  <div><img src='/assets/rail/poulie_de_tension.jpg' alt='poulie_de_tension.jpg' width='150px'></div>
+</div>
+"
+%}
+
+{% embed '@components/modal/Panel.twig'
+  with {
+    attr: {
+      id: 'configurateur-tirage'
+    },
+    position: 'right',
+    overlay_attr: {
+      class: 'z-50 bg-black/20 absolute inset-0'
+    },
+    wrapper_attr: {
+      class: 'p-4 m:p-6 z-50 items-center'
+    },
+    container_attr: {
+      class: 'w-full max-w-2xl rounded bg-sand !overflow-hidden flex justify-stretch'
+    },
+    content_attr: {
+      class: 'p-4 s:p-6 m:p-8 w-full flex flex-col'
+    }
+  }
+%}
+  {% block open %}{% endblock %}
+  {% block close %}{% endblock %}
+  {% block content %}
+    <div class="h-full flex flex-col">
+      {# Tringlerie Modal Header #}
+      <div class="flex items-center justify-between shrink-0 mb-6">
+        <h2 class="font-serif text-2xl m:text-3xl uppercase leading-none text-gray">
+          Configuration système de tirage
+        </h2>
+        {% include '@components/modal/close-modal-button.twig' with {
+          attr: {
+            data_ref: 'close[]',
+            type: 'button'
+          }
+        } only %}
+      </div>
+
+      {# Tringlerie Modal Content #}
+      <form data-simplebar class="flex flex-col pt-4 p-px flex-1 overflow-auto">
+        <p class="mb-6 text-red-600">
+          Pour garantir un bon fonctionnement du système de tirage, le poids des rideaux ne devra
+          pas dépasser 10kg.
+        </p>
+        <div class="grid gap-x-3 gap-y-6">
+          {# DEBUT FORMULAIRE #}
+          {% include '@components/select-choices.twig' with {
+            label: 'Le rail sera-t-il installé en mur à mur ?',
+            name: 'rails',
+            required: true,
+            tooltip_modal: 'Dans le cas d’une pose de rail « mur à mur » avec naissances murales, il faudra indiquer dans la case « Longueur de la configuration » <U>la mesure exacte entre les 2 murs, prise à la hauteur où sera posé le rail</U>.<br>Le rail sera ainsi recoupé afin d’épouser parfaitement la longueur nécessaire entre les 2 murs, en tenant compte de la profondeur des platines des naissances murales.',
+            inline: true,
+            options: [
+              {
+                label: 'Non',
+                value: 'no',
+                selected: true
+              },
+              {
+                label: 'Oui',
+                value: 'yes'
+              }
+            ]
+          } only %}
+          {% include '@components/field.twig' with {
+            label: 'Longueur de la configuration',
+            tooltip_modal: tooltip_modal_longueur_config,
+            name: 'longueur_config',
+            placeholder: 'Ex : 32051-9300',
+            inline: true,
+            required: true
+          } only %}
+          <hr class="text-purple/20" />
+          <h3 class="font-serif text-2xl uppercase text-purple">Cordon de tirage</h3>
+          {% include '@components/field.twig' with {
+            label: 'Position',
+            name: 'position_cordon',
+            tooltip_modal: 'Le rail n’étant pas réversible, merci d’indiquer si vous souhaitez avoir le cordon de tirage à droite du rail ou à gauche du rail.',
+            placeholder: 'Ex : 32051-9300',
+            inline: true,
+            required: true
+          } only %}
+          {% include '@components/field.twig' with {
+            label: 'Hauteur',
+            name: 'hauteur_cordon',
+            tooltip_modal: 'La hauteur à indiquer est la hauteur souhaitée du cordon, à partir du dessous du rail.<br>En général, les rails sont montés en standard avec 200cm de cordon sous rail, mais cette hauteur peut être ajustée.',
+            placeholder: 'Ex : 32051-9300',
+            inline: true,
+            required: true
+          } only %}
+
+          <hr class="text-purple/20" />
+          {% include '@components/select-choices.twig' with {
+            label: 'OUVERTURE RIDEAUX',
+            name: 'rails',
+            required: true,
+            inline: true,
+            tooltip_modal: tooltip_open_rails,
+            options: [
+              {
+                label: 'OUVERTURE SIMPLE RIDEAU',
+                value: '3459',
+                selected: true
+              },
+              {
+                label: 'OUVERTURE DOUBLE RIDEAU AVEC RECOUVREMENT',
+                value: '3460'
+              },
+              {
+                label: 'OUVERTURE DOUBLE RIDEAU SANS RECOUVREMENT',
+                value: '3461'
+              }
+            ]
+          } only %}
+
+          <hr class="text-purple/20" />
+          {% include '@components/select-choices.twig' with {
+            label: 'galets',
+            name: 'galets',
+            required: true,
+            inline: true,
+            tooltip_modal: tooltip_galets,
+            options: [
+              {
+                label: 'GALETS SIMPLES',
+                value: '3462'
+              },
+              {
+                label: 'ROULEURS SILENCIEUX',
+                value: '3463'
+              },
+              {
+                label: 'PACK GALETS WAVE 6 CM',
+                value: '3464',
+                selected: true
+              },
+              {
+                label: 'PACK GALETS WAVE 8 CM',
+                value: '3465'
+              },
+              {
+                label: 'PACK ROULEURS WAVE 8 CM',
+                value: '3466'
+              }
+            ]
+          } only %}
+          {% include '@components/select-choices.twig' with {
+            label: 'couleurs',
+            name: 'galets_couleur',
+            required: true,
+            inline: true,
+            options: [
+              {
+                label: 'Blanc',
+                value: 'blanc',
+                selected: true
+              },
+              {
+                label: 'Noir',
+                value: 'noir'
+              }
+            ]
+          } only %}
+
+          <hr class="text-purple/20" />
+          {% include '@components/select-choices.twig' with {
+            label: 'Guide wave',
+            name: 'guide_wave',
+            required: true,
+            tooltip_modal: tooltip_guide_wave,
+            inline: true,
+            options: [
+              {
+                label: 'SANS',
+                value: '3467',
+                selected: true
+              },
+              {
+                label: 'AVEC',
+                value: '3468'
+              }
+            ]
+          } only %}
+
+          <hr class="text-purple/20" />
+          {% include '@components/select-choices.twig' with {
+            label: 'Pattes de retour',
+            name: 'pattes_de_retour',
+            tooltip_modal: tooltip_pattes_de_retour,
+            required: true,
+            inline: true,
+            options: [
+              {
+                label: 'SANS',
+                value: '3469',
+                selected: true
+              },
+              {
+                label: 'AVEC',
+                value: '3470'
+              }
+            ]
+          } only %}
+
+          <hr class="text-purple/20" />
+          {% include '@components/select-choices.twig' with {
+            label: 'POULIES DE BAS',
+            name: 'poulies_de_bas',
+            tooltip_modal: tooltip_poulies_bas,
+            required: true,
+            inline: true,
+            options: [
+              {
+                label: 'SANS',
+                value: '3471',
+                selected: true
+              },
+              {
+                label: 'CLIP CORDON MURAL',
+                value: '3472'
+              },
+              {
+                label: 'POULIE LESTEE 110G',
+                value: '3633'
+              },
+              {
+                label: 'TENDEUR DE CORDON',
+                value: '3634'
+              }
+            ]
+          } only %}
+
+          {# FIN FORMULAIRE #}
+          <div id="bloc_prix_config_rail" class="text-gray text-base font-normal">
+            <table id="table_prix_config_rail"
+              class="w-full [&_th]:text-left [&_th]:font-medium [&_td]:text-right [&_td]:font-normal">
+              <tbody>
+                <tr>
+                  <th>RAIL ALIUM ø 28mm L 180CM</th>
+
+                  <td>EUR 81,50</td>
+                </tr>
+
+                <tr>
+                  <th>Ma remise 40,00 %</th>
+
+                  <td>EUR 32,60</td>
+                </tr>
+
+                <tr>
+                  <th>Prix du rail remisé</th>
+
+                  <td>EUR 48,90</td>
+                </tr>
+
+                <tr class="total">
+                  <th>Forfait montage avec cordon de tirage</th>
+
+                  <td>EUR 46,00</td>
+                </tr>
+                <tr class="total">
+                  <th class="flex items-center gap-2">
+                    TOTAL HT <span class="text-red-600"
+                      style="margin-left: 10px; font-size: 15px; font-weight: normal;">
+                      Hors supports ou naissances murales
+                    </span>
+                    <svg class="size-6"
+                      data-component="Action"
+                      data-option-target="Modal(#tooltip_hors_supports)"
+                      data-option-effect="target.open()"
+                      class="w-5 h-5 shrink-0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </th>
+                  <td>EUR 94,90</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {# Facets Modal Footer #}
+        <div class="flex flex-col s:flex-row gap-4 s:gap-8 pt-4 s:pt-6 m:pt-8">
+          {% include '@components/button.twig' with {
+            label: ' ces articles au panier',
+            variant: 'solid',
+            attr: {
+              type: 'submit',
+              class: 'w-full flex-1'
+            }
+          } only %}
+        </div>
+      </form>
+    </div>
+  {% endblock %}
+{% endembed %}

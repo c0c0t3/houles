@@ -1,0 +1,93 @@
+.grid-masonry {
+  position: relative;
+}
+
+/* Élément de référence pour columnWidth */
+.grid-sizer,
+.grid-item {
+  width: calc((100% - 8px) / 2);
+}
+
+.grid-item {
+  margin-bottom: 8px; /* Gutter vertical */
+}
+
+.grid-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Tablette : 3 colonnes à partir de 768px */
+@media (min-width: 768px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc((100% - 16px) / 3);
+  }
+}
+
+/* Desktop : 4 colonnes à partir de 1440px */
+@media (min-width: 1440px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc((100% - 24px) / 4);
+  }
+}
+
+/* Animation pour les filtres */
+.grid-item {
+  transition: opacity 0.4s;
+}
+
+/* Style des boutons filtres */
+.filters button,
+.sorts button {
+  padding: 8px 16px;
+  margin: 4px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.filters button.active,
+.sorts button.active {
+  background: #333;
+  color: white;
+}
+
+.thumbs-slider .swiper-slide {
+    width: 100%;
+    object-fit: cover;
+    transition: height 0.3s ease;
+    flex-shrink: 0;
+}
+
+.thumbs-slider .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+}
+
+.thumbs-slider .thumb-active, .thumbs-slider .swiper-slide-active {
+    @apply h-20 opacity-100;
+}
+
+.thumbs-slider img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.main-slider .swiper-slide-active {
+    opacity: 1 !important;
+    pointer-events: auto;
+}
+
+.swiper-slide--disabled {
+  display: none !important;
+}
+
+.autre-classe {
+  display: none;
+}

@@ -1,0 +1,79 @@
+<section class="py-10 m:py-24 overflow-hidden max-w-screen">
+  <div class="container">
+    <div class="grid grid-cols-12 gap-8">
+      <div class="col-span-12 s:col-span-6 l:col-span-4 flex flex-col justify-center items-start">
+        <span class="text-brown uppercase font-medium text-xs mb-4">
+          La collection {{ crosssel_tooltips.collection_name }}
+        </span>
+        <h2 class="text-3xl s:text-4xl m:text-6xl font-serif uppercase text-gray leading-none whitespace-normal">
+          De la même collection
+        </h2>
+        {% include '@components/button.twig' with {
+          label: 'Découvrir la collection',
+          href: crosssel_tooltips.collection_url,
+          variant: 'outline',
+          attr: {
+            class: 'mt-10'
+          }
+        } %}
+      </div>
+      <div class="col-span-12 s:col-span-6 m:col-start-7">
+        <div data-ref="tooltipContainer[]" class="relative">
+          {% include '@ui/Figure/Figure.twig' with {
+            src: crosssel_tooltips.collection_image,
+            width: crosssel_tooltips.collection_image_width,
+            height: crosssel_tooltips.collection_image_height
+          } %}
+          {% for tooltip in tooltips %}
+            {% embed '@components/ui/tooltip.twig'
+              with {
+                left: tooltip.left ~ '%',
+                top: tooltip.top ~ '%',
+                href: tooltip.href
+              }
+            %}
+              {% block content %}
+                <a href="{{ tooltip.href }}"
+                  class="flex items-stretch ring-1 ring-gray/10 bg-white opacity-0 pointer-events-none translate-y-8 transition-all duration-500 ease-out-quad group-aria-expanded:translate-y-0 group-aria-expanded:opacity-100 group-aria-expanded:pointer-events-auto group-aria-expanded:shadow-xl/30 shadow-black/30">
+                  <div class="bg-sand-darker aspect-[130/166] w-auto h-40 m:h-[200px] flex justify-center items-center relative">
+                    {% include '@ui/Figure/Figure.twig' with {
+                      src: tooltip.image,
+                      width: tooltip.image_width,
+                      height: tooltip.image_height,
+                      absolute: false,
+                      img_attr: {
+                        class: 'mix-blend-multiply h-full w-full object-contain'
+                      }
+                    } %}
+                    {% if tooltip.tag %}
+                      <span class="inline-block text-xs uppercase font-medium text-purple rounded bg-brown-light px-2 py-1 absolute top-4 left-4">
+                        {{ tooltip.tag }}
+                      </span>
+                    {% endif %}
+                  </div>
+                  <div class="w-48 flex flex-col gap-4 items-center justify-center text-center bg-white p-4">
+                    {% if tooltip.category %}
+                      <span class="post-category tracking-[0.15em] text-brown uppercase block font-sans text-xs font-medium whitespace-normal">
+                        {{ tooltip.category }}
+                      </span>
+                    {% endif %}
+                    {% if tooltip.title %}
+                      <span class="text-lg m:text-3xl font-serif uppercase text-gray leading-none whitespace-normal">
+                        {{ tooltip.title }}
+                      </span>
+                    {% endif %}
+                    {% if tooltip.price %}
+                      <span class="block tracking-[0.15em] uppercase text-gray font-sans text-sm font-medium">
+                        {{ tooltip.price }}€ HT
+                      </span>
+                    {% endif %}
+                  </div>
+                </a>
+              {% endblock %}
+            {% endembed %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

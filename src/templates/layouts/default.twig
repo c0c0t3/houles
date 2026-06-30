@@ -1,0 +1,65 @@
+{% set head = head|default({}) %}
+
+<!DOCTYPE html>
+<html {{ html_attributes(html_attr ?? null) }}>
+  <head>
+    {% block head_before %}{% endblock %}
+    {% block head %}
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>{{ head.title ?? '@studiometa/webpack-config' }}</title>
+      {% if head.description %}
+        <meta name="description" content="{{ head.description }}" />
+      {% endif %}
+      {% for meta in head.meta ?? [] %}
+        <meta {{ html_attributes(meta) }} />
+      {% endfor %}
+      {% for link in head.link ?? [] %}
+        <link {{ html_attributes(link) }} />
+      {% endfor %}
+      {% block head %}{% endblock %}
+    {% endblock %}
+    {% block head_after %}{% endblock %}
+  </head>
+  <body {{ html_attributes(body_attr ?? null) }}>
+    {# BEGIN Dev only component #}
+    <nav data-component="Menu" class="z-[9999999] fixed left-4 bottom-4">
+      {% include '@components/button.twig' with {
+        label: 'DEV',
+        attr: {
+          data_component: 'MenuBtn'
+        }
+      } %}
+      <ul data-component="MenuList"
+        data-option-enter-from="hidden"
+        data-option-leave-to="hidden"
+        class="absolute bottom-full hidden w-[min-content] mb-4 p-4 rounded bg-white border max-h-[calc(100svh-10rem)] overflow-y-auto">
+        {% for page in pages().all() %}
+          <li class="whitespace-nowrap"><a href="{{ page.href }}">{{ page.href }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <script>
+      {# prettier-ignore-start #}
+      window.markerConfig = {
+        project: '684fec4a1492a47b286314ca',
+        source: 'snippet'
+      };
+
+      {# !function(e,r,a){if(!e.__Marker){e.__Marker={};var t=[],n={__cs:t};["show","hide","isVisible","capture","cancelCapture","unload","reload","isExtensionInstalled","setReporter","clearReporter","setCustomData","on","off"].forEach(function(e){n[e]=function(){var r=Array.prototype.slice.call(arguments);r.unshift(e),t.push(r)}}),e.Marker=n;var s=r.createElement("script");s.async=1,s.src="https://edge.marker.io/latest/shim.js";var i=r.getElementsByTagName("script")[0];i.parentNode.insertBefore(s,i)}}(window,document); #}
+      {# prettier-ignore-end #}
+    </script>
+    {# END Dev only component #}
+
+    {% block header_before %}{% endblock %}
+    {% block header %}{% endblock %}
+    {% block header_after %}{% endblock %}
+    {% block body_before %}{% endblock %}
+    {% block body %}{% endblock %}
+    {% block body_after %}{% endblock %}
+    {% block footer_before %}{% endblock %}
+    {% block footer %}{% endblock %}
+    {% block footer_after %}{% endblock %}
+  </body>
+</html>

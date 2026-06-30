@@ -1,0 +1,27 @@
+{% set class = class|default('') %}
+{% set invert = invert|default(false) %}
+
+<article onclick="window.location.href = '{{ link }}'"
+  class="gap-6 flex {{ class }} {{
+  invert
+    ? 'flex-col m:flex-col-reverse items-end'
+    : 'flex-col'
+  }}">
+  {% include '@ui/Figure/Figure.twig' with {
+    src: src,
+    width: width,
+    height: height,
+    alt: alt,
+    absolute: false,
+    fit: 'cover',
+    attr: {
+      class: ['w-full', 'h-full'],
+      data_option_enter_from: 'opacity-0',
+      data_option_enter_active: 'transition duration-500'
+    },
+    img_attr: {
+      class: ['w-full', 'h-full', 'object-cover', 'opacity-0']
+    }
+  } %}
+  <a href="{{ link }}" class="block font-sans text-base whitespace-normal">{{ title }}</a>
+</article>

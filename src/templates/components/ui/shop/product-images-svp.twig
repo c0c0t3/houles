@@ -1,0 +1,43 @@
+<div>
+  <div class="relative m:sticky m:top-28">
+    <div class="aspect-square w-full bg-sand-darker" data-component="GalleryZoom">
+      <div id="project_img_content" data-ref="projectImgContent" class="relative h-full">
+        <img id="imageSource" class="absolute max-h-full mx-auto s:aspect-auto max-w-full top-0 left-0 object-contain h-full w-full z-2 mix-blend-overlay filter contrast-[0.3]" src="/assets/products/{{ product_code }}/background.png" data-productcode="{{ product_code }}" data-projectid="{{ project_id }}" title="">
+        {% for piece in 1..2 %}
+          <img class="max-h-full mx-auto s:aspect-auto max-w-full customImage absolute z-1 top-0 left-0 object-contain size-full" src="/assets/products/{{ product_code }}/background.png" alt="pieces_{{ piece }}" data-piece="{{ piece }}">
+        {% endfor %}
+      </div>
+      <div class="max-s:hidden z-2 absolute top-0 left-0 size-full" style="opacity: 0; visibility: hidden;" data-ref="zoom">
+        <div data-ref="box" class="z-10 absolute overflow-hidden bg-sand-darker border border-sand-dark shadow-md size-48">
+            <div class="relative" id="content_zoom" data-ref="contentZoom"></div>
+        </div>
+      </div>
+    </div>
+    {# Download buttons #}
+    <div class="hidden l:flex flex-wrap justify-start items-center gap-6">
+      {% include '@components/button.twig' with {
+        label: 'Télécharger la fiche pdf',
+        icon: 'download',
+        variant: 'link'
+      } %}
+      {% include '@components/button.twig' with {
+        label: 'Télécharger les visuels',
+        icon: 'download',
+        variant: 'link'
+      } %}
+    </div>
+    <div class="flex l:hidden justify-end items-center gap-6 px-4">
+      {% include '@components/button.twig' with {
+        label: 'Fiche PDF',
+        icon: 'download',
+        variant: 'link'
+      } %}
+      {% include '@components/button.twig' with {
+        label: 'VISUELS',
+        icon: 'download',
+        variant: 'link'
+      } %}
+    </div>
+  </div>
+</div>
+

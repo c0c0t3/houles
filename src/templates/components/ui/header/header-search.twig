@@ -1,0 +1,272 @@
+{% set suggestions = [
+  {
+    label: 'Embrasses'
+  },
+  {
+    label: 'Tringle'
+  },
+  {
+    label: 'Franges'
+  },
+  {
+    label: 'Galons'
+  },
+  {
+    label: 'Glands de clé'
+  }
+] %}
+
+{% set results = [
+  {
+    label: 'Embrasse 1 gland',
+    href: '/produit/embrasse-1-gland'
+  },
+  {
+    label: 'Embrasse 2 glands',
+    href: '/produit/embrasse-2-glands'
+  },
+  {
+    label: 'Embrasse boucles',
+    href: '/produit/embrasse-boucles'
+  },
+  {
+    label: 'Embrasse cuir',
+    href: '/produit/embrasse-cuir'
+  },
+  {
+    label: 'Embrasse câblé',
+    href: '/produit/embrasse-cable'
+  }
+] %}
+
+{% set products = [
+  {
+    name: 'Embrasse 1 gland',
+    collection: 'ZELDA',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: true,
+    image_main: '/assets/products/32031_9700_L3_1.jpg',
+    image_hover: '/assets/products/6644cbbd61180.jpg',
+    tags: ['-20%'],
+    reference: '1234567890',
+    is_new: true,
+    stock: '40',
+    is_in_stock: true
+  },
+  {
+    name: 'Embrasse 1 gland',
+    collection: 'ZELDA',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: false,
+    image_main: '/assets/products/36249_9017_P3_1.jpg',
+    tags: ['-20%', 'Boom'],
+    reference: '1234567890',
+    is_new: false,
+    stock: '40',
+    is_in_stock: true
+  },
+  {
+    name: 'Embrasse 1 gland',
+    collection: 'ZELDA',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: true,
+    image_main: '/assets/products/36249_9150_P3_1.jpg',
+    image_hover: '/assets/products/67ecf18679a90.jpg',
+    reference: '1234567890',
+    is_new: false,
+    stock: '40',
+    is_in_stock: false
+  }
+] %}
+
+{% embed '@components/modal/Panel.twig'
+  with {
+    attr: {
+      id: 'searchbox',
+      data_component: 'Panel Action',
+      data_option_on: 'open',
+      data_option_target: 'Search(#main-search)',
+      data_option_effect: 'setTimeout(() => {target.$refs.searchboxInput.focus();}, 50)'
+    },
+    position: 'top',
+    overlay_attr: {
+      class: 'z-50 bg-black/20 absolute inset-0'
+    },
+    wrapper_attr: {
+      class: 'p-0 m:py-4 h-auto z-50 items-start'
+    },
+    container_attr: {
+      class: 's:container !overflow-hidden flex justify-stretch'
+    },
+    content_attr: {
+      class: 'w-full flex flex-col rounded bg-sand'
+    }
+  }
+%}
+  {% block open %}
+    <button data-ref="open[]" type="button" title="Rechercher" class="w-10 hidden m:block">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'icon-search-',
+        attr: {
+          class: 'size-10 block [&>svg]:size-full'
+        }
+      } only %}
+      <span class="sr-only">Imprimer</span>
+    </button>
+  {% endblock %}
+  {% block close %}{% endblock %}
+  {% block content %}
+    <div data-component="Search" id="main-search" class="relative">
+      <div data-ref="searchbox" class="top-8 bg-sand">
+        <div class="searchbox_header border-b border-brown/20 px-4 py-4 relative flex items-center">
+          <form class="w-full max-w-4xl mx-auto relative">
+            <div class="w-full relative flex items-center justify-between rounded-lg">
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'icon-search-',
+                attr: {
+                  class: 'hidden m:block size-10 block shrink-0 [&>svg]:size-ful text-brown absolute left-3'
+                }
+              } only %}
+              {% set placeholder = 'Recherchez un produit, une référence, une collection...' %}
+              <input data-ref="searchboxInput"
+                class="{{
+                html_classes(
+                  [
+                    'flex-1 text-gray bg-sand-darker pl-4 pr-16 m:pl-16 m:pr-40 py-4 m:py-6 rounded-lg text-base ',
+                    'focus:ring-2  focus:ring-brown focus:outline-none',
+                    'search-cancel:hidden',
+                    'placeholder:text-gray/70 '
+                  ]
+                )
+                }}"
+                type="search"
+                placeholder="{{ placeholder }}" />
+              <button type="button"
+                title="Lancer la recherche"
+                class="{{
+                html_classes(
+                  [
+                    'bg-purple hover:bg-purple-light text-sand p-1 m:px-6 m:py-4 absolute right-2.5 rounded-md'
+                  ]
+                )
+                }}">
+                <span class="text-sm uppercase font-medium hidden m:block">Rechercher</span>
+                {% include '@ui/Icon/Icon.twig' with {
+                  name: 'icon-search-',
+                  attr: {
+                    class: 'size-8 m:size-10 block [&>svg]:size-full m:hidden'
+                  }
+                } only %}
+              </button>
+            </div>
+          </form>
+
+          <button data-component="Action"
+            data-option-target="Panel(#searchbox)"
+            data-option-effect="target.close()"
+            type="button"
+            title="Fermer la recherche"
+            class="w-10 translate-x-2 m:translate-x-0 relative m:absolute m:right-4">
+            {% include '@ui/Icon/Icon.twig' with {
+              name: 'cross',
+              attr: {
+                class: 'size-10 block [&>svg]:size-full'
+              }
+            } only %}
+            <span class="sr-only">Imprimer</span>
+          </button>
+        </div>
+        <div class="searchbox_content m:p-6 relative" data-simplebar>
+          <div data-ref="searchboxContentInner"
+            class="searchbox_content-inner p-4 flex flex-col justify-stretch m:flex-row items-start m:justify-between gap-8 m:gap-14 xl:gap-28 overflow-auto h-full max-h-[calc(100vh-5.5rem)]">
+            {# Popular suggestions #}
+            <div class="searchbox_content-popular w-auto m:w-auto shrink-0">
+              <h3 class="text-xs font-medium tracking-wider uppercase text-brown mb-6">
+                Suggestions de recherche
+              </h3>
+              <ul class="searchbox_content-popular-list space-y-2">
+                {% for suggestion in suggestions %}
+                  <li class="searchbox_content-popular-item">
+                    <a href="#"
+                      class="text-sm text-purple uppercase hover:underline"
+                      data-ref="suggest[]">
+                      {{ suggestion.label }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            {# best-sells products #}
+            <div class="searchbox_best-sells w-full flex-1">
+              <h3 class="text-xs font-medium tracking-wider uppercase text-brown mb-6">
+                Produits suggérés
+              </h3>
+              <div class="searchbox_best-sells--products flex flex-nowrap overflow-auto m:overflow-hidden -mx-4 px-4 s:mx-0 s:px-0 s:grid s:grid-cols-3 gap-6">
+                {% for product in products %}
+                  <div class="w-4/5 shrink-0 m:w-full">
+                    {% include '@components/ui/card/card-listing-product.twig' with {
+                      name: product.name,
+                      collection: product.collection,
+                      url: product.url,
+                      regular_price: product.regular_price,
+                      sale_price: product.sale_price,
+                      is_sale: product.is_sale,
+                      image_main: product.image_main,
+                      image_hover: product.image_hover,
+                      reference: product.reference,
+                      is_in_stock: product.is_in_stock,
+                      stock: product.stock,
+                      is_new: product.is_new,
+                      tags: product.tags
+                    } only %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div data-ref="searchboxResults"
+            class="{{
+            html_classes(
+              [
+                'search_content-results',
+                'absolute top-0 left-0 z-10',
+                'w-full h-full bg-sand p-4 m:p-6 ',
+                'transition-opacity duration-300 ease-out-quad',
+                'opacity-0 pointer-events-none',
+                'is-active:opacity-100 is-active:pointer-events-auto'
+              ]
+            )
+            }}">
+            <div class="max-w-4xl mx-auto">
+              <h3 class="text-xs font-medium tracking-wider uppercase text-brown mb-6">
+                Résultats de recherche
+              </h3>
+              <ul class="space-y-4">
+                {% for result in results %}
+                  <li class="text-base text-gray font-medium">
+                    <a data-ref="searchboxResultsItems[]" href="{{ result.href }}">
+                      {{ result.label }}
+                    </a>
+                  </li>
+                {% endfor %}
+                <li>
+                  <a href="#"
+                    class="text-sm text-purple uppercase font-medium underline underline-offset-2">
+                    Voir tous les résultats
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endblock %}
+{% endembed %}

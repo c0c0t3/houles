@@ -1,0 +1,19 @@
+{% extends '@layouts/base.twig' %}
+
+{% set html_attr = {
+  class: 'is-home bg-sand'
+} %}
+
+{% block body %}
+  <main>
+    {% include '@components/homepage-hero.twig' %}
+    {% include '@components/slider-category.twig' %}
+    {% include '@components/slider-collection.twig' %}
+    {% include '@components/bloc-sur-mesure.twig' %}
+    {% include '@components/bloc-featured-projects.twig' %}
+    {% include '@components/bloc-latest-blog-posts.twig' %}
+    {% include '@components/bloc-showroom.twig' %}
+    {% include '@components/bloc-quotation.twig' %}
+    {% include '@components/bloc-history.twig' %}
+  </main>
+{% endblock %}

@@ -1,0 +1,346 @@
+{% extends '@layouts/checkout.twig' %}
+
+{% set title = 'Paiement' %}
+
+{% set payment_modes = [
+  {
+    label: 'Carte bancaire',
+    description: 'Cordonnier Benoit ****-****-****-9935 Expiration : 02/2025',
+    type: 'card',
+    value: 'card-9935'
+  },
+  {
+    label: 'Carte bancaire',
+    description: 'Cordonnier Benoit ****-****-****-9935 Expiration : 02/2025',
+    type: 'card',
+    value: 'card-9935'
+  },
+  {
+    label: 'Carte bancaire',
+    description: 'Cordonnier Benoit ****-****-****-9935 Expiration : 02/2025',
+    type: 'card',
+    value: 'card-9935'
+  },
+  {
+    label: 'Virement bancaire',
+    description: 'BIC : BNPPARMM1234567890 <br />IBAN : FR76 1234 5678 9012 3456 7890 123',
+    value: 'bank-transfer'
+  }
+] %}
+
+{% set addresses = [
+  {
+    type: 'billing',
+    fullname: 'Andre Houles et Cie',
+    line_1: '5 Avenue de la Marseillaise',
+    zip: '67000',
+    city: 'Strasbourg',
+    country: 'France',
+    is_default: true
+  },
+  {
+    type: 'shipping',
+    fullname: 'Andre Houles et Cie',
+    line_1: '2 Chemin de la Coudrette',
+    zip: '77123',
+    city: 'Noisy-sur-École',
+    country: 'France',
+    is_default: true
+  }
+] %}
+
+{% set cart_lines = [
+  {
+    id: 1,
+    title: 'Gland de clé',
+    description: '- coupe de 12,00cm en partant de la gauche<br>- coupe de 6,00cm en partant de la droite',
+    href: '#produit-1',
+    img: '/assets/espace-pro/produit-1.jpg',
+    collection: 'Imperial',
+    code: '32053-9600',
+    status: {
+      label: 'En stock (3)',
+      type: 'warning'
+    },
+    price: 16.2,
+    quantity: 1
+  },
+  {
+    id: 3,
+    title: 'Auro - Configuration de tringlerie 180,00cm',
+    href: '#configuration-3',
+    img: '/assets/espace-pro/produit-1.jpg',
+    code: '32053-9600',
+    status: {
+      label: 'En stock',
+      type: 'success'
+    },
+    price: 234.34,
+    quantity: 1,
+    options: [
+      {
+        id: 4,
+        title: '2 supports doubles extensibles 195mm mur ø 31mm + 16mm',
+        code: '66787-14',
+        status: {
+          label: 'En stock (3)',
+          type: 'warning'
+        },
+        price: 45.65,
+        quantity: 1
+      },
+      {
+        id: 5,
+        title: 'Jambe de force',
+        code: '66491-14',
+        status: {
+          label: 'En stock (3)',
+          type: 'warning'
+        },
+        price: 21.73,
+        quantity: 2
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: '2 EMBOUTS "STRIO" Ø 35MM FINITION MÉTALLISÉE',
+    href: '#produit-2',
+    img: '/assets/espace-pro/produit-2.jpg',
+    collection: 'Villa',
+    code: '32053-9600',
+    status: {
+      label: 'En stock (68)',
+      type: 'success'
+    },
+    price: 75.6,
+    quantity: 2
+  }
+] %}
+
+{% block content %}
+  <div class="grid s:grid-cols-3 gap-6 s:gap-8">
+    <div class="s:col-span-2">
+      <h2 class="mb-6 text-base font-sans font-medium leading-snug text-purple">
+        Mode de paiement
+      </h2>
+      {% embed '@components/radios-list.twig'
+        with {
+          options: payment_modes,
+          name: 'payment_mode',
+          disabled_description: 'Non disponible pour cette commande'
+        }
+      %}
+        {% block description %}
+          <div class="space-y-5">
+            {{ parent() }}
+            {% set next_option = payment_modes[loop.index0 + 1] %}
+            {% if not option.disabled and option.type == 'card' and next_option.type != 'card' %}
+              {% embed '@components/modal/Panel.twig'
+                with {
+                  title: 'Ajouter une carte',
+                  attr: {
+                    id: 'add_new_card'
+                  },
+                  position: 'top',
+                  overlay_attr: {
+                    class: 'z-50 bg-black/20 absolute inset-0'
+                  },
+                  wrapper_attr: {
+                    class: 'p-4 m:p-6 z-50 items-center'
+                  },
+                  container_attr: {
+                    class: 'w-full max-w-2xl rounded bg-sand !overflow-hidden flex justify-stretch'
+                  },
+                  content_attr: {
+                    class: 'p-4 s:p-6 m:p-8 w-full flex flex-col'
+                  }
+                }
+              %}
+                {% block close %}{% endblock %}
+                {% block open %}
+                  {% include '@components/button.twig' with {
+                    label: 'Ajouter une carte',
+                    icon: 'plus',
+                    attr: {
+                      class: 'relative z-1 border border-white',
+                      'data-ref': 'open[]',
+                      type: 'button'
+                    }
+                  } %}
+                {% endblock %}
+                {% block content_modal %}
+                  {% include '@components/modal/form-add-card.twig' %}
+                {% endblock %}
+                {% block content_footer %}
+                  {% include '@components/button.twig' with {
+                    label: 'Annuler',
+                    variant: 'link',
+                    icon: false,
+                    attr: {
+                      'data-ref': 'close[]',
+                      type: 'button'
+                    }
+                  } only %}
+                  {% include '@components/button.twig' with {
+                    label: 'Ajouter',
+                    variant: 'solid',
+                    attr: {
+                      type: 'button',
+                      class: 'w-full flex-1'
+                    }
+                  } only %}
+                {% endblock %}
+              {% endembed %}
+            {% endif %}
+          </div>
+        {% endblock %}
+        {% block append %}
+          {% if not option.disabled and option.type == 'card' %}
+            <div class="max-s:mt-6">
+              <button type="button"
+                title="Supprimer"
+                class="relative z-1 p-1 -m-1 hover:text-brown-light transition-colors duration-300 ease-out-quad">
+                {% include '@ui/Icon/Icon.twig' with {
+                  name: 'trash',
+                  attr: {
+                    class: 'size-5 [&>svg]:size-full'
+                  }
+                } only %}
+                <span class="sr-only">Supprimer</span>
+              </button>
+            </div>
+          {% endif %}
+        {% endblock %}
+      {% endembed %}
+    </div>
+    <div class="space-y-6">
+      <h2 class="text-base font-sans font-medium leading-snug text-purple text-right">
+        Total Panier
+      </h2>
+      {% include '@components/price-lines.twig' with {
+        lines: [
+          {
+            label: 'Net marchandise Ht',
+            value: 234.64
+          },
+          {
+            label: 'Forfait de transport ht',
+            value: 0
+          },
+          {
+            label: 'Montant taxable',
+            value: 234.64
+          },
+          {
+            label: 'TVA 20,00%',
+            value: 46.93
+          },
+          {
+            label: 'Total ttc',
+            value: 281.57
+          }
+        ]
+      } only %}
+      <form action="" method="post" class="flex items-center gap-3">
+        <input {{
+          html_attributes({
+            type: 'text',
+            name: 'discount_code',
+            placeholder: 'Ajouter un code promo',
+            class: 'block w-full font-sans font-medium text-sm leading-6 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-4 px-6 focus-visible:bg-white appearance-none'
+          })
+          }} />
+        {% include '@components/button.twig' with {
+          label: 'Ajouter',
+          icon: false,
+          variant: 'outline'
+        } only %}
+      </form>
+    </div>
+  </div>
+  <div class="grid s:grid-cols-2 gap-4">
+    {% include '@components/button.twig' with {
+      label: 'Précédent',
+      href: '/checkout/2-livraison.html',
+      variant: 'outline'
+    } only %}
+    {% include '@components/button.twig' with {
+      label: 'Valider la commande',
+      href: '/checkout/4-validation.html'
+    } only %}
+  </div>
+  <hr class="border-brown/20" />
+  <div class="space-y-6">
+    <h2 class="text-base font-sans font-medium leading-snug text-purple">Récapitulatif</h2>
+    <div class="grid grid-cols-1 m:grid-cols-2 l:grid-cols-3 auto-rows-fr gap-6 s:gap-8">
+      {% for address in addresses %}
+        <div class="flex flex-col justify-between bg-white text-gray p-6 s:p-8 space-y-6 ring-1 ring-inset ring-brown/20">
+          <div class="{{
+            html_classes(
+              [
+                'space-y-6',
+                {
+                  'pb-5': not (address.is_default and address.type == 'shipping')
+                }
+              ]
+            )
+            }}">
+            <div>
+              <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">
+                {% if address.type == 'billing' %}
+                  Mon adresse de facturation
+                {% else %}
+                  Mon adresse de livraison
+                {% endif %}
+              </h2>
+              <p class="text-2xl font-serif font-light uppercase leading-snug">
+                {{ address.fullname }}
+              </p>
+            </div>
+            <address class="not-italic uppercase">
+              <p>
+                {{ address.line_1 }}<br />
+                {% if address.line_2 %}
+                  {{ address.line_2 }}<br />
+                {% endif %}
+                {{ address.zip }} {{ address.city }}<br />
+                {{ address.country }}
+              </p>
+            </address>
+            {% if address.is_default and address.type == 'shipping' %}
+              <p class="flex items-center gap-2 text-sm text-brown">
+                {% include '@ui/Icon/Icon.twig' with {
+                  name: 'check',
+                  attr: {
+                    class: 'w-4 h-4'
+                  }
+                } %}
+                <span>Adresse de livraison par défaut</span>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="grid grid-cols-3 place-items-between gap-x-8 p-6 s:p-8 ring-1 ring-inset ring-brown/20">
+      <p class="text-sm font-sans uppercase font-medium leading-snug text-purple">
+        Livraison standard
+      </p>
+      <p class="text-xs font-sans uppercase tracking-wide font-medium text-brown place-self-center">
+        3 - 5 jours ouvrés
+      </p>
+      <p class="text-right text-sm font-sans uppercase font-medium leading-snug">Gratuit</p>
+    </div>
+    {% include '@components/table/cart.twig' with {
+      rows: cart_lines,
+      no_head: true,
+      can_edit: false
+    } only %}
+  </div>
+  {% include '@components/button.twig' with {
+    label: 'Modifier la commande',
+    icon: 'pencil',
+    href: '/checkout/1-panier.html'
+  } only %}
+{% endblock %}

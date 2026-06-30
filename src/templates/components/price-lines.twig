@@ -1,0 +1,45 @@
+{% set lines = lines|default([]) %}
+{% set alignement = alignement|default('right') %}
+
+{% if alignement == 'right' %}
+  {% set alignement_class = 'text-right' %}
+{% else %}
+  {% set alignement_class = 'text-left' %}
+{% endif %}
+
+{% if (lines|length) > 0 %}
+  <div class="py-5 border-y border-brown/20">
+    <table class="w-full">
+      {% if (lines|length) > 1 %}
+        <tbody>
+          {% for line in lines %}
+            {% if not loop.last %}
+              <tr class="*:py-1">
+                <th class="{{
+                  alignement_class
+                  }} text-xs font-sans uppercase font-medium tracking-wide text-brown">
+                  {{ line.label }}
+                  {{ line.content|default('') }}
+                </th>
+                <td class="text-right text-sm font-sans uppercase font-medium text-purple w-28">
+                  {{ line.value|number_format(2, ',', '.') }} €
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      {% endif %}
+      <tfoot>
+        {% set last_line = lines|last %}
+        <tr class="*:py-1">
+          <th class="{{ alignement_class }} text-gray uppercase font-medium tracking-wider">
+            {{ last_line.label }}
+          </th>
+          <td class="text-right text-gray uppercase font-medium w-28">
+            {{ last_line.value|number_format(2, ',', '.') }} €
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+{% endif %}

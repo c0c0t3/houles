@@ -1,0 +1,51 @@
+<article class="aspect-square shrink-0 relative w-full bg-sand-darker group/card-category overflow-hidden">
+  {% include '@ui/Figure/Figure.twig' with {
+    src: src,
+    width: 600,
+    height: 600,
+    alt: title,
+    absolute: true,
+    fit: 'cover',
+    attr: {
+      class: ['w-full', 'h-full'],
+      data_option_enter_from: 'opacity-0',
+      data_option_enter_active: 'transition duration-500'
+    },
+    img_attr: {
+      class: [
+        'w-full h-full',
+        'object-cover',
+        'opacity-0',
+        'group-hover/card-category:scale-105',
+        'transition-transform ease-in-out duration-1000'
+      ]
+    }
+  } %}
+  <div class="absolute inset-0 bg-gradient-to-b to-black/50 from-transparent from-20%"></div>
+  <a href="{{ link }}"
+    class="absolute text-center m:text-left inset-0 p-4 m:p-8 flex gap- items-end justify-stretch space-y-2.5 m:space-y-6">
+    <div class="flex flex-col l:flex-row items-center l:justify-between s:gap-6 l:gap-16 w-full">
+      <span class="flex-1 text-white text-center m:text-left font-serif leading-tight font-light text-2xl m:text-4xl uppercase">
+        {{ title }}
+      </span>
+      <div class="flex justify-center items-center s:justify-end w-full s:w-auto">
+        <button class="text-white w-fit hidden opacity-0 -translate-x-full group-hover/card-category:translate-x-0 group-hover/card-category:opacity-100 transition-all duration-500 ease-out-quad l:block">
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'arrow-line-desktop',
+            attr: {
+              class: ['w-14 block']
+            }
+          } %}
+        </button>
+        <button class="text-white w-6 block l:hidden">
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'arrow-line-mobile',
+            attr: {
+              class: ['w-6 block']
+            }
+          } %}
+        </button>
+      </div>
+    </div>
+  </a>
+</article>

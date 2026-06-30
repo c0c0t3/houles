@@ -1,0 +1,49 @@
+{
+  "name": "www.houles.com",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "meta dev",
+    "watch": "meta watch",
+    "build": "meta build",
+    "postbuild": "find dist -type f -name '*.html' -exec prettier --write --ignore-path '' {} +",
+    "prepreview": "npm run build",
+    "preview": "http-server ./dist",
+    "lint": "npm run lint:scripts && npm run lint:styles && npm run lint:templates",
+    "lint:scripts": "eslint src/js --cache",
+    "lint:styles": "stylelint 'src/**/*.(scss|vue)' --cache",
+    "lint:templates": "prettier -c src/templates/**/*.twig --cache",
+    "fix": "npm run fix:scripts && npm run fix:styles && npm run fix:templates",
+    "fix:scripts": "npm run lint:scripts -- --fix",
+    "fix:styles": "npm run lint:styles -- --fix",
+    "fix:templates": "npm run lint:templates -- --write"
+  },
+  "author": "Studio Meta <agence@studiometa.fr> (https://www.studiometa.fr)",
+  "license": "MIT",
+  "devDependencies": {
+    "@studiometa/eslint-config": "^4.3.1",
+    "@studiometa/prettier-config": "^4.2.0",
+    "@studiometa/stylelint-config": "^4.1.1",
+    "@studiometa/tailwind-config": "^2.1.0",
+    "@studiometa/webpack-config": "^6.3.6",
+    "@studiometa/webpack-config-preset-prototyping": "^6.3.6",
+    "http-server": "14.1.1"
+  },
+  "dependencies": {
+    "@mapbox/mapbox-gl-geocoder": "^5.1.2",
+    "@studiometa/js-toolkit": "^3.0.5",
+    "@studiometa/ui": "^1.1.1",
+    "choices.js": "^11.1.0",
+    "intl-tel-input": "^25.3.2",
+    "isotope-layout": "^3.0.6",
+    "magic-grid": "^3.4.7",
+    "mapbox-gl": "^3.14.0",
+    "node-vibrant": "^4.0.3",
+    "nouislider": "^15.8.1",
+    "quantize": "^1.0.2",
+    "resize-observer-polyfill": "^1.5.1",
+    "simplebar": "^6.3.3",
+    "swiper": "^12.0.3",
+    "tailwindcss": "^3.4.18"
+  }
+}

@@ -1,0 +1,62 @@
+@use 'components/button';
+@use 'tailwindcss/base';
+@use 'tailwindcss/components';
+@use 'tailwindcss/utilities';
+@use 'components/link';
+@use 'components/hero';
+@use 'components/header';
+@use 'components/choices';
+@use 'components/range-slider';
+@use 'components/table';
+@use 'components/flags';
+@use 'components/storelocator';
+@use 'components/prose';
+@use 'components/inspiration-grid';
+
+@layer base {
+  .font-outline-1 {
+    -webkit-text-stroke: 1px rgba(53, 54, 58, 0.15)
+  }
+  .font-outline-2 {
+    -webkit-text-stroke: 2px rgba(53, 54, 58, 0.15)
+  }
+}
+
+
+html.is-grabbing * {
+  cursor: grabbing;
+}
+
+.iti {
+  @apply w-full;
+}
+
+.iti__selected-country-primary {
+  @apply pl-5;
+}
+
+.iti__selected-dial-code {
+  @apply text-sm;
+}
+
+[data-simplebar] {
+  @apply overflow-x-hidden !overflow-y-auto;
+}
+
+b,
+strong {
+  @apply font-medium;
+}
+
+.input-number-only,
+.input-number-only::-webkit-outer-spin-button,
+.input-number-only::-webkit-inner-spin-button {
+  margin: 0;
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+}
+
+html,
+body {
+  overscroll-behavior-x: none;
+}

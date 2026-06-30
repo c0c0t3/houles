@@ -1,0 +1,29 @@
+@keyframes clipPathOpen {
+  from {
+    clip-path: inset(0 0% 0 100%);
+  }
+
+  to {
+    clip-path: inset(0 0% 0 0);
+  }
+}
+
+@keyframes clipPathClose {
+  from {
+    clip-path: inset(0 0% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0% 0 100%);
+  }
+}
+
+.accordion-button-icon {
+  &.is-active {
+    @apply rotate-180;
+
+    .accordion-button-icon-line-2 {
+      @apply opacity-0 rotate-180;
+    }
+  }
+}

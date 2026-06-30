@@ -1,0 +1,101 @@
+{#
+/**
+ * @file
+ *   Panel component.
+ *
+ * @param 'top'|'right'|'bottom'|'left' $position
+ *   Position of the panel.
+ * @param array $wrapper_attr
+ *   Custom attributes for the wrapper element.
+ */
+#}
+
+{% extends '@components/modal/default.twig' %}
+
+{% set position = position ?? 'left' %}
+
+{% set attr =
+  merge_html_attributes(
+    attr ?? null,
+    {
+      data_component: 'Panel',
+      data_option_position: position
+    }
+  )
+%}
+
+{% set overlay_attr =
+  merge_html_attributes(
+    overlay_attr ?? null,
+    {
+      class: 'z-under absolute inset-0 bg-black bg-opacity-75'
+    },
+    {
+      class: 'transition duration-500 opacity-0'
+    }
+  )
+%}
+
+{% set wrapper_attr =
+  merge_html_attributes(
+    wrapper_attr ?? null,
+    {},
+    {
+      class: [
+        'z-above absolute top-0 w-full h-full flex pointer-events-none',
+        {
+          'top-0 left-0 items-start justify-center': position == 'top',
+          'top-0 right-0 items-center justify-end': position == 'right',
+          'bottom-0 left-0 items-end justify-center': position == 'bottom',
+          'top-0 left-0 items-center justify-start': position == 'left'
+        }
+      ]
+    }
+  )
+%}
+
+{% set container_attr =
+  merge_html_attributes(
+    container_attr ?? null,
+    {
+      class: [
+        'max-w-2xl',
+        {
+          'w-full': position == 'top',
+          'h-full': position == 'right',
+          'w-full': position == 'bottom',
+          'h-full': position == 'left'
+        }
+      ]
+    },
+    {
+      class: [
+        'transform transition duration-500',
+        {
+          '-translate-y-full': position == 'top',
+          'translate-x-full': position == 'right',
+          'translate-y-full': position == 'bottom',
+          '-translate-x-full': position == 'left'
+        }
+      ]
+    }
+  )
+%}
+
+{% block content %}
+  <div class="flex items-center justify-between shrink-0 mb-6">
+    {% block content_header %}
+      <h2 class="font-serif text-2xl m:text-3xl uppercase leading-none text-gray text-center w-full">
+        {{ title ?? 'Titre de la modale' }}
+      </h2>
+    {% endblock %}
+  </div>
+
+  <div data-simplebar class="flex flex-col pt-4 p-px flex-1 overflow-auto text-base text-gray">
+    {% block content_modal %}{% endblock %}
+  </div>
+
+  <div class="flex flex-col s:flex-row gap-4 s:gap-8 pt-4 s:pt-6 m:pt-8">
+    {% block content_footer %}{% endblock %}
+  </div>
+{% endblock %}

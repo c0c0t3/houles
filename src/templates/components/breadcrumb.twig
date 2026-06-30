@@ -1,0 +1,49 @@
+{% set items =
+  [
+    {
+      label: 'Houlès',
+      url: '/'
+    }
+  ]|merge(items|default([]))
+%}
+
+{% set color = color|default('purple') %}
+
+{% if color == 'sand' %}
+  {% set navTextColor = 'text-sand/50' %}
+  {% set hoverColor = 'hover:text-sand' %}
+{% else %}
+  {% set navTextColor = 'text-purple-light' %}
+  {% set hoverColor = 'hover:text-purple' %}
+{% endif %}
+
+<nav class="flex items-baseline gap-1 {{ navTextColor }} uppercase text-xs leading-none font-medium"
+  aria-label="Fil d'Ariane"
+  role="navigation">
+  <ol class="flex items-baseline gap-1" itemscope itemtype="https://schema.org/BreadcrumbList">
+    {% for item in items %}
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        {% if item.url and not loop.last %}
+          <a href="{{ item.url }}"
+            class="{{ hoverColor }} transition-colors duration-300 ease-out-quad"
+            itemprop="item">
+            <span itemprop="name">{{ item.label }}</span>
+          </a>
+        {% else %}
+          <span {{
+            html_attributes({
+              itemprop: 'name',
+              aria_current: loop.last ? 'page' : null
+            })
+            }}>
+            {{ item.label }}
+          </span>
+        {% endif %}
+        <meta itemprop="position" content="{{ loop.index }}" />
+      </li>
+      {% if not loop.last %}
+        <li aria-hidden="true"><span>/</span></li>
+      {% endif %}
+    {% endfor %}
+  </ol>
+</nav>

@@ -1,0 +1,111 @@
+<div class="col-span-1">
+  {# Drift Zoom Container #}
+  <div class="relative">
+    <div class="hidden m:block absolute top-0 z-30 inset-y-0 w-full left-0 pointer-events-none">
+      <div class="zoom-panel sticky top-28 xs:max-h-[50svh] m:max-h-[calc(100svh-8rem)] m:h-[800px] has-[*]:ring-1 ring-purple/20 has-[*]:bg-sand-darker [&_img]:mix-blend-multiply"></div>
+    </div>
+  </div>
+
+  {# PRODUCT MAIN INFOS / START #}
+  <div class="w-full m:max-w-xl mx-auto p-4 m:p-0 relative">
+
+      {# Title & Price #}
+      <div class="flex justify-between items-center gap-8 mb-6">
+        {# Product title #}
+        <div class="flex-1">
+          <span class="text-sm text-brown tracking-widest uppercase font-medium">{{ category }}</span>
+          <h2 class="font-serif text-3xl m:text-4xl uppercase leading-none text-gray">{{ title }}</h2>
+        </div>
+      </div>
+
+      <div class="font-medium text-sm tracking-wider uppercase divide-y divide-brown/20 mb-10 l:mb-12">
+        {% for price in price %}
+          <div class="flex items-center justify-between pt-4 mt-4">
+            <span class="text-brown">à partir de {{ price.items }} pièces :</span>
+            <span class="text-gray">{{ price.price_per_item }} € HT / pièce</span>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% include '@components/ui/shop/product-info-svp-zone.twig' with {
+        class: 'js--launch-coloris-modal',
+        zones: zones
+      } only %}
+
+      {% include '@components/ui/shop/product-svp-coloris.twig' %}
+
+      {# PRODUCT FORM / START #}
+      <form action="">
+
+        <div class="grid grid-cols-4 l:grid-cols-12 gap-2 mt-10 l:mt-12 ">
+          {% if qty_type == 'select' %}
+            <select id="list"
+              name="list"
+              class="block col-span-1 l:col-span-2 px-6 py-4 text-sm font-sans font-medium leading-6 bg-transparent ring-1 ring-current rounded-lg appearance-none">
+              {% for i in 1..10 %}
+                <option value="{{ i }}">{{ i }}</option>
+              {% endfor %}
+            </select>
+          {% else %}
+            <input class="block col-span-1 l:col-span-2 font-sans font-medium text-sm leading-6 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-4 pl-6 pr-2 focus-visible:bg-white appearance-none"
+              value="1"
+              name="line[1][quantity]"
+              type="number" />
+          {% endif %}
+          {% include '@components/button.twig' with {
+            label: 'Sauvegarder',
+            variant: 'solid',
+            icon: 'download',
+            attr: {
+              type: 'submit',
+              class: 'product-info-add-to-cart-button w-full col-span-4 order-last l:order-2 l:col-span-5'
+            }
+          } only %}
+          {% include '@components/button.twig' with {
+            label: 'Imprimer mon projet',
+            variant: 'outline',
+            icon: false,
+            attr: {
+              type: 'submit',
+              class: 'product-info-add-to-cart-button w-full col-span-3 l:col-span-5 l:order-last'
+            }
+          } only %}
+        </div>
+      </form>
+      {# PRODUCT FORM / END #}
+
+
+    {# PRODUCT ACCORDIONS / START #}
+    <div class="pt-10">
+      {% set accordionButtonClass =
+        'group py-6 flex justify-between items-center w-full cursor-pointer text-sm uppercase font-medium text-purple'
+      %}
+
+      {% set accordionButtonIcon2 %}
+        <div data-ref="accordionButtonIcon"
+          class="accordion-button-icon w-6 h-6 relative transition-transform duration-500">
+          <span class="accordion-button-icon-line absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block w-4 h-px bg-purple"></span>
+          <span class="accordion-button-icon-line-2 absolute rotate-90 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block w-4 h-px bg-purple transition-all"></span>
+        </div>
+      {% endset %}
+
+      {% for more_info in more_infos %}
+        <div class="border-b border-brown/20 last:border-none first:border-t">
+          {% embed '@components/ui/accordion-item.twig'
+            with {
+              accordionButtonClass: accordionButtonClass,
+              accordionButtonAnchor: more_info.title,
+              accordionButtonIcon: accordionButtonIcon2
+            }
+          %}
+            {% block content %}
+              <div class="pb-6 prose text-base">{{ more_info.content }}</div>
+            {% endblock %}
+          {% endembed %}
+        </div>
+      {% endfor %}
+    </div>
+    {# PRODUCT ACCORDIONS / END #}
+  </div>
+  {# PRODUCT MAIN INFOS / END #}
+</div>

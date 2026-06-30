@@ -1,0 +1,236 @@
+{% embed '@components/modal/Panel.twig'
+  with {
+    attr: {
+      id: 'facets',
+      data_component: 'Panel Facets'
+    },
+    position: 'right',
+    overlay_attr: {
+      class: 'z-50 bg-black/20 absolute inset-0'
+    },
+    wrapper_attr: {
+      class: 'p-4 m:p-6 z-50 items-center'
+    },
+    container_attr: {
+      class: 'w-full max-w-2xl rounded bg-sand !overflow-hidden flex justify-stretch'
+    },
+    content_attr: {
+      class: 'p-4 s:p-6 m:p-8 w-full flex flex-col'
+    }
+  }
+%}
+  {% block open %}{% endblock %}
+  {% block close %}{% endblock %}
+  {% block content %}
+    <form data-ref="facetsForm" class="h-full flex flex-col">
+      {% set accordionButtonClass =
+        'group py-6 flex justify-between items-center w-full cursor-pointer text-sm uppercase font-medium text-purple'
+      %}
+
+      {% set accordionButtonIcon2 %}
+        <div data-ref="accordionButtonIcon"
+          class="accordion-button-icon w-6 h-6 relative transition-transform duration-500">
+          <span class="accordion-button-icon-line absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block w-4 h-px bg-purple"></span>
+          <span class="accordion-button-icon-line-2 absolute rotate-90 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block w-4 h-px bg-purple transition-all"></span>
+        </div>
+      {% endset %}
+
+      {# Facets Modal Header #}
+      <div class="flex items-center justify-between shrink-0 mb-6">
+        <h2 class="font-serif text-2xl m:text-3xl uppercase leading-none text-gray">
+          Filtrer les produits
+        </h2>
+        {% include '@components/modal/close-modal-button.twig' with {
+          attr: {
+            data_ref: 'close[]',
+            type: 'button'
+          }
+        } only %}
+      </div>
+
+      <div data-simplebar class="flex flex-col pt-4 p-px flex-1 overflow-auto">
+        {# TRIER PAR #}
+        <div class="border-b border-brown/20 last:border-none first:border-t">
+          {% embed '@components/ui/accordion-item.twig'
+            with {
+              accordionButtonClass: accordionButtonClass,
+              accordionButtonAnchor: trier.title,
+              accordionButtonIcon: accordionButtonIcon2
+            }
+          %}
+            {% block content %}
+              <div class="pb-6">
+                {% for sortby in trier.options %}
+                  {% include '@components/ui/facets/radio.twig' with {
+                    id: sortby.value,
+                    label: sortby.label,
+                    name: trier.name,
+                    counter: sortby.counter,
+                    tag: sortby.tag
+                  } %}
+                {% endfor %}
+              </div>
+            {% endblock %}
+          {% endembed %}
+        </div>
+
+        {# CATÉGORIES #}
+        <div class="border-b border-brown/20 last:border-none first:border-t">
+          {% embed '@components/ui/accordion-item.twig'
+            with {
+              accordionButtonClass: accordionButtonClass,
+              accordionButtonAnchor: categories.title,
+              accordionButtonIcon: accordionButtonIcon2
+            }
+          %}
+            {% block content %}
+              <div class="pb-6">
+                <div class="flex flex-col">
+                  {% for category in categories.options %}
+                    {% include '@components/ui/facets/checkbox.twig' with {
+                      id: category.id,
+                      label: category.label,
+                      counter: category.counter,
+                      tag: category.tag
+                    } %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endblock %}
+          {% endembed %}
+        </div>
+
+        {# COLLECTIONS #}
+        <div class="border-b border-brown/20 last:border-none first:border-t">
+          {% embed '@components/ui/accordion-item.twig'
+            with {
+              accordionButtonClass: accordionButtonClass,
+              accordionButtonAnchor: collections.title,
+              accordionButtonIcon: accordionButtonIcon2
+            }
+          %}
+            {% block content %}
+              <div class="pb-6">
+                <div class="flex flex-col">
+                  {% for collection in collections.options %}
+                    {% include '@components/ui/facets/checkbox.twig' with {
+                      id: collection.id,
+                      label: collection.label,
+                      counter: collection.counter,
+                      tag: collection.tag
+                    } %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endblock %}
+          {% endembed %}
+        </div>
+
+        {# STYLES #}
+        <div class="border-b border-brown/20 last:border-none first:border-t">
+          {% embed '@components/ui/accordion-item.twig'
+            with {
+              accordionButtonClass: accordionButtonClass,
+              accordionButtonAnchor: styles.title,
+              accordionButtonIcon: accordionButtonIcon2
+            }
+          %}
+            {% block content %}
+              <div class="pb-6">
+                <div class="flex flex-col">
+                  {% for style in styles.options %}
+                    {# {{ dump(category) }} #}
+                    {% include '@components/ui/facets/checkbox.twig' with {
+                      id: style.id,
+                      label: style.label,
+                      counter: style.counter,
+                      tag: style.tag
+                    } %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endblock %}
+          {% endembed %}
+        </div>
+
+        {# HAUTEUR #}
+        <div class="border-b border-brown/20 last:border-none first:border-t">
+          {% embed '@components/ui/accordion-item.twig'
+            with {
+              accordionButtonClass: accordionButtonClass,
+              accordionButtonAnchor: 'Hauteur',
+              accordionButtonIcon: accordionButtonIcon2
+            }
+          %}
+            {% block content %}
+              <div class="pt-2 pb-12">
+                {% include '@components/ui/facets/range-slider.twig' with {
+                  name: 'height',
+                  min: 29,
+                  max: 80,
+                  defaultMin: 0,
+                  defaultMax: 100,
+                  units: '€'
+                } %}
+              </div>
+            {% endblock %}
+          {% endembed %}
+        </div>
+
+        {# LONGUEUR #}
+        <div class="border-b border-brown/20 last:border-none first:border-t">
+          {% embed '@components/ui/accordion-item.twig'
+            with {
+              accordionButtonClass: accordionButtonClass,
+              accordionButtonAnchor: 'Longueur',
+              accordionButtonIcon: accordionButtonIcon2
+            }
+          %}
+            {% block content %}
+              <div class="pt-2 pb-12">
+                {% include '@components/ui/facets/range-slider.twig' with {
+                  name: 'length',
+                  min: 10,
+                  max: 230,
+                  defaultMin: 40,
+                  defaultMax: 200,
+                  units: 'cm'
+                } %}
+              </div>
+            {% endblock %}
+          {% endembed %}
+        </div>
+      </div>
+
+      {# Facets Modal Footer #}
+      <div class="flex  gap-4 s:gap-8 pt-4 s:pt-6 m:pt-8">
+        <button class="size-14 ring-1 ring-purple rounded-lg m:hidden flex items-center justify-center">
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'icon-reset',
+            attr: {
+              class: ['w-8', 'flex', 'items-center', 'justify-center']
+            }
+          } %}
+        </button>
+        {% include '@components/button.twig' with {
+          label: 'Effacer les filtres',
+          variant: 'link',
+          icon: false,
+          attr: {
+            type: 'button',
+            'data-ref': 'resetFacets[]',
+            class: 'hidden m:block'
+          }
+        } only %}
+        {% include '@components/button.twig' with {
+          label: 'Filtrer',
+          variant: 'solid',
+          attr: {
+            type: 'submit',
+            class: 'flex-1'
+          }
+        } only %}
+      </div>
+    </form>
+  {% endblock %}
+{% endembed %}

@@ -1,0 +1,358 @@
+{% extends '@layouts/base.twig' %}
+
+{% block head_after %}
+  <script src="/assets/js/semi_custom.js" type="application/javascript"></script>
+{% endblock %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Passementerie',
+    url: '/passementerie'
+  },
+  {
+    label: 'Salone',
+    url: '/passementerie/salone'
+  }
+] %}
+
+{% set product_infos = {
+  title: 'EMBRASSE 2 glands',
+  category: 'S1500',
+  tag: 'Disponible en outdoor',
+  qty_type: 'select',
+  zones: 5,
+  product_code: 'S1500',
+  project_id: '38',
+  width: 696,
+  height: 1400,
+  price: [
+    {
+      items: 2,
+      price_per_item: 290.60
+    },
+    {
+      items: 12,
+      price_per_item: 261.54
+    },
+    {
+      items: 24,
+      price_per_item: 232.48
+    }
+  ],
+  product_variants: [
+    {
+      name: 'Couleur',
+      id: 'color',
+      type: 'color',
+      items: [
+        {
+          label: '9100 - Orange',
+          value: '9100',
+          href: '#',
+          color: '#FF0000'
+        },
+        {
+          label: '9200 - SYCOMORE',
+          value: '9200',
+          href: '#',
+          color: '#00FF00',
+          current: true
+        },
+        {
+          label: '9300 - Rouge',
+          value: '9300',
+          href: '#',
+          color: '#0000FF'
+        },
+      ]
+    },
+    {
+      name: 'Longueur',
+      id: 'length',
+      type: 'regular',
+      items: [
+        {
+          label: '31 mm',
+          value: '31mm',
+          href: '#',
+          current: true
+        },
+        {
+          label: '50 mm',
+          value: '50mm',
+          href: '#'
+        },
+        {
+          label: '100 mm',
+          value: '100mm',
+          href: '#'
+        }
+      ]
+    }
+  ],
+  more_infos: [
+    {
+      title: 'Détails produit',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lorem magna, faucibus et dapibus id, gravida vitae turpis. Aenean imperdiet condimentum ante, eu ultricies erat facilisis nec. Praesent euismod mollis elit, vitae ullamcorper nibh dapibus eget. Phasellus aliquet enim ornare, pretium quam sed, tempus nunc. Pellentesque consectetur lacus eu blandit lobortis. Phasellus ut consectetur turpis. Praesent convallis neque mollis gravida bibendum. Donec blandit eros sed est facilisis suscipit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam placerat iaculis elementum.'
+    },
+    {
+      title: 'Caractéristiques',
+      content: '
+          <dl class="dl-horizontal">
+          <dt>Longueur</dt>
+          <dd>90 cm</dd>
+          <dt>Hauteur</dt>
+          <dd>50 cm</dd>
+          <dt>Poids</dt>
+          <dd>400 g</dd>
+          <dt>Composition</dt>
+          <dd><span style="white-space:nowrap">5% Métal</span> <span style="white-space:nowrap">75% Polyester</span> <span style="white-space:nowrap">20% Bois</span> </dd>
+          </dl>'
+    },
+    {
+      title: 'Service client',
+      content: 'Sed consequat neque vel nibh eleifend, eget sodales leo mattis. Donec id quam in nunc lacinia porta. Fusce laoreet sagittis orci eu rutrum. Phasellus dictum commodo nisi sit amet volutpat. Donec scelerisque tristique porttitor. Sed gravida ut risus id finibus. Integer porttitor vel nulla in molestie. Vestibulum accumsan, augue et blandit maximus, felis arcu mattis lorem, sit amet ultrices ex lorem at tortor. Pellentesque accumsan, sem in commodo bibendum, urna metus pharetra orci, vel iaculis leo felis a metus. Quisque congue, diam et gravida sagittis, dui odio porttitor tortor, nec euismod arcu lorem sed velit.'
+    }
+  ],
+  collection_infos: {
+    name: 'Zelda',
+    description: 'Zelda est une collection de passementerie qui se caractérise par son design moderne et élégant. Elle est composée de matériaux de haute qualité et de motifs colorés qui donnent un look unique à chaque pièce.',
+    catalog: 'https://www.houles.com/FR-fr/product/victoria-galon-effile-60mm-32038-9020',
+    video: 'iDhi-1SYBTM',
+    designer: 'Oscar Lucien Ono',
+    designer_image: 'https://i.pravatar.cc/120'
+  }
+} %}
+
+{% set product_mood = {
+  description: 'A son apogée dans les années 20, il irrigue l’architecture, le design et la décoration d’intérieur. Houlès a voulu rendre hommage à ce style créatif et élégant qui vit aujourd’hui un vrai renouveau, en créant une collection complète qui remet au goût du jour la passementerie dans les intérieurs d’aujourd’hui.',
+  images: [
+    {
+      src: '/assets/products/6644cbbd61180.jpg',
+      width: '935',
+      height: '1400'
+    },
+    {
+      src: '/assets/blog.jpg',
+      width: '500',
+      height: '400'
+    }
+  ]
+} %}
+
+{% set crosssel_tooltips = {
+  collection_name: 'Zelda',
+  collection_url: '/passementerie/zelda',
+  alt: 'Collection Zelda',
+  collection_image: '/assets/products/6644cbbd61180.jpg',
+  collection_image_width: '935',
+  collection_image_height: '1400',
+  tooltips: [
+    {
+      left: 92.290592193604,
+      top: 12.346150044459,
+      href: 'https://www.houles.com//FR-fr/product/victoria-galon-effile-60mm-32038-9020',
+      title: 'Galon effilé 60mm',
+      price: '245',
+      category: 'Zelda',
+      tag: 'Nouveauté',
+      image: '/assets/products/32031_9700_L3_1.jpg',
+      image_width: 696,
+      image_height: 1400
+    },
+    {
+      left: 30.571842193604,
+      top: 17.211484536205,
+      href: 'https://www.houles.com//FR-fr/product/paris-galon-satine-40mm-32040-9300',
+      title: 'Galon satine 40mm',
+      price: '225',
+      category: 'Zelda',
+      image: '/assets/products/36249_9150_P3_1.jpg'
+    },
+    {
+      left: 43.853092193604,
+      top: 40.582466291201,
+      href: 'https://www.houles.com//FR-fr/product/frange-tricotine-100-mm-33216-9300',
+      title: 'Frange tricotine 100mm',
+      price: '50',
+      category: 'Asara',
+      image: '/assets/products/6644cbbd61180.jpg'
+    },
+    {
+      left: 51.53538386027,
+      top: 30.417392442373,
+      href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9000',
+      title: 'Frange tricotine 200mm',
+      price: '100',
+      category: 'Asara',
+      image: '/assets/products/36249_9150_P3_1.jpg'
+    },
+    {
+      left: 57.78538386027,
+      top: 49.965611382426,
+      href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9010',
+      title: 'Frange tricotine 200mm',
+      price: '80',
+      category: 'Boom',
+      image: '/assets/products/6644cbbd61180.jpg'
+    },
+    {
+      left: 87.733300526937,
+      top: 40.582466291201,
+      href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9300',
+      title: 'Tricotine 220mm',
+      price: '100.99',
+      category: 'Boom',
+      image: '/assets/products/36249_9150_P3_1.jpg'
+    },
+    {
+      left: 58.306217193604,
+      top: 24.596367246891,
+      href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9800',
+      title: 'Tricotine 220mm',
+      price: '100.99',
+      category: 'Boom',
+      tag: 'Nouveauté',
+      image: '/assets/products/6644cbbd61180.jpg'
+    }
+  ]
+} %}
+
+{% set related_products = [
+  {
+    name: 'Embrasse 1 gland',
+    collection: 'ZELDA',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: true,
+    image_main: '/assets/products/32031_9700_L3_1.jpg',
+    image_hover: '/assets/products/6644cbbd61180.jpg',
+    tags: ['-20%'],
+    reference: '1234567890',
+    is_new: true,
+    stock: '40',
+    is_in_stock: true
+  },
+  {
+    name: 'EMBRASSE 2 GLANDS 35CM',
+    collection: 'ZELDA',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: false,
+    image_main: '/assets/products/36249_9017_P3_1.jpg',
+    tags: ['-20%', 'Boom'],
+    reference: '1234567890',
+    is_new: false,
+    stock: '40',
+    is_in_stock: true
+  },
+  {
+    name: '2 EMBOUTS "AQUA" Ø 19MM',
+    collection: 'ACEA DESIGN',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: true,
+    image_main: '/assets/products/36249_9150_P3_1.jpg',
+    image_hover: '/assets/products/67ecf18679a90.jpg',
+    reference: '1234567890',
+    is_new: false,
+    stock: '40',
+    is_in_stock: false
+  },
+  {
+    name: 'Embrasse 1 gland',
+    collection: 'ZELDA',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: true,
+    image_main: '/assets/products/32031_9700_L3_1.jpg',
+    image_hover: '/assets/products/6644cbbd61180.jpg',
+    tags: ['-20%'],
+    reference: '1234567890',
+    is_new: true,
+    stock: '40',
+    is_in_stock: true
+  },
+  {
+    name: 'EMBRASSE 2 GLANDS 35CM',
+    collection: 'ZELDA',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: false,
+    image_main: '/assets/products/36249_9017_P3_1.jpg',
+    tags: ['-20%', 'Boom'],
+    reference: '1234567890',
+    is_new: false,
+    stock: '40',
+    is_in_stock: true
+  },
+  {
+    name: '2 EMBOUTS "AQUA" Ø 19MM',
+    collection: 'ACEA DESIGN',
+    url: '/produit/embrasse-1-gland',
+    regular_price: '100',
+    sale_price: '80',
+    is_sale: true,
+    image_main: '/assets/products/36249_9150_P3_1.jpg',
+    image_hover: '/assets/products/67ecf18679a90.jpg',
+    reference: '1234567890',
+    is_new: false,
+    stock: '40',
+    is_in_stock: false
+  }
+] %}
+
+{% block body %}
+  <main>
+    <section class="m:mt-10 m:mb-14">
+      <div class="s:container">
+        <div class="m:grid m:grid-cols-2 m:gap-x-8">
+          {# Product images #}
+          {% include '@components/ui/shop/product-images-svp.twig' with {'product_code': product_infos.product_code, 'project_id': product_infos.project_id, 'zones': product_infos.zones, 'width': product_infos.width, 'height': product_infos.height} %}
+
+          {# Product info #}
+          {% include '@components/ui/shop/product-info-svp.twig' with product_infos %}
+        </div>
+      </div>
+    </section>
+
+    {# Related products #}
+    {% include '@components/slider-product-2cols.twig' with related_products %}
+
+    {# Collection infos #}
+    {% include '@components/ui/shop/product-collection-infos.twig' with product_infos.collection_infos %}
+
+    {# Collection Mood #}
+    {% embed '@components/slider-mood-collection.twig'
+      with {
+        title: 'La collection en images ',
+        attr: {
+          class: 'py-10 m:py-28'
+        }
+      }
+    %}
+      {% block description %}
+        <p class="text-base m:col-start-9 m:col-span-4">
+          {{ product_infos.collection_infos.description }}
+        </p>
+      {% endblock %}
+    {% endembed %}
+
+    {# Product Mood #}
+    {% include '@components/bloc-product-mood.twig' with product_mood %}
+
+    {# Related products #}
+    {% include '@components/slider-product-1col.twig' with related_products %}
+
+    {# Crosssel tooltips #}
+    {% include '@components/ui/shop/product-crosssel-tooltips.twig' with crosssel_tooltips %}
+
+    {# Sticky add to cart #}
+    {% include '@components/ui/shop/sticky-add-to-cart.twig' with product_infos %}
+  </main>
+{% endblock %}

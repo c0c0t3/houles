@@ -1,0 +1,645 @@
+{% extends '@layouts/page.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'page CMS',
+    url: '/cms/page/'
+  }
+] %}
+
+{% set html_attr = {
+  class: 'is-home bg-sand'
+} %}
+
+{% set pagehero = {
+  title: '<span>Le carnet</span><span> d"inspiration</span>',
+  subtitle: 'Consectetur tortor morbi vestibulum quis. Mauris diam neque auctor hac non ut sodales gravida fusce. A tellus fames pellentesque.',
+  image: '/assets/hero.jpg'
+} %}
+
+
+{% set other_pages = [
+  {
+    title: 'A propos',
+    link: '/shop/collection.html',
+    src: '/assets/card-collection.jpg',
+    filtersTitle: 'Passementerie'
+  },
+  {
+    title: "Projets d'exception et alors çà fait quoi ?",
+    link: '/shop/collection.html',
+    src: '/assets/card-collection-1.jpg',
+    filtersTitle: 'Tringlerie'
+  }
+] %}
+
+{% set items = [
+  {
+    image_main: '/assets/inspi/h6.jpg',
+    filters: 'photo embrasse',
+    name: 'Frange torse Océanie',
+    type: 'PAssementerie',
+    product_url: 'https://www.google.fr'
+  },
+  {
+    filters: 'photo cables',
+    image_main: '/assets/products/67ecf18679a90.jpg',
+    width: 934,
+    height: 1400,
+    name: 'Frange torse Océanie',
+    type: 'PAssementerie',
+    tooltips: [
+      {
+        left: 0,
+        top: 50,
+        href: 'https://www.houles.com//FR-fr/product/victoria-galon-effile-60mm-32038-9020',
+        title: 'Galon effilé 60mm',
+        price: '245',
+        filters: 'Zelda Breath Of The Wild',
+        tag: 'Nouveauté',
+        image: '/assets/products/32031_9700_L3_1.jpg',
+        image_width: 696,
+        image_height: 1400
+      },
+      {
+        left: 30.571842193604,
+        top: 17.211484536205,
+        href: 'https://www.houles.com//FR-fr/product/paris-galon-satine-40mm-32040-9300',
+        title: 'Galon satine 40mm',
+        price: '225',
+        filters: 'Zelda',
+        image: '/assets/products/36249_9150_P3_1.jpg'
+      },
+      {
+        left: 43.853092193604,
+        top: 40.582466291201,
+        href: 'https://www.houles.com//FR-fr/product/frange-tricotine-100-mm-33216-9300',
+        title: 'Frange tricotine 100mm',
+        price: '50',
+        filters: 'Asara',
+        image: '/assets/products/6644cbbd61180.jpg'
+      },
+      {
+        left: 51.53538386027,
+        top: 30.417392442373,
+        href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9000',
+        title: 'Frange tricotine 200mm',
+        price: '100',
+        filters: 'Asara',
+        image: '/assets/products/36249_9150_P3_1.jpg'
+      },
+      {
+        left: 57.78538386027,
+        top: 49.965611382426,
+        href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9010',
+        title: 'Frange tricotine 200mm',
+        price: '80',
+        filters: 'Boom',
+        image: '/assets/products/6644cbbd61180.jpg'
+      },
+      {
+        left: 87.733300526937,
+        top: 40.582466291201,
+        href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9300',
+        title: 'Tricotine 220mm',
+        price: '100.99',
+        filters: 'Boom',
+        image: '/assets/products/36249_9150_P3_1.jpg'
+      },
+      {
+        left: 100,
+        top: 100,
+        href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9800',
+        title: 'Tricotine 220mm',
+        price: '100.99',
+        filters: 'Boom',
+        tag: 'Nouveauté',
+        image: '/assets/products/6644cbbd61180.jpg'
+      }
+    ]
+  },
+  {
+    image_main: '/assets/inspi/h3.jpeg',
+    filters: 'photo galons',
+    width: 406,
+    height: 406,
+    name: 'Frange torse Océanie',
+    type: 'PAssementerie',
+    tooltips: [
+      {
+        left: 50,
+        top: 0,
+        href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9300',
+        title: 'Tricotine 220mm',
+        price: '100.99',
+        filters: 'Boom',
+        image: '/assets/products/36249_9150_P3_1.jpg'
+      },
+      {
+        left: 100,
+        top: 100,
+        href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9800',
+        title: 'Tricotine 220mm',
+        price: '100.99',
+        filters: 'Boom',
+        tag: 'Nouveauté',
+        image: '/assets/products/6644cbbd61180.jpg'
+      }
+    ]
+  },
+    {
+    image_main: '/assets/inspi/h4-2.jpg',
+    filters: 'photo galons',
+    width: 900,
+    height: 480,
+    name: 'Frange torse Océanie',
+    type: 'PAssementerie',
+    tooltips: [
+      {
+        left: 50,
+        top: 0,
+        href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9300',
+        title: 'Tricotine 220mm',
+        price: '100.99',
+        filters: 'Boom',
+        image: '/assets/products/36249_9150_P3_1.jpg'
+      },
+      {
+        left: 100,
+        top: 100,
+        href: 'https://www.houles.com//FR-fr/product/frange-tricotine-200-mm-33217-9800',
+        title: 'Tricotine 220mm',
+        price: '100.99',
+        filters: 'Boom',
+        tag: 'Nouveauté',
+        image: '/assets/products/6644cbbd61180.jpg'
+      }
+    ]
+  },
+  {
+    image_main: '/assets/inspi/h2.jpeg',
+    filters: 'video embrasse',
+
+  },
+  {
+    image_main: '/assets/inspi/h4.jpeg',
+    filters: 'photo embrasse media antica',
+
+  },
+  {
+    image_main: '/assets/inspi/h5.jpeg',
+    filters: 'video cables',
+
+  },
+  {
+    image_main: '/assets/inspi/h1.jpeg',
+    filters: 'photo cables',
+  },
+  {
+    image_main: '/assets/inspi/h2.jpeg',
+    filters: 'video embrasse antica',
+
+  },
+  {
+    image_main: '/assets/inspi/h3.jpeg',
+    filters: 'photo lezardes',
+
+  },
+  {
+    image_main: '/assets/inspi/h4.jpeg',
+    filters: 'photo embrasse asara',
+
+  },
+  {
+    image_main: '/assets/inspi/h5.jpeg',
+    filters: 'video lezardes',
+
+  },
+  {
+    image_main: '/assets/inspi/h6.jpg',
+    filters: 'photo galons asara'
+  },
+    {
+    image_main: '/assets/inspi/h1.jpeg',
+    filters: 'photo lezardes',
+  },
+  {
+    image_main: '/assets/inspi/h2.jpeg',
+    filters: 'video agrement',
+
+  },
+  {
+    image_main: '/assets/inspi/h4.jpeg',
+    filters: 'photo agrement duchesse',
+
+  },
+  {
+    image_main: '/assets/inspi/h5.jpeg',
+    filters: 'video lezardes',
+
+  },
+  {
+    image_main: '/assets/inspi/h6.jpg',
+    filters: 'photo agrement duchesse'
+  },
+    {
+    image_main: '/assets/inspi/h1.jpeg',
+    filters: 'photo lezardes',
+  },
+  {
+    image_main: '/assets/inspi/h2.jpeg',
+    filters: 'video galons',
+
+  },
+  {
+    image_main: '/assets/inspi/h3.jpeg',
+    filters: 'photo agrement',
+
+  },
+  {
+    image_main: '/assets/inspi/h4.jpeg',
+    filters: 'photo embrasse',
+
+  },
+  {
+    image_main: '/assets/inspi/h5.jpeg',
+    filters: 'video embrasse',
+
+  },
+  {
+    image_main: '/assets/inspi/h6.jpg',
+    filters: 'photo galons'
+  },
+    {
+    image_main: '/assets/inspi/h1.jpeg',
+    filters: 'photo embrasse',
+  },
+  {
+    image_main: '/assets/inspi/h2.jpeg',
+    filters: 'video galons',
+
+  },
+  {
+    image_main: '/assets/inspi/h3.jpeg',
+    filters: 'photo embrasse',
+
+  },
+  {
+    image_main: '/assets/inspi/h4.jpeg',
+    filters: 'photo agrement',
+
+  },
+  {
+    image_main: '/assets/inspi/h5.jpeg',
+    filters: 'video galons',
+
+  },
+  {
+    image_main: '/assets/inspi/h6.jpg',
+    filters: 'photo galons'
+  },
+] %}
+
+
+{% block body %}
+  <main>
+    {# Page Hero #}
+    {% include '@components/page-hero.twig' with pagehero %}
+
+
+
+    <section class="pb-80" data-component="InspirationGrid">
+      <div class="container">
+
+
+
+      {# Filtres à facettes #}
+      {% include '@pages/inspiration/filters.twig' with {
+        class: 'my-10 m:my-14'
+      } %}
+
+
+
+        <div data-ref="TheGrid" class="grid-masonry">
+          
+
+          <div class="grid-sizer"></div>
+          {% for inspiration in items %}
+            <div data-component="Action"
+              data-option-target="Panel(#inspirationModal)"
+              data-option-effect="target.open()"
+              data-ref="InspirationGridItem[]" 
+              data-id={{ loop.index }}
+              class="grid-item {{ inspiration.filters }}"
+              data-name="{{ inspiration.name }}"
+              data-price="{{ inspiration.price }}" data-boom="{{ inspiration.filters }} ">
+                <img data-option-target="InspirationSlider" data-option-effect="target.goToFilteredIndex()" data-component="Action" class="w-full" src="{{inspiration.image_main}}" alt="" height="{{inspiration.height}}" width="{{inspiration.width}}" data-hauteur="{{inspiration.height}}">
+            </div>
+          {% endfor %}
+        </div>
+
+      </div>
+    </section>
+
+    
+
+    {% embed '@components/modal/Panel.twig'
+      with {
+        position: 'right',
+        overlay_attr: {
+          class: 'z-50 bg-black/20 absolute inset-0'
+        },
+        wrapper_attr: {
+          class: 'p-0 z-50 items-center h-screen'
+        },
+        container_attr: {
+          class: 'w-full max-w-full h-screen rounded bg-sand'
+        },
+        content_attr: {
+          class: 'px-4 l:px-6 h-svh overflow-hidden',
+        },
+        attr: {
+          id: 'inspirationModal',
+        }
+      }
+    %}
+      {% block open %}
+      {% endblock %}
+      {% block close %}
+      {% endblock %}
+      {% block content %}
+
+            <div class=" hidden l:flex justify-between absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex-col uppercase text-4xl l:text-8xl text-transparent font-outline-1 font-serif leading-none w-[855px] max-w-full">
+              <span>Le carnet</span>
+              <span class="self-end">d'inspiration</span>
+            </div>
+
+            <div class="absolute top-4 right-4 l:top-6 l:right-6 z-50">
+              {% include '@components/modal/close-modal-button.twig' with {
+                attr: {
+                  data_ref: 'close[]',
+                  type: 'button'
+                }
+              } only %}
+            </div>
+          <div data-ref="InspirationSlider" data-component="InspirationSlider" class=" max-w-full h-svh flex flex-col items-between ">
+            
+            {# Main Slider #}
+            <div data-ref="mainSlider" class="swiper-container main-slider relative z-10 flex-1 ">
+
+              {# Swiper Wrapper #}
+              <div class="swiper-wrapper">
+
+                {# Slides in loop #}
+                {% for slideinspi in items %}
+                  <div data-component="InspirationSlide" data-id={{ loop.index }} data-index="{{loop.index}}" 
+                    class="{{ slideinspi.filters }} h-full l:h-auto main-slide swiper-slide pointer-events-none transition-opacity duration-1000 !opacity-0 flex flex-col items-end l:items-center l:justify-start l:pt-6"
+                    data-name="{{ slideinspi.name }}"
+                    data-price="{{ slideinspi.price }}">
+                    
+                      {# Color Palette #}
+                      <div data-ref="colorPalette"></div>
+
+                      {# Slide name MOBILE #}
+                      <div class="block l:hidden w-full pt-4 mb-8">
+                        <div class="flex items-center relative gap-2">
+
+                          {# Inspiration Type #}
+                          <span class="inline-block text-xs uppercase font-medium text-purple rounded bg-brown-light px-2 py-1">{{ slideinspi.type }}</span>
+                          
+                          {# Inspiration wishlist trigger #}
+                          <button data-ref="open[]"
+                            data-component="Action"
+                            data-option-target="Panel(#wishlist)"
+                            data-option-effect="target.open()"
+                            class=" flex items-center justify-center text-purple">
+                            {% include '@ui/Icon/Icon.twig' with {
+                              name: 'icon-heart',
+                              attr: {
+                                class: 'w-5 *:size-full'
+                              }
+                            } %}
+                          </button>
+
+                        </div>
+                        <h2 class="mt-1 font-serif text-xl m:text-2xl uppercase leading-none text-gray">{{ slideinspi.name }}</h2>
+                      </div>
+                    
+                    <div data-ref="tooltipContainer[]" class="relative  w-[calc(100%-40px)] l:w-full  flex justify-center l:justify-center ">
+                      <img data-ref="image" class=" w-auto max-h-[calc(80vh-140px-48px)] l:max-h-[calc(100vh-140px-120px)] " src="{{slideinspi.image_main}}" alt="" width="400" data-hauteur="{{slideinspi.height}}">
+                      {% if slideinspi.tooltips %}
+                        {% set orientation = slideinspi.width >= slideinspi.height ? 'h-full' : 'h-full' %}
+                        <div data-ref="tooltipContainer" style="--width: {{ slideinspi.width }}; --height: {{ slideinspi.height }};" class="tooltipContainer z-50 {{ orientation}}  max-h-[calc(80vh-140px-48px)] l:max-h-[calc(100vh-140px-48px)] m:block absolute l:top-0 l:right-0 l:left-1/2 l:-translate-x-1/2   [aspect-ratio:var(--width)_/_var(--height)] opacity-0 pointer-events-none">
+                          {% for tooltip in slideinspi.tooltips %}
+                            {% embed '@components/ui/tooltip.twig'
+                              with {
+                                tooltip_attributes: {
+                                  class: 'z-10'
+                                },
+                                left: tooltip.left ~ '%',
+                                top: tooltip.top ~ '%',
+                                href: tooltip.href
+                              }
+                            %}
+                              {% block content %}
+                                <a href="{{ tooltip.href }}"
+                                  class="flex items-stretch ring-1 ring-gray/10 bg-white opacity-0 pointer-events-none translate-y-8 transition-all duration-500 ease-out-quad group-aria-expanded:translate-y-0 group-aria-expanded:opacity-100 group-aria-expanded:pointer-events-auto pl-[120px] m:pl-[196px]">
+                                  <div class="bg-sand-darker w-[120px] m:w-full h-full m:w-[196px] flex justify-center items-center absolute left-0 top-0">
+                                    {% include '@ui/Figure/Figure.twig' with {
+                                      src: tooltip.image,
+                                      width: tooltip.image_width,
+                                      height: tooltip.image_height,
+                                      absolute: true,
+                                      attr: {
+                                        class: 'size-full'
+                                      },
+                                      inner_attr: {
+                                        class: '!h-full'
+                                      },
+                                      img_attr: {
+                                        class: 'mix-blend-multiply size-full object-contain'
+                                      }
+                                    } %}
+                                    {% if tooltip.tag %}
+                                      <span class="inline-block text-xs uppercase font-medium text-purple rounded bg-brown-light px-2 py-1 absolute top-4 left-4">
+                                        {{ tooltip.tag }}
+                                      </span>
+                                    {% endif %}
+                                  </div>
+                                  <div class="w-48 flex flex-col gap-4 items-center justify-center text-center py-6 px-4">
+                                    {% if tooltip.filters %}
+                                      <span class="post-filters tracking-[0.15em] text-brown uppercase block font-sans text-xs font-medium whitespace-normal">
+                                        {{ tooltip.filters }}
+                                      </span>
+                                    {% endif %}
+                                    {% if tooltip.title %}
+                                      <span class="text-lg m:text-3xl font-serif uppercase text-gray leading-none whitespace-normal">
+                                        {{ tooltip.title }}
+                                      </span>
+                                    {% endif %}
+                                    {% if tooltip.price %}
+                                      <span class="block tracking-[0.15em] uppercase text-gray font-sans text-sm font-medium">
+                                        {{ tooltip.price }}€ HT
+                                      </span>
+                                    {% endif %}
+                                  </div>
+                                </a>
+                              {% endblock %}
+                            {% endembed %}
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                      
+                    </div>
+
+                    {# Tooltips wrapper #}
+
+                    {# Slider Infos #}
+                    <div class="flex flex-col l:flex-row justify-end py-4 l:py-8 items-center w-full shrink-0 absolute bottom-8 l:bottom-0 gap-4">
+
+                      {# Slide name desktop #}
+                      <div class="l:flex-1 hidden l:block l:pl-8">
+                        <div class="flex items-center relative gap-2 ">
+
+                          {# Inspiration Type #}
+                          <span class="inline-block text-xs uppercase font-medium text-purple rounded bg-brown-light px-2 py-1">{{ slideinspi.type }}</span>
+                          
+                          {# Inspiration wishlist trigger #}
+                          <button data-ref="open[]"
+                            data-component="Action"
+                            data-option-target="Panel(#wishlist)"
+                            data-option-effect="target.open()"
+                            class=" flex items-center justify-center text-purple">
+                            {% include '@ui/Icon/Icon.twig' with {
+                              name: 'icon-heart',
+                              attr: {
+                                class: 'w-5 *:size-full'
+                              }
+                            } %}
+                          </button>
+
+                        </div>
+                        <h2 class="mt-1 font-serif text-xl m:text-2xl uppercase leading-none text-gray">{{ slideinspi.name }}</h2>
+                      </div>
+
+                      {# Slide image download #}
+                      <div class="l:flex-1 flex justify-center">
+                        {% include '@components/button.twig' with {
+                          label: 'Telechargez le visuel',
+                          variant: 'link',
+                          invert: false,
+                          href: slideinspi.main_image,
+                          icon: 'download',
+                          size: 'small',
+                          attr: {
+                            class: 'w-auto'
+                          }
+                        } only %}
+                      </div>
+
+                      {# Slider tooltip trigger #}
+                      <div class="l:flex-1 flex justify-end text-">
+                        {% if slideinspi.tooltips %}
+                          {% include '@components/field-toggle.twig' with {
+                            attr: {
+                              class: 'toggleTooltipButton mt-2',
+                              data_ref: 'toggleTooltipButton',
+                            },
+                            label: 'Aficher les produits',
+                            labelClass: '!uppercase font-medium !text-sm',
+                            name: 'use_credit'
+                          } only %}
+                        {% endif %}
+                        
+                        {% if slideinspi.product_url %}
+                          {% include '@components/button.twig' with {
+                            label: 'Voir le produit',
+                            variant: 'solid',
+                            icon: 'add-to-cart',
+                            href: slideinspi.product_url,
+                            size: 'small',
+                            attr: {
+                              class: 'w-auto'
+                            }
+                          } only %}
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+
+              </div>
+
+              <button title="Prev"
+                type="button"
+                class="main-swiper-button-prev  rounded cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed text-purple hidden m:block absolute top-1/2 -translate-y-1/2 left-0 z-10 py-4">
+                {% include '@ui/Icon/Icon.twig' with {
+                  name: 'arrow-line-desktop',
+                  attr: {
+                    class: ['w-14', 'block', 'rotate-180']
+                  }
+                } %}
+              </button>
+              <button title="Next"
+                type="button"
+                class="main-swiper-button-next rounded cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed text-purple hidden m:block absolute top-1/2 -translate-y-1/2 right-0 z-10 py-4">
+                {% include '@ui/Icon/Icon.twig' with {
+                  name: 'arrow-line-desktop',
+                  attr: {
+                    class: ['w-14', 'block']
+                  }
+                } %}
+              </button>
+            </div>
+            
+            {# Thumb #}
+            <div data-ref="thumb-slider" class="swiper-container thumbs-slider shrink-0 cursor-grab pb-2 h-20">
+              <div class="swiper-wrapper items-end">
+
+                {% for thumbinspi in items %}
+                  <div  
+                    data-index="{{loop.index}}" 
+                    data-id={{ loop.index }}
+                    class="{{ thumbinspi.filters }} swiper-slide thumb-slide h-14 !w-14"
+                    data-name="{{ thumbinspi.name }}"
+                    data-price="{{ thumbinspi.price }}">
+                    <img class="" src="{{thumbinspi.image_main}}" alt="" width="400" data-hauteur="{{thumbinspi.height}}">
+                  </div>
+                {% endfor %}
+
+              </div>
+            </div>
+          </div>
+
+          {% include '@components/modal/wishlist/wishlist.twig' %}
+          {% include '@components/modal/wishlist/wishlist-new-list.twig' %}
+
+
+
+      {% endblock %}
+    {% endembed %}
+
+    <div class="swiper-slide-pool hidden"></div>
+
+  </main>
+{% endblock %}
+
+{% block body_after %}
+  <section>
+    <div class="container">
+      <h2 class="text-3xl s:text-4xl m:text-6xl font-serif text-gray font-light uppercase mb-8 m:mb-14">
+        Vous aimerez aussi
+      </h2>
+      <div class="grid grid-cols-2 gap-4 m:gap-6">
+        {% for page in other_pages %}
+          {% include '@components/ui/card/card-page.twig' with {
+            title: page.title,
+            filtersTitle: page.filtersTitle,
+            src: page.src,
+            link: page.link
+          } %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

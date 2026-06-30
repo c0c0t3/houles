@@ -1,0 +1,13 @@
+{% set default_attr = {
+  class: ['icon']
+} %}
+
+{% set attr = default_attr|merge(attr|default({})) %}
+
+{% set attr_string = '' %}
+{% for k, v in attr %}
+  {% set value = v is iterable ? v|join(' ') : v %}
+  {% set attr_string = attr_string ~ ' ' ~ k ~ '="' ~ value ~ '"' %}
+{% endfor %}
+
+<svg {{ attr_string }}><use href="/assets/icons/{{ name }}.svg#icon"></use></svg>

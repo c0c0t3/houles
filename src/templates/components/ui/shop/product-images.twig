@@ -1,0 +1,197 @@
+<div>
+  <div class="relative m:sticky m:top-28 p-4 m:p-0">
+    {# Product Images as Slider #}
+    <div role="group"
+      aria-roledescription="carousel"
+      data-component="Slider"
+      data-option-mode="left"
+      data-option-fit-bounds
+      data-option-contain
+      class="relative z-10 bg-sand-darker">
+      {# Slider Drag #}
+      <div class="overflow-hidden">
+        <div data-component="SliderDrag"
+          data-option-active-breakpoints="xxs xs s"
+          data-ref="wrapper"
+          tabindex="0"
+          class="text-[0px] whitespace-nowrap z-0 relative h-full w-full">
+          {% for product_image in product_images %}
+            {% set attributes = product_image.tooltips
+            ? {}
+            : {
+              data_component: 'GalleryZoom',
+            }
+          %}
+            <div data-component="SliderItem"
+              data-option-active-breakpoints="l xl xxl xxxl"
+              data-ref="tooltipContainer[]"
+              class="inline-block h-full w-full bg-sand-darker will-change-transform aspect-square">
+              <div {{ html_attributes(attributes) }} class="relative size-full z-2 bg-sand-darker">
+                <div class="zoom max-s:hidden z-2 absolute top-0 left-0 size-full" style="opacity: 0; visibility: hidden;" data-ref="zoom">
+                  <div data-ref="box" class="z-10 absolute overflow-hidden bg-sand-darker border border-sand-dark shadow-md size-48 mix-blend-multiply">
+                      <div class="print_zoom relative" id="content_zoom" data-ref="contentZoom"></div>
+                  </div>
+                </div>
+                <div class="absolute inset-0 flex items-center" data-ref="projectImgContent">
+                  {# Image du produit #}
+                  <img src="{{ product_image.src }}"
+                    alt="{{ product_image.alt }}"
+                    data-ref="content"
+                    class="max-h-full mx-auto s:aspect-auto w-auto max-w-full object-contain mix-blend-multiply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none object-center" />
+
+                  {# Tooltips wrapper #}
+                  {% if product_image.tooltips %}
+                    {% set orientation = product_image.width > product_image.height ? 'w-full' : 'h-full' %}
+                    <div style="--width: {{ product_image.width }}; --height: {{ product_image.height }};" class="{{ orientation}} hidden m:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  [aspect-ratio:var(--width)_/_var(--height)]">
+                      {% for tooltip in product_image.tooltips %}
+                        {% embed '@components/ui/tooltip.twig'
+                          with {
+                            tooltip_attributes: {
+                              class: 'z-10'
+                            },
+                            left: tooltip.left ~ '%',
+                            top: tooltip.top ~ '%',
+                            href: tooltip.href
+                          }
+                        %}
+                          {% block content %}
+                            <a href="{{ tooltip.href }}"
+                              class="flex items-stretch ring-1 ring-gray/10 bg-white opacity-0 pointer-events-none translate-y-8 transition-all duration-500 ease-out-quad group-aria-expanded:translate-y-0 group-aria-expanded:opacity-100 group-aria-expanded:pointer-events-auto pl-[196px]">
+                              <div class="bg-sand-darker w-auto h-full m:w-[196px] flex justify-center items-center absolute left-0 top-0">
+                                {% include '@ui/Figure/Figure.twig' with {
+                                  src: tooltip.image,
+                                  width: tooltip.image_width,
+                                  height: tooltip.image_height,
+                                  absolute: true,
+                                  attr: {
+                                    class: 'size-full'
+                                  },
+                                  inner_attr: {
+                                    class: '!h-full'
+                                  },
+                                  img_attr: {
+                                    class: 'mix-blend-multiply size-full object-contain'
+                                  }
+                                } %}
+                                {% if tooltip.tag %}
+                                  <span class="inline-block text-xs uppercase font-medium text-purple rounded bg-brown-light px-2 py-1 absolute top-4 left-4">
+                                    {{ tooltip.tag }}
+                                  </span>
+                                {% endif %}
+                              </div>
+                              <div class="w-48 flex flex-col gap-4 items-center justify-center text-center py-6 px-4">
+                                {% if tooltip.category %}
+                                  <span class="post-category tracking-[0.15em] text-brown uppercase block font-sans text-xs font-medium whitespace-normal">
+                                    {{ tooltip.category }}
+                                  </span>
+                                {% endif %}
+                                {% if tooltip.title %}
+                                  <span class="text-lg m:text-3xl font-serif uppercase text-gray leading-none whitespace-normal">
+                                    {{ tooltip.title }}
+                                  </span>
+                                {% endif %}
+                                {% if tooltip.price %}
+                                  <span class="block tracking-[0.15em] uppercase text-gray font-sans text-sm font-medium">
+                                    {{ tooltip.price }}€ HT
+                                  </span>
+                                {% endif %}
+                              </div>
+                            </a>
+                          {% endblock %}
+                        {% endembed %}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if product_images|length > 1 %}
+        {# Slider Dots #}
+        <div data-component="SliderDots"
+          data-option-enter-to="is-active"
+          data-option-enter-keep
+          class="absolute z-10 m:bottom-8 left-4 max-s:top-16 m:left-8 space-y-2 max-s:h-[calc(100%-78px)] max-s:overflow-y-scroll">
+          {% for product_image in product_images %}
+            <button type="button"
+              data-ref="dots[]"
+              class="rounded-full bg-sand-darker border border-transparent is-active:border is-active:border-black ring-purple block">
+              <img src="{{ product_image.src }}"
+                alt="{{ product_image.alt }}"
+                class="rounded-full size-8 s:size-12 object-cover mix-blend-multiply opacity-50 parent-is-active:opacity-100" />
+              <span class="sr-only">Go to slide #{{ loop.index }}</span>
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {# Tag #}
+      <span class="inline-block text-xs uppercase font-medium text-purple rounded bg-brown-light px-2 py-1 absolute z-10 top-4 left-4 m:left-8 m:top-8">
+        {{ product_infos.tag }}
+      </span>
+
+      {# Wish List Trigger #}
+      <button data-ref="open[]"
+        data-component="Action"
+        data-option-target="Panel(#wishlist)"
+        data-option-effect="target.open()"
+        class="absolute z-10 right-4 top-4 m:right-8 m:top-8 size-12 s:size-14 flex items-center justify-center rounded-lg bg-white text-purple">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'icon-heart',
+          attr: {
+            class: 'w-5 s:w-6 *:size-full'
+          }
+        } %}
+      </button>
+
+      {# Zoomed gallery Trigger #}
+      <button aria-label="Zoomed gallery"
+        data-component="Action"
+        data-option-target="Panel(#zoomed-gallery)"
+        data-option-effect="target.open()"
+        class="size-12 s:size-14 absolute z-10 right-4 bottom-4 m:right-8 m:bottom-8 bg-white ring-purple text-purple rounded-lg flex items-center justify-center">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'icon-scale',
+          attr: {
+            data_ref: 'open[]',
+            class: ['w-5 s:w-6', 'flex', 'items-center', 'justify-center']
+          }
+        } %}
+      </button>
+    </div>
+
+    {# Download buttons #}
+    <div class="hidden l:flex flex-wrap justify-start items-center gap-6">
+      {% include '@components/button.twig' with {
+        label: 'Télécharger la fiche pdf',
+        icon: 'download',
+        variant: 'link'
+      } %}
+      {% include '@components/button.twig' with {
+        label: 'Télécharger les visuels',
+        icon: 'download',
+        variant: 'link'
+      } %}
+    </div>
+    <div class="flex l:hidden justify-end items-center gap-6 px-4">
+      {% include '@components/button.twig' with {
+        label: 'Fiche PDF',
+        icon: 'download',
+        variant: 'link'
+      } %}
+      {% include '@components/button.twig' with {
+        label: 'VISUELS',
+        icon: 'download',
+        variant: 'link'
+      } %}
+    </div>
+
+    {# Wish List #}
+  </div>
+  {% include '@components/modal/wishlist/wishlist.twig' %}
+  {% include '@components/modal/wishlist/wishlist-new-list.twig' %}
+  {% include '@components/ui/shop/product-overlay-gallery.twig' with product_images %}
+</div>

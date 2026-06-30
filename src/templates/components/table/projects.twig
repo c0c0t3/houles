@@ -1,0 +1,128 @@
+{% extends '@components/table/default.twig' %}
+
+{% set can_edit = can_edit is defined ? can_edit : true %}
+
+{% set head_row_attr = {
+  class: 'max-m:hidden'
+} %}
+
+{% set row_attr = {
+  class: 'max-m:relative max-m:grid max-m:grid-cols-3 max-m:grid-rows-3 max-m:gap-4 max-m:*:p-0 max-m:pb-6 max-m:pt-10'
+} %}
+
+{% set columns = [
+  {
+    label: 'Select',
+    key: 'select',
+    head_cell_attr: {
+      class: 'sr-only'
+    },
+    cell_attr: {
+      class: 'max-m:absolute max-m:top-3 max-m:left-0'
+    }
+  },
+  {
+    label: 'Visuel',
+    key: 'img',
+    cell_attr: {
+      class: 'max-m:row-span-3'
+    }
+  },
+  {
+    label: 'Numéro',
+    key: 'id',
+    cell_attr: {
+      class: 'max-m:col-span-2'
+    }
+  },
+  {
+    label: 'Nom',
+    key: 'name',
+    cell_attr: {
+      class: 'max-m:col-span-2'
+    }
+  },
+  {
+    label: 'État',
+    key: 'status',
+    cell_attr: {
+      class: 'max-m:col-span-2'
+    }
+  },
+  {
+    label: 'Actions',
+    key: 'actions',
+    head_cell_attr: {
+      class: 'sr-only'
+    },
+    cell_attr: {
+      class: 'text-right max-m:absolute max-m:top-3 max-m:right-0'
+    }
+  }
+] %}
+
+{% block cell_select %}
+  <input id="select-{{ row.id }}"
+    type="checkbox"
+    name="select[{{ row.id }}]"
+    class="size-4 rounded-none cursor-pointer accent-brown" />
+  <label for="select-{{ row.id }}" class="sr-only">Sélectionner le projet {{ row.name }}</label>
+{% endblock %}
+
+{% block cell_img %}
+  {% if value %}
+    <div class="ring-inset ring-1 ring-brown/20 p-px size-24">
+      <img src="{{ value }}"
+        alt=""
+        class="size-full object-contain bg-sand-darker"
+        loading="lazy" />
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block cell_status %}
+  {% include '@components/status.twig' with {
+    label: value.label,
+    type: value.type
+  } %}
+{% endblock %}
+
+{% block cell_actions %}
+  <div class="flex items-center justify-end gap-3">
+    {% if can_edit %}
+      <button type="button"
+        title="Modifier"
+        class="p-1 -m-1 hover:text-gray transition-colors duration-300 ease-out-quad">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'edit',
+          attr: {
+            class: 'size-5 [&>svg]:size-full'
+          }
+        } only %}
+        <span class="sr-only">Modifier</span>
+      </button>
+    {% endif %}
+    <button type="button"
+      title="Imprimer"
+      class="p-1 -m-1 hover:text-gray transition-colors duration-300 ease-out-quad">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'print',
+        attr: {
+          class: 'size-5 [&>svg]:size-full'
+        }
+      } only %}
+      <span class="sr-only">Imprimer</span>
+    </button>
+    <button type="button"
+      title="Supprimer"
+      class="p-1 -m-1 hover:text-gray transition-colors duration-300 ease-out-quad">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'trash',
+        attr: {
+          class: 'size-5 [&>svg]:size-full'
+        }
+      } only %}
+      <span class="sr-only">Supprimer</span>
+    </button>
+  </div>
+{% endblock %}

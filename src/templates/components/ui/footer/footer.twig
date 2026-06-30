@@ -1,0 +1,378 @@
+{% set menus = [
+  {
+    name: 'Passementerie',
+    link: '/passementerie',
+    submenus: [
+      {
+        name: 'Collections',
+        link: '#'
+      },
+      {
+        name: 'Catégories',
+        link: '#'
+      },
+      {
+        name: 'Styliser votre passementerie',
+        link: '#'
+      },
+      {
+        name: 'Fins de série',
+        link: '#'
+      },
+      {
+        name: 'Catalogue',
+        link: '#'
+      }
+    ]
+  },
+  {
+    name: 'tringlerie',
+    link: '/tringlerie',
+    submenus: [
+      {
+        name: 'Collections',
+        link: '#'
+      },
+      {
+        name: 'Catégories',
+        link: '#'
+      },
+      {
+        name: 'Fins de série',
+        link: '#'
+      },
+      {
+        name: 'Catalogue',
+        link: '#'
+      }
+    ]
+  },
+  {
+    name: 'Tissus',
+    link: '/tissus',
+    submenus: [
+      {
+        name: 'Collections',
+        link: '#'
+      },
+      {
+        name: 'Catégories',
+        link: '#'
+      },
+      {
+        name: 'Fins de série',
+        link: '#'
+      }
+    ]
+  },
+  {
+    name: 'fournitures',
+    link: '/fournitures',
+    submenus: [
+      {
+        name: 'Catégories',
+        link: '#'
+      },
+      {
+        name: 'Fins de série',
+        link: '#'
+      }
+    ]
+  },
+  {
+    name: 'la maison houlès',
+    link: '/maison-houles',
+    submenus: [
+      {
+        name: 'A Propos',
+        link: '#'
+      },
+      {
+        name: 'Projets sur mesure',
+        link: '#'
+      },
+      {
+        name: 'Actualies',
+        link: '#'
+      }
+    ]
+  },
+  {
+    name: 'Nous trouver',
+    link: '/nous-trouvers',
+    submenus: [
+      {
+        name: 'Showroom',
+        link: '#'
+      },
+      {
+        name: 'Point de vents',
+        link: '#'
+      },
+      {
+        name: 'Presse',
+        link: '#'
+      },
+      {
+        name: 'Contact',
+        link: '#'
+      }
+    ]
+  }
+] %}
+
+{% set socials = [
+  {
+    name: 'icon-instagram',
+    link: '#'
+  },
+  {
+    name: 'icon-pinterest',
+    link: '#'
+  },
+  {
+    name: 'icon-facebook',
+    link: '#'
+  },
+  {
+    name: 'icon-linkedin',
+    link: '#'
+  },
+  {
+    name: 'icon-youtube',
+    link: '#'
+  }
+] %}
+
+{% set legals = [
+  {
+    name: 'Mentions légales',
+    link: '#'
+  },
+  {
+    name: 'Conditions générales de vente',
+    link: '#'
+  },
+  {
+    name: 'Politique de confidentialité',
+    link: '#'
+  },
+  {
+    name: 'Réalisation Studio Meta',
+    link: '#'
+  }
+] %}
+
+<footer class="footer bg-purple-light text-white">
+  <div class="container">
+    {# Footer top / Logo #}
+    <section class="footer__top py-14 l:py-20">
+      <a href="/" class="mx-auto block w-fit">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'logo-houles-resize',
+          attr: {
+            class: [
+              'block h-20 s:h-28 w-auto text-white [&_svg]:h-full [&_svg]:w-auto [&_svg]:mx-auto'
+            ]
+          }
+        } %}
+      </a>
+    </section>
+
+    {% include '@components/ui/footer/footer-separator.twig' %}
+
+    {# Footer middle / Newsletter & Infos #}
+    <section class="footer__middle py-9 l:py-20">
+      <div class="flex flex-col l:flex-row items-stretch justify-between gap-8">
+        {# Newsletter #}
+        <div class="footer__middle-newsletter w-auto l:max-w-xl flex flex-col justify-between space-y-6">
+          <h2 class="font-serif text-2xl l:text-4xl uppercase leading-none text-white text-center l:text-left">
+            Inspirez-vous avec nos tendances
+          </h2>
+          <form class="w-full max-w-4xl mx-auto relative">
+            <div class="w-full relative flex items-center justify-between rounded-lg">
+              <input class="{{
+                html_classes(
+                  [
+                    'flex-1 text-white bg-white/10 pl-8 pr-16 l:pr-40 py-4 l:py-6 rounded-lg ',
+                    'focus:ring-0  focus:ring-brown focus:outline-none',
+                    'placeholder:text-white/50',
+                    'search-cancel:hidden'
+                  ]
+                )
+                }}"
+                type="search"
+                placeholder="Votre adresse email" />
+              <button type="submit"
+                title="Fermer la recherche"
+                class="px-3 py-2.5 rounded absolute right-4 text-white hover:bg-white hover:text-purple before:content-[''] before:absolute before:-left-4 before:inset-y-2 before:w-px before:bg-white">
+                <span class="text-sm uppercase font-medium block">Valider</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {# Infos #}
+        <div class="footer__middle-infos flex flex-col w-full l:w-1/2">
+          <h2 class="block font-serif text-2xl l:text-4xl uppercase leading-none text-white text-center l:text-left">
+            Coordonnées
+          </h2>
+
+          {# Infos Content in accordion mobile #}
+          <div class="flex flex-col l:flex-row items-center gap-4 -space-y-4 l:space-y-0">
+            {# Houles Administratif #}
+            <div class="w-full flex-1">
+              {% set accordionContent %}
+                <address class="not-italic pb-6 l:pb-0">
+                  <p>2 chemin de la Coudrette <br />77123 Noisy-sur-École</p>
+                  <div class="flex items-center gap-2">
+                    {% include '@ui/Icon/Icon.twig' with {
+                      name: 'icon-mobile',
+                      attr: {
+                        class: ['w-5 h-5']
+                      }
+                    } %}
+                    <a href="tel:0160396200" class="hover:underline">01 60 39 62 00</a>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    {% include '@ui/Icon/Icon.twig' with {
+                      name: 'icon-mail',
+                      attr: {
+                        class: ['w-5 h-5']
+                      }
+                    } %}
+                    <a href="mailto:info@houles.com" class="hover:underline">info@houles.com</a>
+                  </div>
+                </address>
+              {% endset %}
+              {% include '@components/ui/accordion-item-footer.twig' with {
+                accordionButtonAnchor: 'Houles Administratif',
+                accordionContent: accordionContent
+              } %}
+            </div>
+
+            {# Houles Showroom #}
+            <div class="w-full flex-1">
+              {% set accordionContent %}
+                <address class="not-italic pb-6 l:pb-0">
+                  <p>2 chemin de la Coudrette <br />77123 Noisy-sur-École</p>
+                  <div class="flex items-center gap-2">
+                    {% include '@ui/Icon/Icon.twig' with {
+                      name: 'icon-mobile',
+                      attr: {
+                        class: ['w-5 h-5']
+                      }
+                    } %}
+                    <a href="tel:0160396200" class="hover:underline">01 60 39 62 00</a>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    {% include '@ui/Icon/Icon.twig' with {
+                      name: 'icon-mail',
+                      attr: {
+                        class: ['w-5 h-5']
+                      }
+                    } %}
+                    <a href="mailto:showroom.ruedumail@houles.com" class="hover:underline">
+                      showroom.ruedumail@houles.com
+                    </a>
+                  </div>
+                </address>
+              {% endset %}
+              {% include '@components/ui/accordion-item-footer.twig' with {
+                accordionButtonAnchor: 'Houles Showroom',
+                accordionContent: accordionContent
+              } %}
+            </div>
+
+            {# Write us #}
+            <div class="w-fit flex-0 pt-7 l:pt-0">
+              {% include '@components/button.twig' with {
+                label: 'Nous écrire',
+                href: '/contact',
+                variant: 'link',
+                invert: true
+              } only %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {% include '@components/ui/footer/footer-separator.twig' %}
+
+    {# Footer bottom / Navigation #}
+    <section class="footer__bottom py-0 l:py-20 flex flex-col l:flex-row l:gap-6">
+      {# Footer navigation #}
+      {% for menu in menus %}
+        {% set accordionContent %}
+          <ul class="pb-6 l:pb-0 space-y-2.5">
+            {% for submenu in menu.submenus %}
+              <li>
+                <a href="{{ submenu.link }}" class="block hover:underline max-w-36 leading-tight">
+                  {{ submenu.name }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endset %}
+        <div class="w-full flex-1">
+          {% include '@components/ui/accordion-item-footer.twig' with {
+            titleStyle: 'serif',
+            accordionButtonAnchor: menu.name,
+            accordionContent: accordionContent
+          } %}
+        </div>
+      {% endfor %}
+    </section>
+
+    {% include '@components/ui/footer/footer-separator.twig' %}
+
+    {# Footer bottom / Legal #}
+    <section class="footer__legal py-8">
+      <div class="flex flex-col l:flex-row items-center justify-between relative space-y-10 l:space-y-0">
+        <div class="w-full flex items-center justify-between gap-6">
+          <nav data-component="Menu" class="relative inline-block l:hidden h-4 leading-none">
+            <button data-component="MenuBtn" class="text-xs uppercase font-medium text-white">
+              Langue et pays
+            </button>
+            <div data-component="MenuList"
+              data-option-enter-from="transform scale-95 opacity-0 pointer-events-none"
+              data-option-enter-active="transition duration-200 ease-out-expo"
+              data-option-leave-active="transition duration-200 ease-out-expo"
+              data-option-leave-to="transform scale-95 opacity-0 pointer-events-none"
+              class="z-10 w-80 absolute bottom-full mb-4 left-0 origin-top-left transform scale-95 opacity-0 pointer-events-none p-4 l:p-8 bg-white text-purple ring-1 ring-purple rounded-lg">
+              {% include '@components/ui/header/header-country-lang.twig' %}
+            </div>
+          </nav>
+
+          {# Socials #}
+          <ul class="flex items-center gap-4 l:gap-8">
+            {% for social in socials %}
+              <li>
+                <a href="{{ social.link }}">
+                  {% include '@ui/Icon/Icon.twig' with {
+                    name: social.name,
+                    attr: {
+                      class: ['block w-4 h-4 flex items-center [&_svg]:w-full [&_svg]:h-full']
+                    }
+                  } %}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        {# Legal Menu #}
+        <ul class="flex flex-col l:flex-row items-center gap-6 shrink-0">
+          {% for legal in legals %}
+            <li>
+              <a class="text-sm opacity-50 hover:opacity-100 leading-tight" href="{{ legal.link }}">
+                {{ legal.name }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+  </div>
+</footer>

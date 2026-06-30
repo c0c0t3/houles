@@ -1,0 +1,144 @@
+<section data-component="BlocSurMesure" class="bloc-sur-mesure py-8 m:py-16">
+  <div class="container relative">
+    <div class="absolute z-10 inset-x-0 px-4 -top-8">
+      <h2 class="text-center mx-auto max-w-3xl font-serif font-light text-3xl s:text-4xl m:text-6xl leading-xtight uppercase">
+        Découvrez nos services et prestations sur mesure
+      </h2>
+    </div>
+    <div class="grid m:grid-cols-12 gap-5 m:gap-8">
+      <div class="bloc-sur-mesure__images m:order-2 m:col-span-4 relative">
+        <div class="absolute aspect-square w-60 m:w-full rounded-full border border-purple/10 left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"></div>
+        <div class="l:w-80 w-60 h-auto mx-auto relative aspect-[320/640]">
+          <video autoplay
+            loop
+            muted
+            playsinline
+            data-option-target="1"
+            data-ref="image[]"
+            class="mix-blend-multiply">
+            <source src="/assets/video/houles-video-home.mp4" type="video/mp4" />
+          </video>
+          {# {% include '@ui/Figure/Figure.twig' with {
+            src: '/assets/1-sur-mesure.png',
+            alt: 'passementerie sur mesure',
+            width: 240,
+            height: 480,
+            attr: {
+              class: [
+                'l:w-80',
+                'w-60',
+                'h-auto',
+                'mx-auto',
+                'absolute',
+                'left-1/2',
+                'top-0',
+                '-translate-x-1/2',
+                'transition-all',
+                'duration-1000',
+                'ease-in-out'
+              ],
+              data_option_target: 1,
+              data_ref: 'image[]'
+            }
+          } %} #}
+          {% include '@ui/Figure/Figure.twig' with {
+            src: '/assets/2-sur-mesure.png',
+            alt: 'passementerie sur mesure',
+            width: 240,
+            height: 480,
+            attr: {
+              class: [
+                'l:w-80',
+                'w-60',
+                'h-auto',
+                'mx-auto',
+                'absolute',
+                'left-1/2',
+                'top-0',
+                '-translate-x-1/2',
+                '-translate-y-4',
+                'opacity-0',
+                'transition-all',
+                'duration-1000',
+                'ease-in-out'
+              ],
+              data_option_target: 2,
+              data_ref: 'image[]'
+            }
+          } %}
+          {% include '@ui/Figure/Figure.twig' with {
+            src: '/assets/3-sur-mesure.png',
+            alt: 'passementerie sur mesure',
+            width: 240,
+            height: 480,
+            attr: {
+              class: [
+                'l:w-80',
+                'w-60',
+                'h-auto',
+                'mx-auto',
+                'absolute',
+                'left-1/2',
+                'top-0',
+                '-translate-x-1/2',
+                '-translate-y-4',
+                'opacity-0',
+                'transition-all',
+                'duration-1000',
+                'ease-in-out'
+              ],
+              data_option_target: 3,
+              data_ref: 'image[]'
+            }
+          } %}
+          <div class="absolute top-0 left-0 w-full h-20 bg-gradient-to-t from-sand/0 to-sand"></div>
+        </div>
+      </div>
+
+      <div class="bloc-sur-mesure__swatches m:col-span-3 m:col-start-2 m:order-1 flex m:flex-col items-start justify-center gap-5 relative">
+        {% include '@components/ui/swatch-button.twig' with {
+          colors: ['#DDD5CC', '#ffffff'],
+          ref: 'swatch[]',
+          active: true,
+          data_option_target: 1
+        } %}
+        {% include '@components/ui/swatch-button.twig' with {
+          colors: ['#303F66', '#C2CBD9', '#9DBAB9', '#E9EAE8'],
+          ref: 'swatch[]',
+          active: false,
+          data_option_target: 2
+        } %}
+        {% include '@components/ui/swatch-button.twig' with {
+          colors: ['#ADB69C', '#DFD34F', '#F1EFDC', '#5C634F'],
+          ref: 'swatch[]',
+          active: false,
+          data_option_target: 3
+        } %}
+
+        <span data-ref="swatch-line"
+          class="hidden m:block opacity-0 bg-purple absolute top-0 -right-32 w-full h-px transition-all duration-500 ease-in-out"></span>
+      </div>
+
+      <div class="bloc-sur-mesure__content m:col-span-3 m:col-start-9 m:order-last flex items-center pt-7 m:pt-20">
+        <div class="flex flex-col justify-center items-start max-w-80">
+          <p class="text-gray mb-6 m:mb-10">
+            Profitez également de nos services et prestations sur mesure et de notre programme de
+            fabrication spéciale pour une personnalisation encore plus poussée.
+          </p>
+          {% include '@components/button.twig' with {
+            label: 'Personnalisation passementerie',
+            href: '/shop/passementerie.html',
+            variant: 'link',
+            icon_position: 'start'
+          } %}
+          {% include '@components/button.twig' with {
+            label: 'Voir tous nos produits',
+            href: '/shop/contact.html',
+            variant: 'link',
+            icon_position: 'start'
+          } %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

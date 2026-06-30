@@ -1,0 +1,153 @@
+{% extends '@components/modal/default.twig' %}
+
+{% block content %}
+  <div class="flex flex-col gap-8">
+    <div class="space-y-4">
+      <h3 class="text-xl font-serif text-gray font-light uppercase text-center">
+        Contact pour la réception du colis et les notifications
+      </h3>
+      <div class="grid s:grid-cols-2 gap-x-3 gap-y-6">
+        {% include '@components/field.twig' with {
+          label: 'Nom',
+          name: 'firstname',
+          required: true
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'Prénom',
+          name: 'lastname',
+          required: true
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'N° de téléphone',
+          name: 'phone',
+          type: 'tel',
+          required: true,
+          input_attr: {
+            'data-component': 'Phone'
+          }
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'Adresse e-mail',
+          name: 'email',
+          type: 'email',
+          required: true
+        } only %}
+      </div>
+    </div>
+    <div class="space-y-4">
+      <h3 class="text-xl font-serif text-gray font-light uppercase text-center">
+        Choix du point relais
+      </h3>
+      <form class="w-full relative flex items-center justify-between rounded-lg">
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'icon-search-',
+          attr: {
+            class: 'hidden m:block size-10 block shrink-0 [&>svg]:size-ful text-brown absolute left-3'
+          }
+        } only %}
+        <input class="{{
+          html_classes(
+            [
+              'flex-1 text-gray bg-sand-darker pl-4 pr-16 m:pl-16 m:pr-40 py-4 rounded-lg ',
+              'focus:ring-2  focus:ring-brown focus:outline-none',
+              'search-cancel:hidden'
+            ]
+          )
+          }}"
+          type="search"
+          value="{{ search }}"
+          placeholder="Recherchez un point relais autour de..." />
+        <button type="submit" class="btn p-1.5 m:px-6 m:py-2.5 absolute right-2">
+          <span class="text-sm uppercase font-medium hidden m:block">Rechercher</span>
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'icon-search-',
+            attr: {
+              class: 'size-8 m:size-10 block [&>svg]:size-full m:hidden'
+            }
+          } only %}
+        </button>
+      </form>
+      {% embed '@components/table/default.twig'
+        with {
+          no_head: true,
+          columns: [
+            {
+              label: 'Distance',
+              key: 'distance'
+            },
+            {
+              label: 'Informations',
+              key: 'infos'
+            },
+            {
+              label: 'Action',
+              key: 'actions',
+              head_cell_attr: {
+                class: 'text-right s:w-[8rem] max-s:hidden'
+              },
+              cell_attr: {
+                class: 'text-right s:w-[8rem]'
+              }
+            }
+          ],
+          rows: [
+            {
+              id: 1,
+              distance: 0.24,
+              fullname: 'Epice riz et fantasy',
+              line_1: '14 Quai des Pêcheurs',
+              zip: '67000',
+              city: 'Strasbourg',
+              country: 'France'
+            },
+            {
+              id: 2,
+              distance: 0.25,
+              fullname: 'Wake up',
+              line_1: '13 place saint étienne',
+              zip: '67000',
+              city: 'Strasbourg',
+              country: 'France'
+            },
+            {
+              id: 3,
+              distance: 0.29,
+              fullname: 'Consigne Equalia lesbainsstrasbourg',
+              line_1: '10 Boulevard de la victoire',
+              zip: '67000',
+              city: 'Strasbourg',
+              country: 'France'
+            }
+          ]
+        }
+      %}
+        {% block cell_distance %}
+          <strong class="text-sm font-semibold">
+            {{ row.distance|number_format(2, ',', '.') }}&nbsp;km
+          </strong>
+        {% endblock %}
+        {% block cell_infos %}
+          <p class="text-sm font-sans uppercase font-medium leading-snug">
+            {{ row.fullname }}<br />
+            {{ row.line_1 }}<br />
+            {% if row.line_2 %}
+              {{ row.line_2 }}<br />
+            {% endif %}
+            {{ row.zip }} {{ row.city }}, {{ row.country }}
+          </p>
+        {% endblock %}
+        {% block cell_actions %}
+          {% include '@components/button.twig' with {
+            label: 'Choisir',
+            variant: 'outline',
+            attr: {
+              data_ref: 'close[]',
+              type: 'submit',
+              value: row.id
+            }
+          } %}
+        {% endblock %}
+      {% endembed %}
+    </div>
+  </div>
+{% endblock %}

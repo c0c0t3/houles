@@ -1,0 +1,27 @@
+<div id="geocoder" class="min-h-[50px] relative">
+  {# <div class="border rounded-sm border-black size-full block absolute inset-0 mx-6 m:mx-8"></div> #}
+  <button type="button"
+    class="absolute right-4 top-1/2 -translate-y-1/2 z-10"
+    data-ref="StoreLocator.geolocation">
+    <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.0964 10.5638C17.0964 14.4758 13.925 17.6471 10.013 17.6471C6.101 17.6471 2.92969 14.4758 2.92969 10.5638C2.92969 6.65179 6.101 3.48047 10.013 3.48047C13.925 3.48047 17.0964 6.65179 17.0964 10.5638Z"
+        stroke="black"></path>
+      <path d="M19 11L15 11" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M5 11H1" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M10 2L10 6" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M10 15L10 19" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </button>
+</div>
+<div data-simplebar class="h-full">
+<ul data-ref="StoreLocator.b2c"
+  class="flex-1 divide-y divide-brown-light pt-4 m:px-8 -mx-4">
+  {% for distributor in b2c %}
+    <li>
+      {% include '@components/ui/distributors/distributor-card.twig' with {
+        distributor: distributor
+      } %}
+    </li>
+  {% endfor %}
+</ul>
+</div>

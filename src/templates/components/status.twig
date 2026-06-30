@@ -1,0 +1,45 @@
+{%- if type == 'success' -%}
+  {%- set fill_color = '#5C8871' -%}
+{%- elseif type == 'error' -%}
+  {%- set fill_color = '#E9304C' -%}
+{%- elseif type == 'warning' -%}
+  {%- set fill_color = '#E9A230' -%}
+{% else %}
+  {%- set fill_color = 'currentColor' -%}
+{%- endif -%}
+<span class="text-xs font-sans font-medium flex items-center gap-1" title="{{ label }}">
+  <svg aria-hidden="true"
+    width="12"
+    height="12"
+    viewBox="0 0 12 12"
+    fill="none"
+    class="size-3 flex-shrink-0">
+    <circle cx="6" cy="6" r="4" fill="{{ fill_color }}" />
+  </svg>
+  {% if tooltip %}
+    <div class="flex items-center gap-2">
+      <span class="max-w-40 truncate">{{ label }}</span>
+      <nav data-component="Menu" class="relative inline-block leading-none cursor-pointer">
+        <svg data-component="MenuBtn"
+          class="w-5 h-5"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+            clip-rule="evenodd" />
+        </svg>
+        <div data-component="MenuList"
+          data-option-enter-from="transform scale-95 opacity-0 pointer-events-none"
+          data-option-enter-active="transition duration-200 ease-out-expo"
+          data-option-leave-active="transition duration-200 ease-out-expo"
+          data-option-leave-to="transform scale-95 opacity-0 pointer-events-none"
+          class="z-10 whitespace-nowrap w-fit absolute bottom-full mb-4 left-0 -translate-x-1/2 origin-top-left transform scale-95 opacity-0 pointer-events-none p-4 bg-purple text-white rounded-lg">
+          En stock à partir du 16 octobre 2025
+        </div>
+      </nav>
+    </div>
+  {% else %}
+    <span class="max-w-40 truncate">{{ label }}</span>
+  {% endif %}
+</span>

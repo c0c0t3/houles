@@ -1,0 +1,191 @@
+{% extends '@layouts/pro.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Mon compte',
+    url: '/espace-pro/compte/'
+  },
+  {
+    label: 'Commandes & devis',
+    url: '/espace-pro/compte/commandes-et-devis/'
+  }
+] %}
+
+{% set title = 'Commandes & devis' %}
+
+{% block title %}
+  <div class="flex justify-between items-center flex-wrap gap-4 mb-3">
+    {{ parent() }}
+    <div class="flex items-center gap-2">
+      {% include '@components/button.twig' with {
+        label: 'Regler mes factures',
+        href: '/espace-pro/compte/commandes-et-devis/regler-facture',
+        type: 'solid'
+      } %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">Mes commandes</h2>
+
+    <form class="w-full relative flex items-center justify-between rounded-lg">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'icon-search-',
+        attr: {
+          class: 'hidden m:block size-10 block shrink-0 [&>svg]:size-ful text-brown absolute left-3'
+        }
+      } only %}
+      <input class="{{
+        html_classes(
+          [
+            'flex-1 text-gray bg-sand-darker pl-4 pr-16 m:pl-16 m:pr-40 py-4 rounded-lg ',
+            'focus:ring-2  focus:ring-brown focus:outline-none',
+            'search-cancel:hidden'
+          ]
+        )
+        }}"
+        type="search"
+        placeholder="Recherchez par numéro de commande / facture" />
+      <button type="submit" class="btn !p-1.5 m:!px-6 m:!py-2.5 absolute right-2">
+        <span class="text-sm uppercase font-medium hidden m:block">Rechercher</span>
+        {% include '@ui/Icon/Icon.twig' with {
+          name: 'icon-search-',
+          attr: {
+            class: 'size-8 m:size-10 block [&>svg]:size-full m:hidden'
+          }
+        } only %}
+      </button>
+    </form>
+
+    {% include '@components/table/bills.twig' with {
+      rows: [
+        {
+          id: '5625191',
+          date: '2024-07-09',
+          amount: 0,
+          status: {
+            label: 'Expédiée',
+            type: 'success'
+          },
+          informations: 'SETS Galon coton'
+        },
+        {
+          id: '5625191',
+          date: '2023-11-29',
+          amount: 147,
+          status: {
+            label: 'Commande annulée',
+            type: 'error'
+          },
+          informations: null
+        },
+        {
+          id: '5625191',
+          date: '2022-02-03',
+          amount: 0,
+          status: {
+            label: 'En attente de validation',
+            type: 'warning'
+          },
+          informations: 'Projet_SVP'
+        },
+        {
+          id: '5625191',
+          date: '2024-07-09',
+          amount: 0,
+          status: {
+            label: 'Expédiée',
+            type: 'success'
+          },
+          informations: 'SETS Galon coton'
+        },
+        {
+          id: '5625191',
+          date: '2023-11-29',
+          amount: 147,
+          status: {
+            label: 'Commande annulée',
+            type: 'error'
+          },
+          informations: null
+        },
+        {
+          id: '5625191',
+          date: '2022-02-03',
+          amount: 0,
+          status: {
+            label: 'En attente de validation',
+            type: 'warning'
+          },
+          informations: 'Projet_SVP'
+        },
+        {
+          id: '5625191',
+          date: '2024-07-09',
+          amount: 0,
+          status: {
+            label: 'Expédiée',
+            type: 'success'
+          },
+          informations: 'SETS Galon coton'
+        },
+        {
+          id: '5625191',
+          date: '2023-11-29',
+          amount: 147,
+          status: {
+            label: 'Commande annulée',
+            type: 'error'
+          },
+          informations: null
+        },
+        {
+          id: '5625191',
+          date: '2022-02-03',
+          amount: 0,
+          status: {
+            label: 'En attente de validation',
+            type: 'warning'
+          },
+          informations: 'Projet_SVP'
+        }
+      ]
+    } only %}
+  </div>
+
+  <div class="mb-6">
+    {% include '@components/pagination.twig' with {
+      current_page: 1,
+      total_pages: 23,
+      base_url: '/espace-pro/compte/commandes-et-devis/'
+    } only %}
+  </div>
+
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">Mes devis</h2>
+    {% include '@components/table/invoices.twig' with {
+      rows: [
+        {
+          id: '5625191',
+          date: '2025-04-09',
+          amount: 275.4,
+          informations: 'Projet'
+        },
+        {
+          id: '5625191',
+          date: '2025-04-08',
+          amount: 22.4,
+          informations: null
+        },
+        {
+          id: '5625191',
+          date: '2025-04-07',
+          amount: 275.4,
+          informations: 'Projet'
+        }
+      ]
+    } only %}
+  </div>
+{% endblock %}

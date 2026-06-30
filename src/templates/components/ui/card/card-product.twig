@@ -1,0 +1,75 @@
+{% set attributes =
+  merge_html_attributes(
+    attr ?? {},
+    {},
+    {
+      class: 'group/card relative'
+    }
+  )
+%}
+
+<article {{ html_attributes(attributes) }}>
+  {% embed '@ui/Figure/Figure.twig'
+    with {
+      src: img,
+      width: 312,
+      height: 400,
+      alt: 'Image de ' ~ title,
+      fit: 'cover',
+      caption: true,
+      attr: {
+        class: 'relative bg-sand-darker overflow-hidden',
+        data_option_enter_from: 'opacity-0',
+        data_option_enter_active: 'transition duration-500'
+      },
+      img_attr: {
+        class: 'object-cover opacity-0 group-has-[a:hover]/card:scale-105 transition-transform duration-1000 ease-out-quad'
+      }
+    }
+  %}
+    {% block caption %}
+      <div class="absolute top-0 inset-x-0 z-1 flex items-center justify-start flex-wrap p-2 gap-2 pointer-events-none">
+        {% if is_new %}
+          {% include '@components/badge.twig' with {
+            label: 'Nouveauté',
+            attr: {
+              class: 'bg-brown-light text-purple'
+            }
+          } only %}
+        {% endif %}
+        {% for tag in product.tags %}
+          {% include '@components/badge.twig' with {
+            label: tag,
+            attr: {
+              class: 'bg-sand text-purple'
+            }
+          } only %}
+        {% endfor %}
+      </div>
+    {% endblock %}
+  {% endembed %}
+  <div class="py-4">
+    <div class="flex items-end gap-2 justify-between">
+      <div class="space-y-2">
+        <p class="text-xs font-sans font-medium leading-none uppercase text-brown">
+          {{ collection }}
+        </p>
+        <h3 class="text-xs font-sans font-medium leading-none uppercase text-gray">
+          <a href="{{ href }}" class="after:block after:absolute after:inset-0">{{ title }}</a>
+        </h3>
+      </div>
+      {% block append %}
+        <div class="text-right space-y-1">
+          {% if previous_price %}
+            <p class="text-xxs font-sans font-medium leading-none uppercase text-brown line-through">
+              {{ previous_price }}&nbsp;€&nbsp;HT
+            </p>
+          {% endif %}
+          <p class="text-xs font-sans font-medium leading-none uppercase text-gray">
+            {{ price }}&nbsp;€&nbsp;HT
+          </p>
+        </div>
+      {% endblock %}
+    </div>
+  </div>
+</article>

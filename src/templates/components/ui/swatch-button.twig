@@ -1,0 +1,17 @@
+{% set colors = colors %}
+{% set max_z = colors|length %}
+{% set ref = ref|default('') %}
+{% set active = active|default(false) ? 'is-active' : '' %}
+{% set data_option_target = data_option_target|default(1) %}
+
+<button data-ref="{{ ref }}"
+  data-option-target="{{ data_option_target }}"
+  class="shrink-0 w-24 group py-2.5 px-2 border border-brown/50 rounded-lg -space-x-2 flex justify-center items-start {{
+  active
+  }} is-active:bg-purple/10 is-active:border-purple transition-colors duration-300">
+  {% for color in colors %}
+    {% set z = max_z - loop.index0 %}
+    <span style="--swatch-color: {{ color }}; z-index: {{ z }};"
+      class="rounded-full shrink-0 w-6 h-6 border border-white bg-[var(--swatch-color)] group-[&.is-active]:border-purple"></span>
+  {% endfor %}
+</button>

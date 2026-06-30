@@ -1,0 +1,36 @@
+{% extends '@layouts/base.twig' %}
+
+{% set body_attr = {
+  class: 'grid grid-rows-[auto_1fr] min-h-[100svh]'
+} %}
+
+{% block body %}
+  <div class="container flex flex-col items-center justify-center">
+    <form action="" method="post" class="flex flex-col gap-8 py-8 w-full max-w-xl mx-auto">
+      <h1 class="text-4xl font-serif text-gray font-light uppercase text-center">
+        Mot de passe oublié
+      </h1>
+      <div class="flex flex-col gap-6">
+        <p>
+          Saisissez l'adresse email associée à votre compte et nous vous enverrons un lien
+          permettant de réinitialiser votre mot de passe.
+        </p>
+        {% include '@components/field.twig' with {
+          label: 'Mon adresse e-mail',
+          name: 'email',
+          type: 'email',
+          required: true
+        } only %}
+      </div>
+      <div class="flex flex-col gap-3">
+        {% include '@components/button.twig' with {
+          label: 'Valider',
+          variant: 'solid',
+          attr: {
+            type: 'submit'
+          }
+        } only %}
+      </div>
+    </form>
+  </div>
+{% endblock %}

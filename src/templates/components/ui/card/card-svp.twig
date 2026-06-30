@@ -1,0 +1,236 @@
+{% set aspect_ratio = 'aspect-[312/400]' %}
+{% set card_class = 'relative' %}
+
+{% set attributes =
+  merge_html_attributes(
+    attr ?? {},
+    {},
+    {
+      class: 'relative'
+    }
+  )
+%}
+
+<div {{ html_attributes(attributes) }}>
+  <article class="product-card group/card {{card_class}} cursor-pointer bg-sand ring-0 ring-gray/10 overflow-hidden">
+    {# CARD HEADER images #}
+    <header class="product-card__header relative bg-sand-darker flex-1">
+      <figure class="product-card__image {{ aspect_ratio }}">
+        <div class="product-card__image--main bg-sand-darker h-full w-full">
+          <img class="object-contain w-full h-full mix-blend-multiply"
+            loading="lazy"
+            src="{{ image_main }}"
+            alt="{{ name|e('html_attr') }}" />
+        </div>
+        {% if image_hover %}
+          <div class="product-card__image--hover bg-sand-darker h-full w-full absolute inset-0 pointer-events-none opacity-0 group-hover/card:opacity-100 group-hover/card:pointer-events-auto transition-opacity duration-300">
+            <img class="object-cover w-full h-full mix-blend-multiply"
+              loading="lazy"
+              src="{{ image_hover }}"
+              alt="{{ name|e('html_attr') }}" />
+          </div>
+        {% endif %}
+
+        {# Badges #}
+        <div class="product-card__badges absolute top-0 inset-x-0 z-1 flex items-center justify-start flex-wrap p-2 gap-2 pointer-events-none">
+          {% if is_new %}
+            {% include '@components/badge.twig' with {
+              label: 'Nouveauté',
+              attr: {
+                class: 'bg-brown-light text-purple'
+              }
+            } only %}
+          {% endif %}
+          {% for tag in tags %}
+            {% include '@components/badge.twig' with {
+              label: tag,
+              attr: {
+                class: 'bg-sand text-purple'
+              }
+            } only %}
+          {% endfor %}
+        </div>
+      </figure>
+
+      {# Card infos Hover #}
+      <div class="{{
+        html_classes(
+          [
+            'product-card__infos',
+            'absolute inset-x-4 bottom-4',
+            'p-4 bg-white',
+            'translate-y-8 opacity-0 pointer-events-none',
+            'group-hover/card:translate-y-0 group-hover/card:opacity-100 group-hover/card:pointer-events-auto',
+            'transition-all duration-300',
+            'divide-x divide-gray/20',
+            'text-brown text-xxs uppercase tracking-wide font-medium',
+            'flex items-center justify-between',
+            'border border-gray/20'
+          ]
+        )
+        }}">
+        <span class="flex-1">REF : {{ reference }}</span>
+        <div class="flex-1 pl-2 flex items-center justify-end gap-2">
+          qté min : {{ min_qty_order }} PE
+        </div>
+      </div>
+    </header>
+
+    {# CARD CONTENT #}
+    <div class="product-card__content shrink-0 flex flex-col m:flex-row items-stretch gap-4 m:gap-2 justify-between py-4">
+      <div class="flex flex-col justify-end space-y-2">
+        <p class="text-xs font-sans font-medium leading-none uppercase text-brown">
+          {{ product_caracteristics }}
+        </p>
+        <span class="text-sm font-sans font-medium leading-none uppercase text-gray">
+          {{ name }}
+        </span>
+      </div>
+
+    </div>
+
+  </article>
+
+  {% if refs %}
+    {% embed '@components/modal/Panel.twig'
+      with {
+        position: 'top',
+        overlay_attr: {
+          class: 'z-50 bg-black/20 absolute inset-0'
+        },
+        wrapper_attr: {
+          class: 'p-0 m:p-6 z-50 items-center'
+        },
+        container_attr: {
+          class: 'w-full max-w-3xl rounded bg-sand'
+        },
+        content_attr: {
+          class: 'px-4 l:px-6 py-4 l:py-6',
+        },
+        attr: {
+          id: id,
+        }
+      }
+    %}
+      {% block open %}
+      {% endblock %}
+      {% block close %}
+      {% endblock %}
+      {% block content %}
+
+        <div class="h-screen overflow-auto m:h-auto flex flex-col justify-between" data-component="SVPListModal">
+          {# Header & Content #}
+          <div>
+            <div class="flex items-center justify-between shrink-0 mb-6">
+              <h2 class="font-serif text-2xl m:text-3xl uppercase leading-none text-gray">
+                Choisissez votre matériau
+              </h2>
+              {% include '@components/modal/close-modal-button.twig' with {
+                attr: {
+                  data_ref: 'Panel.close[]',
+                  type: 'button'
+                }
+              } only %}
+            </div>
+
+            {% set id = id|default(name ~ '-' ~ random()) %}
+            <ul class="flex flex-col divide-y divide-brown/20 space-y-2">
+              {% set first_available = null %}
+              {% for ref in refs %}
+                {% if not first_available and not ref.disabled %}
+                  {% set first_available = ref %}
+                {% endif %}
+                <li class="{{
+                  html_classes(
+                    [
+                      'pt-2',
+                      'group/radio-item',
+                      'relative flex items-center justify-between'
+                    ]
+                  )
+                  }}">
+
+                    {# Ref content #}
+                    <div class="flex items-center gap-6">
+
+                      {# Ref image #}
+                      <div class="bg-sand-darker">
+                        <img class="mix-blend-multiply aspect-square object-cover size-20 l:size-12" src="{{ ref.image }}" alt="{{ ref.name }}" />
+                      </div>
+
+                      {# Ref infos #}
+                      <div class="flex flex-col l:flex-row items-center gap-6 h-full l:divide-x divide-brown/20">
+                        <div class="flex flex-col gap-2 l:w-72">
+                          <span class=" text-sm font-sans font-medium leading-none uppercase text-gray">{{ ref.name }}</span>
+                          <span class="text-xs font-sans font-medium leading-none uppercase text-brown ">{{ ref.description }}</span>
+                        </div>
+                        <span class="text-xs font-sans font-medium leading-none uppercase text-brown l:pl-6">{{ ref.spec }}</span>
+                      </div>
+                    </div>
+
+                    {# Ref radio #}
+                    <label for="{{ id }}_{{ loop.index }}"
+                      class="{{
+                      html_classes(
+                        [
+                          'flex justify-start items-center gap-2 min-h-6',
+                          'text-base font-sans font-medium leading-snug',
+                          'after:absolute after:inset-0',
+                          {
+                            'cursor-pointer': not ref.disabled,
+                            'cursor-not-allowed': ref.disabled
+                          }
+                        ]
+                      )
+                      }}">
+                      <input {{
+                        html_attributes({
+                          id: id ~ '_' ~ loop.index,
+                          type: 'radio',
+                          name: name,
+                          value: ref.link,
+                          checked: first_available == ref,
+                          disabled: ref.disabled ?? false,
+                          class: 'accent-purple size-4',
+                          data_ref: 'location[]'
+                        })
+                        }} />
+                      {{ ref.label }}
+                    </label>
+
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          {# Footer #}
+          <div class="flex flex-col-reverse s:flex-row gap-4 s:gap-8 pt-4 s:pt-6 m:pt-8">
+            {% include '@components/button.twig' with {
+              label: 'Annuler',
+              variant: 'link',
+              icon: false,
+              attr: {
+                data_ref: 'Panel.close[]',
+                type: 'button',
+                class: 'w-full flex-1'
+              }
+            } only %}
+            {% include '@components/button.twig' with {
+              label: 'Valider la sélection',
+              variant: 'solid',
+              href: '#',
+              attr: {
+                type: 'button',
+                class: 'mybutton w-full flex-1',
+                'data-ref': 'mybutton'
+              },
+            } only %}
+          </div>
+        </div>
+
+
+      {% endblock %}
+    {% endembed %}
+  {% endif %}
+</div>
+

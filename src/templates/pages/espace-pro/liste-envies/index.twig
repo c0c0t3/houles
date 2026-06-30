@@ -1,0 +1,181 @@
+{% extends '@layouts/pro.twig' %}
+
+{% set breadcrumb_items = [
+  {
+    label: 'Ma liste d’envies',
+    url: '/espace-pro/liste-envies/'
+  }
+] %}
+
+{% set title = 'Ma liste d’envies' %}
+
+{% set products = [
+  {
+    title: 'EMBRASSE 1 GLAND QUILLES 48CM',
+    href: '#produit-1',
+    img: '/assets/espace-pro/produit-1.jpg',
+    collection: 'Salone'
+  },
+  {
+    title: 'EMBRASSE 1 GLAND QUILLES 48CM',
+    href: '#produit-2',
+    img: '/assets/espace-pro/produit-2.jpg',
+    collection: 'Salone',
+    is_new: true
+  },
+  {
+    title: 'EMBRASSE 1 GLAND QUILLES 48CM',
+    href: '#produit-3',
+    img: '/assets/espace-pro/produit-3.jpg',
+    tags: ['-20%'],
+    collection: 'Salone',
+    is_new: true
+  },
+  {
+    title: 'EMBRASSE 1 GLAND QUILLES 48CM',
+    href: '#produit-4',
+    img: '/assets/espace-pro/produit-4.jpg',
+    collection: 'Salone'
+  },
+  {
+    title: 'EMBRASSE 1 GLAND QUILLES 48CM',
+    href: '#produit-5',
+    img: '/assets/espace-pro/produit-5.jpg',
+    collection: 'Salone'
+  },
+  {
+    title: 'EMBRASSE 1 GLAND QUILLES 48CM',
+    href: '#produit-6',
+    img: '/assets/espace-pro/produit-6.jpg',
+    collection: 'Salone'
+  },
+  {
+    title: 'EMBRASSE 1 GLAND QUILLES 48CM',
+    href: '#produit-7',
+    img: '/assets/espace-pro/produit-7.jpg',
+    collection: 'Salone'
+  },
+  {
+    title: 'EMBRASSE 1 GLAND QUILLES 48CM',
+    href: '#produit-8',
+    img: '/assets/espace-pro/produit-8.jpg',
+    collection: 'Salone'
+  },
+  {
+    title: 'EMBRASSE 1 GLAND QUILLES 48CM',
+    href: '#produit-9',
+    img: '/assets/espace-pro/produit-9.jpg',
+    collection: 'Salone'
+  }
+] %}
+
+{% block content %}
+  <div class="bg-white text-gray p-6 s:p-8 space-y-10">
+    <h2 class="mb-3 text-base font-sans font-medium leading-snug text-purple">Ma liste</h2>
+
+    <form class="grid m:grid-cols-12 gap-6 w-full">
+      <div class="m:col-span-8 flex flex-col gap-2 m:gap-3">
+        <label for="list" class="text-sm font-medium uppercase text-purple">Ma liste</label>
+        <div class="relative">
+          <select id="list"
+            name="list"
+            class="block w-full px-6 py-4 text-sm font-sans font-medium leading-6 bg-transparent ring-1 ring-current rounded-lg appearance-none">
+            <option value="liste-1">Liste d’envies projet 01</option>
+            <option value="liste-2">Liste d’envies projet 02</option>
+            <option value="liste-3">Liste d’envies projet 03</option>
+          </select>
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'select-caret',
+            attr: {
+              class: 'absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none size-6 text-purple [&>svg]:w-full [&>svg]:h-full'
+            }
+          } %}
+        </div>
+      </div>
+      <div class="m:col-span-4 flex items-end max-m:order-1">
+        {% include '@components/button.twig' with {
+          label: 'Ajouter une liste',
+          icon: 'plus',
+          attr: {
+            class: 'w-full',
+            'data-component': 'Action',
+            'data-option-target': 'Panel(#wishlist)',
+            'data-option-effect': 'target.open()'
+          }
+        } only %}
+
+        {% include '@components/modal/wishlist/wishlist.twig' %}
+        {% include '@components/modal/wishlist/wishlist-new-list.twig' %}
+      </div>
+      <div class="flex flex-col gap-2 m:gap-3 m:col-span-4">
+        <label for="name" class="text-sm font-medium uppercase text-purple">Libellé</label>
+        <input id="name"
+          type="text"
+          name="name"
+          value="Liste d’envies projet 01"
+          required
+          class="font-sans font-medium text-sm leading-6 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-4 px-6 focus-visible:bg-white" />
+      </div>
+      <div class="flex flex-col gap-2 m:gap-3 m:col-span-4">
+        <label for="description" class="text-sm font-medium uppercase text-purple">
+          Description
+        </label>
+        <input id="description"
+          type="text"
+          name="description"
+          value="Projet passementeries en cours 2025"
+          required
+          class="font-sans font-medium text-sm leading-6 ring-1 ring-inset rounded-lg bg-transparent text-purple ring-purple py-4 px-6 focus-visible:bg-white" />
+      </div>
+      <div class="m:col-span-4 flex items-end">
+        {% include '@components/button.twig' with {
+          label: 'Supprimer la liste',
+          variant: 'outline',
+          icon: 'trash',
+          attr: {
+            class: 'w-full max-s:mt-5'
+          }
+        } only %}
+      </div>
+    </form>
+
+    <div class="grid grid-cols-2 m:grid-cols-12 gap-2 m:gap-8">
+      {% for product in products %}
+        {% set cycle_position = loop.index0 % 9 + 1 %}
+        {% embed '@components/ui/card/card-product.twig'
+          with product|merge({
+            attr: {
+              class: {
+                'm:col-span-3': cycle_position >= 1 and cycle_position <= 4,
+                'm:col-span-6': cycle_position == 5 or cycle_position == 6,
+                'm:col-span-4': cycle_position >= 7 and cycle_position <= 9
+              }
+            }
+          })
+        %}
+          {% block append %}
+            <button type="button"
+              title="Supprimer"
+              class="relative z-1 p-1 -m-1 text-brown hover:text-gray transition-colors duration-300 ease-out-quad">
+              {% include '@ui/Icon/Icon.twig' with {
+                name: 'trash',
+                attr: {
+                  class: 'size-5 [&>svg]:size-full'
+                }
+              } only %}
+              <span class="sr-only">Supprimer</span>
+            </button>
+          {% endblock %}
+        {% endembed %}
+      {% endfor %}
+    </div>
+
+    {% include '@components/button.twig' with {
+      label: 'Ajouter la liste au panier',
+      icon: 'add-to-cart',
+      attr: {
+        class: 'w-full'
+      }
+    } only %}
+  </div>
+{% endblock %}

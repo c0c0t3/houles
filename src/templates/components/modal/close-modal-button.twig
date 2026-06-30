@@ -1,0 +1,7 @@
+{% set attributes = merge_html_attributes(attr ?? null) %}
+
+<button {{ html_attributes(attributes) }}
+  class="group/close w-14 h-14 relative ring-1 ring-purple rounded-lg hover:bg-sand-darker m-px">
+  <span class="group-hover/close:rotate-[225deg] transition-transform duration-500 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rotate-45 block w-6 h-px bg-purple"></span>
+  <span class="group-hover/close:rotate-[135deg] transition-transform duration-500 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-45 block w-6 h-px bg-purple"></span>
+</button>

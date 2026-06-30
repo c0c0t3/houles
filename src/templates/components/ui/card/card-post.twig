@@ -1,0 +1,24 @@
+<article class="relative space-y-4 text-brown">
+  {% include '@ui/Figure/Figure.twig' with {
+    src: src,
+    alt: title,
+    width: src_width,
+    height: src_height,
+    fit: 'cover'
+  } %}
+
+  <div class="post-content flex flex-col justify-start items-start">
+    <span class="post-category tracking-wider text-brown uppercase block font-sans text-sm font-medium mb-4">
+      {{ categoryTitle }}
+    </span>
+    <span class="post-title text-gray inline-block font-serif text-2xl m:text-3xl leading-xtight m:leading-tight whitespace-normal uppercase">
+      {{ title }}
+    </span>
+    {% include '@components/button.twig' with {
+      label: "Lire l'article",
+      href: '/blog/article.html',
+      variant: 'link',
+      icon_position: 'start',
+    } %}
+  </div>
+</article>

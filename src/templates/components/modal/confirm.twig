@@ -1,0 +1,30 @@
+{% extends '@components/modal/default.twig' %}
+
+{% block content %}
+  <span class="block font-serif text-2xl font-light uppercase leading-snug my-6 m:my-8">
+    {{ phrase }}
+  </span>
+  <div class="grid grid-cols-2 gap-4">
+    {% include '@components/button.twig' with {
+      label: 'Annuler',
+      variant: 'link',
+      icon: 'cross',
+      attr: {
+        class: 'relative z-1 border border-white',
+        'data-ref': 'close[]',
+        type: 'button'
+      }
+    } %}
+    {% include '@components/button.twig' with {
+      label: 'Confirmer',
+      variant: 'solid',
+      icon: 'check',
+      attr: {
+        class: 'relative z-1 border border-white',
+        'data-ref': 'open[]',
+        onclick: onclick,
+        type: 'button'
+      }
+    } %}
+  </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+<div class="relative flex justify-between items-center mb-4">
+  <span class="text-purple text-xs s:text-sm uppercase font-medium  block">sélectionnez une zone puis son coloris</span>
+  {% if close_modal_button %}
+    <button class="js--close-coloris-modal m:hidden">
+      {% include '@ui/Icon/Icon.twig' with {
+        name: 'chevron',
+        attr: {
+          class: [
+            'w-4',
+            'flex items-center justify-center',
+            'transition-transform duration-500 ease-out-expo'
+          ]
+        }
+      } %}
+    </button>
+  {% endif %}
+</div>
+<div class="zones {{ class }} -mx-4 m:mx-0 flex items-stretch m:rounded-lg overflow-hidden border-y m:border border-[#E5E2DA] divide-x divide-[#E5E2DA]">
+  {% for i in 1..zones %}
+    <button type="button" name="button" class="piece_selector {{ i == 1 ? 'pieceSelected' : '' }} flex-1 border-r border-brown/20 px-4 py-2 flex flex-col m:flex-row items-center justify-between piece-selected:bg-purple piece-selected:text-white" data-value="{{ i }}">
+      <div class="svp_custom_piece_label flex flex-col">
+        <span class="text-brown text-xs s:text-sm piece-selected-parent:text-white">Zone {{ i }}</span>
+        <span class="supplier_code text-xs s:text-base text-purple piece-selected-parent:text-white">0001</span>
+      </div>
+      <div class="piece_selector_color size-6 rounded-full border border-purple" style="background-color: #fff;"></div>
+    </button>
+  {% endfor %}
+</div>

@@ -1,0 +1,318 @@
+# Module 5 — Configurateur : Étapes intermédiaires & moteur de quantités
+
+> Couvre les étapes produit du tunnel (Support, Tube/Rail, Anneaux/Galets, Embouts, Accessoires)
+> et le **moteur de calcul de quantités**, cœur métier de ce module.
+> Dépend du Module 3 (modèle de données, couche fetch). À lire avant toute implémentation.
+
+---
+
+## Périmètre
+
+Ce module gère toutes les étapes qui proposent des **produits** (champs `product` et
+`product_toggle`), par opposition à l'étape 1 qui ne contient que des paramètres.
+
+Étapes concernées (l'ordre et la présence exacts dépendent du JSON de chaque collection) :
+Support, Tube/Rail, Anneaux/Galets, Embouts, Accessoires.
+
+Chaque étape est décrite dans le JSON de collection ; ce module fournit le moteur générique qui
+les rend et calcule les quantités. Il ne contient aucune donnée produit en dur.
+
+---
+
+## 1. Le champ `product`
+
+Affiche un produit sélectionnable, avec un **produit par défaut** pré-sélectionné selon la
+sélection amont, et une **mini-modale** pour choisir une alternative.
+
+### Comportement
+
+- Le produit par défaut est déterminé par `default` : un `refBase` fixe, ou `"first_visible"`
+  (premier produit compatible selon la sélection — voir ci-dessous).
+- Les options sont filtrées par `showIf` (voir Module 3).
+- Une mini-modale informative présente les alternatives (visuel, label, prix, variantes coloris).
+- Le coloris du produit est pré-rempli par le coloris global de l'étape 1, mais reste modifiable
+  par pièce (voir section Coloris).
+
+### Champs facultatifs
+
+Certains champs produit sont optionnels (`required: false`, `default: null`) : jambes de force,
+supports intermédiaires, agrafes, accessoires. Ils ne sont pas sélectionnés au départ.
+
+### Sélection par défaut : `first_visible`
+
+Le champ `default` accepte un `refBase` fixe, ou le mot-clé `"first_visible"`. Avec `first_visible`,
+le défaut s'adapte à la sélection courante — utile quand le produit compatible change selon le
+diamètre, la pose, etc.
+
+La résolution se fait en **deux temps** :
+
+```js
+function resolveDefault(field, selection) {
+  // 1. Filtrer les produits compatibles (showIf : type, diamètre, pose, selected:...)
+  const visibles = field.options.filter(o => isVisible(o, selection));
+  if (!visibles.length) return null;
+
+  // 2. Premier visible (l'ordre de déclaration des options fait foi)
+  const produit = visibles[0];
+
+  // 3. Résolution du coloris : coloris global si dispo, sinon fallback
+  let coloris = null;
+  if (produit.variants) {
+    coloris = produit.variants[selection.coloris]
+      ? selection.coloris
+      : Object.keys(produit.variants)[0]; // fallback : premier coloris dispo
+  }
+  return { refBase: produit.refBase, coloris };
+}
+```
+
+Deux choses importantes :
+
+- **L'ordre de déclaration des options compte** : le premier produit qui passe `showIf` devient le
+  défaut. Ranger les options par ordre de préférence commerciale.
+- **Fallback coloris** : si le coloris global de l'étape 1 n'existe pas pour ce produit, le moteur
+  prend le premier coloris disponible. Pour les collections où tous les produits ont tous les coloris
+  (ex : ACEA, Auro), ce cas ne se présente pas. Pour les collections hétérogènes, à décider :
+  fallback silencieux (comportement actuel) ou message « produit indisponible dans ce coloris ».
+
+### Dépendance produit → produit
+
+Une option peut dépendre du **produit sélectionné dans un autre champ**, pas seulement des
+paramètres. Deux mécanismes, selon que la dépendance est totale ou conditionnelle.
+
+**`selected:` dans `showIf`** — pour une dépendance par option. L'option n'est visible que si le
+`refBase` choisi dans un autre champ correspond (ou ne correspond pas, avec `not`).
+
+```json
+// Adaptateur visible seulement si le support corner 225mm (66744) est choisi
+"showIf": { "selected:support": ["66744"] }
+
+// Anneaux fermés masqués si le support est un modèle anneaux ouverts
+"showIf": { "selected:support": { "not": ["66764", "66769"] } }
+```
+
+C'est le cas du support intermédiaire (qui doit correspondre au support principal), des jambes de
+force (liées à certains supports), des adaptateurs corner, et du choix anneaux fermés/ouverts.
+
+**`sameAs`** — pour une dépendance totale : le champ reprend automatiquement le produit ET le coloris
+d'un autre champ, sans liste d'options à maintenir.
+
+```json
+{ "id": "opt_support_interm", "type": "product", "sameAs": "support" }
+```
+
+À utiliser quand un champ est **toujours** identique à un autre (ex : intermédiaire = même modèle que
+le support principal, même coloris). Si la règle a des exceptions ou si le coloris peut différer,
+préférer `showIf` + `selected:` qui laisse le contrôle option par option.
+
+Le moteur lit le `refBase` sélectionné via `selection.produits[champ].refBase`. La logique de
+`isVisible` étendue (égalité, seuil, `not`, `selected:`) est détaillée au Module 3.
+
+---
+
+## 2. Le champ `product_toggle` (AVEC / SANS)
+
+Produit avec une bascule. Cas type : les anneaux (AVEC anneaux → produit ajouté ; SANS → produit
+retiré du panier).
+
+- État `with` → le produit est ajouté, sa quantité est calculée.
+- État `without` → la ligne est retirée du panier, ainsi que ses éventuelles dépendances
+  (ex : sans anneaux → retirer aussi agrafes et anneaux de blocage si présents).
+
+---
+
+## 3. Cas `replacesEmbouts`
+
+Certains produits (naissances murales, corners) portent `replacesEmbouts: true`. Quand l'un d'eux
+est sélectionné à l'étape Support :
+
+- L'étape **Embouts est masquée** du tunnel.
+- Toute ligne embout déjà présente est **purgée** du panier.
+
+Ce comportement touche au flux des étapes, pas seulement à un champ. Le moteur de steps doit pouvoir
+masquer une étape conditionnellement selon une propriété d'un produit sélectionné en amont.
+
+---
+
+## 4. Moteur de quantités (cœur du module)
+
+**Responsabilité : Alain (front), en démo comme en production.**
+
+Le calcul de quantité est une logique front déclarative. Il n'y a **pas** d'appel réseau pour
+calculer une quantité — les règles vivent dans le JSON, le calcul se fait localement dans
+`quantities.js`.
+
+### La chaîne de calcul complète
+
+```
+besoin brut  (règle quantity appliquée à la longueur / config)
+   ↓
+arrondi au conditionnement  (division par qtyParUnite, arrondi au supérieur)
+   ↓
+quantité commandable  (ce qui est affiché au panier et envoyé au pricing)
+```
+
+L'arrondi au `qtyParUnite` est **toujours fait côté front**. La quantité envoyée au pricing est la
+quantité **commandable** (nombre de lots / cartes), jamais le besoin brut.
+
+### Les modes de calcul (`quantity.mode`)
+
+| `mode` | Description | Paramètres |
+|---|---|---|
+| `fixed` | quantité fixe | `value` |
+| `fixed_by_config` | quantité dépendant d'un paramètre (hors dédoublement avant/arrière) | `valueMap`, `configFrom` |
+| `per_interval` | calcul sur la longueur | `interval`, `extra`, `lengthFrom`, `lotSize`, `multiplyBy` |
+| `segmented` | découpe en segments + produit lié | `segmentLength`, `lengthFrom`, `linkedProduct` |
+
+### Exemples concrets
+
+**Anneaux** — 1 tous les 10 cm, +1 pour les extrémités, vendus par lot de 10 :
+
+```json
+"quantity": {
+  "mode": "per_interval",
+  "interval": 10,
+  "extra": 1,
+  "lengthFrom": "configuration.longueur"
+}
+```
+
+```
+Longueur 180 cm → besoin brut = ceil(180/10) + 1 = 19 anneaux
+qtyParUnite = 10 → quantité commandable = ceil(19/10) = 2 lots
+Panier : "2 lots" (20 anneaux livrés)
+```
+
+### Configuration double : lignes séparées
+
+En configuration double, un élément qui se dédouble génère **deux lignes de panier distinctes**,
+jamais une seule ligne avec quantité ×2. Raison physique : l'élément avant et l'élément arrière sont
+des produits différents (codes articles distincts, diamètres potentiellement distincts, coloris
+potentiellement différents).
+
+Le dédoublement **n'est pas une règle automatique du moteur** ("double = ×2"). Il est porté par la
+**déclaration explicite des champs** dans le JSON de la collection (voir Module 3). Un élément qui
+se dédouble est déclaré en deux champs préfixés (`tube_avant` / `tube_arriere`), chacun lisant sa
+part de diamètre via `diametreFrom`. Un élément unique en double reste un champ simple.
+
+Le moteur reste bête : il rend les champs déclarés, chaque champ génère sa ligne avec sa propre
+résolution coloris et sa propre quantité. Il n'a aucune logique de dédoublement à coder.
+
+Les trois cas réels, sans logique en dur :
+
+```
+Auro double  — barre arrière sans embout par design :
+  un seul champ "embout"          → 1 ligne (1 paire)
+
+Alium double 28+28 — deux champs même Ø :
+  embout_avant + embout_arriere   → 2 lignes "1 paire Ø28"
+
+ACEA double 19+28 — deux champs Ø différents :
+  embout_avant (Ø28)              → 1 ligne "1 paire Ø28"
+  embout_arriere (Ø19)            → 1 ligne "1 paire Ø19"
+```
+
+Dans le récap, les lignes se suivent dans l'ordre de déclaration des champs (avant puis arrière) ;
+pas de regroupement ni d'étiquette avant/arrière nécessaire à l'affichage.
+
+Ne jamais fusionner deux champs en une ligne ×2 : cela masquerait les codes articles réels et
+fausserait le pricing (prix avant ≠ prix arrière possible).
+
+**Tube segmenté** — tube fournisseur de 100 cm, raccord entre chaque segment :
+
+```json
+"quantity": {
+  "mode": "segmented",
+  "segmentLength": 100,
+  "lengthFrom": "configuration.longueur",
+  "linkedProduct": { "refBase": "RACCORD", "quantityRule": "segments_minus_1" }
+}
+```
+
+```
+Longueur 240 cm → ceil(240/100) = 3 tubes
+Raccords = 3 - 1 = 2
+→ 2 lignes de panier : 3 tubes + 2 raccords
+```
+
+**Agrafes** — par lot, quantité doublée en configuration double :
+
+```json
+"quantity": {
+  "mode": "per_interval",
+  "interval": 10,
+  "lengthFrom": "configuration.longueur",
+  "multiplyBy": "configuration.type",
+  "multiplyMap": { "simple": 1, "double": 2 }
+}
+```
+
+### Implémentation de référence
+
+```js
+// quantities.js
+export function computeQty(rule, selection, qtyParUnite = 1) {
+  const L = getValue(selection, rule.lengthFrom);
+  let brut;
+
+  switch (rule.mode) {
+    case 'fixed':
+      brut = rule.value;
+      break;
+    case 'fixed_by_config':
+      brut = rule.valueMap[getValue(selection, rule.configFrom)];
+      break;
+    case 'per_interval':
+      brut = Math.ceil(L / rule.interval) + (rule.extra || 0);
+      if (rule.multiplyBy) brut *= rule.multiplyMap[getValue(selection, rule.multiplyBy)];
+      break;
+    case 'segmented':
+      brut = Math.ceil(L / rule.segmentLength);
+      break;
+  }
+
+  // Arrondi au conditionnement (toujours côté front)
+  return Math.ceil(brut / qtyParUnite);
+}
+```
+
+---
+
+## 5. Coloris par élément
+
+Le coloris choisi à l'étape 1 **pré-remplit** le coloris de chaque produit, mais l'utilisateur peut
+le **changer indépendamment par pièce** (toute combinaison autorisée — ex : tube laiton + embout
+rose). Voir Module 3 pour la résolution variante.
+
+Pour les produits **sans coloris** (rouleurs, raccords...), pas de sélecteur couleur : l'`id` est
+pris à la racine du produit (voir Module 3, section Produits sans coloris).
+
+---
+
+## 6. Lien avec le pricing
+
+Après chaque changement de sélection, le panier reconstruit ses lignes (id + quantité commandable)
+et appelle `fetchPricing(items)` (voir Module 3).
+
+- L'`id` envoyé est le code article complet résolu (`code_famille-code_coloris`, ou code famille
+  seul si sans coloris).
+- La `qty` envoyée est la **quantité commandable** (déjà arrondie au conditionnement).
+- Le pricing réel (tarifs, remises) est côté client ; la démo utilise le mock pricing.
+
+---
+
+## Organisation du code
+
+```
+src/js/syh/features/
+  product-field.js     ← champ product (défaut + mini-modale)
+  product-toggle.js    ← champ AVEC / SANS
+  quantities.js        ← moteur de calcul de quantités
+  steps.js             ← navigation + masquage conditionnel (replacesEmbouts)
+```
+
+---
+
+## Points de décision encore ouverts
+
+- Comportement exact du masquage d'étape sur `replacesEmbouts` (animation, retour arrière).

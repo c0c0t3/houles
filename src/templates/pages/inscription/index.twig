@@ -1,0 +1,156 @@
+{% extends '@layouts/base.twig' %}
+
+{% block body %}
+  <div class="container flex flex-col items-center justify-center">
+    <form action="" method="post" class="flex flex-col gap-8 py-8 w-full max-w-[45.75rem] mx-auto">
+      <h1 class="text-4xl font-serif text-gray font-light uppercase text-center">Inscription</h1>
+      {% include '@components/callout.twig' with {
+        title: 'Actuellement, seuls les professionnels de la décoration peuvent créer un compte sur notre site. Merci pour votre compréhension.'
+      } only %}
+      <div class="grid s:grid-cols-2 gap-x-3 gap-y-6">
+        {% include '@components/field.twig' with {
+          label: 'N° de Siren',
+          name: 'siren',
+          required: true,
+          attr: {
+            class: 's:col-span-2'
+          }
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'Raison sociale',
+          name: 'company',
+          required: true,
+          attr: {
+            class: 's:col-span-2'
+          }
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'Nom du contact',
+          name: 'lastname',
+          required: true
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'Prénom du contact',
+          name: 'firstname',
+          required: true
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'Adresse',
+          name: 'line_1',
+          required: true,
+          attr: {
+            class: 's:col-span-2'
+          }
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'Complément d’adresse',
+          name: 'line_2',
+          attr: {
+            class: 's:col-span-2'
+          }
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'Code postal',
+          name: 'zip',
+          required: true
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'Ville',
+          name: 'city',
+          required: true
+        } only %}
+        {% include '@components/select-countries.twig' %}
+        {% include '@components/select-choices.twig' with {
+          label: 'Langue des documents',
+          tooltip_content: 'La langue',
+          name: 'language',
+          flag: true,
+          required: true,
+          options: [
+            {
+              label: 'English',
+              value: 'GB',
+              country: 'GB'
+            },
+            {
+              label: 'Français',
+              value: 'FR',
+              selected: true,
+              country: 'FR'
+            },
+            {
+              label: 'Deutsch',
+              value: 'DE',
+              country: 'DE'
+            },
+            {
+              label: 'Español',
+              value: 'ES',
+              country: 'ES'
+            },
+            {
+              label: 'Italiano',
+              value: 'IT',
+              country: 'IT'
+            }
+          ]
+        } only %}
+        <div class="s:col-span-2 flex gap-x-3">
+          {% include '@components/field.twig' with {
+            label: 'N° de téléphone',
+            name: 'phone',
+            type: 'tel',
+            required: true,
+            tooltip_content: 'La langue des documents est utilisée pour la création de votre compte et pour la récupération de votre mot de passe.',
+            attr: {
+              class: 'grow'
+            },
+            input_attr: {
+              'data-component': 'Phone'
+            }
+          } only %}
+        </div>
+        {% include '@components/field.twig' with {
+          label: 'Adresse e-mail',
+          name: 'email',
+          type: 'email',
+          required: true
+        } only %}
+        {% include '@components/field.twig' with {
+          label: 'Confirmer l’adresse e-mail',
+          name: 'email_confirm',
+          type: 'email',
+          required: true,
+          tooltip_content: 'L’adresse e-mail est utilisée pour la création de votre compte et pour la récupération de votre mot de passe.'
+        } only %}
+        {% include '@components/field-password-message-validation.twig' %}
+      </div>
+      <p class="text-xs text-gray">
+        Les renseignements demandés ci-dessus sont indispensables au traitement de votre commande.
+        Vos données seront utilisées par la Société ANDRE HOULES ET CIE, SA (responsable du
+        traitement) pour la gestion du contrat et de votre compte-client ainsi que l'envoi de la
+        newsletter et éventuellement de prospection commerciale pour des produits analogues. Vos
+        données seront conservées 5 ans à compter de la fin du contrat. Conformément à la
+        Réglementation, vous disposez d'un droit d'accès, de rectification, de limitation,
+        d'opposition et de suppression sur vos données. Pour en savoir plus sur le traitement de vos
+        données personnelles, consultez notre <a href="" class="underline hover:no-underline">
+          Charte de Confidentialite
+        </a>.
+      </p>
+      <div class="grid s:grid-cols-2 gap-x-3">
+        {% include '@components/button.twig' with {
+          label: 'Valider l’inscription',
+          variant: 'solid',
+          attr: {
+            type: 'submit',
+            class: 's:col-start-2'
+          }
+        } only %}
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block footer_before %}{% endblock %}
+
+{% block footer %}{% endblock %}

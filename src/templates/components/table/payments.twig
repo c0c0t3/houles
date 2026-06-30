@@ -1,0 +1,109 @@
+{#
+  @param isSummary boolean
+  Cela permet d'utiliser ce tableau dans la modale et dans la page de réglement des factures.
+  Si isSummary est true, le tableau affichera la colonne de sélection.
+  Si isSummary est false, le tableau n'affichera pas la colonne de sélection.
+#}
+
+{% extends '@components/table/default.twig' %}
+
+{% set can_edit = can_edit is defined ? can_edit : true %}
+
+{% set head_row_attr = {
+  class: 'max-m:hidden'
+} %}
+
+{% set row_attr = {
+  class: 'relative max-m:grid max-m:grid-cols-[auto_1fr] max-m:grid-rows-4 max-m:gap-4 max-m:*:p-0 max-m:pb-4 max-m:pt-6'
+} %}
+
+{% set columns =
+  (isSummary
+    ? [
+      {
+        label: 'Select',
+        key: 'select',
+        head_cell_attr: {
+          class: 'sr-only'
+        },
+        cell_attr: {
+          class: 'm:w-8 block'
+        }
+      }
+    ]
+    : [])|merge(
+    [
+      {
+        label: 'Numéro de facture',
+        key: 'id',
+        head_cell_attr: {
+          class: 'max-m:col-start-2 m:w-1/4 whitespace-nowrap text-left'
+        },
+        cell_attr: {
+          class: 'max-m:col-start-2 m:w-1/4 whitespace-nowrap'
+        }
+      },
+      {
+        label: 'Date de la facture',
+        key: 'date_facture',
+        head_cell_attr: {
+          class: 'max-m:col-start-2 m:w-1/4 whitespace-nowrap text-left'
+        },
+        cell_attr: {
+          class: 'max-m:col-start-2 m:w-1/4 whitespace-nowrap'
+        }
+      },
+      {
+        label: 'Date échéance',
+        key: 'date_echeance',
+        head_cell_attr: {
+          class: 'max-m:col-start-2 m:w-1/4 whitespace-nowrap text-left'
+        },
+        cell_attr: {
+          class: 'max-m:col-start-2 m:w-1/4 whitespace-nowrap'
+        }
+      },
+      {
+        label: 'Montant',
+        key: 'amount',
+        head_cell_attr: {
+          class: 'text-right w-full'
+        },
+        cell_attr: {
+          class: 'max-m:col-start-2 m:text-right'
+        }
+      }
+    ]
+  )
+%}
+
+{% block cell_select %}
+  {% if isSummary %}
+    <div class="flex items-center">
+      <input id="select-{{ row.id }}"
+        type="checkbox"
+        name="select[{{ row.id }}]"
+        class="size-4 rounded-none cursor-pointer accent-brown" />
+      <label for="select-{{ row.id }}" class="after:absolute after:inset-0">
+        <span class="sr-only">Sélectionner la facture {{ row.id }}</span>
+      </label>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block cell_id %}
+  <strong class="m:hidden font-semibold">Numéro de facture&nbsp;:</strong> {{ value }}
+{% endblock %}
+
+{% block cell_date_facture %}
+  <strong class="m:hidden font-semibold">Date de la facture&nbsp;:</strong> {{ value }}
+{% endblock %}
+
+{% block cell_date_echeance %}
+  <strong class="m:hidden font-semibold">Date échéance&nbsp;:</strong> {{ value }}
+{% endblock %}
+
+{% block cell_amount %}
+  <strong class="m:hidden font-semibold">Montant&nbsp;:</strong>
+  {{ value|number_format(2, ',', '.') }}€
+{% endblock %}

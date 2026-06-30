@@ -1,0 +1,31 @@
+{% extends '@layouts/base.twig' %}
+
+{% set html_attr = {
+  class: 'bg-sand'
+} %}
+
+{% set is_adv = true %}
+
+{% block body %}
+  <section>
+    <div class="container">
+      <ul>
+        {% for page in pages().all() %}
+          {% set parts = page.href|trim('/')|split('/') %}
+          {% set readable_parts = [] %}
+          {% for part in parts %}
+            {% set clean =
+              part
+                |replace({
+                  '-': ' '
+                })
+                |title
+            %}
+            {% set readable_parts = readable_parts|merge([clean]) %}
+          {% endfor %}
+          <li><a href="{{ page.href }}">{{ readable_parts|join(' > ') }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+{% endblock %}

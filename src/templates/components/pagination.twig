@@ -1,0 +1,206 @@
+{#
+Composant de pagination
+Paramètres :
+- current_page : numéro de la page actuelle
+- total_pages : nombre total de pages
+- base_url : URL de base pour les liens (optionnel)
+#}
+
+{% set current_page = current_page|default(1) %}
+{% set total_pages = total_pages|default(1) %}
+{% set base_url = base_url|default('') %}
+
+{% if total_pages > 1 %}
+  <nav itemscope
+    itemtype="http://schema.org/SiteNavigationElement"
+    aria-label="Navigation de pagination"
+    class="flex justify-center items-center text-sm font-sans font-medium leading-snug uppercase text-purple">
+    <ul class="flex items-center gap-1 s:gap-4 max-s:w-full max-s:justify-between max-s:px-4">
+      {# Bouton Précédent #}
+      <li class="mr-4">
+        {% html_element current_page > 1 ? 'a' : 'span'
+          with
+          {
+            href: current_page > 1 ? base_url ~ '?page=' ~ (current_page - 1) : null,
+            aria_label: current_page > 1 ? 'Page précédente' : 'Page précédente (désactivé)',
+            itemprop: current_page > 1 ? 'url' : null,
+            class: [
+              'group/link block overflow-hidden py-2',
+              {
+                'opacity-50': current_page == 1
+              }
+            ]
+          }
+        %}
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'arrow-line-desktop',
+            attr: {
+              class: [
+                'hidden s:block w-14 [&>svg]:w-full [&>svg]:h-auto',
+                'translate-x-2 rotate-180',
+                {
+                  'group-hover/link:translate-x-0 transition-transform duration-300 ease-out-quad': current_page
+                    != 1
+                }
+              ],
+              aria_hidden: true
+            }
+          } only %}
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'arrow-line-mobile',
+            attr: {
+              class: ['block s:hidden w-[1.625rem] [&>svg]:w-full [&>svg]:h-auto', 'rotate-180'],
+              aria_hidden: true
+            }
+          } only %}
+        {% end_html_element %}
+      </li>
+
+      {# Logique de calcul des pages à afficher #}
+      {% set max_visible = 8 %}
+      {% set show_first = true %}
+      {% set show_last = true %}
+      {% set start_page = 1 %}
+      {% set end_page = total_pages %}
+
+      {# Si nous avons plus de pages que le maximum visible #}
+      {% if total_pages > max_visible %}
+        {# Calculer la plage autour de la page courante #}
+        {% set half_visible = (max_visible - 2) // 2 %}
+        {# -2 pour la première et dernière page #}
+        {% set temp_start = current_page - half_visible %}
+        {% set temp_end = current_page + half_visible %}
+
+        {# Ajuster si on est près du début #}
+        {% if temp_start <= 2 %}
+          {% set start_page = 1 %}
+          {% set end_page = max_visible - 1 %}
+          {% set show_first = false %}
+          {# Ajuster si on est près de la fin #}
+        {% elseif temp_end >= total_pages - 1 %}
+          {% set start_page = total_pages - max_visible + 2 %}
+          {% set end_page = total_pages %}
+          {% set show_last = false %}
+          {# Plage normale au milieu #}
+        {% else %}
+          {% set start_page = temp_start %}
+          {% set end_page = temp_end %}
+        {% endif %}
+      {% else %}
+        {% set show_first = false %}
+        {% set show_last = false %}
+      {% endif %}
+
+      {# Page 1 si elle n'est pas dans la plage visible #}
+      {% if show_first %}
+        <li itemscope itemtype="http://schema.org/WebPage">
+          {% if current_page == 1 %}
+            <span itemprop="name" aria-current="page" class="px-2.5 py-2">1</span>
+          {% else %}
+            <a href="{{ base_url }}?page=1" itemprop="url" class="group/link p-2">
+              <span itemprop="name"
+                class="px-0.5 underline-effect-on group-hover/link:underline-effect-off">
+                1
+              </span>
+            </a>
+          {% endif %}
+        </li>
+
+        {# Ellipse après la page 1 si nécessaire #}
+        {% if start_page > 2 %}
+          <li class="text-brown px-2.5 py-2">…</li>
+        {% endif %}
+      {% endif %}
+
+      {# Pages de la plage principale #}
+      {% for page in start_page..end_page %}
+        {% if not show_first or page > 1 %}
+          {% if not show_last or page < total_pages %}
+            {% set is_hidden_in_mobile = not (
+              page == current_page or (page > current_page - 2 and page < current_page + 2)
+            ) %}
+            <li itemscope
+              itemtype="http://schema.org/WebPage"
+              class="{{
+              html_classes({
+                'max-s:hidden': is_hidden_in_mobile
+              })
+              }}">
+              {% if page == current_page %}
+                <span itemprop="name" aria-current="page" class="px-2.5 py-2">{{ page }}</span>
+              {% else %}
+                <a href="{{ base_url }}?page={{ page }}" itemprop="url" class="group/link p-2">
+                  <span itemprop="name"
+                    class="px-0.5 underline-effect-on group-hover/link:underline-effect-off">
+                    {{ page }}
+                  </span>
+                </a>
+              {% endif %}
+            </li>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      {# Dernière page si elle n'est pas dans la plage visible #}
+      {% if show_last %}
+        {# Ellipse avant la dernière page si nécessaire #}
+        {% if end_page < total_pages - 1 %}
+          <li class="text-brown px-2.5 py-2">…</li>
+        {% endif %}
+
+        <li itemscope itemtype="http://schema.org/WebPage">
+          {% if current_page == total_pages %}
+            <span itemprop="name" aria-current="page" class="px-2.5 py-2">{{ total_pages }}</span>
+          {% else %}
+            <a href="{{ base_url }}?page={{ total_pages }}" itemprop="url" class="group/link p-2">
+              <span itemprop="name"
+                class="px-0.5 underline-effect-on group-hover/link:underline-effect-off">
+                {{ total_pages }}
+              </span>
+            </a>
+          {% endif %}
+        </li>
+      {% endif %}
+
+      {# Bouton Suivant #}
+      <li class="ml-4">
+        {% html_element current_page < total_pages ? 'a' : 'span'
+          with
+          {
+            href: current_page < total_pages ? base_url ~ '?page=' ~ (current_page + 1) : null,
+            aria_label: current_page < total_pages ? 'Page suivante' : 'Page suivante (désactivé)',
+            itemprop: current_page < total_pages ? 'url' : null,
+            class: [
+              'group/link block overflow-hidden py-2',
+              {
+                'opacity-50': current_page == total_pages
+              }
+            ]
+          }
+        %}
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'arrow-line-desktop',
+            attr: {
+              class: [
+                'hidden s:block w-14 [&>svg]:w-full [&>svg]:h-auto',
+                '-translate-x-2',
+                {
+                  'group-hover/link:translate-x-0 transition-transform duration-300 ease-out-quad': current_page
+                    != total_pages
+                }
+              ],
+              aria_hidden: true
+            }
+          } only %}
+          {% include '@ui/Icon/Icon.twig' with {
+            name: 'arrow-line-mobile',
+            attr: {
+              class: ['block s:hidden w-[1.625rem] [&>svg]:w-full [&>svg]:h-auto'],
+              aria_hidden: true
+            }
+          } only %}
+        {% end_html_element %}
+      </li>
+    </ul>
+  </nav>
+{% endif %}

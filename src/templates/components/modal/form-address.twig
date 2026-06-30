@@ -1,0 +1,90 @@
+{% extends '@components/modal/default.twig' %}
+
+{% block content %}
+  <form action="" method="post" class="flex flex-col gap-8">
+    <h3 class="text-2xl font-serif text-gray font-light uppercase text-center">
+      {% block title %}
+        {% if address is defined %}
+          {% if address.type == 'shipping' %}
+            Modifier l’adresse de livraison
+          {% elseif address.type == 'transit' %}
+            Modifier le transitaire
+          {% else %}
+            Modifier l’adresse de facturation
+          {% endif %}
+        {% else %}
+          Ajouter une adresse
+        {% endif %}
+      {% endblock %}
+    </h3>
+    <div class="grid s:grid-cols-2 gap-x-3 gap-y-6">
+      {% include '@components/field.twig' with {
+        label: 'Nom complet ou raison sociale',
+        name: 'fullname',
+        value: address.fullname,
+        required: true,
+        attr: {
+          class: 's:col-span-2'
+        }
+      } only %}
+      {% include '@components/select-countries.twig' with {
+        class: 's:col-span-2'
+      } %}
+      {% include '@components/field.twig' with {
+        label: 'Adresse',
+        name: 'line_1',
+        value: address.line_1,
+        required: true,
+        attr: {
+          class: 's:col-span-2'
+        }
+      } only %}
+      {% include '@components/field.twig' with {
+        label: 'Complément d’adresse',
+        name: 'line_2',
+        value: address.line_2,
+        attr: {
+          class: 's:col-span-2'
+        }
+      } only %}
+      {% include '@components/field.twig' with {
+        label: 'Code postal',
+        name: 'zip',
+        value: address.zip,
+        required: true
+      } only %}
+      {% include '@components/field.twig' with {
+        label: 'Ville',
+        name: 'city',
+        value: address.city,
+        required: true
+      } only %}
+
+      <div class="flex items-center s:col-span-2">
+        {% set set_default_id = 'set-default-' ~ random() %}
+        <input id="{{ set_default_id }}"
+          type="checkbox"
+          name="default"
+          {{ address.is_default ? 'checked' }}
+          class="size-4 rounded-none cursor-pointer accent-purple" />
+        <label for="{{ set_default_id }}" class="font-medium text-gray cursor-pointer pl-2">
+          Utiliser par défaut
+        </label>
+      </div>
+      {% include '@components/button.twig' with {
+        label: 'Annuler',
+        variant: 'outline',
+        attr: {
+          data_ref: 'close[]'
+        }
+      } only %}
+      {% include '@components/button.twig' with {
+        label: 'Confirmer',
+        variant: 'solid',
+        attr: {
+          type: 'submit'
+        }
+      } only %}
+    </div>
+  </form>
+{% endblock %}
