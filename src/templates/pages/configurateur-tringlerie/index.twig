@@ -21,10 +21,79 @@
     </div>
   </section>
   <section>
-      <div data-component="Syh" class="">
-        <div class="container">
-            <div class="steps">Config</div>
+    <div class=" text-black" data-component="Syh" data-option-collection="auro-concept">
+
+      {# Stepper — boutons générés dynamiquement par JS #}
+      <nav data-ref="stepper" class="flex gap-4 py-4 px-6 border-b"></nav>
+
+      {# Zone de l'étape courante — réécrite à chaque step #}
+      <div data-ref="stepContent" class="container py-8"></div>
+
+      {# Prix total #}
+      <div data-ref="totalPrice" class="container py-4 font-medium"></div>
+
+      {# ------------------------------------------------------------------ #}
+      {# Templates HTML clonés par le JS selon field.type                   #}
+      {# Les classes Tailwind ci-dessous sont provisoires — à remplacer     #}
+      {# par ton markup pixel-perfect. Le contrat data-* est obligatoire.   #}
+      {# ------------------------------------------------------------------ #}
+
+      {# ------------------------------------------------------------------ #}
+      {# Template RadioField                                               #}
+      {# Le JS clone ce template, remplit les data-ref, n'écrit jamais    #}
+      {# de HTML. Personnalise librement les classes Tailwind ici.        #}
+      {# ------------------------------------------------------------------ #}
+      <template data-template="radio">
+        <div data-component="RadioField" class="mb-6">
+          <fieldset class="border-0 p-0 m-0">
+            <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
+            <div data-ref="options" class="flex flex-wrap gap-3"></div>
+          </fieldset>
+
+          {# Template d'une option : label seul #}
+          <template data-template="radio-option--label">
+            <label class="flex items-center gap-2 cursor-pointer border px-4 py-2 rounded has-[:checked]:bg-black has-[:checked]:text-white">
+              <input data-ref="input" type="radio" class="sr-only" />
+              <span data-ref="optLabel"></span>
+            </label>
+          </template>
+
+          {# Template d'une option : label + image #}
+          <template data-template="radio-option--label_image">
+            <label class="flex flex-col items-center gap-2 cursor-pointer border px-4 py-3 rounded has-[:checked]:bg-black has-[:checked]:text-white">
+              <input data-ref="input" type="radio" class="sr-only" />
+              <img data-ref="image" alt="" class="w-12 h-12 object-contain" />
+              <span data-ref="optLabel"></span>
+            </label>
+          </template>
         </div>
-      </div>
+      </template>
+
+      {# ------------------------------------------------------------------ #}
+      {# Template LengthField                                              #}
+      {# ------------------------------------------------------------------ #}
+      <template data-template="length">
+        <div data-component="LengthField" class="mb-6">
+          <fieldset class="border-0 p-0 m-0">
+            <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
+            <div data-ref="presets" class="flex flex-wrap gap-3"></div>
+            <div data-ref="customWrapper" class="mt-3" hidden>
+              <input
+                data-ref="customInput"
+                type="number"
+                class="border rounded px-3 py-2 w-32"
+                placeholder="cm"
+              />
+            </div>
+          </fieldset>
+
+          {# Template d'un bouton preset #}
+          <template data-template="length-preset">
+            <button type="button" data-ref="btn" class="border px-4 py-2 rounded [&.is-active]:bg-black [&.is-active]:text-white"></button>
+          </template>
+        </div>
+      </template>
+
+    </div>
   </section>
 {% endblock %}
