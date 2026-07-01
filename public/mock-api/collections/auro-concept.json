@@ -7,33 +7,32 @@
       {
         "id": "24",
         "label": "Laiton brossé",
-        "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_24_S1_1.jpg"
+        "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_24_L1_1.jpg"
       },
       {
         "id": "31",
         "label": "Acier brossé",
-        "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_31_S1_1.jpg"
+        "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_31_L1_1.jpg"
       },
       {
         "id": "34",
         "label": "Nickel brossé noir",
-        "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_34_S1_1.jpg"
+        "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_34_L1_1.jpg"
       },
       {
         "id": "35",
         "label": "Bronze brossé",
-        "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_35_S1_1.jpg"
+        "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_35_L1_1.jpg"
       },
       {
         "id": "38",
         "label": "Laiton patiné brossé",
-        "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_38_S1_1.jpg"
+        "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_38_L1_1.jpg"
       }
     ],
     "_notes": [
       "Diametre arriere toujours 16 mm dans les combinaisons double de cette collection.",
-      "Prix et stock presents sur chaque produit (servis depuis Elastic cote client, rafraichis 5 min, check d'autorite a l'ajout panier).",
-      "image au niveau variante (depend du coloris). URL en dur au format Houlès : {1er}/{refBase}/{refBase}_{coloris}_S1_1.jpg. Le front consomme l'URL, ne la compose jamais. Valeurs prix/stock = placeholders de demo.",
+      "image au niveau variante (depend du coloris). URL en dur au format Houlès : {1er}/{refBase}/{refBase}_{coloris}_L1_1.jpg. Le front consomme l'URL, ne la compose jamais. Valeurs prix/stock = placeholders de demo.",
       "TODO : confirmer le format d'URL image pour les produits sans coloris (about de tube)."
     ]
   },
@@ -72,33 +71,33 @@
             "simple": [
               {
                 "id": "16",
-                "label": "O 16 mm"
+                "label": "16 mm"
               },
               {
                 "id": "25",
-                "label": "O 25 mm"
+                "label": "25 mm"
               },
               {
                 "id": "31",
-                "label": "O 31 mm"
+                "label": "31 mm"
               }
             ],
             "double": [
               {
                 "id": "16+16",
-                "label": "O 16 + 16 mm",
+                "label": "16 + 16 mm",
                 "avant": "16",
                 "arriere": "16"
               },
               {
                 "id": "16+25",
-                "label": "O 16 + 25 mm",
+                "label": "16 + 25 mm",
                 "avant": "25",
                 "arriere": "16"
               },
               {
                 "id": "16+31",
-                "label": "O 16 + 31 mm",
+                "label": "16 + 31 mm",
                 "avant": "31",
                 "arriere": "16"
               }
@@ -229,7 +228,7 @@
           "options": [
             {
               "refBase": "66737",
-              "label": "Naissance murale O16",
+              "label": "Naissance murale Ø 16 mm",
               "qtyParUnite": 2,
               "replacesEmbouts": true,
               "showIf": {
@@ -245,37 +244,37 @@
                   "id": "66737-24",
                   "prix": 54.04,
                   "stock": 6,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66737-31",
                   "prix": 61.39,
                   "stock": 62,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66737-34",
                   "prix": 24.07,
                   "stock": 188,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66737-35",
                   "prix": 15.38,
                   "stock": 189,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66737-38",
                   "prix": 72.24,
                   "stock": 22,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66739",
-              "label": "Naissance murale O25",
+              "label": "Naissance murale Ø 25 mm",
               "qtyParUnite": 2,
               "replacesEmbouts": true,
               "showIf": {
@@ -291,37 +290,37 @@
                   "id": "66739-24",
                   "prix": 50.52,
                   "stock": 8,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66739-31",
                   "prix": 10.15,
                   "stock": 55,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66739-34",
                   "prix": 24.75,
                   "stock": 154,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66739-35",
                   "prix": 9.91,
                   "stock": 50,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66739-38",
                   "prix": 59.55,
                   "stock": 179,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66741",
-              "label": "Naissance murale O31",
+              "label": "Naissance murale Ø 31 mm",
               "qtyParUnite": 2,
               "replacesEmbouts": true,
               "showIf": {
@@ -337,37 +336,37 @@
                   "id": "66741-24",
                   "prix": 47.24,
                   "stock": 56,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66741-31",
                   "prix": 40.34,
                   "stock": 71,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66741-34",
                   "prix": 66.28,
                   "stock": 1,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66741-35",
                   "prix": 62.63,
                   "stock": 40,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66741-38",
                   "prix": 58.27,
                   "stock": 87,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66776",
-              "label": "Support mur extensible 110mm O16",
+              "label": "Support mur extensible 110mm Ø 16 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -383,37 +382,37 @@
                   "id": "66776-24",
                   "prix": 28.01,
                   "stock": 55,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66776-31",
                   "prix": 76.92,
                   "stock": 86,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66776-34",
                   "prix": 15.36,
                   "stock": 97,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66776-35",
                   "prix": 14.96,
                   "stock": 88,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66776-38",
                   "prix": 51.47,
                   "stock": 11,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66778",
-              "label": "Support mur extensible 110mm O25",
+              "label": "Support mur extensible 110mm Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -429,37 +428,37 @@
                   "id": "66778-24",
                   "prix": 60.54,
                   "stock": 137,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66778-31",
                   "prix": 16.99,
                   "stock": 96,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66778-34",
                   "prix": 13.67,
                   "stock": 75,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66778-35",
                   "prix": 67.72,
                   "stock": 158,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66778-38",
                   "prix": 71.75,
                   "stock": 92,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66779",
-              "label": "Support mur extensible 110mm O31",
+              "label": "Support mur extensible 110mm Ø 31 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -475,37 +474,37 @@
                   "id": "66779-24",
                   "prix": 49.57,
                   "stock": 180,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66779-31",
                   "prix": 13.01,
                   "stock": 169,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66779-34",
                   "prix": 24.41,
                   "stock": 74,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66779-35",
                   "prix": 78.94,
                   "stock": 59,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66779-38",
                   "prix": 70.39,
                   "stock": 97,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66764",
-              "label": "Support mur pour anneaux ouverts O25",
+              "label": "Support mur pour anneaux ouverts Ø 25 mm",
               "qtyParUnite": 1,
               "showIf": {
                 "type_pose": [
@@ -524,37 +523,37 @@
                   "id": "66764-24",
                   "prix": 28.01,
                   "stock": 162,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66764-31",
                   "prix": 68.06,
                   "stock": 41,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66764-34",
                   "prix": 34.65,
                   "stock": 53,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66764-35",
                   "prix": 56.25,
                   "stock": 179,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66764-38",
                   "prix": 75.44,
                   "stock": 165,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66769",
-              "label": "Support mur pour anneaux ouverts O31",
+              "label": "Support mur pour anneaux ouverts Ø 31 mm",
               "qtyParUnite": 1,
               "showIf": {
                 "type_pose": [
@@ -573,37 +572,37 @@
                   "id": "66769-24",
                   "prix": 13.14,
                   "stock": 162,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66769-31",
                   "prix": 20.32,
                   "stock": 186,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66769-34",
                   "prix": 25.63,
                   "stock": 118,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66769-35",
                   "prix": 35.32,
                   "stock": 163,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66769-38",
                   "prix": 57.55,
                   "stock": 56,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66854",
-              "label": "Support long extensible O25",
+              "label": "Support long extensible Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -618,37 +617,37 @@
                   "id": "66854-24",
                   "prix": 57.29,
                   "stock": 196,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66854-31",
                   "prix": 63.87,
                   "stock": 58,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66854-34",
                   "prix": 67.17,
                   "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66854-35",
                   "prix": 36.88,
                   "stock": 16,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66854-38",
                   "prix": 23.19,
                   "stock": 145,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66864",
-              "label": "Support long extensible O31",
+              "label": "Support long extensible Ø 31 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -663,37 +662,37 @@
                   "id": "66864-24",
                   "prix": 71.1,
                   "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66864-31",
                   "prix": 23.31,
                   "stock": 127,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66864-34",
                   "prix": 36.49,
                   "stock": 164,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66864-35",
                   "prix": 41.04,
                   "stock": 67,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66864-38",
                   "prix": 18.05,
                   "stock": 190,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66732",
-              "label": "Support mixte plafond-mur O16",
+              "label": "Support mixte plafond-mur Ø 16 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -712,37 +711,37 @@
                   "id": "66732-24",
                   "prix": 48.42,
                   "stock": 67,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_24_P1_1.jpg"
                 },
                 "31": {
                   "id": "66732-31",
                   "prix": 61.78,
                   "stock": 109,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_31_P1_1.jpg"
                 },
                 "34": {
                   "id": "66732-34",
                   "prix": 72.64,
                   "stock": 102,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_34_P1_1.jpg"
                 },
                 "35": {
                   "id": "66732-35",
                   "prix": 34.06,
                   "stock": 35,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_35_P1_1.jpg"
                 },
                 "38": {
                   "id": "66732-38",
                   "prix": 44.69,
                   "stock": 23,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_38_P1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66734",
-              "label": "Support mixte plafond-mur O25",
+              "label": "Support mixte plafond-mur Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -761,37 +760,37 @@
                   "id": "66734-24",
                   "prix": 62.42,
                   "stock": 28,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66734-31",
                   "prix": 19.0,
                   "stock": 40,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66734-34",
                   "prix": 65.03,
                   "stock": 108,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66734-35",
                   "prix": 50.94,
                   "stock": 98,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66734-38",
                   "prix": 35.48,
                   "stock": 119,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66736",
-              "label": "Support mixte plafond-mur O31",
+              "label": "Support mixte plafond-mur Ø 31 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -810,37 +809,37 @@
                   "id": "66736-24",
                   "prix": 46.1,
                   "stock": 141,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66736-31",
                   "prix": 69.98,
                   "stock": 2,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66736-34",
                   "prix": 56.98,
                   "stock": 29,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66736-35",
                   "prix": 57.08,
                   "stock": 137,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66736-38",
                   "prix": 62.06,
                   "stock": 196,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66785",
-              "label": "Support double extensible O16+25",
+              "label": "Support double extensible Ø 16 mm+25",
               "qtyParUnite": 2,
               "showIf": {
                 "type_de_support": [
@@ -858,37 +857,37 @@
                   "id": "66785-24",
                   "prix": 54.15,
                   "stock": 28,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66785-31",
                   "prix": 29.13,
                   "stock": 40,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66785-34",
                   "prix": 40.67,
                   "stock": 184,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66785-35",
                   "prix": 71.06,
                   "stock": 67,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66785-38",
                   "prix": 77.98,
                   "stock": 195,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66783",
-              "label": "Support double extensible O16+31",
+              "label": "Support double extensible Ø 16 mm+31",
               "qtyParUnite": 2,
               "showIf": {
                 "type_de_support": [
@@ -896,47 +895,44 @@
                 ],
                 "diametre": [
                   "16+31"
-                ],
-                "longueur": {
-                  "gt": 160
-                }
+                ]
               },
               "variants": {
                 "24": {
                   "id": "66783-24",
                   "prix": 20.86,
                   "stock": 27,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66783-31",
                   "prix": 70.68,
                   "stock": 76,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66783-34",
                   "prix": 68.6,
                   "stock": 129,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66783-35",
                   "prix": 51.85,
                   "stock": 39,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66783-38",
                   "prix": 34.92,
                   "stock": 41,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66743",
-              "label": "Corner 115mm O25",
+              "label": "Corner 115mm Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_de_support": [
@@ -954,37 +950,37 @@
                   "id": "66743-24",
                   "prix": 46.84,
                   "stock": 199,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66743-31",
                   "prix": 74.42,
                   "stock": 0,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66743-34",
                   "prix": 51.12,
                   "stock": 125,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66743-35",
                   "prix": 9.4,
                   "stock": 92,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66743-38",
                   "prix": 71.27,
                   "stock": 78,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66744",
-              "label": "Corner 225mm O25",
+              "label": "Corner 225mm Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_de_support": [
@@ -1002,31 +998,31 @@
                   "id": "66744-24",
                   "prix": 25.24,
                   "stock": 61,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66744-31",
                   "prix": 71.22,
                   "stock": 20,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66744-34",
                   "prix": 14.17,
                   "stock": 124,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66744-35",
                   "prix": 66.75,
                   "stock": 194,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66744-38",
                   "prix": 46.35,
                   "stock": 32,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_38_L1_1.jpg"
                 }
               }
             }
@@ -1046,7 +1042,7 @@
           "options": [
             {
               "refBase": "66754",
-              "label": "Adaptateur arriere corner extra-long (tube O16)",
+              "label": "Adaptateur arriere corner extra-long (tube Ø 16 mm)",
               "qtyParUnite": 2,
               "showIf": {
                 "type_de_support": [
@@ -1064,31 +1060,31 @@
                   "id": "66754-24",
                   "prix": 17.24,
                   "stock": 121,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66754-31",
                   "prix": 76.17,
                   "stock": 42,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66754-34",
                   "prix": 27.08,
                   "stock": 155,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66754-35",
                   "prix": 38.47,
                   "stock": 54,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66754-38",
                   "prix": 74.88,
                   "stock": 193,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_38_L1_1.jpg"
                 }
               }
             }
@@ -1115,7 +1111,8 @@
                   "66854",
                   "66785",
                   "66783",
-                  "66744"
+                  "66744",
+                  "66776"
                 ]
               },
               "variants": {
@@ -1123,31 +1120,31 @@
                   "id": "66480-24",
                   "prix": 60.56,
                   "stock": 51,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66480-31",
                   "prix": 59.33,
                   "stock": 102,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66480-34",
                   "prix": 79.65,
                   "stock": 166,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66480-35",
                   "prix": 34.89,
                   "stock": 132,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66480-38",
                   "prix": 40.51,
                   "stock": 63,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_38_L1_1.jpg"
                 }
               }
             }
@@ -1168,7 +1165,7 @@
           "options": [
             {
               "refBase": "66776",
-              "label": "Support mur extensible 110mm O16 (interm.)",
+              "label": "Support mur extensible 110mm Ø 16 mm (interm.)",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -1193,37 +1190,37 @@
                   "id": "66776-24",
                   "prix": 24.18,
                   "stock": 86,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66776-31",
                   "prix": 9.51,
                   "stock": 141,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66776-34",
                   "prix": 24.57,
                   "stock": 56,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66776-35",
                   "prix": 8.52,
                   "stock": 181,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66776-38",
                   "prix": 53.44,
                   "stock": 58,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66778",
-              "label": "Support mur extensible 110mm O25 (interm.)",
+              "label": "Support mur extensible 110mm Ø 25 mm (interm.)",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -1248,37 +1245,37 @@
                   "id": "66778-24",
                   "prix": 12.85,
                   "stock": 8,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66778-31",
                   "prix": 69.89,
                   "stock": 18,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66778-34",
                   "prix": 45.02,
                   "stock": 71,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66778-35",
                   "prix": 56.17,
                   "stock": 54,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66778-38",
                   "prix": 46.82,
                   "stock": 185,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66779",
-              "label": "Support mur extensible 110mm O31 (interm.)",
+              "label": "Support mur extensible 110mm Ø 31 mm (interm.)",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -1303,37 +1300,37 @@
                   "id": "66779-24",
                   "prix": 75.36,
                   "stock": 146,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66779-31",
                   "prix": 49.49,
                   "stock": 62,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66779-34",
                   "prix": 64.49,
                   "stock": 104,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66779-35",
                   "prix": 21.71,
                   "stock": 24,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66779-38",
                   "prix": 55.45,
                   "stock": 90,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66732",
-              "label": "Support mixte plafond-mur O16 (interm.)",
+              "label": "Support mixte plafond-mur Ø 16 mm (interm.)",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -1358,37 +1355,37 @@
                   "id": "66732-24",
                   "prix": 38.5,
                   "stock": 119,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66732-31",
                   "prix": 70.2,
                   "stock": 13,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66732-34",
                   "prix": 56.48,
                   "stock": 165,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66732-35",
                   "prix": 15.09,
                   "stock": 103,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66732-38",
                   "prix": 60.43,
                   "stock": 27,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66734",
-              "label": "Support mixte plafond-mur O25 (interm.)",
+              "label": "Support mixte plafond-mur Ø 25 mm (interm.)",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -1413,37 +1410,37 @@
                   "id": "66734-24",
                   "prix": 25.9,
                   "stock": 48,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66734-31",
                   "prix": 46.61,
                   "stock": 35,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66734-34",
                   "prix": 38.38,
                   "stock": 71,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66734-35",
                   "prix": 41.31,
                   "stock": 19,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66734-38",
                   "prix": 39.91,
                   "stock": 140,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66736",
-              "label": "Support mixte plafond-mur O31 (interm.)",
+              "label": "Support mixte plafond-mur Ø 31 mm (interm.)",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -1468,31 +1465,31 @@
                   "id": "66736-24",
                   "prix": 15.05,
                   "stock": 166,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66736-31",
                   "prix": 79.95,
                   "stock": 3,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66736-34",
                   "prix": 77.77,
                   "stock": 192,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66736-35",
                   "prix": 69.11,
                   "stock": 42,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66736-38",
                   "prix": 37.26,
                   "stock": 123,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_38_L1_1.jpg"
                 }
               }
             }
@@ -1527,31 +1524,31 @@
                   "id": "66480-24",
                   "prix": 23.39,
                   "stock": 102,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66480-31",
                   "prix": 72.98,
                   "stock": 42,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66480-34",
                   "prix": 35.29,
                   "stock": 99,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66480-35",
                   "prix": 27.09,
                   "stock": 200,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66480-38",
                   "prix": 64.53,
                   "stock": 73,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_38_L1_1.jpg"
                 }
               }
             }
@@ -1576,7 +1573,7 @@
           "options": [
             {
               "refBase": "66084",
-              "label": "Tube O16 - 180 cm",
+              "label": "Tube Ø 16 mm - 180 cm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1591,37 +1588,37 @@
                   "id": "66084-24",
                   "prix": 38.46,
                   "stock": 187,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66084-31",
                   "prix": 79.67,
                   "stock": 142,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66084-34",
                   "prix": 55.65,
                   "stock": 124,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66084-35",
                   "prix": 19.15,
                   "stock": 75,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66084-38",
                   "prix": 23.67,
                   "stock": 14,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66104",
-              "label": "Tube O25 - 180 cm",
+              "label": "Tube Ø 25 mm - 180 cm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1636,37 +1633,37 @@
                   "id": "66104-24",
                   "prix": 49.7,
                   "stock": 138,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66104-31",
                   "prix": 12.39,
                   "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66104-34",
                   "prix": 12.12,
                   "stock": 149,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66104-35",
                   "prix": 42.33,
                   "stock": 135,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66104-38",
                   "prix": 19.34,
                   "stock": 130,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66124",
-              "label": "Tube O31 - 180 cm",
+              "label": "Tube Ø 31 mm - 180 cm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1681,37 +1678,37 @@
                   "id": "66124-24",
                   "prix": 13.77,
                   "stock": 47,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66124-31",
                   "prix": 12.93,
                   "stock": 17,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66124-34",
                   "prix": 56.62,
                   "stock": 60,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66124-35",
                   "prix": 37.07,
                   "stock": 145,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66124-38",
                   "prix": 25.73,
                   "stock": 152,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66085",
-              "label": "Tube O16 - 240 cm",
+              "label": "Tube Ø 16 mm - 240 cm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1726,37 +1723,37 @@
                   "id": "66085-24",
                   "prix": 10.86,
                   "stock": 20,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66085-31",
                   "prix": 38.18,
                   "stock": 149,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66085-34",
                   "prix": 48.7,
                   "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66085-35",
                   "prix": 75.3,
                   "stock": 52,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66085-38",
                   "prix": 56.22,
                   "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66105",
-              "label": "Tube O25 - 240 cm",
+              "label": "Tube Ø 25 mm - 240 cm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1771,37 +1768,37 @@
                   "id": "66105-24",
                   "prix": 25.19,
                   "stock": 101,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66105-31",
                   "prix": 17.42,
                   "stock": 165,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66105-34",
                   "prix": 29.6,
                   "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66105-35",
                   "prix": 74.89,
                   "stock": 18,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66105-38",
                   "prix": 8.67,
                   "stock": 159,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66125",
-              "label": "Tube O31 - 240 cm",
+              "label": "Tube Ø 31 mm - 240 cm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1816,31 +1813,31 @@
                   "id": "66125-24",
                   "prix": 79.89,
                   "stock": 25,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66125-31",
                   "prix": 13.27,
                   "stock": 54,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66125-34",
                   "prix": 44.42,
                   "stock": 33,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66125-35",
                   "prix": 75.19,
                   "stock": 17,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66125-38",
                   "prix": 71.31,
                   "stock": 94,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_38_L1_1.jpg"
                 }
               }
             }
@@ -1861,7 +1858,7 @@
               "refBase": "66601",
               "id": "66601",
               "noColoris": true,
-              "label": "About de tube O16",
+              "label": "About de tube Ø 16 mm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1876,7 +1873,7 @@
               "refBase": "66603",
               "id": "66603",
               "noColoris": true,
-              "label": "About de tube O25",
+              "label": "About de tube Ø 25 mm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1891,7 +1888,7 @@
               "refBase": "66605",
               "id": "66605",
               "noColoris": true,
-              "label": "About de tube O31",
+              "label": "About de tube Ø 31 mm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1930,7 +1927,7 @@
           "options": [
             {
               "refBase": "66804",
-              "label": "Anneaux fermes O16 (lot de 6)",
+              "label": "Anneaux fermes Ø 16 mm (lot de 6)",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -1949,37 +1946,37 @@
                   "id": "66804-24",
                   "prix": 55.09,
                   "stock": 2,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66804-31",
                   "prix": 56.09,
                   "stock": 141,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66804-34",
                   "prix": 29.56,
                   "stock": 169,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66804-35",
                   "prix": 15.46,
                   "stock": 34,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66804-38",
                   "prix": 27.04,
                   "stock": 27,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66808",
-              "label": "Anneaux fermes O25 (lot de 6)",
+              "label": "Anneaux fermes Ø 25 mm (lot de 6)",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -1997,37 +1994,37 @@
                   "id": "66808-24",
                   "prix": 61.45,
                   "stock": 39,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66808-31",
                   "prix": 27.61,
                   "stock": 154,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66808-34",
                   "prix": 23.17,
                   "stock": 87,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66808-35",
                   "prix": 22.66,
                   "stock": 162,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66808-38",
                   "prix": 69.41,
                   "stock": 129,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66809",
-              "label": "Anneaux fermes O31 (lot de 6)",
+              "label": "Anneaux fermes Ø 31 mm (lot de 6)",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -2045,37 +2042,37 @@
                   "id": "66809-24",
                   "prix": 43.17,
                   "stock": 13,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66809-31",
                   "prix": 14.65,
                   "stock": 108,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66809-34",
                   "prix": 67.71,
                   "stock": 11,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66809-35",
                   "prix": 8.26,
                   "stock": 197,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66809-38",
                   "prix": 17.42,
                   "stock": 67,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66935",
-              "label": "Anneaux ouverts O25 (lot de 6)",
+              "label": "Anneaux ouverts Ø 25 mm (lot de 6)",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -2091,37 +2088,37 @@
                   "id": "66935-24",
                   "prix": 19.63,
                   "stock": 113,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66935-31",
                   "prix": 47.72,
                   "stock": 109,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66935-34",
                   "prix": 48.39,
                   "stock": 28,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66935-35",
                   "prix": 13.42,
                   "stock": 176,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66935-38",
                   "prix": 73.08,
                   "stock": 139,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66937",
-              "label": "Anneaux ouverts O31 (lot de 6)",
+              "label": "Anneaux ouverts Ø 31 mm (lot de 6)",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -2136,31 +2133,31 @@
                   "id": "66937-24",
                   "prix": 10.59,
                   "stock": 94,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66937-31",
                   "prix": 49.94,
                   "stock": 37,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66937-34",
                   "prix": 38.94,
                   "stock": 10,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66937-35",
                   "prix": 30.19,
                   "stock": 10,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66937-38",
                   "prix": 72.72,
                   "stock": 53,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_38_L1_1.jpg"
                 }
               }
             }
@@ -2180,7 +2177,7 @@
           "options": [
             {
               "refBase": "66870",
-              "label": "Anneaux de blocage O16",
+              "label": "Anneaux de blocage Ø 16 mm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -2192,37 +2189,37 @@
                   "id": "66870-24",
                   "prix": 57.11,
                   "stock": 170,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66870-31",
                   "prix": 15.4,
                   "stock": 199,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66870-34",
                   "prix": 48.31,
                   "stock": 104,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66870-35",
                   "prix": 78.12,
                   "stock": 191,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66870-38",
                   "prix": 19.13,
                   "stock": 60,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66874",
-              "label": "Anneaux de blocage O25",
+              "label": "Anneaux de blocage Ø 25 mm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -2234,37 +2231,37 @@
                   "id": "66874-24",
                   "prix": 70.25,
                   "stock": 45,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66874-31",
                   "prix": 71.46,
                   "stock": 6,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66874-34",
                   "prix": 20.91,
                   "stock": 85,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66874-35",
                   "prix": 64.33,
                   "stock": 105,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66874-38",
                   "prix": 65.76,
                   "stock": 188,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66878",
-              "label": "Anneaux de blocage O31",
+              "label": "Anneaux de blocage Ø 31 mm",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -2276,31 +2273,31 @@
                   "id": "66878-24",
                   "prix": 66.37,
                   "stock": 68,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66878-31",
                   "prix": 19.46,
                   "stock": 179,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66878-34",
                   "prix": 15.78,
                   "stock": 9,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66878-35",
                   "prix": 69.82,
                   "stock": 56,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66878-38",
                   "prix": 22.37,
                   "stock": 117,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_38_L1_1.jpg"
                 }
               }
             }
@@ -2328,7 +2325,7 @@
           "options": [
             {
               "refBase": "66896",
-              "label": "Embout Absis O25",
+              "label": "Embout Absis Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2344,37 +2341,37 @@
                   "id": "66896-24",
                   "prix": 33.18,
                   "stock": 58,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66896-31",
                   "prix": 24.05,
                   "stock": 168,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66896-34",
                   "prix": 21.91,
                   "stock": 84,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66896-35",
                   "prix": 28.06,
                   "stock": 17,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66896-38",
                   "prix": 77.62,
                   "stock": 71,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66906",
-              "label": "Embout Absis O31",
+              "label": "Embout Absis Ø 31 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2390,37 +2387,37 @@
                   "id": "66906-24",
                   "prix": 33.28,
                   "stock": 130,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66906-31",
                   "prix": 36.78,
                   "stock": 137,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66906-34",
                   "prix": 31.84,
                   "stock": 7,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66906-35",
                   "prix": 16.3,
                   "stock": 66,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66906-38",
                   "prix": 20.86,
                   "stock": 67,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66892",
-              "label": "Embout Regency O25",
+              "label": "Embout Regency Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2436,37 +2433,37 @@
                   "id": "66892-24",
                   "prix": 10.75,
                   "stock": 152,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66892-31",
                   "prix": 39.29,
                   "stock": 186,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66892-34",
                   "prix": 64.62,
                   "stock": 111,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66892-35",
                   "prix": 51.65,
                   "stock": 130,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66892-38",
                   "prix": 16.33,
                   "stock": 147,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66902",
-              "label": "Embout Regency O31",
+              "label": "Embout Regency Ø 31 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2482,37 +2479,37 @@
                   "id": "66902-24",
                   "prix": 21.69,
                   "stock": 11,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66902-31",
                   "prix": 59.03,
                   "stock": 0,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66902-34",
                   "prix": 45.43,
                   "stock": 137,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66902-35",
                   "prix": 57.45,
                   "stock": 189,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66902-38",
                   "prix": 61.07,
                   "stock": 50,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66891",
-              "label": "Embout Boule O25",
+              "label": "Embout Boule Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2528,37 +2525,37 @@
                   "id": "66891-24",
                   "prix": 34.22,
                   "stock": 17,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66891-31",
                   "prix": 76.32,
                   "stock": 84,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66891-34",
                   "prix": 52.87,
                   "stock": 169,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66891-35",
                   "prix": 69.06,
                   "stock": 184,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66891-38",
                   "prix": 72.8,
                   "stock": 129,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66901",
-              "label": "Embout Boule O31",
+              "label": "Embout Boule Ø 31 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2574,37 +2571,37 @@
                   "id": "66901-24",
                   "prix": 30.27,
                   "stock": 104,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66901-31",
                   "prix": 31.49,
                   "stock": 178,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66901-34",
                   "prix": 29.29,
                   "stock": 32,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66901-35",
                   "prix": 21.81,
                   "stock": 170,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66901-38",
                   "prix": 75.71,
                   "stock": 173,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66957",
-              "label": "Embout Tempo O25",
+              "label": "Embout Tempo Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2620,37 +2617,37 @@
                   "id": "66957-24",
                   "prix": 61.87,
                   "stock": 44,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66957-31",
                   "prix": 52.32,
                   "stock": 77,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66957-34",
                   "prix": 37.24,
                   "stock": 0,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66957-35",
                   "prix": 29.88,
                   "stock": 53,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66957-38",
                   "prix": 38.95,
                   "stock": 148,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66958",
-              "label": "Embout Tempo O31",
+              "label": "Embout Tempo Ø 31 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2666,37 +2663,37 @@
                   "id": "66958-24",
                   "prix": 51.68,
                   "stock": 82,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66958-31",
                   "prix": 41.48,
                   "stock": 113,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66958-34",
                   "prix": 56.65,
                   "stock": 130,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66958-35",
                   "prix": 42.07,
                   "stock": 188,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66958-38",
                   "prix": 20.22,
                   "stock": 21,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66819",
-              "label": "Embout Dome O25",
+              "label": "Embout Dome Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2712,37 +2709,37 @@
                   "id": "66819-24",
                   "prix": 28.43,
                   "stock": 169,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66819-31",
                   "prix": 53.57,
                   "stock": 85,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66819-34",
                   "prix": 14.72,
                   "stock": 192,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66819-35",
                   "prix": 24.91,
                   "stock": 79,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66819-38",
                   "prix": 24.17,
                   "stock": 50,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66919",
-              "label": "Embout Dome O31",
+              "label": "Embout Dome Ø 31 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2758,37 +2755,37 @@
                   "id": "66919-24",
                   "prix": 18.61,
                   "stock": 11,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66919-31",
                   "prix": 25.63,
                   "stock": 121,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66919-34",
                   "prix": 52.01,
                   "stock": 196,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66919-35",
                   "prix": 13.24,
                   "stock": 106,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66919-38",
                   "prix": 71.8,
                   "stock": 147,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66960",
-              "label": "Embout Bouchons O16",
+              "label": "Embout Bouchons Ø 16 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2804,37 +2801,37 @@
                   "id": "66960-24",
                   "prix": 22.0,
                   "stock": 178,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66960-31",
                   "prix": 35.65,
                   "stock": 102,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66960-34",
                   "prix": 25.57,
                   "stock": 167,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66960-35",
                   "prix": 57.51,
                   "stock": 192,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66960-38",
                   "prix": 69.95,
                   "stock": 27,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66961",
-              "label": "Embout Bouchons O25",
+              "label": "Embout Bouchons Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2850,37 +2847,37 @@
                   "id": "66961-24",
                   "prix": 64.05,
                   "stock": 56,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66961-31",
                   "prix": 20.66,
                   "stock": 178,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66961-34",
                   "prix": 45.29,
                   "stock": 12,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66961-35",
                   "prix": 48.13,
                   "stock": 31,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66961-38",
                   "prix": 40.87,
                   "stock": 118,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66962",
-              "label": "Embout Bouchons O31",
+              "label": "Embout Bouchons Ø 31 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2896,31 +2893,31 @@
                   "id": "66962-24",
                   "prix": 56.07,
                   "stock": 143,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66962-31",
                   "prix": 50.87,
                   "stock": 193,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66962-34",
                   "prix": 72.18,
                   "stock": 156,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66962-35",
                   "prix": 66.68,
                   "stock": 129,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66962-38",
                   "prix": 38.73,
                   "stock": 140,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_38_L1_1.jpg"
                 }
               }
             }
@@ -2933,7 +2930,7 @@
           "required": true,
           "default": "first_visible",
           "diametreFrom": "arriere",
-          "_note": "Visible uniquement en double. Arriere = O16 dans cette collection, seul Bouchons existe en 16. Modelise avec les 3 refs Bouchons filtrees par diametre.",
+          "_note": "Visible uniquement en double. Arriere = Ø 16 mm dans cette collection, seul Bouchons existe en 16. Modelise avec les 3 refs Bouchons filtrees par diametre.",
           "showIf": {
             "type_de_support": [
               "double"
@@ -2947,7 +2944,7 @@
           "options": [
             {
               "refBase": "66960",
-              "label": "Embout Bouchons O16",
+              "label": "Embout Bouchons Ø 16 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -2963,37 +2960,37 @@
                   "id": "66960-24",
                   "prix": 40.11,
                   "stock": 40,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66960-31",
                   "prix": 61.54,
                   "stock": 121,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66960-34",
                   "prix": 40.41,
                   "stock": 192,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66960-35",
                   "prix": 25.8,
                   "stock": 163,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66960-38",
                   "prix": 27.97,
                   "stock": 199,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66961",
-              "label": "Embout Bouchons O25",
+              "label": "Embout Bouchons Ø 25 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -3009,37 +3006,37 @@
                   "id": "66961-24",
                   "prix": 45.53,
                   "stock": 160,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66961-31",
                   "prix": 25.23,
                   "stock": 112,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66961-34",
                   "prix": 13.58,
                   "stock": 73,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66961-35",
                   "prix": 24.88,
                   "stock": 85,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66961-38",
                   "prix": 31.02,
                   "stock": 138,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_38_L1_1.jpg"
                 }
               }
             },
             {
               "refBase": "66962",
-              "label": "Embout Bouchons O31",
+              "label": "Embout Bouchons Ø 31 mm",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -3055,31 +3052,31 @@
                   "id": "66962-24",
                   "prix": 13.8,
                   "stock": 38,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_24_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66962-31",
                   "prix": 24.65,
                   "stock": 177,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_31_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66962-34",
                   "prix": 19.0,
                   "stock": 54,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_34_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66962-35",
                   "prix": 12.62,
                   "stock": 104,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_35_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66962-38",
                   "prix": 31.82,
                   "stock": 119,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_38_S1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_38_L1_1.jpg"
                 }
               }
             }

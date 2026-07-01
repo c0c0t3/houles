@@ -63,6 +63,29 @@ composants séparés (le châssis — bordure, indicateur de sélection — est 
 Les classes sont calculées en haut du template Twig (map de variantes), le markup reste lisible.
 Le `variant` est **explicite dans le JSON**, jamais déduit des données présentes.
 
+### Label dynamique : `labelByConfig`
+ 
+Un champ peut adapter son label selon la valeur d'un paramètre, via `labelByConfig`. Utile quand le
+même champ a un sens différent selon la configuration.
+ 
+```json
+{
+  "id": "embout",
+  "label": "Embout",
+  "labelByConfig": { "simple": "Embout", "double": "Embout (avant)" }
+}
+```
+ 
+Comportement du moteur : si `labelByConfig` est présent, le composant affiche
+`labelByConfig[valeur_du_param]` ; sinon il retombe sur `label`. Le paramètre observé est déduit du
+contexte (ici `type_de_support`) — à défaut d'un mapping explicite, le champ `label` sert de valeur
+par défaut.
+ 
+Cas d'usage réel : l'étape embouts a un champ `embout` visible en simple ET en double. En simple il
+n'y a pas d'avant/arrière, donc le label reste « Embout » ; en double, un second champ
+`embout_arriere` apparaît, et le champ principal devient « Embout (avant) » pour lever l'ambiguïté.
+`labelByConfig` évite de dédoubler le champ juste pour changer son titre.
+
 ### Le composant LengthField
 
 Presets cliquables + un choix « sur-mesure » qui révèle un input number. La valeur finale du champ

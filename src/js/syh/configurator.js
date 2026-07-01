@@ -2,6 +2,7 @@ import { Base } from '@studiometa/js-toolkit';
 import { fetchCollection } from './configuratorApi.js';
 import RadioField from './features/radio-field.js';
 import LengthField from './features/length-field.js';
+import ProductField from './features/product-field.js';
 import { isVisible } from './features/show-if.js';
 
 console.log('[SYH] configurator.js chargé');
@@ -9,8 +10,8 @@ console.log('[SYH] configurator.js chargé');
 export default class Configurator extends Base {
   static config = {
     name: 'Syh',
-    refs: ['stepper', 'stepContent', 'totalPrice'],
-    components: { RadioField, LengthField },
+    refs: ['recap', 'stepper', 'stepContent', 'totalPrice'],
+    components: { RadioField, LengthField, ProductField },
   };
 
   schema = null;
@@ -26,6 +27,7 @@ export default class Configurator extends Base {
       this._renderAllSteps();
       this._renderStepper();
       this._showStep(0);
+      this._renderRecap();
     } catch (err) {
       console.error('[SYH] ERROR:', err);
     }
@@ -80,6 +82,7 @@ export default class Configurator extends Base {
         el.dataset.fieldId = field.id;
         el._syhField = field;
         el._syhSelection = this.selection;
+        el._syhColoris = this.schema.collection.coloris ?? [];
         stepEl.appendChild(el);
       }
 
@@ -125,6 +128,8 @@ export default class Configurator extends Base {
     this.$refs.stepper.querySelectorAll('button[data-step]').forEach((btn) => {
       btn.classList.toggle('is-active', Number(btn.dataset.step) === index);
     });
+
+    this._refreshCurrentStep();
   }
 
   // -------------------------------------------------------------------------
@@ -141,11 +146,23 @@ export default class Configurator extends Base {
     this._applyChange(fieldId, value);
   }
 
+  onProductFieldChanged({ args }) {
+    const { fieldId, value } = args[0];
+    const current = this.selection.produits[fieldId];
+    if (current?.refBase === value.refBase && current?.coloris === value.coloris) return;
+    this.selection.produits[fieldId] = value;
+    this._refreshCurrentStep();
+    this._renderRecap();
+    console.log('[SYH] selection', { ...this.selection });
+  }
+
   _applyChange(fieldId, value) {
     if (this.selection[fieldId] === value) return;
     this.selection[fieldId] = value;
     this._invalidateDownstream(fieldId);
+    this._initDefaultSelection();
     this._refreshCurrentStep();
+    this._renderRecap();
     console.log('[SYH] selection', { ...this.selection });
   }
 
@@ -164,11 +181,66 @@ export default class Configurator extends Base {
     const allFields = [
       ...(this.$children.RadioField ?? []),
       ...(this.$children.LengthField ?? []),
+      ...(this.$children.ProductField ?? []),
     ].filter((c) => stepEl?.contains(c.$el));
 
     for (const child of allFields) {
       child.refresh(this.selection);
     }
+  }
+
+  // -------------------------------------------------------------------------
+  // Récapitulatif persistant
+  // -------------------------------------------------------------------------
+
+  _renderRecap() {
+    const container = this.$refs.recap;
+    container.innerHTML = '';
+
+    for (const field of this.schema.steps[0]?.fields ?? []) {
+      const value = this._recapValue(field);
+      if (value == null) continue;
+
+      const el = document.createElement('span');
+      el.className = 'flex items-baseline gap-1.5';
+      el.innerHTML = `<span class="text-gray-400 text-xs uppercase tracking-wide">${field.label}</span><span class="font-medium text-gray-900">${value}</span>`;
+      container.appendChild(el);
+    }
+  }
+
+  _recapValue(field) {
+    if (field.isParam) {
+      if (field.type === 'length') {
+        const val = this.selection[field.id];
+        return val != null ? `${val} cm` : null;
+      }
+      const val = this.selection[field.id];
+      if (val == null) return null;
+      let opts = [];
+      if (field.dependsOn) {
+        opts = field.options[this.selection[field.dependsOn]] ?? [];
+      } else if (Array.isArray(field.options)) {
+        opts = field.options;
+      }
+      return opts.find((o) => String(o.id) === String(val))?.label ?? String(val);
+    }
+
+    if (field.type === 'product' || field.type === 'product_toggle') {
+      const sel = this.selection.produits?.[field.id];
+      if (!sel?.refBase) return null;
+      const option = field.options?.find((o) => o.refBase === sel.refBase);
+      if (!option) return null;
+      let label = option.label;
+      if (sel.coloris) {
+        const colorisInfo = this.schema.collection.coloris?.find(
+          (c) => String(c.id) === String(sel.coloris)
+        );
+        if (colorisInfo) label += ` · ${colorisInfo.label}`;
+      }
+      return label;
+    }
+
+    return null;
   }
 
   // -------------------------------------------------------------------------

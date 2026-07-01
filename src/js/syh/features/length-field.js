@@ -3,12 +3,13 @@ import { Base } from '@studiometa/js-toolkit';
 export default class LengthField extends Base {
   static config = {
     name: 'LengthField',
-    refs: ['label', 'presets', 'customWrapper', 'customInput'],
+    refs: ['label', 'presets'],
     emits: ['changed'],
   };
 
   _field = null;
   _value = null;
+  _customInput = null;
 
   mounted() {
     try {
@@ -18,10 +19,6 @@ export default class LengthField extends Base {
       if (!this._field) return;
       this.$refs.label.textContent = this._field.label;
       this._renderPresets();
-      if (this._field.custom?.enabled) {
-        this.$refs.customInput.min = this._field.custom.min;
-        this.$refs.customInput.max = this._field.custom.max;
-      }
     } catch (err) {
       console.error('[LengthField] mounted ERROR:', this._field?.id, err);
     }
@@ -37,6 +34,7 @@ export default class LengthField extends Base {
     const { presets = [], custom } = this._field;
     const container = this.$refs.presets;
     container.innerHTML = '';
+    this._customInput = null;
 
     for (const p of presets) {
       const btn = this._clonePresetTemplate();
@@ -48,19 +46,23 @@ export default class LengthField extends Base {
     }
 
     if (custom?.enabled) {
-      const btn = this._clonePresetTemplate();
-      if (btn) {
-        btn.textContent = 'Sur-mesure';
-        btn.dataset.value = 'custom';
+      const customBtn = this._cloneCustomTemplate();
+      if (customBtn) {
         const isCustom = this._value !== null && !presets.map(String).includes(String(this._value));
-        btn.classList.toggle('is-active', isCustom);
-        container.appendChild(btn);
+        customBtn.classList.toggle('is-active', isCustom);
+        this._customInput = customBtn.querySelector('input');
+        if (this._customInput) {
+          this._customInput.min = custom.min;
+          this._customInput.max = custom.max;
+          if (isCustom) {
+            this._customInput.classList.remove('hidden');
+            this._customInput.value = this._value;
+          }
+        }
+        container.appendChild(customBtn);
+        container.classList.toggle('is-checked', isCustom);
       }
     }
-
-    const isCustomActive = this._value !== null && !presets.map(String).includes(String(this._value));
-    this.$refs.customWrapper.hidden = !isCustomActive;
-    if (isCustomActive) this.$refs.customInput.value = this._value;
   }
 
   _clonePresetTemplate() {
@@ -72,28 +74,43 @@ export default class LengthField extends Base {
     return tpl.content.cloneNode(true).firstElementChild;
   }
 
+  _cloneCustomTemplate() {
+    const tpl = this.$el.querySelector('[data-template="length-custom"]');
+    if (!tpl) {
+      console.warn('[LengthField] template "length-custom" introuvable');
+      return null;
+    }
+    return tpl.content.cloneNode(true).firstElementChild;
+  }
+
   onPresetsClick({ event }) {
     const btn = event.target.closest('button[data-value]');
     if (!btn) return;
 
     const val = btn.dataset.value;
+    const container = this.$refs.presets;
 
-    this.$refs.presets.querySelectorAll('button').forEach((b) => b.classList.remove('is-active'));
+    container.querySelectorAll('button').forEach((b) => b.classList.remove('is-active'));
     btn.classList.add('is-active');
 
     if (val === 'custom') {
-      this.$refs.customWrapper.hidden = false;
-      this.$refs.customInput.focus();
+      container.classList.add('is-checked');
+      if (this._customInput) {
+        this._customInput.classList.remove('hidden');
+        this._customInput.focus();
+      }
       return;
     }
 
-    this.$refs.customWrapper.hidden = true;
+    container.classList.remove('is-checked');
+    if (this._customInput) this._customInput.classList.add('hidden');
     this._value = Number(val);
     this.$emit('changed', { fieldId: this._field.id, value: this._value });
   }
 
-  onCustomInputInput({ event }) {
+  onPresetsInput({ event }) {
     const input = event.target;
+    if (input.tagName !== 'INPUT') return;
     const val = Number(input.value);
     const { min, max } = this._field.custom;
     if (!input.value || val < Number(min) || val > Number(max)) return;
