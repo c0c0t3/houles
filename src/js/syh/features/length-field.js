@@ -1,4 +1,5 @@
 import { Base } from '@studiometa/js-toolkit';
+import { resolveLabel } from './show-if.js';
 
 export default class LengthField extends Base {
   static config = {
@@ -17,7 +18,7 @@ export default class LengthField extends Base {
       const selection = this.$el._syhSelection ?? {};
       this._value = this._field ? (selection[this._field.id] ?? null) : null;
       if (!this._field) return;
-      this.$refs.label.textContent = this._field.label;
+      this.$refs.label.textContent = resolveLabel(this._field, this._selection);
       this._renderPresets();
     } catch (err) {
       console.error('[LengthField] mounted ERROR:', this._field?.id, err);
@@ -27,6 +28,7 @@ export default class LengthField extends Base {
   refresh(selection) {
     if (!this._field) return;
     this._value = selection[this._field.id] ?? null;
+    this.$refs.label.textContent = resolveLabel(this._field, selection);
     this._renderPresets();
   }
 

@@ -89,7 +89,7 @@ Les champs du formulaire sont des composants Twig réutilisables, pilotés par l
 - Fichiers JSON dans `/mock-api/collections/`
 - Les SVG dans `src/svg/syh/`
 - SVG sources (démo) : `public/svg/syh/` — copiés dans `dist/` au build, servis statiquement pour le fetch inline
-
+- Bien commenter toutes les features JS. Nommer et typer les parametres.
 
 ---
 

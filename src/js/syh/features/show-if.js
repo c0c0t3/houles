@@ -1,4 +1,18 @@
 /**
+ * Résout le label d'un champ selon la sélection courante.
+ * Si `labelByConfig` est présent, retourne le label dont la clé correspond
+ * à une valeur de paramètre dans la sélection ; sinon retombe sur `label`.
+ */
+export function resolveLabel(field, selection) {
+  if (!field.labelByConfig) return field.label;
+  for (const [configKey, valueMap] of Object.entries(field.labelByConfig)) {
+    const selVal = selection[configKey];
+    if (selVal != null && valueMap[selVal] != null) return valueMap[selVal];
+  }
+  return field.label;
+}
+
+/**
  * Évalue si une option est visible selon la sélection courante.
  * Supporte : égalité (array), seuils (gt/gte/lt/lte), négation (not), référence produit (selected:).
  */

@@ -1,5 +1,5 @@
 import { Base } from '@studiometa/js-toolkit';
-import { isVisible } from './show-if.js';
+import { isVisible, resolveLabel } from './show-if.js';
 
 export default class RadioField extends Base {
   static config = {
@@ -16,7 +16,7 @@ export default class RadioField extends Base {
       this._field = this.$el._syhField ?? null;
       this._selection = this.$el._syhSelection ?? {};
       if (!this._field) return;
-      this.$refs.label.textContent = this._field.label;
+      this.$refs.label.textContent = resolveLabel(this._field, this._selection);
       this._render();
     } catch (err) {
       console.error('[RadioField] mounted ERROR:', this._field?.id, err);
@@ -26,6 +26,7 @@ export default class RadioField extends Base {
   refresh(selection) {
     if (!this._field) return;
     this._selection = selection;
+    this.$refs.label.textContent = resolveLabel(this._field, this._selection);
     this._render();
   }
 

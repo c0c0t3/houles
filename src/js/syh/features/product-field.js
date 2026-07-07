@@ -1,5 +1,5 @@
 import { Base } from '@studiometa/js-toolkit';
-import { isVisible } from './show-if.js';
+import { isVisible, resolveLabel } from './show-if.js';
 
 export default class ProductField extends Base {
   static config = {
@@ -20,7 +20,7 @@ export default class ProductField extends Base {
       this._selection = this.$el._syhSelection ?? {};
       this._coloris = this.$el._syhColoris ?? [];
       if (!this._field) return;
-      this.$refs.label.textContent = this._field.label;
+      this.$refs.label.textContent = resolveLabel(this._field, this._selection);
       this._render();
       this._emitChange();
     } catch (err) {
@@ -31,6 +31,7 @@ export default class ProductField extends Base {
   refresh(selection) {
     if (!this._field) return;
     this._selection = selection;
+    this.$refs.label.textContent = resolveLabel(this._field, this._selection);
     const prev = this._selectedRefBase;
     this._render();
     if (this._selectedRefBase !== prev) this._emitChange();
@@ -42,14 +43,18 @@ export default class ProductField extends Base {
 
   _render() {
     const { options = [] } = this._field;
-    const visible = options.filter((o) => isVisible(o, this._selection));
+    const effectiveSel = this._effectiveSelection();
+    const visible = options.filter((o) => isVisible(o, effectiveSel));
     const container = this.$refs.cards;
     container.innerHTML = '';
 
     if (!visible.length) {
+      this.$refs.label.style.display = 'none';
       this._selectedRefBase = null;
       return;
     }
+
+    this.$refs.label.style.display = '';
 
     // Sélection par défaut ou fallback si le produit actuel n'est plus visible
     if (!this._selectedRefBase || !visible.find((o) => o.refBase === this._selectedRefBase)) {
@@ -60,6 +65,16 @@ export default class ProductField extends Base {
       const coloris = this._resolveColoris(option);
       container.appendChild(this._buildCard(option, coloris));
     }
+  }
+
+  // Sélection effective : remplace diametre par la part avant/arriere si diametreFrom est déclaré
+  _effectiveSelection() {
+    const { diametreFrom } = this._field;
+    if (!diametreFrom || !String(this._selection.diametre ?? '').includes('+')) {
+      return this._selection;
+    }
+    const [arriere, avant] = String(this._selection.diametre).split('+');
+    return { ...this._selection, diametre: diametreFrom === 'avant' ? avant : arriere };
   }
 
   // Coloris mémorisé sur cette carte, sinon coloris global, sinon premier dispo
@@ -119,7 +134,8 @@ export default class ProductField extends Base {
       btn.dataset.product = option.refBase;
       btn.title = info?.label ?? colorisId;
       btn.classList.toggle('is-active', colorisId === activeColoris);
-      if (info?.image) { btn.style.backgroundImage = `url(${info.image})`; btn.style.backgroundSize = 'cover'; }
+      const variantImage = option.variants[colorisId]?.image;
+      if (variantImage) { btn.style.backgroundImage = `url(${variantImage})`; btn.style.backgroundSize = 'cover'; }
       container.appendChild(btn);
     }
   }

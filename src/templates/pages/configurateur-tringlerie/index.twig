@@ -1,149 +1,132 @@
 {% extends '@layouts/base.twig' %}
 
-{% set breadcrumb_items = [
-  {
-    label: 'Passementerie',
-    url: '/passementerie'
-  },
-  {
-    label: 'Embrasses',
-    url: '/passementerie/embrasses'
-  }
-] %}
-
 {% block body %}
-  {# HERO #}
-  <section class="my-10 m:mt-24 m:mb-36">
-    <div class="container">
-      <div class="flex flex-col items-center justify-center">
-        <h1 class="font-serif text-3xl s:text-4xl m:text-6xl l:text-7xl uppercase leading-none text-gray">Nous contacter</h1>
+  <div class="container">
+    <div data-component="Syh" data-option-collection="auro-concept" class="flex">
+      <div data-ref="colG" class="flex-1"></div>
+      <div class=" text-black flex-1">
+        {# Récapitulatif persistant de la sélection courante #}
+        <div data-ref="recap" class="flex flex-wrap items-center gap-x-6 gap-y-1 px-6 py-3 bg-gray-50 border-b text-sm min-h-10"></div>
+
+        {# Stepper — boutons générés dynamiquement par JS #}
+        <nav data-ref="stepper" class="flex gap-4 py-4 px-6 border-b"></nav>
+
+        {# Zone de l'étape courante — réécrite à chaque step #}
+        <div data-ref="stepContent" class="container py-8"></div>
+
+        {# Prix total #}
+        <div data-ref="totalPrice" class="container py-4 font-medium"></div>
+
+        {# ------------------------------------------------------------------ #}
+        {# Templates HTML clonés par le JS selon field.type                   #}
+        {# Les classes Tailwind ci-dessous sont provisoires — à remplacer     #}
+        {# par ton markup pixel-perfect. Le contrat data-* est obligatoire.   #}
+        {# ------------------------------------------------------------------ #}
+
+        {# ------------------------------------------------------------------ #}
+        {# Template RadioField                                               #}
+        {# Le JS clone ce template, remplit les data-ref, n'écrit jamais    #}
+        {# de HTML. Personnalise librement les classes Tailwind ici.        #}
+        {# ------------------------------------------------------------------ #}
+        <template data-template="radio">
+          <div data-component="RadioField" class="mb-6">
+            <fieldset class="border-0 p-0 m-0">
+              <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
+              <div data-ref="options" class="flex flex-wrap gap-3"></div>
+            </fieldset>
+
+            {# Template d'une option : label seul #}
+            <template data-template="radio-option--label">
+              <label class="flex items-center cursor-pointer  px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+                <input data-ref="input" type="radio" class="sr-only" />
+                <span data-ref="optLabel"></span>
+              </label>
+            </template>
+
+            {# Template d'une option : label + image #}
+            <template data-template="radio-option--label_image">
+              <label class="flex flex-col items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+                <input data-ref="input" type="radio" class="sr-only" />
+                <img data-ref="image" alt="" class=" w-44 mix-blend-multiply h-auto object-contain" />
+                <span data-ref="optLabel"></span>
+              </label>
+            </template>
+          </div>
+        </template>
+
+        {# ------------------------------------------------------------------ #}
+        {# Template LengthField                                              #}
+        {# ------------------------------------------------------------------ #}
+        <template data-template="length">
+          <div data-component="LengthField" class="mb-6">
+            <fieldset class="border-0 p-0 m-0">
+              <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
+              <div data-ref="presets" class="flex flex-wrap gap-3"></div>
+            </fieldset>
+
+            {# Template d'un bouton preset standard #}
+            <template data-template="length-preset">
+              <button type="button" class="px-4 py-2 rounded ring-1 [&.is-active]:ring-2 [&.is-active]:ring-purple/80 ring-purple/20"></button>
+            </template>
+
+            {# Template du bouton sur-mesure — l'input est intégré et caché par défaut #}
+            <template data-template="length-custom">
+              <button type="button" data-value="custom" class="flex items-center gap-2 px-4 py-2 rounded ring-1 [&.is-active]:ring-2 [&.is-active]:ring-purple/80 ring-purple/20">
+                <span>Sur-mesure</span>
+                <input
+                  type="number"
+                  class="hidden w-20 bg-transparent border-b border-current outline-none text-sm"
+                  placeholder="cm"
+                />
+              </button>
+            </template>
+          </div>
+        </template>
+
+        {# ------------------------------------------------------------------ #}
+        {# Template ProductField — grille de toutes les options visibles   #}
+        {# ------------------------------------------------------------------ #}
+        <template data-template="product">
+          <div data-component="ProductField" class="mb-6">
+            <p data-ref="label" class="block text-sm font-medium uppercase mb-3"></p>
+
+            {# Grille des cartes produit (générées dynamiquement) #}
+            <div data-ref="cards" class="flex flex-wrap gap-3"></div>
+
+            {# Template d'une carte produit                                     #}
+            {# label + radio : sélection accessible, pas de <button> imbriqué  #}
+            <template data-template="product-card">
+              <label class="flex flex-col gap-2 p-4 rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
+                <input type="radio" class="sr-only" />
+                <div class="w-full aspect-square bg-gray-50 rounded overflow-hidden">
+                  <img data-ref="productImage" alt="" class="mix-blend-multiply w-64 h-full object-contain" />
+                </div>
+                <span data-ref="productName" class="text-sm font-medium leading-tight"></span>
+                <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>
+                <div class="flex items-center gap-1 text-sm">
+                  <span data-ref="productPrice" class="font-medium"></span>
+                  <span class="text-gray-400">×</span>
+                  <span data-ref="productQty" class="text-gray-500"></span>
+                </div>
+                <span data-ref="productStock" class="text-xs"></span>
+                <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-1"></div>
+              </label>
+            </template>
+
+            {# Template d'un swatch coloris #}
+            <template data-template="product-swatch">
+              <button
+                type="button"
+                class="w-10 h-10 rounded-full ring-1 ring-offset-1 ring-transparent [&.is-active]:ring-2 [&.is-active]:ring-purple/80 [&.is-active]:ring-offset-2"
+                title=""
+              ></button>
+            </template>
+          </div>
+        </template>
+
       </div>
     </div>
-  </section>
-  <section>
-  <div class="container">
-    <div class=" text-black" data-component="Syh" data-option-collection="auro-concept">
 
-      {# Récapitulatif persistant de la sélection courante #}
-      <div data-ref="recap" class="flex flex-wrap items-center gap-x-6 gap-y-1 px-6 py-3 bg-gray-50 border-b text-sm min-h-10"></div>
-
-      {# Stepper — boutons générés dynamiquement par JS #}
-      <nav data-ref="stepper" class="flex gap-4 py-4 px-6 border-b"></nav>
-
-      {# Zone de l'étape courante — réécrite à chaque step #}
-      <div data-ref="stepContent" class="container py-8"></div>
-
-      {# Prix total #}
-      <div data-ref="totalPrice" class="container py-4 font-medium"></div>
-
-      {# ------------------------------------------------------------------ #}
-      {# Templates HTML clonés par le JS selon field.type                   #}
-      {# Les classes Tailwind ci-dessous sont provisoires — à remplacer     #}
-      {# par ton markup pixel-perfect. Le contrat data-* est obligatoire.   #}
-      {# ------------------------------------------------------------------ #}
-
-      {# ------------------------------------------------------------------ #}
-      {# Template RadioField                                               #}
-      {# Le JS clone ce template, remplit les data-ref, n'écrit jamais    #}
-      {# de HTML. Personnalise librement les classes Tailwind ici.        #}
-      {# ------------------------------------------------------------------ #}
-      <template data-template="radio">
-        <div data-component="RadioField" class="mb-6">
-          <fieldset class="border-0 p-0 m-0">
-            <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
-            <div data-ref="options" class="flex flex-wrap gap-3"></div>
-          </fieldset>
-
-          {# Template d'une option : label seul #}
-          <template data-template="radio-option--label">
-            <label class="flex items-center cursor-pointer  px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
-              <input data-ref="input" type="radio" class="sr-only" />
-              <span data-ref="optLabel"></span>
-            </label>
-          </template>
-
-          {# Template d'une option : label + image #}
-          <template data-template="radio-option--label_image">
-            <label class="flex flex-col items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
-              <input data-ref="input" type="radio" class="sr-only" />
-              <img data-ref="image" alt="" class=" w-44 h-auto object-contain" />
-              <span data-ref="optLabel"></span>
-            </label>
-          </template>
-        </div>
-      </template>
-
-      {# ------------------------------------------------------------------ #}
-      {# Template LengthField                                              #}
-      {# ------------------------------------------------------------------ #}
-      <template data-template="length">
-        <div data-component="LengthField" class="mb-6">
-          <fieldset class="border-0 p-0 m-0">
-            <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
-            <div data-ref="presets" class="flex flex-wrap gap-3"></div>
-          </fieldset>
-
-          {# Template d'un bouton preset standard #}
-          <template data-template="length-preset">
-            <button type="button" class="px-4 py-2 rounded ring-1 [&.is-active]:ring-2 [&.is-active]:ring-purple/80 ring-purple/20"></button>
-          </template>
-
-          {# Template du bouton sur-mesure — l'input est intégré et caché par défaut #}
-          <template data-template="length-custom">
-            <button type="button" data-value="custom" class="flex items-center gap-2 px-4 py-2 rounded ring-1 [&.is-active]:ring-2 [&.is-active]:ring-purple/80 ring-purple/20">
-              <span>Sur-mesure</span>
-              <input
-                type="number"
-                class="hidden w-20 bg-transparent border-b border-current outline-none text-sm"
-                placeholder="cm"
-              />
-            </button>
-          </template>
-        </div>
-      </template>
-
-      {# ------------------------------------------------------------------ #}
-      {# Template ProductField — grille de toutes les options visibles   #}
-      {# ------------------------------------------------------------------ #}
-      <template data-template="product">
-        <div data-component="ProductField" class="mb-6">
-          <p data-ref="label" class="block text-sm font-medium uppercase mb-3"></p>
-
-          {# Grille des cartes produit (générées dynamiquement) #}
-          <div data-ref="cards" class="flex flex-wrap gap-3"></div>
-
-          {# Template d'une carte produit                                     #}
-          {# label + radio : sélection accessible, pas de <button> imbriqué  #}
-          <template data-template="product-card">
-            <label class="flex flex-col gap-2 p-4 rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
-              <input type="radio" class="sr-only" />
-              <div class="w-full aspect-square bg-gray-50 rounded overflow-hidden">
-                <img data-ref="productImage" alt="" class=" w-64 h-full object-contain" />
-              </div>
-              <span data-ref="productName" class="text-sm font-medium leading-tight"></span>
-              <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>
-              <div class="flex items-center gap-1 text-sm">
-                <span data-ref="productPrice" class="font-medium"></span>
-                <span class="text-gray-400">×</span>
-                <span data-ref="productQty" class="text-gray-500"></span>
-              </div>
-              <span data-ref="productStock" class="text-xs"></span>
-              <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-1"></div>
-            </label>
-          </template>
-
-          {# Template d'un swatch coloris #}
-          <template data-template="product-swatch">
-            <button
-              type="button"
-              class="w-5 h-5 rounded-full ring-1 ring-offset-1 ring-transparent [&.is-active]:ring-2 [&.is-active]:ring-purple/80 [&.is-active]:ring-offset-2"
-              title=""
-            ></button>
-          </template>
-        </div>
-      </template>
-
-    </div>
   </div>
   </section>
 {% endblock %}
