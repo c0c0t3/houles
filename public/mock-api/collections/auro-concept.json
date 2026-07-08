@@ -1574,19 +1574,31 @@
             "mode": "segmented",
             "lengthFrom": "configuration.longueur"
           },
+          "splitByConfig": "type_de_support",
+          "configs": {
+            "simple": [
+              {
+                "id": "tube"
+              }
+            ],
+            "double": [
+              {
+                "id": "tube_avant",
+                "label": "Tube (avant)",
+                "diametreFrom": "avant"
+              },
+              {
+                "id": "tube_arriere",
+                "label": "Tube (arrière)",
+                "diametreFrom": "arriere"
+              }
+            ]
+          },
           "options": [
             {
               "refBase": "66084",
               "label": "Tube Ø 16 mm - 180 cm",
               "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "16"
-                ],
-                "longueur": {
-                  "lte": 180
-                }
-              },
               "variants": {
                 "24": {
                   "id": "66084-24",
@@ -1618,20 +1630,31 @@
                   "stock": 14,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_38_L1_1.jpg"
                 }
-              }
+              },
+              "tubeLength": 180,
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "16"
+                  ],
+                  "longueur": {
+                    "lte": 180
+                  }
+                },
+                {
+                  "diametre": [
+                    "16"
+                  ],
+                  "longueur": {
+                    "gt": 240
+                  }
+                }
+              ]
             },
             {
               "refBase": "66104",
               "label": "Tube Ø 25 mm - 180 cm",
               "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "25"
-                ],
-                "longueur": {
-                  "lte": 180
-                }
-              },
               "variants": {
                 "24": {
                   "id": "66104-24",
@@ -1663,20 +1686,31 @@
                   "stock": 130,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_38_L1_1.jpg"
                 }
-              }
+              },
+              "tubeLength": 180,
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "25"
+                  ],
+                  "longueur": {
+                    "lte": 180
+                  }
+                },
+                {
+                  "diametre": [
+                    "25"
+                  ],
+                  "longueur": {
+                    "gt": 240
+                  }
+                }
+              ]
             },
             {
               "refBase": "66124",
               "label": "Tube Ø 31 mm - 180 cm",
               "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "31"
-                ],
-                "longueur": {
-                  "lte": 180
-                }
-              },
               "variants": {
                 "24": {
                   "id": "66124-24",
@@ -1708,7 +1742,26 @@
                   "stock": 152,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_38_L1_1.jpg"
                 }
-              }
+              },
+              "tubeLength": 180,
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "31"
+                  ],
+                  "longueur": {
+                    "lte": 180
+                  }
+                },
+                {
+                  "diametre": [
+                    "31"
+                  ],
+                  "longueur": {
+                    "gt": 240
+                  }
+                }
+              ]
             },
             {
               "refBase": "66085",
@@ -1719,7 +1772,8 @@
                   "16"
                 ],
                 "longueur": {
-                  "gt": 180
+                  "gt": 180,
+                  "lte": 240
                 }
               },
               "variants": {
@@ -1753,7 +1807,8 @@
                   "stock": 80,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_38_L1_1.jpg"
                 }
-              }
+              },
+              "tubeLength": 240
             },
             {
               "refBase": "66105",
@@ -1764,7 +1819,8 @@
                   "25"
                 ],
                 "longueur": {
-                  "gt": 180
+                  "gt": 180,
+                  "lte": 240
                 }
               },
               "variants": {
@@ -1798,7 +1854,8 @@
                   "stock": 159,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_38_L1_1.jpg"
                 }
-              }
+              },
+              "tubeLength": 240
             },
             {
               "refBase": "66125",
@@ -1809,7 +1866,8 @@
                   "31"
                 ],
                 "longueur": {
-                  "gt": 180
+                  "gt": 180,
+                  "lte": 240
                 }
               },
               "variants": {
@@ -1843,590 +1901,10 @@
                   "stock": 94,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_38_L1_1.jpg"
                 }
-              }
+              },
+              "tubeLength": 240
             }
-          ],
-          "showIf": {
-            "type_de_support": [
-              "simple"
-            ]
-          }
-        },
-        {
-          "id": "tube_avant",
-          "label": "Tube (avant)",
-          "type": "product",
-          "required": true,
-          "quantity": {
-            "mode": "segmented",
-            "lengthFrom": "configuration.longueur"
-          },
-          "options": [
-            {
-              "refBase": "66084",
-              "label": "Tube Ø 16 mm - 180 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "16"
-                ],
-                "longueur": {
-                  "lte": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66084-24",
-                  "prix": 38.46,
-                  "stock": 187,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66084-31",
-                  "prix": 79.67,
-                  "stock": 142,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66084-34",
-                  "prix": 55.65,
-                  "stock": 124,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66084-35",
-                  "prix": 19.15,
-                  "stock": 75,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66084-38",
-                  "prix": 23.67,
-                  "stock": 14,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_38_L1_1.jpg"
-                }
-              }
-            },
-            {
-              "refBase": "66104",
-              "label": "Tube Ø 25 mm - 180 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "25"
-                ],
-                "longueur": {
-                  "lte": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66104-24",
-                  "prix": 49.7,
-                  "stock": 138,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66104-31",
-                  "prix": 12.39,
-                  "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66104-34",
-                  "prix": 12.12,
-                  "stock": 149,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66104-35",
-                  "prix": 42.33,
-                  "stock": 135,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66104-38",
-                  "prix": 19.34,
-                  "stock": 130,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_38_L1_1.jpg"
-                }
-              }
-            },
-            {
-              "refBase": "66124",
-              "label": "Tube Ø 31 mm - 180 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "31"
-                ],
-                "longueur": {
-                  "lte": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66124-24",
-                  "prix": 13.77,
-                  "stock": 47,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66124-31",
-                  "prix": 12.93,
-                  "stock": 17,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66124-34",
-                  "prix": 56.62,
-                  "stock": 60,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66124-35",
-                  "prix": 37.07,
-                  "stock": 145,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66124-38",
-                  "prix": 25.73,
-                  "stock": 152,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_38_L1_1.jpg"
-                }
-              }
-            },
-            {
-              "refBase": "66085",
-              "label": "Tube Ø 16 mm - 240 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "16"
-                ],
-                "longueur": {
-                  "gt": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66085-24",
-                  "prix": 10.86,
-                  "stock": 20,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66085-31",
-                  "prix": 38.18,
-                  "stock": 149,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66085-34",
-                  "prix": 48.7,
-                  "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66085-35",
-                  "prix": 75.3,
-                  "stock": 52,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66085-38",
-                  "prix": 56.22,
-                  "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_38_L1_1.jpg"
-                }
-              }
-            },
-            {
-              "refBase": "66105",
-              "label": "Tube Ø 25 mm - 240 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "25"
-                ],
-                "longueur": {
-                  "gt": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66105-24",
-                  "prix": 25.19,
-                  "stock": 101,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66105-31",
-                  "prix": 17.42,
-                  "stock": 165,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66105-34",
-                  "prix": 29.6,
-                  "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66105-35",
-                  "prix": 74.89,
-                  "stock": 18,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66105-38",
-                  "prix": 8.67,
-                  "stock": 159,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_38_L1_1.jpg"
-                }
-              }
-            },
-            {
-              "refBase": "66125",
-              "label": "Tube Ø 31 mm - 240 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "31"
-                ],
-                "longueur": {
-                  "gt": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66125-24",
-                  "prix": 79.89,
-                  "stock": 25,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66125-31",
-                  "prix": 13.27,
-                  "stock": 54,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66125-34",
-                  "prix": 44.42,
-                  "stock": 33,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66125-35",
-                  "prix": 75.19,
-                  "stock": 17,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66125-38",
-                  "prix": 71.31,
-                  "stock": 94,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_38_L1_1.jpg"
-                }
-              }
-            }
-          ],
-          "showIf": {
-            "type_de_support": [
-              "double"
-            ]
-          },
-          "diametreFrom": "avant"
-        },
-        {
-          "id": "tube_arriere",
-          "label": "Tube (arrière)",
-          "type": "product",
-          "required": true,
-          "quantity": {
-            "mode": "segmented",
-            "lengthFrom": "configuration.longueur"
-          },
-          "options": [
-            {
-              "refBase": "66084",
-              "label": "Tube Ø 16 mm - 180 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "16"
-                ],
-                "longueur": {
-                  "lte": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66084-24",
-                  "prix": 38.46,
-                  "stock": 187,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66084-31",
-                  "prix": 79.67,
-                  "stock": 142,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66084-34",
-                  "prix": 55.65,
-                  "stock": 124,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66084-35",
-                  "prix": 19.15,
-                  "stock": 75,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66084-38",
-                  "prix": 23.67,
-                  "stock": 14,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_38_L1_1.jpg"
-                }
-              }
-            },
-            {
-              "refBase": "66104",
-              "label": "Tube Ø 25 mm - 180 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "25"
-                ],
-                "longueur": {
-                  "lte": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66104-24",
-                  "prix": 49.7,
-                  "stock": 138,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66104-31",
-                  "prix": 12.39,
-                  "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66104-34",
-                  "prix": 12.12,
-                  "stock": 149,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66104-35",
-                  "prix": 42.33,
-                  "stock": 135,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66104-38",
-                  "prix": 19.34,
-                  "stock": 130,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_38_L1_1.jpg"
-                }
-              }
-            },
-            {
-              "refBase": "66124",
-              "label": "Tube Ø 31 mm - 180 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "31"
-                ],
-                "longueur": {
-                  "lte": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66124-24",
-                  "prix": 13.77,
-                  "stock": 47,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66124-31",
-                  "prix": 12.93,
-                  "stock": 17,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66124-34",
-                  "prix": 56.62,
-                  "stock": 60,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66124-35",
-                  "prix": 37.07,
-                  "stock": 145,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66124-38",
-                  "prix": 25.73,
-                  "stock": 152,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_38_L1_1.jpg"
-                }
-              }
-            },
-            {
-              "refBase": "66085",
-              "label": "Tube Ø 16 mm - 240 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "16"
-                ],
-                "longueur": {
-                  "gt": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66085-24",
-                  "prix": 10.86,
-                  "stock": 20,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66085-31",
-                  "prix": 38.18,
-                  "stock": 149,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66085-34",
-                  "prix": 48.7,
-                  "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66085-35",
-                  "prix": 75.3,
-                  "stock": 52,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66085-38",
-                  "prix": 56.22,
-                  "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66085/66085_38_L1_1.jpg"
-                }
-              }
-            },
-            {
-              "refBase": "66105",
-              "label": "Tube Ø 25 mm - 240 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "25"
-                ],
-                "longueur": {
-                  "gt": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66105-24",
-                  "prix": 25.19,
-                  "stock": 101,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66105-31",
-                  "prix": 17.42,
-                  "stock": 165,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66105-34",
-                  "prix": 29.6,
-                  "stock": 80,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66105-35",
-                  "prix": 74.89,
-                  "stock": 18,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66105-38",
-                  "prix": 8.67,
-                  "stock": 159,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66105/66105_38_L1_1.jpg"
-                }
-              }
-            },
-            {
-              "refBase": "66125",
-              "label": "Tube Ø 31 mm - 240 cm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "31"
-                ],
-                "longueur": {
-                  "gt": 180
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66125-24",
-                  "prix": 79.89,
-                  "stock": 25,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66125-31",
-                  "prix": 13.27,
-                  "stock": 54,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66125-34",
-                  "prix": 44.42,
-                  "stock": 33,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66125-35",
-                  "prix": 75.19,
-                  "stock": 17,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66125-38",
-                  "prix": 71.31,
-                  "stock": 94,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66125/66125_38_L1_1.jpg"
-                }
-              }
-            }
-          ],
-          "showIf": {
-            "type_de_support": [
-              "double"
-            ]
-          },
-          "diametreFrom": "arriere"
+          ]
         },
         {
           "id": "about_tube",
@@ -2438,136 +1916,25 @@
             "mode": "segmented_minus_1",
             "lengthFrom": "configuration.longueur"
           },
-          "options": [
-            {
-              "refBase": "66601",
-              "id": "66601",
-              "noColoris": true,
-              "label": "About de tube Ø 16 mm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "16"
-                ]
-              },
-              "prix": 4.28,
-              "stock": 162,
-              "image": "https://www.houles.com/commun/visuels_articles/6/66601/66601_L1_1.jpg"
-            },
-            {
-              "refBase": "66603",
-              "id": "66603",
-              "noColoris": true,
-              "label": "About de tube Ø 25 mm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "25"
-                ]
-              },
-              "prix": 8.67,
-              "stock": 230,
-              "image": "https://www.houles.com/commun/visuels_articles/6/66603/66603_L1_1.jpg"
-            },
-            {
-              "refBase": "66605",
-              "id": "66605",
-              "noColoris": true,
-              "label": "About de tube Ø 31 mm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "31"
-                ]
-              },
-              "prix": 4.42,
-              "stock": 256,
-              "image": "https://www.houles.com/commun/visuels_articles/6/66605/66605_L1_1.jpg"
-            }
-          ],
-          "showIf": {
-            "type_de_support": [
-              "simple"
+          "splitByConfig": "type_de_support",
+          "configs": {
+            "simple": [
+              {
+                "id": "about_tube"
+              }
             ],
-            "longueur": {
-              "gt": 240
-            }
-          }
-        },
-        {
-          "id": "about_tube_avant",
-          "label": "About de tube (avant)",
-          "type": "product",
-          "required": false,
-          "quantity": {
-            "mode": "segmented_minus_1",
-            "lengthFrom": "configuration.longueur"
-          },
-          "options": [
-            {
-              "refBase": "66601",
-              "id": "66601",
-              "noColoris": true,
-              "label": "About de tube Ø 16 mm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "16"
-                ]
+            "double": [
+              {
+                "id": "about_tube_avant",
+                "label": "About de tube (avant)",
+                "diametreFrom": "avant"
               },
-              "prix": 4.28,
-              "stock": 162,
-              "image": "https://www.houles.com/commun/visuels_articles/6/66601/66601_L1_1.jpg"
-            },
-            {
-              "refBase": "66603",
-              "id": "66603",
-              "noColoris": true,
-              "label": "About de tube Ø 25 mm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "25"
-                ]
-              },
-              "prix": 8.67,
-              "stock": 230,
-              "image": "https://www.houles.com/commun/visuels_articles/6/66603/66603_L1_1.jpg"
-            },
-            {
-              "refBase": "66605",
-              "id": "66605",
-              "noColoris": true,
-              "label": "About de tube Ø 31 mm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "diametre": [
-                  "31"
-                ]
-              },
-              "prix": 4.42,
-              "stock": 256,
-              "image": "https://www.houles.com/commun/visuels_articles/6/66605/66605_L1_1.jpg"
-            }
-          ],
-          "showIf": {
-            "type_de_support": [
-              "double"
-            ],
-            "longueur": {
-              "gt": 240
-            }
-          },
-          "diametreFrom": "avant"
-        },
-        {
-          "id": "about_tube_arriere",
-          "label": "About de tube (arrière)",
-          "type": "product",
-          "required": false,
-          "quantity": {
-            "mode": "segmented_minus_1",
-            "lengthFrom": "configuration.longueur"
+              {
+                "id": "about_tube_arriere",
+                "label": "About de tube (arrière)",
+                "diametreFrom": "arriere"
+              }
+            ]
           },
           "options": [
             {
@@ -2615,16 +1982,7 @@
               "stock": 256,
               "image": "https://www.houles.com/commun/visuels_articles/6/66605/66605_L1_1.jpg"
             }
-          ],
-          "showIf": {
-            "type_de_support": [
-              "double"
-            ],
-            "longueur": {
-              "gt": 240
-            }
-          },
-          "diametreFrom": "arriere"
+          ]
         }
       ]
     },

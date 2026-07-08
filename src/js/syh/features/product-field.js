@@ -67,7 +67,7 @@ export default class ProductField extends Base {
     }
   }
 
-  // Sélection effective : remplace diametre par la part avant/arriere si diametreFrom est déclaré
+  // Sélection effective : remplace diametre par la part avant/arriere si diametreFrom est déclaré.
   _effectiveSelection() {
     const { diametreFrom } = this._field;
     if (!diametreFrom || !String(this._selection.diametre ?? '').includes('+')) {
@@ -151,8 +151,26 @@ export default class ProductField extends Base {
 
   _computeQty(option) {
     const { quantity } = this._field;
-    if (!quantity || quantity.mode !== 'fixed') return null;
-    return Math.ceil(quantity.value / (option.qtyParUnite ?? 1));
+    if (!quantity) return null;
+
+    if (quantity.mode === 'fixed') {
+      return Math.ceil(quantity.value / (option.qtyParUnite ?? 1));
+    }
+
+    // ceil(longueur / tubeLength) — chaque option tube expose sa longueur via tubeLength.
+    if (quantity.mode === 'segmented') {
+      const longueur = Number(this._selection.longueur);
+      const tubeLength = option.tubeLength;
+      if (!longueur || !tubeLength) return null;
+      return Math.ceil(longueur / tubeLength);
+    }
+
+    // Injectée par Configurator._refreshTubeStep() avant chaque refresh().
+    if (quantity.mode === 'segmented_minus_1') {
+      return this._field._segmentQty ?? null;
+    }
+
+    return null;
   }
 
   // -------------------------------------------------------------------------

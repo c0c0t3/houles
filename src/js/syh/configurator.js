@@ -18,6 +18,8 @@ export default class Configurator extends Base {
   selection = { produits: {} };
   currentStepIndex = 0;
   _stepEls = [];
+  // Champs expandés par step (splitByConfig résolu à render time).
+  _expandedStepFields = [];
 
   // Point d'entrée : charge le schéma, initialise la sélection, génère le DOM, affiche l'étape 0.
   async mounted() {
@@ -85,18 +87,23 @@ export default class Configurator extends Base {
    * Génère une seule fois le DOM de toutes les étapes et les cache (hidden).
    * La navigation se fait par show/hide, pas par re-render — évite de perdre l'état
    * des composants JS Toolkit déjà montés.
+   * Les champs avec `splitByConfig` sont expandés ici en autant de variantes que nécessaire.
    */
   _renderAllSteps() {
     const container = this.$refs.stepContent;
     container.innerHTML = '';
     this._stepEls = [];
+    this._expandedStepFields = [];
 
     for (const [i, step] of this.schema.steps.entries()) {
       const stepEl = document.createElement('div');
       stepEl.dataset.step = i;
       stepEl.hidden = true;
 
-      for (const field of step.fields) {
+      const expanded = this._expandFields(step.fields);
+      this._expandedStepFields[i] = expanded;
+
+      for (const field of expanded) {
         const el = this._cloneTemplate(field.type);
         // Type de champ non supporté (template absent du Twig) : on ignore silencieusement.
         if (!el) continue;
@@ -114,6 +121,27 @@ export default class Configurator extends Base {
     }
 
     this.$update();
+  }
+
+  /**
+   * Expand les champs `splitByConfig` en autant de variantes que de valeurs déclarées dans `configs`.
+   * Chaque variante hérite des propriétés de base, surcharge avec ses propres overrides,
+   * et reçoit un `showIf` automatique sur le paramètre de split.
+   * Les champs sans `splitByConfig` sont retournés tels quels.
+   */
+  _expandFields(fields) {
+    return fields.flatMap((field) => {
+      if (!field.splitByConfig) return [field];
+      const { splitByConfig, configs, ...baseProps } = field;
+      return Object.entries(configs).flatMap(([configValue, instances]) =>
+        instances.map((instance) => ({
+          ...baseProps,
+          ...instance,
+          // Fusionne le showIf de base avec la condition de config générée automatiquement.
+          showIf: { ...(baseProps.showIf ?? {}), [splitByConfig]: [configValue] },
+        }))
+      );
+    });
   }
 
   // Clone le <template data-template="${type}"> déclaré dans le Twig. Retourne null si absent.
@@ -235,23 +263,73 @@ export default class Configurator extends Base {
     // Sécurité : appelé avant _renderAllSteps() si le schéma n'est pas encore chargé.
     if (!stepEl) return;
 
-    // Visibilité au niveau champ (showIf sur le field lui-même).
-    const step = this.schema.steps[this.currentStepIndex];
-    for (const field of step.fields) {
+    // 1. Visibilité au niveau champ (showIf sur le field lui-même).
+    // On utilise les champs expandés (splitByConfig déjà résolu) pour avoir tous les IDs réels.
+    const expandedFields = this._expandedStepFields[this.currentStepIndex] ?? [];
+    for (const field of expandedFields) {
       const fieldEl = stepEl.querySelector(`[data-field-id="${field.id}"]`);
       // Le champ peut être absent du DOM si son template était manquant au render initial.
       if (fieldEl) fieldEl.hidden = !isVisible(field, this.selection);
     }
 
-    // Double filtre : composants de l'étape active ET dont le champ est visible.
-    const allFields = [
+    // 2. About_tube : visibilité calculée en JS (qty tubes > 1) et qty injectée dans le descripteur.
+    this._refreshTubeStep(stepEl, expandedFields);
+
+    // 3. Double filtre : composants de l'étape active ET dont le champ est visible.
+    const allChildren = [
       ...(this.$children.RadioField ?? []),
       ...(this.$children.LengthField ?? []),
       ...(this.$children.ProductField ?? []),
     ].filter((c) => stepEl.contains(c.$el) && !c.$el.hidden);
 
-    for (const child of allFields) {
+    for (const child of allChildren) {
       child.refresh(this.selection);
+    }
+  }
+
+  /**
+   * Calcule le nombre de segments de tube nécessaires pour couvrir la longueur configurée.
+   * Utilise l'option sélectionnée pour ce champ tube et sa propriété `tubeLength`.
+   */
+  _computeTubeQty(tubeFieldId, expandedFields) {
+    const longueur = Number(this.selection.longueur);
+    if (!longueur) return 0;
+    const tubeField = expandedFields.find((f) => f.id === tubeFieldId);
+    const sel = this.selection.produits[tubeFieldId];
+    const option = tubeField?.options?.find((o) => o.refBase === sel?.refBase);
+    // Fallback 180 si l'option n'a pas encore de tubeLength (données incomplètes).
+    const tubeLength = option?.tubeLength ?? 180;
+    return Math.ceil(longueur / tubeLength);
+  }
+
+  /**
+   * Pour chaque paire tube/about_tube : calcule la qty de tubes, l'injecte dans le descripteur
+   * du champ about_tube (lu par ProductField._computeQty), et ajuste la visibilité.
+   * About_tube est caché si un seul tube suffit (qty ≤ 1), même si son showIf l'autorise.
+   */
+  _refreshTubeStep(stepEl, expandedFields) {
+    const pairs = [
+      ['tube', 'about_tube'],
+      ['tube_avant', 'about_tube_avant'],
+      ['tube_arriere', 'about_tube_arriere'],
+    ];
+
+    for (const [tubeId, aboutId] of pairs) {
+      const tubeEl = stepEl.querySelector(`[data-field-id="${tubeId}"]`);
+      // Si le champ tube est absent ou caché, l'about n'est pas pertinent.
+      if (!tubeEl || tubeEl.hidden) continue;
+
+      const qty = this._computeTubeQty(tubeId, expandedFields);
+
+      // Injecte la qty dans le descripteur partagé : ProductField.refresh() la lira via _field._segmentQty.
+      const aboutField = expandedFields.find((f) => f.id === aboutId);
+      if (aboutField) aboutField._segmentQty = Math.max(0, qty - 1);
+
+      const aboutEl = stepEl.querySelector(`[data-field-id="${aboutId}"]`);
+      if (!aboutEl) continue;
+      // showIf existant (type_de_support) déjà évalué au step 1 : on le respecte en lisant hidden.
+      // On surcharge uniquement si qty ≤ 1 (0 jointure nécessaire = champ inutile).
+      if (qty <= 1) aboutEl.hidden = true;
     }
   }
 

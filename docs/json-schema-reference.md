@@ -1,0 +1,430 @@
+# Référence JSON — Schéma de collection
+
+> Ce document décrit toutes les propriétés acceptées dans un fichier JSON de collection.
+> Il est la **source de vérité** pour la création de nouvelles collections ou la mise à jour des données existantes.
+> La lecture du Module 3 (architecture générale) est un prérequis.
+
+---
+
+## Structure de haut niveau
+
+```json
+{
+  "collection": { ... },
+  "steps": [ ... ]
+}
+```
+
+---
+
+## `collection`
+
+```json
+"collection": {
+  "id": "auro-concept",
+  "name": "Auro Concept",
+  "renderMode": "none",
+  "coloris": [ ... ]
+}
+```
+
+| Propriété | Type | Obligatoire | Description |
+|---|---|---|---|
+| `id` | string | oui | Identifiant unique, correspond au nom du fichier JSON |
+| `name` | string | oui | Nom affiché dans l'UI |
+| `renderMode` | string | oui | `"none"` / `"live"` / `"live_colored"` — voir Module 3 |
+| `coloris` | array | non | Liste des coloris disponibles (voir section Coloris) |
+
+### `collection.coloris[]`
+
+```json
+{ "id": "laiton", "label": "Laiton brillant", "image": "/img/coloris/laiton.jpg" }
+```
+
+| Propriété | Type | Description |
+|---|---|---|
+| `id` | string | Identifiant du coloris, clé des `variants` des produits |
+| `label` | string | Libellé affiché dans le nuancier |
+| `image` | string | URL de la vignette couleur |
+
+---
+
+## `steps[]`
+
+```json
+{
+  "id": "configuration",
+  "label": "Configuration",
+  "fields": [ ... ]
+}
+```
+
+| Propriété | Type | Obligatoire | Description |
+|---|---|---|---|
+| `id` | string | oui | Identifiant de l'étape |
+| `label` | string | oui | Libellé du bouton dans le stepper |
+| `fields` | array | oui | Liste des champs de l'étape (voir section Fields) |
+
+---
+
+## `fields[]` — propriétés communes
+
+Toutes les propriétés ci-dessous peuvent figurer sur n'importe quel type de champ.
+
+| Propriété | Type | Obligatoire | Description |
+|---|---|---|---|
+| `id` | string | oui | Identifiant unique du champ dans la collection |
+| `label` | string | oui | Libellé affiché au-dessus du champ |
+| `type` | string | oui | Type de champ — voir section Types |
+| `required` | boolean | non | `true` = le champ bloque la progression si vide |
+| `isParam` | boolean | non | `true` = la valeur alimente `selection{}` (radio/length) |
+| `showIf` | object | non | Conditions de visibilité du champ (voir section Visibilité) |
+| `labelByConfig` | object | non | Label dynamique selon la sélection (voir section Labels) |
+| `splitByConfig` | string | non | Dédouble le champ selon un paramètre (voir section Split) |
+| `configs` | object | non | Variantes de split (obligatoire si `splitByConfig` présent) |
+| `_note` | string | non | Commentaire interne, ignoré par le moteur |
+
+---
+
+## Types de champs
+
+### `radio`
+
+Boutons de sélection unique. Alimente `selection[field.id]`.
+
+```json
+{
+  "id": "type_de_support",
+  "label": "Type de support",
+  "type": "radio",
+  "isParam": true,
+  "options": [
+    { "id": "simple", "label": "Simple", "image": "/img/simple.jpg" },
+    { "id": "double", "label": "Double" }
+  ]
+}
+```
+
+Avec `dependsOn` — les options sont groupées par valeur parente :
+
+```json
+{
+  "id": "diametre",
+  "type": "radio",
+  "isParam": true,
+  "dependsOn": "type_de_support",
+  "options": {
+    "simple": [
+      { "id": "16", "label": "Ø 16 mm" },
+      { "id": "25", "label": "Ø 25 mm" }
+    ],
+    "double": [
+      { "id": "16+25", "label": "Ø 16 + 25 mm" }
+    ]
+  }
+}
+```
+
+| Propriété option | Type | Description |
+|---|---|---|
+| `id` | string | Valeur stockée dans `selection` |
+| `label` | string | Libellé affiché |
+| `image` | string | Illustration optionnelle |
+| `showIf` | object | Visibilité de cette option (voir section Visibilité) |
+
+---
+
+### `length`
+
+Presets de longueur + saisie sur-mesure. Alimente `selection.longueur` (ou autre `id`).
+
+```json
+{
+  "id": "longueur",
+  "label": "Longueur",
+  "type": "length",
+  "isParam": true,
+  "presets": [120, 150, 180, 200, 240],
+  "custom": {
+    "enabled": true,
+    "min": 60,
+    "max": 400
+  }
+}
+```
+
+| Propriété | Type | Description |
+|---|---|---|
+| `presets` | number[] | Valeurs rapides en centimètres |
+| `custom.enabled` | boolean | Autorise la saisie libre |
+| `custom.min` | number | Longueur minimale (cm) |
+| `custom.max` | number | Longueur maximale (cm) |
+
+---
+
+### `product`
+
+Grille de cartes produits avec variantes coloris.
+
+```json
+{
+  "id": "embout",
+  "label": "Embout",
+  "type": "product",
+  "required": true,
+  "quantity": { "mode": "fixed", "value": 2 },
+  "options": [
+    {
+      "refBase": "66084",
+      "label": "Embout Auro Concept",
+      "qtyParUnite": 2,
+      "showIf": { "diametre": ["16"] },
+      "variants": {
+        "laiton": { "id": "66084-24", "prix": 18.00, "stock": 45, "image": "/img/66084-laiton.jpg" }
+      }
+    }
+  ]
+}
+```
+
+**Propriétés du champ :**
+
+| Propriété | Type | Description |
+|---|---|---|
+| `quantity` | object | Règle de calcul de quantité (voir section Quantités) |
+| `diametreFrom` | string | `"avant"` ou `"arriere"` — lit la part de diamètre correspondante en config double |
+| `options` | array | Liste des produits disponibles |
+
+**Propriétés d'une option produit :**
+
+| Propriété | Type | Obligatoire | Description |
+|---|---|---|---|
+| `refBase` | string | oui | Référence famille produit (sans coloris) |
+| `label` | string | oui | Nom affiché sur la carte |
+| `qtyParUnite` | number | non | Conditionnement — divise la quantité calculée (défaut : 1) |
+| `showIf` | object | non | Conditions de visibilité de cette option |
+| `showIfAny` | array | non | Conditions de visibilité en OU (voir section Visibilité) |
+| `variants` | object | non | Variantes par coloris (absent si produit sans coloris) |
+| `id` | string | non | Référence complète si produit sans coloris (pas de `variants`) |
+| `noColoris` | boolean | non | `true` pour les produits sans coloris (visserie, rouleurs…) |
+| `tubeLength` | number | non | Longueur du tube en cm — requis sur les options de type tube pour le calcul `segmented` |
+
+**Propriétés d'une variante :**
+
+| Propriété | Type | Description |
+|---|---|---|
+| `id` | string | Référence article complète (ex : `66084-24`) |
+| `prix` | number | Prix unitaire HT |
+| `stock` | number | Quantité en stock |
+| `image` | string | Image de la variante (prioritaire sur l'image coloris) |
+| `svgUrl` | string | Chemin SVG pour la composition visuelle (mode `live_colored`) |
+
+---
+
+### `product_toggle`
+
+Identique à `product`, avec en plus un bouton AVEC / SANS. Le champ est ignoré si l'utilisateur choisit SANS.
+
+```json
+{
+  "id": "opt_adaptateur_corner",
+  "label": "Adaptateur de tube pour corner",
+  "type": "product_toggle",
+  "showIf": { "type_pose": ["corner"] },
+  "options": [ ... ]
+}
+```
+
+---
+
+## Visibilité — `showIf` et `showIfAny`
+
+La visibilité s'évalue à deux niveaux :
+- **Champ** (`field.showIf`) — masque ou affiche tout le champ.
+- **Option** (`option.showIf` / `option.showIfAny`) — masque ou affiche une carte produit ou un bouton radio individuellement.
+
+### `showIf` — toutes conditions vraies (AND)
+
+```json
+"showIf": {
+  "type_de_support": ["simple"],
+  "diametre": ["25", "31"],
+  "longueur": { "gt": 180, "lte": 240 }
+}
+```
+
+Toutes les clés doivent être satisfaites simultanément.
+
+**Formes de condition :**
+
+| Forme | Exemple | Sens |
+|---|---|---|
+| Liste de valeurs | `["simple", "double"]` | La valeur sélectionnée doit être dans la liste |
+| Seuil numérique `gt` | `{ "gt": 180 }` | valeur > 180 |
+| Seuil numérique `gte` | `{ "gte": 180 }` | valeur ≥ 180 |
+| Seuil numérique `lt` | `{ "lt": 240 }` | valeur < 240 |
+| Seuil numérique `lte` | `{ "lte": 240 }` | valeur ≤ 240 |
+| Plage (AND sur la même clé) | `{ "gt": 180, "lte": 240 }` | 180 < valeur ≤ 240 |
+| Exclusion | `{ "not": ["corner"] }` | La valeur ne doit PAS être dans la liste |
+| Produit sélectionné | `"selected:support": ["66744"]` | Le `refBase` sélectionné dans le champ `support` doit être `66744` |
+
+### `showIfAny` — au moins une condition vraie (OR)
+
+Utilisé quand un produit doit apparaître pour deux plages de valeurs non contiguës.
+
+```json
+"showIfAny": [
+  { "diametre": ["16"], "longueur": { "lte": 180 } },
+  { "diametre": ["16"], "longueur": { "gt": 240 } }
+]
+```
+
+Chaque entrée du tableau est un bloc `showIf` complet (AND interne). Il suffit qu'**un** bloc soit vrai pour que l'option soit visible.
+
+> **Convention** : `showIf` pour les conditions simples et les plages uniques. `showIfAny` uniquement quand deux plages de longueur non contiguës doivent activer la même option (exemple typique : tube 180 cm visible pour ≤ 180 cm **ou** > 240 cm).
+
+---
+
+## Labels dynamiques — `labelByConfig`
+
+Permet d'afficher un label différent selon la valeur d'un paramètre de configuration, sans dupliquer le champ.
+
+```json
+{
+  "id": "embout",
+  "label": "Embout",
+  "labelByConfig": {
+    "type_de_support": {
+      "simple": "Embout",
+      "double": "Embout (avant)"
+    }
+  }
+}
+```
+
+Le moteur cherche `selection[configKey]` et retourne le label correspondant. Si aucune correspondance, retombe sur `field.label`.
+
+---
+
+## Configuration double — `diametreFrom`
+
+En configuration double, `selection.diametre` est une valeur composée (`"16+25"`, `"28+28"`).
+Le format est `"arriere+avant"`.
+
+Un champ peut déclarer `diametreFrom` pour indiquer quelle part de diamètre utiliser lors du filtrage de ses options :
+
+```json
+{ "id": "tube_avant",   "diametreFrom": "avant"   }
+{ "id": "tube_arriere", "diametreFrom": "arriere"  }
+```
+
+Le moteur extrait la bonne valeur avant d'évaluer les `showIf` des options. Un champ sans `diametreFrom` reçoit le diamètre composé tel quel.
+
+---
+
+## Dédoublement automatique — `splitByConfig`
+
+Permet de déclarer **un seul champ** qui génère automatiquement plusieurs variantes selon la valeur d'un paramètre. Évite de dupliquer les `options[]` dans le JSON.
+
+```json
+{
+  "id": "tube",
+  "label": "Tube",
+  "type": "product",
+  "quantity": { "mode": "segmented" },
+  "splitByConfig": "type_de_support",
+  "configs": {
+    "simple": [
+      { "id": "tube" }
+    ],
+    "double": [
+      { "id": "tube_avant",   "label": "Tube (avant)",   "diametreFrom": "avant"   },
+      { "id": "tube_arriere", "label": "Tube (arrière)", "diametreFrom": "arriere" }
+    ]
+  },
+  "options": [ ... ]
+}
+```
+
+**Comportement :** au chargement, le moteur expand ce champ en autant d'instances que nécessaire. Chaque instance hérite de toutes les propriétés du champ de base, surcharge avec ses propres overrides (`id`, `label`, `diametreFrom`), et reçoit un `showIf` automatique sur le paramètre de split.
+
+L'exemple ci-dessus génère en runtime :
+
+```
+type_de_support = "simple"  →  1 champ : tube         (showIf: type_de_support = simple)
+type_de_support = "double"  →  2 champs : tube_avant  (showIf: type_de_support = double)
+                                           tube_arriere (showIf: type_de_support = double)
+```
+
+**Les `options[]` ne sont déclarées qu'une seule fois.** Si un nouveau tube est ajouté à une collection, il est ajouté à un seul endroit, quelle que soit la config (simple ou double).
+
+**Cas sans split :** un champ sans `splitByConfig` se comporte normalement. Un champ unique pour simple ET double s'écrit sans `splitByConfig` — il reste unique (exemple : un support mural identique en simple et double).
+
+---
+
+## Quantités — `quantity`
+
+Chaque champ `product` peut porter une règle `quantity` qui indique au moteur comment calculer la quantité à commander.
+
+```json
+"quantity": {
+  "mode": "fixed",
+  "value": 2
+}
+```
+
+| `mode` | Calcul | Usage typique |
+|---|---|---|
+| `fixed` | `ceil(value / qtyParUnite)` | Embouts, supports (quantité connue d'avance) |
+| `segmented` | `ceil(longueur / option.tubeLength)` | Tubes — dépend de la longueur ET du tube sélectionné |
+| `segmented_minus_1` | `max(0, segmented - 1)` | Abouts de tube — nombre de jointures = tubes - 1 |
+| `per_interval` | `ceil(longueur / interval)` | Anneaux, crochets (1 tous les N cm) |
+
+### `segmented` et `tubeLength`
+
+Pour `segmented`, le moteur lit la propriété `tubeLength` de l'option sélectionnée :
+
+```json
+{
+  "refBase": "66084",
+  "label": "Tube Ø 16 mm - 180 cm",
+  "tubeLength": 180,
+  "showIfAny": [
+    { "diametre": ["16"], "longueur": { "lte": 180 } },
+    { "diametre": ["16"], "longueur": { "gt": 240  } }
+  ]
+}
+```
+
+Calcul : `ceil(265 / 180) = 2` → 2 tubes de 180 cm pour une longueur de 265 cm.
+
+### `segmented_minus_1` et abouts de tube
+
+La quantité d'abouts est calculée par le moteur à partir de la quantité de tubes du champ associé. Elle n'est **pas** à calculer ou déclarer manuellement dans le JSON. Le champ about de tube est automatiquement masqué quand un seul tube suffit (quantité d'abouts = 0).
+
+```json
+{
+  "id": "about_tube",
+  "type": "product",
+  "quantity": { "mode": "segmented_minus_1" },
+  "splitByConfig": "type_de_support",
+  "configs": { ... }
+}
+```
+
+> **Règle** : ne pas ajouter de `showIf` sur `longueur` pour les champs about de tube. La visibilité est entièrement gérée par le moteur via le calcul de quantité.
+
+---
+
+## Récapitulatif des responsabilités data / JS
+
+| Responsabilité | Data (JSON) | JS (moteur) |
+|---|---|---|
+| Quels produits sont disponibles pour ce diamètre | `showIf.diametre` | — |
+| Quelle longueur de tube afficher | `showIf.longueur` / `showIfAny` | — |
+| Combien de tubes commander | `tubeLength` sur l'option | `ceil(longueur / tubeLength)` |
+| Afficher ou non les abouts de tube | — | `tubeQty > 1` |
+| Combien d'abouts commander | — | `tubeQty - 1` |
+| Dédoublement simple/double | `splitByConfig` + `configs` | expansion au render |
+| Quel diamètre filtrer pour tube avant/arrière | `diametreFrom` | extraction `avant`/`arriere` |
+| Label "Embout" vs "Embout (avant)" | `labelByConfig` | lecture + affichage |
