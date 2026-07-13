@@ -22,7 +22,9 @@ export default class ProductField extends Base {
       if (!this._field) return;
       this.$refs.label.textContent = resolveLabel(this._field, this._selection);
       this._render();
-      this._emitChange();
+      // Ne pas émettre si le champ est masqué (showIf non satisfait) :
+      // évite de polluer selection.produits avec des valeurs hors config courante.
+      if (!this.$el.hidden) this._emitChange();
     } catch (err) {
       console.error('[ProductField] mounted ERROR:', this._field?.id, err);
     }
@@ -96,6 +98,7 @@ export default class ProductField extends Base {
   // -------------------------------------------------------------------------
 
   _buildCard(option, coloris) {
+    if (option.isNone) return this._buildNoneCard(option);
     const card = this._cloneCardTemplate();
     const variant = option.variants?.[coloris] ?? null;
 
@@ -170,6 +173,14 @@ export default class ProductField extends Base {
       return this._field._segmentQty ?? null;
     }
 
+    // ceil(longueur / interval) + extra, divisé par le conditionnement (packs de N).
+    if (quantity.mode === 'per_interval') {
+      const longueur = Number(this._selection.longueur);
+      if (!longueur || !quantity.interval) return null;
+      const raw = Math.ceil(longueur / quantity.interval) + (quantity.extra ?? 0);
+      return Math.ceil(raw / (option.qtyParUnite ?? 1));
+    }
+
     return null;
   }
 
@@ -215,8 +226,47 @@ export default class ProductField extends Base {
     if (refBase === this._selectedRefBase) this._emitChange();
   }
 
+  // -------------------------------------------------------------------------
+  // Carte "aucune option" (isNone)
+  // -------------------------------------------------------------------------
+
+  // Construit une carte grisée sans image/prix/coloris pour l'option "sans X".
+  _buildNoneCard(option) {
+    const card = this._cloneCardTemplate();
+
+    const radio = card.querySelector('input[type="radio"]');
+    radio.name = this._field.id;
+    radio.dataset.product = option.refBase;
+    radio.checked = option.refBase === this._selectedRefBase;
+
+    // Style grisé : remplace l'anneau coloré par un anneau neutre.
+    card.className = card.className
+      .replace('ring-purple/20', 'ring-gray-200')
+      .replace('has-[:checked]:ring-purple/80', 'has-[:checked]:ring-gray-400');
+    card.classList.add('opacity-60');
+
+    card.querySelector('[data-ref="productName"]').textContent = option.label;
+
+    // Masque tous les éléments qui n'ont pas de sens pour une option "sans".
+    const toHide = ['[class*="aspect-square"]', '[data-ref="productRef"]',
+                    '[data-ref="productPrice"]', '[data-ref="productQty"]',
+                    '[data-ref="productStock"]', '[data-ref="colorSwatches"]',
+                    '.text-gray-400']; // le séparateur "×"
+    toHide.forEach((sel) => {
+      card.querySelectorAll(sel).forEach((el) => { el.hidden = true; });
+    });
+
+    return card;
+  }
+
   _emitChange() {
     if (!this._field || !this._selectedRefBase) return;
+    // Option "sans X" : signal au configurateur de supprimer ce champ de selection.produits.
+    const selectedOption = this._field.options?.find((o) => o.refBase === this._selectedRefBase);
+    if (selectedOption?.isNone) {
+      this.$emit('changed', { fieldId: this._field.id, value: { refBase: null, coloris: null } });
+      return;
+    }
     this.$emit('changed', {
       fieldId: this._field.id,
       value: {

@@ -34,7 +34,8 @@
       "Diametre arriere toujours 16 mm dans les combinaisons double de cette collection.",
       "image au niveau variante (depend du coloris). URL en dur au format Houlès : {1er}/{refBase}/{refBase}_{coloris}_L1_1.jpg. Le front consomme l'URL, ne la compose jamais. Valeurs prix/stock = placeholders de demo.",
       "TODO : confirmer le format d'URL image pour les produits sans coloris (about de tube)."
-    ]
+    ],
+    "serviceCoupeEan": "EAN13_COUPETUBE"
   },
   "steps": [
     {
@@ -218,7 +219,6 @@
           "id": "support",
           "label": "Support lateral",
           "type": "product",
-          "required": true,
           "default": "first_visible",
           "quantity": {
             "mode": "fixed",
@@ -714,7 +714,7 @@
                 },
                 "31": {
                   "id": "66734-31",
-                  "prix": 19.0,
+                  "prix": 19,
                   "stock": 40,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_31_L1_1.jpg"
                 },
@@ -982,7 +982,6 @@
           "id": "opt_adaptateur_corner",
           "label": "Adaptateur de tube pour corner",
           "type": "product",
-          "required": false,
           "default": null,
           "quantity": {
             "mode": "fixed",
@@ -1049,7 +1048,6 @@
           "id": "opt_jambe_force",
           "label": "Jambe de force reglable",
           "type": "product",
-          "required": false,
           "default": null,
           "quantity": {
             "mode": "fixed",
@@ -1058,18 +1056,14 @@
           },
           "options": [
             {
+              "refBase": "none",
+              "label": "Sans jambes de force",
+              "isNone": true
+            },
+            {
               "refBase": "66480",
               "label": "2 Jambes de force réglables",
               "qtyParUnite": 2,
-              "showIf": {
-                "selected:support": [
-                  "66854",
-                  "66785",
-                  "66783",
-                  "66744",
-                  "66776"
-                ]
-              },
               "variants": {
                 "24": {
                   "id": "66480-24",
@@ -1109,7 +1103,6 @@
           "id": "opt_support_interm",
           "label": "Support intermediaire",
           "type": "product",
-          "required": false,
           "default": null,
           "_note": "Conseille au-dela de 160 cm d'entraxe. Quantite ajustable par l'utilisateur.",
           "quantity": {
@@ -1503,7 +1496,6 @@
           "id": "opt_jambe_force_interm",
           "label": "Jambe de force reglable (interm.)",
           "type": "product",
-          "required": false,
           "default": null,
           "quantity": {
             "mode": "fixed",
@@ -1568,7 +1560,6 @@
           "id": "tube",
           "label": "Tube",
           "type": "product",
-          "required": true,
           "_note": "Presets 180/240 + custom. En custom, le moteur calcule la combinaison de tubes a decouper.",
           "quantity": {
             "mode": "segmented",
@@ -1910,7 +1901,6 @@
           "id": "about_tube",
           "label": "About de tube",
           "type": "product",
-          "required": false,
           "_note": "Raccord auto si plusieurs tubes. Quantite = segments - 1. Produit sans coloris.",
           "quantity": {
             "mode": "segmented_minus_1",
@@ -1993,13 +1983,7 @@
         {
           "id": "anneaux",
           "label": "Anneaux",
-          "type": "product_toggle",
-          "required": true,
-          "default": "with",
-          "toggleLabels": {
-            "with": "Avec anneaux",
-            "without": "Sans anneaux"
-          },
+          "type": "product",
           "quantity": {
             "mode": "per_interval",
             "interval": 10,
@@ -2010,7 +1994,7 @@
           "options": [
             {
               "refBase": "66804",
-              "label": "Anneaux fermes Ø 16 mm (lot de 6)",
+              "label": "6 Anneaux fermes Ø 16 mm (lot de 6)",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -2243,6 +2227,11 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_38_L1_1.jpg"
                 }
               }
+            },
+            {
+              "refBase": "none",
+              "label": "Sans anneaux",
+              "isNone": true
             }
           ]
         },
@@ -2250,14 +2239,17 @@
           "id": "opt_anneaux_blocage",
           "label": "Anneaux de blocage",
           "type": "product",
-          "required": false,
-          "default": null,
           "quantity": {
             "mode": "fixed",
             "value": 2,
             "unitSource": "qtyParUnite"
           },
           "options": [
+            {
+              "refBase": "none",
+              "label": "Sans anneaux de blocage",
+              "isNone": true
+            },
             {
               "refBase": "66870",
               "label": "Anneaux de blocage Ø 16 mm",
@@ -2397,7 +2389,6 @@
           "id": "embout",
           "label": "Embout",
           "type": "product",
-          "required": true,
           "default": "first_visible",
           "diametreFrom": "avant",
           "quantity": {
@@ -2882,7 +2873,7 @@
               "variants": {
                 "24": {
                   "id": "66960-24",
-                  "prix": 22.0,
+                  "prix": 22,
                   "stock": 178,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_24_S1_1.jpg"
                 },
@@ -3016,7 +3007,6 @@
           "id": "embout_arriere",
           "label": "Embout (arrière)",
           "type": "product",
-          "required": true,
           "default": "first_visible",
           "diametreFrom": "arriere",
           "_note": "Visible uniquement en double. Arriere = O16 dans cette collection, seul Bouchons existe en 16. Modelise avec les 3 refs Bouchons filtrees par diametre.",
@@ -3151,7 +3141,7 @@
                 },
                 "34": {
                   "id": "66962-34",
-                  "prix": 19.0,
+                  "prix": 19,
                   "stock": 54,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_34_S1_1.jpg"
                 },

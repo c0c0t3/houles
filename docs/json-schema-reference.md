@@ -171,7 +171,6 @@ Grille de cartes produits avec variantes coloris.
   "id": "embout",
   "label": "Embout",
   "type": "product",
-  "required": true,
   "quantity": { "mode": "fixed", "value": 2 },
   "options": [
     {
@@ -195,12 +194,15 @@ Grille de cartes produits avec variantes coloris.
 | `diametreFrom` | string | `"avant"` ou `"arriere"` — lit la part de diamètre correspondante en config double |
 | `options` | array | Liste des produits disponibles |
 
+> **Note :** `required` n'existe pas sur les champs `product`. Tout champ produit optionnel utilise une option `isNone` (voir ci-dessous). `required` reste réservé aux champs `radio` et `length` pour la validation de progression future.
+
 **Propriétés d'une option produit :**
 
 | Propriété | Type | Obligatoire | Description |
 |---|---|---|---|
-| `refBase` | string | oui | Référence famille produit (sans coloris) |
+| `refBase` | string | oui | Référence famille produit (sans coloris). Vaut `"none"` pour les options `isNone`. |
 | `label` | string | oui | Nom affiché sur la carte |
+| `isNone` | boolean | non | `true` = option "sans ce produit". Carte grisée, pas de coloris ni de quantité. Exclue du payload panier. |
 | `qtyParUnite` | number | non | Conditionnement — divise la quantité calculée (défaut : 1) |
 | `showIf` | object | non | Conditions de visibilité de cette option |
 | `showIfAny` | array | non | Conditions de visibilité en OU (voir section Visibilité) |
@@ -221,19 +223,24 @@ Grille de cartes produits avec variantes coloris.
 
 ---
 
-### `product_toggle`
+### Champs produit optionnels — `isNone`
 
-Identique à `product`, avec en plus un bouton AVEC / SANS. Le champ est ignoré si l'utilisateur choisit SANS.
+Un champ `product` peut proposer une option "sans ce produit" en ajoutant une option avec `"isNone": true`. Le moteur affiche une carte grisée sans image ni prix. Si l'utilisateur la sélectionne, le champ n'apparaît pas dans le payload panier.
+
+**La position dans le tableau détermine la sélection par défaut :**
 
 ```json
-{
-  "id": "opt_adaptateur_corner",
-  "label": "Adaptateur de tube pour corner",
-  "type": "product_toggle",
-  "showIf": { "type_pose": ["corner"] },
-  "options": [ ... ]
-}
+{ "refBase": "none", "label": "Sans anneaux", "isNone": true }
 ```
+
+| Position de l'option `isNone` | Sélection par défaut |
+|---|---|
+| En **dernier** | La première vraie option visible — ex : anneaux (inclus par défaut) |
+| En **premier** | L'option `isNone` elle-même — ex : anneaux de blocage (exclus par défaut) |
+
+> Les options `isNone` n'ont pas de `showIf` : elles sont toujours visibles, quelle que soit la configuration.
+
+> `product_toggle` n'existe plus. Tout champ autrefois `product_toggle` doit être converti en `product` avec une option `isNone`.
 
 ---
 
@@ -281,7 +288,7 @@ Utilisé quand un produit doit apparaître pour deux plages de valeurs non conti
 
 Chaque entrée du tableau est un bloc `showIf` complet (AND interne). Il suffit qu'**un** bloc soit vrai pour que l'option soit visible.
 
-> **Convention** : `showIf` pour les conditions simples et les plages uniques. `showIfAny` uniquement quand deux plages de longueur non contiguës doivent activer la même option (exemple typique : tube 180 cm visible pour ≤ 180 cm **ou** > 240 cm).
+> **Convention** : `showIf` pour les conditions simples et les plages uniques. `showIfAny` uniquement quand deux plages de longueur non contiguës doivent activer la même option (exemple typique : tube 180 cm visible pour ≤ 180 cm **ou** > 240 cm et donc en plusieurs qty avec coupe).
 
 ---
 
@@ -428,3 +435,5 @@ La quantité d'abouts est calculée par le moteur à partir de la quantité de t
 | Dédoublement simple/double | `splitByConfig` + `configs` | expansion au render |
 | Quel diamètre filtrer pour tube avant/arrière | `diametreFrom` | extraction `avant`/`arriere` |
 | Label "Embout" vs "Embout (avant)" | `labelByConfig` | lecture + affichage |
+| Produit inclus ou exclu par défaut | position de l'option `isNone` dans le tableau | sélection automatique de `options[0]` visible |
+| Exclure un produit optionnel du panier | `isNone: true` sur l'option | emit `refBase: null` → supprimé de `selection.produits` |
