@@ -1,0 +1,91 @@
+{#
+  Panel unique partagé par toutes les modales du configurateur.
+  Le contenu affiché dépend du bouton déclencheur (attribut data-modal="{clé}") : le JS
+  (src/js/syh/features/modal-router.js) clone le <template data-modal="{clé}"> correspondant
+  dans [data-ref="modalContent"] à l'ouverture. Ne pas ajouter de contenu statique ici :
+  déclarer une nouvelle modale = ajouter un nouveau <template> ci-dessous.
+#}
+
+{% embed '@components/modal/Panel.twig'
+  with {
+    attr: {
+      id: 'extra',
+      data_component: 'Panel Configurateur'
+    },
+    position: 'top',
+    overlay_attr: {
+      class: 'z-50 bg-black/20 absolute inset-0'
+    },
+    wrapper_attr: {
+      class: 'p-4 m:p-6 z-50 items-center'
+    },
+    container_attr: {
+      class: 'w-full max-w-2xl rounded bg-sand !overflow-hidden flex justify-stretch'
+    },
+    content_attr: {
+      class: 'p-4 s:p-6 m:p-8 w-full flex flex-col'
+    }
+  }
+%}
+  {% block open %}{% endblock %}
+  {% block close %}{% endblock %}
+
+  {% block content_header %}
+    <h2 data-ref="modalTitle" class="font-serif text-2xl m:text-3xl uppercase leading-none text-gray text-center w-full"></h2>
+  {% endblock %}
+
+  {% block content_modal %}
+    <div data-ref="modalContent"></div>
+  {% endblock %}
+{% endembed %}
+
+{# ------------------------------------------------------------------ #}
+{# Modale : Calcul de longueur (A, B, C → D + total avec embouts)     #}
+{# ------------------------------------------------------------------ #}
+<template data-modal="calcul-longueur" data-modal-title="Calcul de longueur">
+  <table class="w-full text-sm">
+    <tbody>
+      <tr>
+        <td class="p-2">Saisir la largeur de la fenêtre</td>
+        <td class="p-2 text-right whitespace-nowrap">
+          <span class="font-bold text-green-600">A : </span>
+          <input data-ref="inputA" type="text" value="0,0" class="w-16 text-right border-b border-current bg-transparent outline-none" />
+          <span> CM</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-2">Saisir la distance fenêtre - support</td>
+        <td class="p-2 text-right whitespace-nowrap">
+          <span class="font-bold text-blue-600">B : </span>
+          <input data-ref="inputB" type="text" value="0,0" class="w-16 text-right border-b border-current bg-transparent outline-none" />
+          <span> CM</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-2">Saisir la distance support - embout</td>
+        <td class="p-2 text-right whitespace-nowrap">
+          <span class="font-bold text-orange-600">C : </span>
+          <input data-ref="inputC" type="text" value="0,0" class="w-16 text-right border-b border-current bg-transparent outline-none" />
+          <span> CM</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-2">Distance entre les supports d'extrémité</td>
+        <td class="p-2 text-right whitespace-nowrap">
+          <span class="font-bold text-amber-600">D : </span>
+          <span data-ref="resultD">0,0 CM</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-2">Longueur totale estimée avec embouts actuellement sélectionnés</td>
+        <td class="p-2 text-right whitespace-nowrap">
+          <span data-ref="resultTotal">0,0 cm</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button type="button" data-ref="valider" class="mt-6 self-end px-4 py-2 rounded bg-purple text-white">
+    Utiliser cette longueur
+  </button>
+</template>

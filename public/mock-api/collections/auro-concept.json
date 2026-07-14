@@ -2403,6 +2403,7 @@
               "refBase": "66896",
               "label": "2 Embouts Absis O25",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2449,6 +2450,7 @@
               "refBase": "66906",
               "label": "2 Embouts Absis O31",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2495,6 +2497,7 @@
               "refBase": "66892",
               "label": "2 Embouts Regency O25",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2541,6 +2544,7 @@
               "refBase": "66902",
               "label": "2 Embouts Regency O31",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2587,6 +2591,7 @@
               "refBase": "66891",
               "label": "2 Embouts Boule O25",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2633,6 +2638,7 @@
               "refBase": "66901",
               "label": "2 Embouts Boule O31",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2679,6 +2685,7 @@
               "refBase": "66957",
               "label": "2 Embouts Tempo O25",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2725,6 +2732,7 @@
               "refBase": "66958",
               "label": "2 Embouts Tempo O31",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2771,6 +2779,7 @@
               "refBase": "66819",
               "label": "2 Embouts Dome O25",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2817,6 +2826,7 @@
               "refBase": "66919",
               "label": "2 Embouts Dome O31",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2863,6 +2873,7 @@
               "refBase": "66960",
               "label": "2 Embouts Bouchons O16",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2909,6 +2920,7 @@
               "refBase": "66961",
               "label": "2 Embouts Bouchons O25",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -2955,6 +2967,7 @@
               "refBase": "66962",
               "label": "2 Embouts Bouchons O31",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -3027,6 +3040,7 @@
               "refBase": "66960",
               "label": "2 Embouts Bouchons O16",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -3073,6 +3087,7 @@
               "refBase": "66961",
               "label": "2 Embouts Bouchons O25",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -3119,6 +3134,7 @@
               "refBase": "66962",
               "label": "2 Embouts Bouchons O31",
               "qtyParUnite": 2,
+              "emboutValue": 1,
               "showIf": {
                 "type_pose": [
                   "mur",

@@ -5,6 +5,8 @@ import LengthField from './features/length-field.js';
 import ProductField from './features/product-field.js';
 import { isVisible } from './features/show-if.js';
 import { buildTubeInputs, calculCoupes } from './features/tube-coupe.js';
+import { initModalRouter } from './features/modal-router.js';
+import { initLongueurCalculator, formatFr } from './features/longueur-calculator.js';
 
 console.log('[SYH] configurator.js chargé');
 
@@ -21,6 +23,9 @@ export default class Configurator extends Base {
   _stepEls = [];
   // Champs expandés par step (splitByConfig résolu à render time).
   _expandedStepFields = [];
+  // Dernier total calculé dans la modale "Calcul de longueur" (affiché dans le récap). Null tant
+  // que la modale n'a jamais servi.
+  _longueurTotalAvecEmbouts = null;
 
   // Point d'entrée : charge le schéma, initialise la sélection, génère le DOM, affiche l'étape 0.
   async mounted() {
@@ -37,6 +42,7 @@ export default class Configurator extends Base {
       this._renderStepper();
       this._showStep(0);
       this._renderRecap();
+      this._initLongueurModal();
       // Accès console en dev : window.__syh.buildCartPayload()
       if (process.env.NODE_ENV !== 'production') window.__syh = this;
     } catch (err) {
@@ -407,6 +413,44 @@ export default class Configurator extends Base {
   }
 
   // -------------------------------------------------------------------------
+  // Modale — Calcul de longueur
+  // -------------------------------------------------------------------------
+
+  /**
+   * Câble la modale de calcul de longueur (panel `#extra`, clé `calcul-longueur`).
+   * Le résultat D est appliqué au champ `longueur` via le circuit normal d'invalidation
+   * (`_applyChange`), comme s'il avait été saisi dans le champ `length` de l'étape 1.
+   */
+  _initLongueurModal() {
+    initModalRouter('#extra', {
+      'calcul-longueur': (contentEl) =>
+        initLongueurCalculator(contentEl, {
+          getEmboutValue: () => this._selectedEmboutValue(),
+          onValider: (d) => {
+            this._applyChange('longueur', d);
+            document.querySelector('#extra')?.close();
+          },
+          onCompute: (total) => {
+            this._longueurTotalAvecEmbouts = total;
+            this._renderRecap();
+          },
+        }),
+    });
+  }
+
+  /**
+   * Valeur `emboutValue` de l'option embout actuellement sélectionnée (0 si aucune sélection).
+   * Utilisée par le calculateur de longueur pour le total incluant les embouts.
+   */
+  _selectedEmboutValue() {
+    const sel = this.selection.produits?.embout;
+    if (!sel?.refBase) return 0;
+    const field = this.schema.steps.flatMap((s) => s.fields).find((f) => f.id === 'embout');
+    const option = field?.options?.find((o) => o.refBase === sel.refBase);
+    return option?.emboutValue ?? 0;
+  }
+
+  // -------------------------------------------------------------------------
   // Récapitulatif persistant
   // -------------------------------------------------------------------------
 
@@ -426,6 +470,14 @@ export default class Configurator extends Base {
       const el = document.createElement('span');
       el.className = 'flex items-baseline gap-1.5';
       el.innerHTML = `<span class="text-gray-400 text-xs uppercase tracking-wide">${field.label}</span><span class="font-medium text-gray-900">${value}</span>`;
+      container.appendChild(el);
+    }
+
+    // Dernier total calculé dans la modale "Calcul de longueur" (absent tant qu'elle n'a jamais servi).
+    if (this._longueurTotalAvecEmbouts != null) {
+      const el = document.createElement('span');
+      el.className = 'flex items-baseline gap-1.5';
+      el.innerHTML = `<span class="text-gray-400 text-xs uppercase tracking-wide">Longueur avec embouts</span><span class="font-medium text-gray-900">${formatFr(this._longueurTotalAvecEmbouts)} cm</span>`;
       container.appendChild(el);
     }
   }

@@ -4,7 +4,7 @@ import { resolveLabel } from './show-if.js';
 export default class LengthField extends Base {
   static config = {
     name: 'LengthField',
-    refs: ['label', 'presets'],
+    refs: ['label', 'presets', 'calcButton'],
     emits: ['changed'],
   };
 
@@ -118,5 +118,18 @@ export default class LengthField extends Base {
     if (!input.value || val < Number(min) || val > Number(max)) return;
     this._value = val;
     this.$emit('changed', { fieldId: this._field.id, value: val });
+  }
+
+  /**
+   * Ouvre la modale de calcul de longueur (panel #extra, clé calcul-longueur).
+   * Déclenchement manuel (au lieu de data-component="Action") : ce bouton est injecté
+   * dynamiquement par le clonage de template, donc pas garanti d'être découvert par
+   * l'arbre de composants de l'App si on passait par le composant Action.
+   */
+  onCalcButtonClick() {
+    const panel = document.querySelector('#extra');
+    if (!panel) return;
+    panel.dataset.pendingModal = 'calcul-longueur';
+    panel.open?.();
   }
 }

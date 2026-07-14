@@ -61,7 +61,21 @@
           <div data-component="LengthField" class="mb-6">
             <fieldset class="border-0 p-0 m-0">
               <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
-              <div data-ref="presets" class="flex flex-wrap gap-3"></div>
+              <div class="flex flex-wrap items-center gap-3">
+                <div data-ref="presets" class="flex flex-wrap gap-3"></div>
+
+                {# Ouvre la modale de calcul de longueur (panel #extra, clé calcul-longueur). #}
+                {# Déclenchement géré directement par LengthField (onCalcButtonClick) — pas   #}
+                {# de data-component="Action" ici, ce bouton est injecté dynamiquement et ne   #}
+                {# serait pas garanti d'être découvert par l'arbre de composants de l'App.     #}
+                <button
+                  type="button"
+                  data-ref="calcButton"
+                  class="px-4 py-2 rounded ring-1 ring-purple/40 text-sm underline underline-offset-2"
+                >
+                  Calcul de longueur
+                </button>
+              </div>
             </fieldset>
 
             {# Template d'un bouton preset standard #}
@@ -128,5 +142,5 @@
     </div>
 
   </div>
-  </section>
+  {% include '@pages/configurateur-tringlerie/modal-configurateur.twig' %}
 {% endblock %}
