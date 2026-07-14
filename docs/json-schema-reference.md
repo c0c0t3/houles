@@ -210,6 +210,7 @@ Grille de cartes produits avec variantes coloris.
 | `id` | string | non | Référence complète si produit sans coloris (pas de `variants`) |
 | `noColoris` | boolean | non | `true` pour les produits sans coloris (visserie, rouleurs…) |
 | `tubeLength` | number | non | Longueur du tube en cm — requis sur les options de type tube pour le calcul `segmented` |
+| `replacesEmbouts` | boolean | non | `true` sur une option du champ `support` (naissances murales, corners) — voir section dédiée ci-dessous |
 
 **Propriétés d'une variante :**
 
@@ -241,6 +242,24 @@ Un champ `product` peut proposer une option "sans ce produit" en ajoutant une op
 > Les options `isNone` n'ont pas de `showIf` : elles sont toujours visibles, quelle que soit la configuration.
 
 > `product_toggle` n'existe plus. Tout champ autrefois `product_toggle` doit être converti en `product` avec une option `isNone`.
+
+---
+
+### Option `replacesEmbouts`
+
+Certaines options du champ `support` (naissances murales, corners) intègrent déjà les embouts.
+Quand l'option sélectionnée porte `"replacesEmbouts": true` :
+
+- L'étape **Embouts reste visible** dans le stepper (pas de masquage d'étape).
+- Un message d'information s'affiche sur cette étape : *« Les supports sélectionnés remplacent les
+  embouts. »*
+- Les champs `embout` / `embout_arriere` sont masqués sur cette étape.
+- Toute sélection déjà présente sur ces champs est **purgée** de `selection.produits` (donc absente
+  du payload panier).
+
+```json
+{ "refBase": "66737", "label": "2 Naissances murales Ø 16 mm", "replacesEmbouts": true }
+```
 
 ---
 

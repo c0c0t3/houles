@@ -220,8 +220,10 @@ src/js/syh/
     product-toggle.js
     coloris-field.js
     show-if.js           ← isVisible (Module 3)
-    steps.js             ← navigation + masquage conditionnel (replacesEmbouts)
 ```
+
+Note : pas de fichier `steps.js` séparé — la navigation et le cas `replacesEmbouts` sont gérés
+directement dans `configurator.js` (voir Module 5, section 3).
 
 Chaque field-feature est un composant `Base` autonome avec son `data-component`. L'orchestrateur les
 déclare dans `components` et les monte. Un fichier = un composant = un `data-component`.

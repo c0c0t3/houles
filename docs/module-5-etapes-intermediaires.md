@@ -126,11 +126,25 @@ retiré du panier).
 Certains produits (naissances murales, corners) portent `replacesEmbouts: true`. Quand l'un d'eux
 est sélectionné à l'étape Support :
 
-- L'étape **Embouts est masquée** du tunnel.
-- Toute ligne embout déjà présente est **purgée** du panier.
+- L'étape **Embouts reste visible** dans le stepper (décision UX : masquer complètement l'étape
+  risque de dérouter un utilisateur non-connaisseur, qui pourrait croire à un bug ou penser avoir
+  sauté une étape).
+- Un **message d'information** s'affiche sur l'étape Embouts : « Les supports sélectionnés
+  remplacent les embouts. »
+- Les champs `embout` / `embout_arriere` sont **masqués** sur cette étape (mais l'étape et son
+  bouton stepper restent accessibles).
+- Toute ligne embout déjà présente est **purgée** de `selection.produits` (donc absente du payload
+  panier).
 
-Ce comportement touche au flux des étapes, pas seulement à un champ. Le moteur de steps doit pouvoir
-masquer une étape conditionnellement selon une propriété d'un produit sélectionné en amont.
+Comme le support se choisit à l'étape 3 (avant l'étape Embouts), l'utilisateur ne peut pas se
+retrouver déjà positionné sur l'étape Embouts au moment où le flag bascule — aucune redirection de
+navigation n'est nécessaire.
+
+Implémenté directement dans `configurator.js` (pas de module `steps.js` séparé) :
+`_supportReplacesEmbouts()` (lecture du flag), `_purgeEmboutsIfReplaced()` (purge de la sélection,
+appelée au montage, après changement de support, et après tout changement de paramètre qui
+recalcule le support par défaut), `_refreshEmboutsStep()` (affichage du message + masquage des
+champs, appelé à chaque refresh de l'étape Embouts).
 
 ---
 
@@ -306,13 +320,15 @@ et appelle `fetchPricing(items)` (voir Module 3).
 ```
 src/js/syh/features/
   product-field.js     ← champ product (défaut + mini-modale)
-  product-toggle.js    ← champ AVEC / SANS
   quantities.js        ← moteur de calcul de quantités
-  steps.js             ← navigation + masquage conditionnel (replacesEmbouts)
 ```
+
+Note : `product-toggle.js` n'existe plus (voir `isNone` dans le Module 3 / `json-schema-reference.md`).
+Il n'y a pas de fichier `steps.js` séparé : la navigation et le cas `replacesEmbouts` sont gérés
+directement dans `configurator.js` (voir section 3 ci-dessus).
 
 ---
 
 ## Points de décision encore ouverts
 
-- Comportement exact du masquage d'étape sur `replacesEmbouts` (animation, retour arrière).
+Aucun point ouvert restant sur `replacesEmbouts` — comportement tranché (voir section 3).

@@ -883,6 +883,7 @@
             {
               "refBase": "66743",
               "label": "2 Corners 115mm Ø 25 mm",
+              "replacesEmbouts": true,
               "qtyParUnite": 2,
               "showIf": {
                 "type_de_support": [
@@ -931,6 +932,7 @@
             {
               "refBase": "66744",
               "label": "2 Corners 225mm Ø 25 mm",
+              "replacesEmbouts": true,
               "qtyParUnite": 2,
               "showIf": {
                 "type_de_support": [

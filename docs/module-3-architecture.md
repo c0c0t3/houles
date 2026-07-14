@@ -228,8 +228,9 @@ Cela couvre les trois cas réels sans logique en dur :
 
 ### Autres cas particuliers
 
-- `replacesEmbouts: true` sur un produit (naissances murales, corners) → masque l'étape Embouts
-  et purge toute ligne embout. Touche au flux des étapes, pas seulement à un champ.
+- `replacesEmbouts: true` sur une option support (naissances murales, corners) → l'étape Embouts
+  reste visible avec un message d'information, ses champs produit sont masqués, et toute ligne
+  embout déjà présente est purgée du panier (voir Module 5, section 3).
 
 ---
 
@@ -423,10 +424,12 @@ src/js/syh/
   configuratorApi.js     ← couche fetch (mock / réel)
   features/
     show-if.js           ← filtrage des options
-    steps.js             ← navigation entre étapes
     quantities.js        ← moteur de calcul de quantités
     svg-renderer.js      ← composition + colorisation SVG (mode live_colored)
 ```
+
+Note : pas de fichier `steps.js` séparé — la navigation entre étapes et le cas `replacesEmbouts`
+sont gérés directement dans `configurator.js` (voir Module 5, section 3).
 
 Règles :
 - Chaque module exporte des fonctions pures ou une classe ; il ne connaît les autres que par import.

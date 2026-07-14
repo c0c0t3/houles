@@ -33,6 +33,7 @@ export default class Configurator extends Base {
       this.$refs.colG.hidden = !hasLive;
       this._initDefaultSelection();
       this._renderAllSteps();
+      this._purgeEmboutsIfReplaced();
       this._renderStepper();
       this._showStep(0);
       this._renderRecap();
@@ -102,6 +103,17 @@ export default class Configurator extends Base {
       const stepEl = document.createElement('div');
       stepEl.dataset.step = i;
       stepEl.hidden = true;
+
+      // Étape Embouts : message affiché quand le support choisi remplace déjà les embouts
+      // (naissances murales, corners — flag `replacesEmbouts`). Visibilité gérée par _refreshEmboutsStep().
+      if (step.id === 'embouts') {
+        const msg = document.createElement('p');
+        msg.dataset.emboutsReplacedMessage = '';
+        msg.className = 'mb-4 text-sm text-gray-600 italic';
+        msg.textContent = 'Les supports sélectionnés remplacent les embouts.';
+        msg.hidden = true;
+        stepEl.appendChild(msg);
+      }
 
       const expanded = this._expandFields(step.fields);
       this._expandedStepFields[i] = expanded;
@@ -225,6 +237,8 @@ export default class Configurator extends Base {
     } else {
       this.selection.produits[fieldId] = value;
     }
+    // Un nouveau support "naissance murale" remplace les embouts : purge la sélection embout existante.
+    if (fieldId === 'support') this._purgeEmboutsIfReplaced();
     this._refreshCurrentStep();
     this._renderRecap();
     console.log('[SYH] selection', { ...this.selection });
@@ -240,6 +254,8 @@ export default class Configurator extends Base {
     this.selection[fieldId] = value;
     this._invalidateDownstream(fieldId);
     this._initDefaultSelection();
+    // Le défaut recalculé du support peut désormais remplacer les embouts (ex : changement de diamètre).
+    this._purgeEmboutsIfReplaced();
     this._refreshCurrentStep();
     this._renderRecap();
     console.log('[SYH] selection', { ...this.selection });
@@ -282,6 +298,11 @@ export default class Configurator extends Base {
 
     // 2. About_tube : visibilité calculée en JS (qty tubes > 1) et qty injectée dans le descripteur.
     this._refreshTubeStep(stepEl, expandedFields);
+
+    // 2bis. Étape Embouts : message + masquage si le support sélectionné remplace les embouts.
+    if (this.schema.steps[this.currentStepIndex]?.id === 'embouts') {
+      this._refreshEmboutsStep(stepEl);
+    }
 
     // 3. Double filtre : composants de l'étape active ET dont le champ est visible.
     const allChildren = [
@@ -339,6 +360,49 @@ export default class Configurator extends Base {
       // Masquage UI uniquement — ne touche pas selection.produits.
       // Le payload panier est calculé dynamiquement par _resolveQty, pas depuis cette visibilité DOM.
       if (qty <= 1) aboutEl.hidden = true;
+    }
+  }
+
+  /**
+   * Vrai si le support actuellement sélectionné remplace les embouts (naissances murales, corners).
+   * Lu depuis le flag `replacesEmbouts` porté par l'option support choisie dans le JSON.
+   */
+  _supportReplacesEmbouts() {
+    const sel = this.selection.produits?.support;
+    if (!sel?.refBase) return false;
+    const supportField = this.schema.steps
+      .flatMap((step) => step.fields)
+      .find((field) => field.id === 'support');
+    const option = supportField?.options?.find((o) => o.refBase === sel.refBase);
+    return option?.replacesEmbouts === true;
+  }
+
+  /**
+   * Retire les lignes embout du panier si le support sélectionné les remplace déjà.
+   * Appelé après toute mise à jour susceptible de changer le support (produit ou défaut recalculé).
+   */
+  _purgeEmboutsIfReplaced() {
+    if (!this._supportReplacesEmbouts()) return;
+    delete this.selection.produits.embout;
+    delete this.selection.produits.embout_arriere;
+  }
+
+  /**
+   * Sur l'étape Embouts : affiche le message d'information et masque les champs produit
+   * quand le support sélectionné remplace déjà les embouts (naissances murales, corners).
+   *
+   * @param {HTMLElement} stepEl - Conteneur DOM de l'étape Embouts.
+   */
+  _refreshEmboutsStep(stepEl) {
+    const replaced = this._supportReplacesEmbouts();
+
+    const msg = stepEl.querySelector('[data-embouts-replaced-message]');
+    if (msg) msg.hidden = !replaced;
+
+    if (!replaced) return;
+    for (const fieldId of ['embout', 'embout_arriere']) {
+      const fieldEl = stepEl.querySelector(`[data-field-id="${fieldId}"]`);
+      if (fieldEl) fieldEl.hidden = true;
     }
   }
 
