@@ -220,10 +220,13 @@ src/js/syh/
     product-toggle.js
     coloris-field.js
     show-if.js           ← isVisible (Module 3)
+    embouts.js           ← cas replacesEmbouts (Module 5, section 3)
+    cart-payload.js      ← construction du payload panier
+    recap.js             ← récapitulatif persistant de l'étape 1
 ```
 
-Note : pas de fichier `steps.js` séparé — la navigation et le cas `replacesEmbouts` sont gérés
-directement dans `configurator.js` (voir Module 5, section 3).
+Note : pas de fichier `steps.js` séparé — la navigation entre étapes reste dans `configurator.js`
+(orchestrateur). Le cas `replacesEmbouts` est implémenté dans `features/embouts.js`.
 
 Chaque field-feature est un composant `Base` autonome avec son `data-component`. L'orchestrateur les
 déclare dans `components` et les monte. Un fichier = un composant = un `data-component`.

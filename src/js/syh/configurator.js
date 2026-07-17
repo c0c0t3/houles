@@ -4,9 +4,17 @@ import RadioField from './features/radio-field.js';
 import LengthField from './features/length-field.js';
 import ProductField from './features/product-field.js';
 import { isVisible } from './features/show-if.js';
-import { buildTubeInputs, calculCoupes } from './features/tube-coupe.js';
+import { computeTubeQty } from './features/tube-coupe.js';
 import { initModalRouter } from './features/modal-router.js';
-import { initLongueurCalculator, formatFr } from './features/longueur-calculator.js';
+import { initLongueurCalculator } from './features/longueur-calculator.js';
+import {
+  purgeEmboutsIfReplaced,
+  refreshEmboutsStep,
+  selectedEmboutInfo,
+  createEmboutsMessageElement,
+} from './features/embouts.js';
+import { computeCartPayload } from './features/cart-payload.js';
+import { renderRecap } from './features/recap.js';
 
 console.log('[SYH] configurator.js chargé');
 
@@ -111,14 +119,9 @@ export default class Configurator extends Base {
       stepEl.hidden = true;
 
       // Étape Embouts : message affiché quand le support choisi remplace déjà les embouts
-      // (naissances murales, corners — flag `replacesEmbouts`). Visibilité gérée par _refreshEmboutsStep().
+      // (naissances murales, corners — flag `replacesEmbouts`). Visibilité gérée par refreshEmboutsStep().
       if (step.id === 'embouts') {
-        const msg = document.createElement('p');
-        msg.dataset.emboutsReplacedMessage = '';
-        msg.className = 'mb-4 text-sm text-gray-600 italic';
-        msg.textContent = 'Les supports sélectionnés remplacent les embouts.';
-        msg.hidden = true;
-        stepEl.appendChild(msg);
+        stepEl.appendChild(createEmboutsMessageElement());
       }
 
       const expanded = this._expandFields(step.fields);
@@ -307,7 +310,7 @@ export default class Configurator extends Base {
 
     // 2bis. Étape Embouts : message + masquage si le support sélectionné remplace les embouts.
     if (this.schema.steps[this.currentStepIndex]?.id === 'embouts') {
-      this._refreshEmboutsStep(stepEl);
+      refreshEmboutsStep(stepEl, this.schema, this.selection);
     }
 
     // 3. Double filtre : composants de l'étape active ET dont le champ est visible.
@@ -320,21 +323,6 @@ export default class Configurator extends Base {
     for (const child of allChildren) {
       child.refresh(this.selection);
     }
-  }
-
-  /**
-   * Calcule le nombre de segments de tube nécessaires pour couvrir la longueur configurée.
-   * Utilise l'option sélectionnée pour ce champ tube et sa propriété `tubeLength`.
-   */
-  _computeTubeQty(tubeFieldId, expandedFields) {
-    const longueur = Number(this.selection.longueur);
-    if (!longueur) return 0;
-    const tubeField = expandedFields.find((f) => f.id === tubeFieldId);
-    const sel = this.selection.produits[tubeFieldId];
-    const option = tubeField?.options?.find((o) => o.refBase === sel?.refBase);
-    // Fallback 180 si l'option n'a pas encore de tubeLength (données incomplètes).
-    const tubeLength = option?.tubeLength ?? 180;
-    return Math.ceil(longueur / tubeLength);
   }
 
   /**
@@ -354,7 +342,7 @@ export default class Configurator extends Base {
       // Si le champ tube est absent ou caché, l'about n'est pas pertinent.
       if (!tubeEl || tubeEl.hidden) continue;
 
-      const qty = this._computeTubeQty(tubeId, expandedFields);
+      const qty = computeTubeQty(this.selection, tubeId, expandedFields);
 
       // Injecte la qty dans le descripteur partagé : ProductField.refresh() la lira via _field._segmentQty.
       const aboutField = expandedFields.find((f) => f.id === aboutId);
@@ -370,46 +358,11 @@ export default class Configurator extends Base {
   }
 
   /**
-   * Vrai si le support actuellement sélectionné remplace les embouts (naissances murales, corners).
-   * Lu depuis le flag `replacesEmbouts` porté par l'option support choisie dans le JSON.
-   */
-  _supportReplacesEmbouts() {
-    const sel = this.selection.produits?.support;
-    if (!sel?.refBase) return false;
-    const supportField = this.schema.steps
-      .flatMap((step) => step.fields)
-      .find((field) => field.id === 'support');
-    const option = supportField?.options?.find((o) => o.refBase === sel.refBase);
-    return option?.replacesEmbouts === true;
-  }
-
-  /**
    * Retire les lignes embout du panier si le support sélectionné les remplace déjà.
    * Appelé après toute mise à jour susceptible de changer le support (produit ou défaut recalculé).
    */
   _purgeEmboutsIfReplaced() {
-    if (!this._supportReplacesEmbouts()) return;
-    delete this.selection.produits.embout;
-    delete this.selection.produits.embout_arriere;
-  }
-
-  /**
-   * Sur l'étape Embouts : affiche le message d'information et masque les champs produit
-   * quand le support sélectionné remplace déjà les embouts (naissances murales, corners).
-   *
-   * @param {HTMLElement} stepEl - Conteneur DOM de l'étape Embouts.
-   */
-  _refreshEmboutsStep(stepEl) {
-    const replaced = this._supportReplacesEmbouts();
-
-    const msg = stepEl.querySelector('[data-embouts-replaced-message]');
-    if (msg) msg.hidden = !replaced;
-
-    if (!replaced) return;
-    for (const fieldId of ['embout', 'embout_arriere']) {
-      const fieldEl = stepEl.querySelector(`[data-field-id="${fieldId}"]`);
-      if (fieldEl) fieldEl.hidden = true;
-    }
+    purgeEmboutsIfReplaced(this.schema, this.selection);
   }
 
   // -------------------------------------------------------------------------
@@ -418,16 +371,16 @@ export default class Configurator extends Base {
 
   /**
    * Câble la modale de calcul de longueur (panel `#extra`, clé `calcul-longueur`).
-   * Le résultat D est appliqué au champ `longueur` via le circuit normal d'invalidation
-   * (`_applyChange`), comme s'il avait été saisi dans le champ `length` de l'étape 1.
+   * La longueur de tube suggérée (pas D) est appliquée au champ `longueur` via le circuit normal
+   * d'invalidation (`_applyChange`), comme si elle avait été saisie dans le champ `length` de l'étape 1.
    */
   _initLongueurModal() {
     initModalRouter('#extra', {
       'calcul-longueur': (contentEl) =>
         initLongueurCalculator(contentEl, {
-          getEmboutValue: () => this._selectedEmboutValue(),
-          onValider: (d) => {
-            this._applyChange('longueur', d);
+          getEmbout: () => selectedEmboutInfo(this.schema, this.selection),
+          onValider: (longueurTube) => {
+            this._applyChange('longueur', longueurTube);
             document.querySelector('#extra')?.close();
           },
           onCompute: (total) => {
@@ -438,99 +391,17 @@ export default class Configurator extends Base {
     });
   }
 
-  /**
-   * Valeur `emboutValue` de l'option embout actuellement sélectionnée (0 si aucune sélection).
-   * Utilisée par le calculateur de longueur pour le total incluant les embouts.
-   */
-  _selectedEmboutValue() {
-    const sel = this.selection.produits?.embout;
-    if (!sel?.refBase) return 0;
-    const field = this.schema.steps.flatMap((s) => s.fields).find((f) => f.id === 'embout');
-    const option = field?.options?.find((o) => o.refBase === sel.refBase);
-    return option?.emboutValue ?? 0;
-  }
-
   // -------------------------------------------------------------------------
   // Récapitulatif persistant
   // -------------------------------------------------------------------------
 
   /**
-   * Reconstruit le bandeau de récapitulatif de l'étape 1 (paramètres de configuration).
+   * Reconstruit le bandeau de récapitulatif de l'étape 1 (paramètres de configuration), plus
+   * le dernier total calculé dans la modale "Calcul de longueur".
    * Affiché en permanence au-dessus du stepper pour rappeler les choix structurants.
    */
   _renderRecap() {
-    const container = this.$refs.recap;
-    container.innerHTML = '';
-
-    for (const field of this.schema.steps[0]?.fields ?? []) {
-      const value = this._recapValue(field);
-      // Champ sans valeur (non encore renseigné) : pas de chip dans le bandeau.
-      if (value == null) continue;
-
-      const el = document.createElement('span');
-      el.className = 'flex items-baseline gap-1.5';
-      el.innerHTML = `<span class="text-gray-400 text-xs uppercase tracking-wide">${field.label}</span><span class="font-medium text-gray-900">${value}</span>`;
-      container.appendChild(el);
-    }
-
-    // Dernier total calculé dans la modale "Calcul de longueur" (absent tant qu'elle n'a jamais servi).
-    if (this._longueurTotalAvecEmbouts != null) {
-      const el = document.createElement('span');
-      el.className = 'flex items-baseline gap-1.5';
-      el.innerHTML = `<span class="text-gray-400 text-xs uppercase tracking-wide">Longueur avec embouts</span><span class="font-medium text-gray-900">${formatFr(this._longueurTotalAvecEmbouts)} cm</span>`;
-      container.appendChild(el);
-    }
-  }
-
-  /**
-   * Retourne la valeur lisible d'un champ pour le récap.
-   * - isParam + length  → "${val} cm"
-   * - isParam + radio   → label de l'option sélectionnée (résout dependsOn)
-   * - product / product_toggle → "label produit · label coloris"
-   * Retourne null si rien à afficher (champ non renseigné ou type non géré).
-   */
-  _recapValue(field) {
-    // Paramètres de configuration (type_de_support, diametre, longueur…).
-    if (field.isParam) {
-      // Les champs length ont une valeur numérique directe, pas un id d'option.
-      if (field.type === 'length') {
-        const val = this.selection[field.id];
-        return val != null ? `${val} cm` : null;
-      }
-      const val = this.selection[field.id];
-      // Paramètre non encore renseigné.
-      if (val == null) return null;
-      let opts = [];
-      if (field.dependsOn) {
-        // Options groupées par valeur parente, ex : options["simple"] ou options["double"].
-        opts = field.options[this.selection[field.dependsOn]] ?? [];
-      } else if (Array.isArray(field.options)) {
-        opts = field.options;
-      }
-      return opts.find((o) => String(o.id) === String(val))?.label ?? String(val);
-    }
-
-    // Produits sélectionnés : affiche la référence choisie avec son coloris.
-    if (field.type === 'product' || field.type === 'product_toggle') {
-      const sel = this.selection.produits?.[field.id];
-      // Aucun produit sélectionné pour ce champ.
-      if (!sel?.refBase) return null;
-      const option = field.options?.find((o) => o.refBase === sel.refBase);
-      // refBase introuvable dans les options (données inconsistantes).
-      if (!option) return null;
-      let label = option.label;
-      if (sel.coloris) {
-        // Le coloris est optionnel ; si absent, on affiche juste le label produit.
-        const colorisInfo = this.schema.collection.coloris?.find(
-          (c) => String(c.id) === String(sel.coloris)
-        );
-        // Le coloris peut ne pas être dans la liste si les données sont incomplètes.
-        if (colorisInfo) label += ` · ${colorisInfo.label}`;
-      }
-      return label;
-    }
-
-    return null;
+    renderRecap(this.$refs.recap, this.schema, this.selection, this._longueurTotalAvecEmbouts);
   }
 
   // -------------------------------------------------------------------------
@@ -557,105 +428,6 @@ export default class Configurator extends Base {
    * @returns {{ items: object[], coupes: object[], forfait: object|null }}
    */
   buildCartPayload() {
-    const items = this._buildProductItems();
-
-    // Calcul des coupes sur tous les champs tube de toutes les étapes.
-    const allExpanded = this._expandedStepFields.flat();
-    const tubes = buildTubeInputs(this.selection, allExpanded);
-    const forfaitEan = this.schema.collection.serviceCoupeEan ?? null;
-    const { coupes, forfait } = forfaitEan
-      ? calculCoupes(tubes, Number(this.selection.longueur), forfaitEan)
-      : { coupes: [], forfait: null };
-
-    // Ajoute le forfait coupe comme ligne article si au moins une coupe est nécessaire.
-    if (forfait) {
-      items.push({ id: forfait.ean, qty: forfait.qty });
-    }
-
-    return { items, coupes, forfait };
-  }
-
-  /**
-   * Parcourt tous les champs produit sélectionnés et construit les lignes d'article.
-   * La quantité est calculée selon le mode déclaré dans `field.quantity`.
-   *
-   * @returns {Array<{id: string, qty: number, name: string, refBase: string, coloris: string|null}>}
-   */
-  _buildProductItems() {
-    const longueur = Number(this.selection.longueur);
-    const allExpanded = this._expandedStepFields.flat();
-    const itemMap = new Map(); // id article → item, pour agréger les doublons (ex: support + support_interm)
-
-    for (const field of allExpanded) {
-      if (field.type !== 'product' && field.type !== 'product_toggle') continue;
-
-      // Visibilité JSON uniquement — pas de dépendance DOM (stale si step non actif).
-      // Les about_tube à qty=0 sont naturellement exclus par la vérification qty <= 0 ci-dessous.
-      if (!isVisible(field, this.selection)) continue;
-
-      const sel = this.selection.produits?.[field.id];
-      if (!sel?.refBase) continue;
-
-      const option = field.options?.find((o) => o.refBase === sel.refBase);
-      if (!option) continue;
-
-      const variant = option.variants?.[sel.coloris];
-      const id = variant?.id ?? option.id ?? sel.refBase;
-
-      // Calcul à la volée — indépendant de l'état DOM ou de _segmentQty.
-      const qty = this._resolveQty(field, option, longueur, allExpanded);
-      if (qty <= 0) continue;
-
-      // Agrège les lignes avec le même id article (ex : support + opt_support_interm = même ref).
-      const existing = itemMap.get(id);
-      if (existing) {
-        existing.qty += qty;
-      } else {
-        itemMap.set(id, { id, qty, name: option.label, refBase: sel.refBase, coloris: sel.coloris ?? null });
-      }
-    }
-
-    return [...itemMap.values()];
-  }
-
-  /**
-   * Résout la quantité d'un produit selon le mode déclaré dans `field.quantity`.
-   * Calcul toujours à la volée — ne dépend pas de _segmentQty (état UI potentiellement stale).
-   *
-   * @param {object}   field       - Descripteur de champ (expandé)
-   * @param {object}   option      - Option produit sélectionnée
-   * @param {number}   longueur    - Longueur configurée en cm
-   * @param {object[]} allExpanded - Tous les champs expandés (pour résoudre les champs liés)
-   * @returns {number}
-   */
-  _resolveQty(field, option, longueur, allExpanded = []) {
-    const { quantity } = field;
-    if (!quantity) return 1;
-
-    switch (quantity.mode) {
-      case 'fixed':
-        return Math.ceil(quantity.value / (option.qtyParUnite ?? 1));
-
-      case 'segmented':
-        if (!option.tubeLength || !longueur) return 0;
-        return Math.ceil(longueur / option.tubeLength);
-
-      case 'segmented_minus_1': {
-        // Calcul dynamique : identifie le champ tube lié par convention de nommage (about_X → X).
-        const tubeFieldId = field.id.replace(/^about_/, '');
-        const tubeQty = this._computeTubeQty(tubeFieldId, allExpanded);
-        return Math.max(0, tubeQty - 1);
-      }
-
-      case 'per_interval': {
-        if (!quantity.interval || !longueur) return 0;
-        // Ex : 290cm / 10cm interval + 1 extra = 30 anneaux → ceil(30 / 6 par pack) = 5 packs.
-        const raw = Math.ceil(longueur / quantity.interval) + (quantity.extra ?? 0);
-        return Math.ceil(raw / (option.qtyParUnite ?? 1));
-      }
-
-      default:
-        return 1;
-    }
+    return computeCartPayload(this.schema, this.selection, this._expandedStepFields);
   }
 }

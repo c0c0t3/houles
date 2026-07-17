@@ -95,7 +95,10 @@
     {% block content_modal %}{% endblock %}
   </div>
 
-  <div class="flex flex-col s:flex-row gap-4 s:gap-8 pt-4 s:pt-6 m:pt-8">
-    {% block content_footer %}{% endblock %}
-  </div>
+  {% set content_footer_html %}{% block content_footer %}{% endblock %}{% endset %}
+  {% if content_footer_html|trim is not empty %}
+    <div class="flex flex-col s:flex-row gap-4 s:gap-8 pt-4 s:pt-6 m:pt-8">
+      {{ content_footer_html }}
+    </div>
+  {% endif %}
 {% endblock %}

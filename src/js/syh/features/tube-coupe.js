@@ -46,6 +46,26 @@ export function buildTubeInputs(selection, expandedFields) {
 }
 
 /**
+ * Calcule le nombre de segments de tube nécessaires pour couvrir la longueur configurée.
+ * Utilise l'option sélectionnée pour ce champ tube et sa propriété `tubeLength`.
+ *
+ * @param {object} selection      - Sélection courante (selection.longueur, selection.produits)
+ * @param {string} tubeFieldId    - Id du champ tube (ex : 'tube', 'tube_avant', 'tube_arriere')
+ * @param {object[]} expandedFields - Champs expandés de l'étape courante
+ * @returns {number}
+ */
+export function computeTubeQty(selection, tubeFieldId, expandedFields) {
+  const longueur = Number(selection.longueur);
+  if (!longueur) return 0;
+  const tubeField = expandedFields.find((f) => f.id === tubeFieldId);
+  const sel = selection.produits[tubeFieldId];
+  const option = tubeField?.options?.find((o) => o.refBase === sel?.refBase);
+  // Fallback 180 si l'option n'a pas encore de tubeLength (données incomplètes).
+  const tubeLength = option?.tubeLength ?? 180;
+  return Math.ceil(longueur / tubeLength);
+}
+
+/**
  * Calcule les opérations de coupe pour un ensemble de tubes et retourne
  * les coupes individuelles ainsi que le forfait de service global.
  *

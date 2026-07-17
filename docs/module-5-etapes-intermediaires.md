@@ -140,11 +140,13 @@ Comme le support se choisit à l'étape 3 (avant l'étape Embouts), l'utilisateu
 retrouver déjà positionné sur l'étape Embouts au moment où le flag bascule — aucune redirection de
 navigation n'est nécessaire.
 
-Implémenté directement dans `configurator.js` (pas de module `steps.js` séparé) :
-`_supportReplacesEmbouts()` (lecture du flag), `_purgeEmboutsIfReplaced()` (purge de la sélection,
-appelée au montage, après changement de support, et après tout changement de paramètre qui
-recalcule le support par défaut), `_refreshEmboutsStep()` (affichage du message + masquage des
-champs, appelé à chaque refresh de l'étape Embouts).
+Implémenté dans `features/embouts.js` (pas de module `steps.js` séparé) : `supportReplacesEmbouts()`
+(lecture du flag), `purgeEmboutsIfReplaced()` (purge de la sélection), `refreshEmboutsStep()`
+(affichage du message + masquage des champs), `selectedEmboutValue()` (valeur `emboutValue` de
+l'embout sélectionné, utilisée par la modale de calcul de longueur), `createEmboutsMessageElement()`
+(élément DOM du message). `configurator.js` reste l'orchestrateur : il appelle ces fonctions au
+montage, après changement de support, après tout changement de paramètre qui recalcule le support
+par défaut, et à chaque refresh de l'étape Embouts.
 
 ---
 
@@ -315,17 +317,53 @@ et appelle `fetchPricing(items)` (voir Module 3).
 
 ---
 
+## 7. Modale "Calcul de longueur"
+
+Outil d'aide au calcul, portage fidèle de la logique métier de l'ancien configurateur (calcul
+autrefois fait côté serveur via AJAX, désormais recalculé localement en live à chaque saisie).
+Implémenté dans `features/longueur-calculator.js` (calcul) et `features/modal-router.js` (affichage
+dans le panel partagé). Voir `docs/json-schema-reference.md` pour `longueurEmbout` /
+`recouvrementEmbout`.
+
+**Paramètres saisis par l'utilisateur :**
+
+| Paramètre | Signification | Bornes |
+|---|---|---|
+| A | Largeur de la fenêtre | ≥ 80 cm |
+| B | Distance fenêtre - support | 15 à 40 cm |
+| C | Distance support - embout | 5 à 50 cm |
+
+Une saisie hors bornes est corrigée silencieusement à la perte de focus du champ (pas à chaque
+frappe, pour ne pas gêner la saisie en cours).
+
+**Valeurs par défaut à la toute première ouverture :** A = 120, B = 20, C = 10. Les valeurs saisies
+sont ensuite conservées d'une ouverture à l'autre (état en mémoire, pas de persistance serveur).
+
+**Calculs (dans cet ordre) :**
+
+1. `D = A + 2×B` — distance entre les supports d'extrémité (affichage uniquement).
+2. `Longueur de tube suggérée = A + 2×B + 2×C = D + 2×C` — c'est cette valeur, **pas D**, qui est
+   appliquée au champ `longueur` du configurateur au clic sur "Valider".
+3. `Longueur totale estimée = Longueur de tube - 2×recouvrementEmbout + 2×longueurEmbout` — calculée
+   uniquement à partir de l'embout **actuellement sélectionné** dans le configurateur. Affichage
+   seul, jamais appliqué. Ce calcul ne doit pas être modifié (règle métier explicite).
+
+---
+
 ## Organisation du code
 
 ```
 src/js/syh/features/
   product-field.js     ← champ product (défaut + mini-modale)
   quantities.js        ← moteur de calcul de quantités
+  embouts.js           ← cas replacesEmbouts (voir section 3 ci-dessus)
+  cart-payload.js      ← construction du payload panier (items, quantités, coupes)
+  recap.js             ← récapitulatif persistant de l'étape 1
 ```
 
 Note : `product-toggle.js` n'existe plus (voir `isNone` dans le Module 3 / `json-schema-reference.md`).
-Il n'y a pas de fichier `steps.js` séparé : la navigation et le cas `replacesEmbouts` sont gérés
-directement dans `configurator.js` (voir section 3 ci-dessus).
+Il n'y a pas de fichier `steps.js` séparé : la navigation entre étapes reste dans `configurator.js`
+(orchestrateur, état + cycle de rendu).
 
 ---
 

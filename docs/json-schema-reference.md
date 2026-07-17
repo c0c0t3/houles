@@ -211,6 +211,8 @@ Grille de cartes produits avec variantes coloris.
 | `noColoris` | boolean | non | `true` pour les produits sans coloris (visserie, rouleurs…) |
 | `tubeLength` | number | non | Longueur du tube en cm — requis sur les options de type tube pour le calcul `segmented` |
 | `replacesEmbouts` | boolean | non | `true` sur une option du champ `support` (naissances murales, corners) — voir section dédiée ci-dessous |
+| `longueurEmbout` | number | non | Longueur en cm de l'embout — sur les options du champ `embout`, utilisée par la modale "Calcul de longueur" |
+| `recouvrementEmbout` | number | non | Recouvrement en cm de l'embout sur le tube — sur les options du champ `embout`, utilisée par la modale "Calcul de longueur" |
 
 **Propriétés d'une variante :**
 

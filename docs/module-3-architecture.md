@@ -426,10 +426,14 @@ src/js/syh/
     show-if.js           ← filtrage des options
     quantities.js        ← moteur de calcul de quantités
     svg-renderer.js      ← composition + colorisation SVG (mode live_colored)
+    embouts.js           ← cas replacesEmbouts (voir Module 5, section 3)
+    cart-payload.js      ← construction du payload panier (items, quantités, coupes)
+    recap.js             ← récapitulatif persistant de l'étape 1
 ```
 
-Note : pas de fichier `steps.js` séparé — la navigation entre étapes et le cas `replacesEmbouts`
-sont gérés directement dans `configurator.js` (voir Module 5, section 3).
+Note : pas de fichier `steps.js` séparé — la navigation entre étapes reste dans `configurator.js`
+(orchestrateur). Le cas `replacesEmbouts` est implémenté dans `features/embouts.js` (voir Module 5,
+section 3).
 
 Règles :
 - Chaque module exporte des fonctions pures ou une classe ; il ne connaît les autres que par import.

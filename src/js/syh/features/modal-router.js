@@ -30,6 +30,12 @@ export function initModalRouter(panelSelector, onInsert = {}) {
     true
   );
 
+  // Délégué une fois sur le conteneur (stable), plutôt que par modale : n'importe quel template
+  // peut inclure un bouton `data-ref="fermer"` sans wiring JS spécifique.
+  contentEl?.addEventListener('click', (event) => {
+    if (event.target.closest('[data-ref="fermer"]')) panel.close?.();
+  });
+
   panel.addEventListener('open', () => {
     const key = panel.dataset.pendingModal;
     if (!key || !contentEl) return;
