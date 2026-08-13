@@ -41,9 +41,11 @@ export default class Configurator extends Base {
       // Les erreurs de fetch ou de parse JSON sont capturées ici pour ne pas bloquer silencieusement.
       const slug = this.$el.dataset.optionCollection ?? 'auro-concept';
       this.schema = await fetchCollection(slug);
+      
       // La colonne visuelle n'est visible qu'en mode live/live_colored (rendu SVG temps réel).
       const hasLive = ['live', 'live_colored'].includes(this.schema.collection.renderMode);
       this.$refs.colG.hidden = !hasLive;
+
       this._initDefaultSelection();
       this._renderAllSteps();
       this._purgeEmboutsIfReplaced();

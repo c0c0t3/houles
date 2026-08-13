@@ -2,14 +2,14 @@
 
 {% block body %}
   <div class="container">
-    <div data-component="Syh" data-option-collection="auro-concept" class="flex">
+    <div data-component="Syh" data-option-collection="auro-concept-live" class="flex max-w-full">
       <div data-ref="colG" class="flex-1"></div>
-      <div class=" text-black flex-1">
+      <div class=" text-black flex-1 max-w-full">
         {# Récapitulatif persistant de la sélection courante #}
-        <div data-ref="recap" class="flex flex-wrap items-center gap-x-6 gap-y-1 px-6 py-3 bg-gray-50 border-b text-sm min-h-10"></div>
+        <div data-ref="recap" class=" max-w-full flex lg:overflow-auto overflow-scroll items-start lg:flex-wrap lg:items-center gap-x-6 gap-y-1 px-6 py-3 bg-gray-50 border-b text-sm min-h-10"></div>
 
         {# Stepper — boutons générés dynamiquement par JS #}
-        <nav data-ref="stepper" class="flex gap-4 py-4 px-6 border-b"></nav>
+        <nav data-ref="stepper" class="flex overflow-auto max-w-full lg:flex-wrap gap-4 py-4 px-6 border-b"></nav>
 
         {# Zone de l'étape courante — réécrite à chaque step #}
         <div data-ref="stepContent" class="container py-8"></div>
@@ -32,7 +32,7 @@
           <div data-component="RadioField" class="mb-6">
             <fieldset class="border-0 p-0 m-0">
               <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
-              <div data-ref="options" class="flex flex-wrap gap-3"></div>
+              <div data-ref="options" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
             </fieldset>
 
             {# Template d'une option : label seul #}
@@ -45,7 +45,7 @@
 
             {# Template d'une option : label + image #}
             <template data-template="radio-option--label_image">
-              <label class="flex flex-col items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+              <label class="flex flex-col aspect-square shrink-0 lg:aspect-auto items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
                 <input data-ref="input" type="radio" class="sr-only" />
                 <img data-ref="image" alt="" class=" w-44 mix-blend-multiply h-auto object-contain" />
                 <span data-ref="optLabel"></span>
@@ -62,7 +62,7 @@
             <fieldset class="border-0 p-0 m-0">
               <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
               <div class="flex flex-wrap items-center gap-3">
-                <div data-ref="presets" class="flex flex-wrap gap-3"></div>
+                <div data-ref="presets" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
 
                 {# Ouvre la modale de calcul de longueur (panel #extra, clé calcul-longueur). #}
                 {# Déclenchement géré directement par LengthField (onCalcButtonClick) — pas   #}
@@ -105,15 +105,15 @@
             <p data-ref="label" class="block text-sm font-medium uppercase mb-3"></p>
 
             {# Grille des cartes produit (générées dynamiquement) #}
-            <div data-ref="cards" class="flex flex-wrap gap-3"></div>
+            <div data-ref="cards" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
 
             {# Template d'une carte produit                                     #}
             {# label + radio : sélection accessible, pas de <button> imbriqué  #}
             <template data-template="product-card">
-              <label class="flex flex-col gap-2 p-4 rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
+              <label class="flex flex-col gap-2 p-4 w-72 rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
                 <input type="radio" class="sr-only" />
                 <div class="w-full aspect-square bg-gray-50 rounded overflow-hidden">
-                  <img data-ref="productImage" alt="" class="mix-blend-multiply w-64 h-full object-contain" />
+                  <img data-ref="productImage" alt="" class="mix-blend-multiply w-full h-full object-contain" />
                 </div>
                 <span data-ref="productName" class="text-sm font-medium leading-tight"></span>
                 <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>

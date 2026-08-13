@@ -120,7 +120,7 @@ docs/
   module-3-architecture.md
   module-4-configurateur-steps.md
   module-5-etapes-intermediaires.md
-  module-6-rendu-svg.md
+  module-6-rendu-live.md
   module-7-recapitulatif-panier.md
 ```
 

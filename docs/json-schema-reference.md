@@ -193,8 +193,11 @@ Grille de cartes produits avec variantes coloris.
 | `quantity` | object | Règle de calcul de quantité (voir section Quantités) |
 | `diametreFrom` | string | `"avant"` ou `"arriere"` — lit la part de diamètre correspondante en config double |
 | `options` | array | Liste des produits disponibles |
+| `layerOrder` | number | Ordre d'empilement (z-index) du calque de rendu visuel — modes `live` / `live_colored` uniquement (voir Module 6) |
 
 > **Note :** `required` n'existe pas sur les champs `product`. Tout champ produit optionnel utilise une option `isNone` (voir ci-dessous). `required` reste réservé aux champs `radio` et `length` pour la validation de progression future.
+
+> **`layerOrder`** : sans effet en `renderMode: "none"` (pas de rendu visuel). En `live` / `live_colored`, plus la valeur est élevée, plus le calque du champ s'affiche au-dessus des autres (ex : support < tube < anneaux < embout). Un champ produit sans rendu visuel (option purement fonctionnelle) omet cette propriété.
 
 **Propriétés d'une option produit :**
 
@@ -221,7 +224,8 @@ Grille de cartes produits avec variantes coloris.
 | `id` | string | Référence article complète (ex : `66084-24`) |
 | `prix` | number | Prix unitaire HT |
 | `stock` | number | Quantité en stock |
-| `image` | string | Image de la variante (prioritaire sur l'image coloris) |
+| `image` | string | Image catalogue de la variante — carte produit / mini-modale (colonne droite). Prioritaire sur l'image coloris |
+| `renderImage` | string | Image détourée dédiée au calque du rendu visuel — colonne gauche `.colG`. Modes `live` / `live_colored` uniquement (voir Module 6). Distincte de `image` : cadrage différent, pensé pour la superposition |
 | `svgUrl` | string | Chemin SVG pour la composition visuelle (mode `live_colored`) |
 
 ---

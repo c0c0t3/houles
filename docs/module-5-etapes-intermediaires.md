@@ -78,10 +78,8 @@ Deux choses importantes :
 ### Dépendance produit → produit
 
 Une option peut dépendre du **produit sélectionné dans un autre champ**, pas seulement des
-paramètres. Deux mécanismes, selon que la dépendance est totale ou conditionnelle.
-
-**`selected:` dans `showIf`** — pour une dépendance par option. L'option n'est visible que si le
-`refBase` choisi dans un autre champ correspond (ou ne correspond pas, avec `not`).
+paramètres, via `selected:` dans `showIf`. L'option n'est visible que si le `refBase` choisi dans
+un autre champ correspond (ou ne correspond pas, avec `not`).
 
 ```json
 // Adaptateur visible seulement si le support corner 225mm (66744) est choisi
@@ -91,22 +89,18 @@ paramètres. Deux mécanismes, selon que la dépendance est totale ou conditionn
 "showIf": { "selected:support": { "not": ["66764", "66769"] } }
 ```
 
-C'est le cas du support intermédiaire (qui doit correspondre au support principal), des jambes de
-force (liées à certains supports), des adaptateurs corner, et du choix anneaux fermés/ouverts.
-
-**`sameAs`** — pour une dépendance totale : le champ reprend automatiquement le produit ET le coloris
-d'un autre champ, sans liste d'options à maintenir.
-
-```json
-{ "id": "opt_support_interm", "type": "product", "sameAs": "support" }
-```
-
-À utiliser quand un champ est **toujours** identique à un autre (ex : intermédiaire = même modèle que
-le support principal, même coloris). Si la règle a des exceptions ou si le coloris peut différer,
-préférer `showIf` + `selected:` qui laisse le contrôle option par option.
+C'est le cas du support intermédiaire (dont les options compatibles dépendent du support principal
+choisi), des jambes de force (liées à certains supports), des adaptateurs corner, et du choix anneaux
+fermés/ouverts.
 
 Le moteur lit le `refBase` sélectionné via `selection.produits[champ].refBase`. La logique de
 `isVisible` étendue (égalité, seuil, `not`, `selected:`) est détaillée au Module 3.
+
+> Un mécanisme `sameAs` (copie automatique du produit ET du coloris d'un autre champ, pour une
+> dépendance totale sans liste d'options) a été envisagé puis écarté : aucun champ de la collection
+> de démo ne correspond à une dépendance **strictement** totale — même le support intermédiaire,
+> qui semblait être ce cas, dépend du support principal de façon conditionnelle (`selected:`), pas
+> par copie systématique. Retiré de la spec tant qu'un cas d'usage réel ne le justifie pas.
 
 ---
 

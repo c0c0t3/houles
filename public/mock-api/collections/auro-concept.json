@@ -501,55 +501,7 @@
                 }
               }
             },
-            {
-              "refBase": "66764",
-              "label": "Support mur pour anneaux ouverts Ø 25 mm",
-              "qtyParUnite": 1,
-              "showIf": {
-                "type_pose": [
-                  "mur",
-                  "plafond"
-                ],
-                "diametre": [
-                  "25"
-                ],
-                "longueur": {
-                  "gt": 160
-                }
-              },
-              "variants": {
-                "24": {
-                  "id": "66764-24",
-                  "prix": 28.01,
-                  "stock": 162,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_24_L1_1.jpg"
-                },
-                "31": {
-                  "id": "66764-31",
-                  "prix": 68.06,
-                  "stock": 41,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_31_L1_1.jpg"
-                },
-                "34": {
-                  "id": "66764-34",
-                  "prix": 34.65,
-                  "stock": 53,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_34_L1_1.jpg"
-                },
-                "35": {
-                  "id": "66764-35",
-                  "prix": 56.25,
-                  "stock": 179,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_35_L1_1.jpg"
-                },
-                "38": {
-                  "id": "66764-38",
-                  "prix": 75.44,
-                  "stock": 165,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_38_L1_1.jpg"
-                }
-              }
-            },
+
             {
               "refBase": "66854",
               "label": "2 Supports longs extensibles Ø 25 mm",
@@ -1071,31 +1023,31 @@
                   "id": "66480-24",
                   "prix": 60.56,
                   "stock": 51,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_24_L1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_24_S1_1.jpg"
                 },
                 "31": {
                   "id": "66480-31",
                   "prix": 59.33,
                   "stock": 102,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_31_L1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_31_S1_1.jpg"
                 },
                 "34": {
                   "id": "66480-34",
                   "prix": 79.65,
                   "stock": 166,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_34_L1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_34_S1_1.jpg"
                 },
                 "35": {
                   "id": "66480-35",
                   "prix": 34.89,
                   "stock": 132,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_35_L1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_35_S1_1.jpg"
                 },
                 "38": {
                   "id": "66480-38",
                   "prix": 40.51,
                   "stock": 63,
-                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_38_L1_1.jpg"
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_38_S1_1.jpg"
                 }
               }
             }
@@ -1113,6 +1065,58 @@
             "unitSource": "qtyParUnite"
           },
           "options": [
+            {
+              "refBase": "66764",
+              "label": "Support mur pour anneaux ouverts Ø 25 mm",
+              "qtyParUnite": 1,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "25"
+                ],
+                "longueur": {
+                  "gt": 160
+                },
+                "type_rideau":[
+                  "simple"
+                ]
+              },
+              "variants": {
+                "24": {
+                  "id": "66764-24",
+                  "prix": 28.01,
+                  "stock": 162,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_24_L1_1.jpg"
+                },
+                "31": {
+                  "id": "66764-31",
+                  "prix": 68.06,
+                  "stock": 41,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_31_L1_1.jpg"
+                },
+                "34": {
+                  "id": "66764-34",
+                  "prix": 34.65,
+                  "stock": 53,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_34_L1_1.jpg"
+                },
+                "35": {
+                  "id": "66764-35",
+                  "prix": 56.25,
+                  "stock": 179,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_35_L1_1.jpg"
+                },
+                "38": {
+                  "id": "66764-38",
+                  "prix": 75.44,
+                  "stock": 165,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_38_L1_1.jpg"
+                }
+              }
+            },
             {
               "refBase": "66769",
               "label": "Support mur pour anneaux ouverts Ø 31 mm",
@@ -1132,32 +1136,32 @@
               "variants": {
                 "24": {
                   "id": "66769-24",
-                  "prix": 13.14,
+                  "prix": 28.01,
                   "stock": 162,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_24_L1_1.jpg"
                 },
                 "31": {
                   "id": "66769-31",
-                  "prix": 20.32,
-                  "stock": 186,
+                  "prix": 68.06,
+                  "stock": 41,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_31_L1_1.jpg"
                 },
                 "34": {
                   "id": "66769-34",
-                  "prix": 25.63,
-                  "stock": 118,
+                  "prix": 34.65,
+                  "stock": 53,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_34_L1_1.jpg"
                 },
                 "35": {
                   "id": "66769-35",
-                  "prix": 35.32,
-                  "stock": 163,
+                  "prix": 56.25,
+                  "stock": 179,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_35_L1_1.jpg"
                 },
                 "38": {
                   "id": "66769-38",
-                  "prix": 57.55,
-                  "stock": 56,
+                  "prix": 75.44,
+                  "stock": 165,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_38_L1_1.jpg"
                 }
               }
