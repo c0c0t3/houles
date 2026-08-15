@@ -3,7 +3,12 @@
 {% block body %}
   <div class="container">
     <div data-component="Syh" data-option-collection="auro-concept-live" class="flex max-w-full">
-      <div data-ref="colG" class="flex-1"></div>
+      <div data-ref="colG" class="flex-1">
+        {# Ratio fixe indépendant de la hauteur du panneau de droite (qui varie selon l'étape) — #}
+        {# référentiel commun aux calques, voir docs/module-6-rendu-live.md. À ajuster une fois   #}
+        {# le ratio réel des visuels connu (placeholder 3:4 pour l'instant).                      #}
+        <div id="renderedImage" class="w-full aspect-[3/4] sticky top-20"></div>
+      </div>
       <div class=" text-black flex-1 max-w-full">
         {# Récapitulatif persistant de la sélection courante #}
         <div data-ref="recap" class=" max-w-full flex lg:overflow-auto overflow-scroll items-start lg:flex-wrap lg:items-center gap-x-6 gap-y-1 px-6 py-3 bg-gray-50 border-b text-sm min-h-10"></div>

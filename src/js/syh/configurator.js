@@ -15,6 +15,7 @@ import {
 } from './features/embouts.js';
 import { computeCartPayload } from './features/cart-payload.js';
 import { renderRecap } from './features/recap.js';
+import { refreshLivePreview } from './features/live-preview.js';
 
 console.log('[SYH] configurator.js chargé');
 
@@ -34,6 +35,9 @@ export default class Configurator extends Base {
   // Dernier total calculé dans la modale "Calcul de longueur" (affiché dans le récap). Null tant
   // que la modale n'a jamais servi.
   _longueurTotalAvecEmbouts = null;
+  // Rendu visuel live (colonne gauche `.colG`) : actif seulement en renderMode live/live_colored.
+  _hasLive = false;
+  _renderedImageEl = null;
 
   // Point d'entrée : charge le schéma, initialise la sélection, génère le DOM, affiche l'étape 0.
   async mounted() {
@@ -43,8 +47,10 @@ export default class Configurator extends Base {
       this.schema = await fetchCollection(slug);
       
       // La colonne visuelle n'est visible qu'en mode live/live_colored (rendu SVG temps réel).
-      const hasLive = ['live', 'live_colored'].includes(this.schema.collection.renderMode);
-      this.$refs.colG.hidden = !hasLive;
+      this._hasLive = ['live', 'live_colored'].includes(this.schema.collection.renderMode);
+      this.$refs.colG.hidden = !this._hasLive;
+      // Pas de data-ref : conteneur des calques déclaré en dur dans le Twig (id="renderedImage").
+      this._renderedImageEl = this.$el.querySelector('#renderedImage');
 
       this._initDefaultSelection();
       this._renderAllSteps();
@@ -52,6 +58,7 @@ export default class Configurator extends Base {
       this._renderStepper();
       this._showStep(0);
       this._renderRecap();
+      this._refreshLivePreview();
       this._initLongueurModal();
       // Accès console en dev : window.__syh.buildCartPayload()
       if (process.env.NODE_ENV !== 'production') window.__syh = this;
@@ -252,6 +259,7 @@ export default class Configurator extends Base {
     if (fieldId === 'support') this._purgeEmboutsIfReplaced();
     this._refreshCurrentStep();
     this._renderRecap();
+    this._refreshLivePreview();
     console.log('[SYH] selection', { ...this.selection });
   }
 
@@ -269,6 +277,7 @@ export default class Configurator extends Base {
     this._purgeEmboutsIfReplaced();
     this._refreshCurrentStep();
     this._renderRecap();
+    this._refreshLivePreview();
     console.log('[SYH] selection', { ...this.selection });
   }
 
@@ -404,6 +413,22 @@ export default class Configurator extends Base {
    */
   _renderRecap() {
     renderRecap(this.$refs.recap, this.schema, this.selection, this._longueurTotalAvecEmbouts);
+  }
+
+  // -------------------------------------------------------------------------
+  // Rendu visuel live (colonne gauche `.colG`, modes live / live_colored)
+  // -------------------------------------------------------------------------
+
+  /**
+   * Recompose les calques du rendu visuel live depuis la sélection courante. Reflète
+   * l'intégralité de `selection.produits`, cumulée à travers toutes les étapes — pas seulement
+   * les champs de l'étape affichée (voir docs/module-6-rendu-live.md).
+   * No-op en `renderMode: "none"`.
+   */
+  _refreshLivePreview() {
+    if (!this._hasLive) return;
+    const allFields = this._expandedStepFields.flat();
+    refreshLivePreview(this._renderedImageEl, allFields, this.selection);
   }
 
   // -------------------------------------------------------------------------

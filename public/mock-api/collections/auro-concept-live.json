@@ -234,21 +234,21 @@
                   "prix": 28.01,
                   "stock": 55,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_24_L1_1.jpg",
-                  "renderImage": "/assets/syh/support-or.png"
+                  "renderImage": "/assets/syh/tmp/support-or.png"
                 },
                 "31": {
                   "id": "66776-31",
                   "prix": 76.92,
                   "stock": 86,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_31_L1_1.jpg",
-                  "renderImage": "/assets/syh/support-argent.png"
+                  "renderImage": "/assets/syh/tmp/support-argent.png"
                 },
                 "34": {
                   "id": "66776-34",
                   "prix": 15.36,
                   "stock": 97,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_34_L1_1.jpg",
-                  "renderImage": "/assets/syh/support-rose.png"
+                  "renderImage": "/assets/syh/tmp/support-rose.png"
                 }
               }
             },
@@ -271,21 +271,21 @@
                   "prix": 60.54,
                   "stock": 137,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_24_L1_1.jpg",
-                  "renderImage": "/assets/syh/support-or.png"
+                  "renderImage": "/assets/syh/tmp/support-or.png"
                 },
                 "31": {
                   "id": "66778-31",
                   "prix": 16.99,
                   "stock": 96,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_31_L1_1.jpg",
-                  "renderImage": "/assets/syh/support-argent.png"
+                  "renderImage": "/assets/syh/tmp/support-argent.png"
                 },
                 "34": {
                   "id": "66778-34",
                   "prix": 13.67,
                   "stock": 75,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_34_L1_1.jpg",
-                  "renderImage": "/assets/syh/support-rose.png"
+                  "renderImage": "/assets/syh/tmp/support-rose.png"
                 }
               }
             },
@@ -308,25 +308,26 @@
                   "prix": 49.57,
                   "stock": 180,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_24_L1_1.jpg",
-                  "renderImage": "/assets/syh/support-or.png"
+                  "renderImage": "/assets/syh/tmp/support-or.png"
                 },
                 "31": {
                   "id": "66779-31",
                   "prix": 13.01,
                   "stock": 169,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_31_L1_1.jpg",
-                  "renderImage": "/assets/syh/support-argent.png"
+                  "renderImage": "/assets/syh/tmp/support-argent.png"
                 },
                 "34": {
                   "id": "66779-34",
                   "prix": 24.41,
                   "stock": 74,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_34_L1_1.jpg",
-                  "renderImage": "/assets/syh/support-rose.png"
+                  "renderImage": "/assets/syh/tmp/support-rose.png"
                 }
               }
             }
-          ]
+          ],
+          "layerOrder": 2
         },
         {
           "id": "opt_adaptateur_corner",
@@ -452,7 +453,7 @@
                 "longueur": {
                   "gt": 160
                 },
-                "type_rideau":[
+                "type_rideau": [
                   "simple"
                 ]
               },
@@ -866,21 +867,21 @@
                   "prix": 38.46,
                   "stock": 187,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_24_L1_1.jpg",
-                  "renderImage": "/assets/syh/tube-or.png"
+                  "renderImage": "/assets/syh/tmp/tube-or.png"
                 },
                 "31": {
                   "id": "66084-31",
                   "prix": 79.67,
                   "stock": 142,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_31_L1_1.jpg",
-                  "renderImage": "/assets/syh/tube-argent.png"
+                  "renderImage": "/assets/syh/tmp/tube-argent.png"
                 },
                 "34": {
                   "id": "66084-34",
                   "prix": 55.65,
                   "stock": 124,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_34_L1_1.jpg",
-                  "renderImage": "/assets/syh/tube-rose.pmg"
+                  "renderImage": "/assets/syh/tmp/tube-rose.png"
                 }
               },
               "tubeLength": 180,
@@ -913,21 +914,21 @@
                   "prix": 49.7,
                   "stock": 138,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_24_L1_1.jpg",
-                  "renderImage": "/assets/syh/tube-or.png"
+                  "renderImage": "/assets/syh/tmp/tube-or.png"
                 },
                 "31": {
                   "id": "66104-31",
                   "prix": 12.39,
                   "stock": 80,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_31_L1_1.jpg",
-                  "renderImage": "/assets/syh/tube-argent.png"
+                  "renderImage": "/assets/syh/tmp/tube-argent.png"
                 },
                 "34": {
                   "id": "66104-34",
                   "prix": 12.12,
                   "stock": 149,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_34_L1_1.jpg",
-                  "renderImage": "/assets/syh/tube-rose.png"
+                  "renderImage": "/assets/syh/tmp/tube-rose.png"
                 }
               },
               "tubeLength": 180,
@@ -960,21 +961,21 @@
                   "prix": 13.77,
                   "stock": 47,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_24_L1_1.jpg",
-                  "renderImage": "/assets/syh/tube-or.png"
+                  "renderImage": "/assets/syh/tmp/tube-or.png"
                 },
                 "31": {
                   "id": "66124-31",
                   "prix": 12.93,
                   "stock": 17,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_31_L1_1.jpg",
-                  "renderImage": "/assets/syh/tube-argent.png"
+                  "renderImage": "/assets/syh/tmp/tube-argent.png"
                 },
                 "34": {
                   "id": "66124-34",
                   "prix": 56.62,
                   "stock": 60,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_34_L1_1.jpg",
-                  "renderImage": "/assets/syh/tube-rose.png"
+                  "renderImage": "/assets/syh/tmp/tube-rose.png"
                 }
               },
               "tubeLength": 180,
@@ -997,7 +998,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "layerOrder": 1
         },
         {
           "id": "about_tube",
@@ -1421,21 +1423,21 @@
                   "prix": 33.18,
                   "stock": 58,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_24_S1_1.jpg",
-                  "renderImage": "/assets/syh/tete-or.png"
+                  "renderImage": "/assets/syh/tmp/tete-or.png"
                 },
                 "31": {
                   "id": "66896-31",
                   "prix": 24.05,
                   "stock": 168,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_31_S1_1.jpg",
-                  "renderImage": "/assets/syh/tete-argent.png"
+                  "renderImage": "/assets/syh/tmp/tete-argent.png"
                 },
                 "34": {
                   "id": "66896-34",
                   "prix": 21.91,
                   "stock": 84,
                   "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_34_S1_1.jpg",
-                  "renderImage": "/assets/syh/tete-rose.png"
+                  "renderImage": "/assets/syh/tmp/tete-rose.png"
                 }
               }
             }
@@ -1445,7 +1447,8 @@
               "simple": "Embout",
               "double": "Embout (avant)"
             }
-          }
+          },
+          "layerOrder": 3
         },
         {
           "id": "embout_arriere",
