@@ -16,6 +16,7 @@ import {
 import { computeCartPayload } from './features/cart-payload.js';
 import { renderRecap } from './features/recap.js';
 import { refreshLivePreview } from './features/live-preview.js';
+import { initCollectionSwitcher } from './features/collection-switcher.js';
 
 console.log('[SYH] configurator.js chargé');
 
@@ -43,7 +44,10 @@ export default class Configurator extends Base {
   async mounted() {
     try {
       // Les erreurs de fetch ou de parse JSON sont capturées ici pour ne pas bloquer silencieusement.
-      const slug = this.$el.dataset.optionCollection ?? 'auro-concept';
+      // ?collection= (modale "Changer de collection", voir collection-switcher.js) prime sur le
+      // défaut déclaré dans le Twig.
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('collection') ?? this.$el.dataset.optionCollection ?? 'auro-concept';
       this.schema = await fetchCollection(slug);
       
       // La colonne visuelle n'est visible qu'en mode live/live_colored (rendu SVG temps réel).
@@ -59,7 +63,7 @@ export default class Configurator extends Base {
       this._showStep(0);
       this._renderRecap();
       this._refreshLivePreview();
-      this._initLongueurModal();
+      this._initModals();
       // Accès console en dev : window.__syh.buildCartPayload()
       if (process.env.NODE_ENV !== 'production') window.__syh = this;
     } catch (err) {
@@ -381,11 +385,12 @@ export default class Configurator extends Base {
   // -------------------------------------------------------------------------
 
   /**
-   * Câble la modale de calcul de longueur (panel `#extra`, clé `calcul-longueur`).
+   * Câble le panel `#extra`, partagé par toutes les modales du configurateur (voir
+   * modal-router.js) : calcul de longueur et changement de collection.
    * La longueur de tube suggérée (pas D) est appliquée au champ `longueur` via le circuit normal
    * d'invalidation (`_applyChange`), comme si elle avait été saisie dans le champ `length` de l'étape 1.
    */
-  _initLongueurModal() {
+  _initModals() {
     initModalRouter('#extra', {
       'calcul-longueur': (contentEl) =>
         initLongueurCalculator(contentEl, {
@@ -399,6 +404,7 @@ export default class Configurator extends Base {
             this._renderRecap();
           },
         }),
+      collections: (contentEl) => initCollectionSwitcher(contentEl),
     });
   }
 

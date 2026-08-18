@@ -53,11 +53,6 @@
               "id": "simple",
               "label": "Simple",
               "image": "/assets/syh/picto_config_simple.webp"
-            },
-            {
-              "id": "double",
-              "label": "Double",
-              "image": "/assets/syh/picto_config_double.webp"
             }
           ]
         },

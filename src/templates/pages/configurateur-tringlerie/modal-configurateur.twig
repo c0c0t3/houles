@@ -28,7 +28,7 @@
   }
 %}
   {% block open %}{% endblock %}
-  {% block close %}boom{% endblock %}
+  {% block close %}{% endblock %}
 
   {% block content_header %}
     <h2 data-ref="modalTitle" class="font-serif text-2xl m:text-3xl uppercase leading-none text-gray text-center w-full"></h2>
@@ -363,5 +363,27 @@
         'data-ref': 'valider'
       },
     } only %}
+  </div>
+</template>
+
+{# ------------------------------------------------------------------ #}
+{# Modale : Changer de collection (charge un autre JSON de collection) #}
+{# ------------------------------------------------------------------ #}
+<template data-modal="collections" data-modal-title="Changer de collection">
+  <div class="flex flex-col gap-3">
+    <button
+      type="button"
+      data-collection="auro-concept-live"
+      class="w-full text-left px-4 py-3 rounded ring-1 ring-purple/20 hover:ring-purple/60 transition"
+    >
+      Auro Live
+    </button>
+    <button
+      type="button"
+      data-collection="auro-concept"
+      class="w-full text-left px-4 py-3 rounded ring-1 ring-purple/20 hover:ring-purple/60 transition"
+    >
+      Auro Concept
+    </button>
   </div>
 </template>

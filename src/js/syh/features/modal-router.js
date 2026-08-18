@@ -26,6 +26,10 @@ export function initModalRouter(panelSelector, onInsert = {}) {
       const trigger = event.target.closest('[data-modal]');
       if (!trigger) return;
       panel.dataset.pendingModal = trigger.dataset.modal;
+      // Ouverture automatique : un simple `data-modal="{clé}"` suffit, sans wiring JS dédié.
+      // Idempotent (Modal.open() no-op si déjà ouvert) — ne casse pas les déclenchements manuels
+      // existants (ex : bouton injecté dynamiquement qui appelle aussi panel.open() lui-même).
+      panel.open?.();
     },
     true
   );
