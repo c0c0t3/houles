@@ -17,6 +17,7 @@ import { computeCartPayload } from './features/cart-payload.js';
 import { renderRecap } from './features/recap.js';
 import { refreshLivePreview } from './features/live-preview.js';
 import { initCollectionSwitcher } from './features/collection-switcher.js';
+import { initImageFormatFallback } from './features/image-format-fallback.js';
 
 console.log('[SYH] configurator.js chargé');
 
@@ -65,7 +66,12 @@ export default class Configurator extends Base {
       this._refreshLivePreview();
       this._initModals();
       // Accès console en dev : window.__syh.buildCartPayload()
-      if (process.env.NODE_ENV !== 'production') window.__syh = this;
+      if (process.env.NODE_ENV !== 'production') {
+        window.__syh = this;
+        // Contourne les 404 dues aux URLs d'image en dur dans les JSON mock (voir
+        // image-format-fallback.js) — sans équivalent à maintenir une fois l'API réelle branchée.
+        initImageFormatFallback();
+      }
     } catch (err) {
       console.error('[SYH] ERROR:', err);
     }
