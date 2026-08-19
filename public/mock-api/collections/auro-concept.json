@@ -177,7 +177,7 @@
           "id": "coloris",
           "label": "Coloris",
           "type": "radio",
-          "variant": "label_image",
+          "variant": "label",
           "isParam": true,
           "options": [
             {
@@ -317,7 +317,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66741",
@@ -364,7 +364,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66776",
@@ -410,7 +410,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66778",
@@ -457,7 +457,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66779",
@@ -504,7 +504,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66854",
@@ -550,7 +550,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66854/66854_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66864",
@@ -596,7 +596,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66864/66864_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66732",
@@ -646,7 +646,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_38_P1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66734",
@@ -696,7 +696,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66736",
@@ -746,7 +746,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66785",
@@ -795,7 +795,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66783",
@@ -841,7 +841,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66783/66783_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66743",
@@ -891,7 +891,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66743/66743_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66744",
@@ -941,7 +941,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66744/66744_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             }
           ]
         },
@@ -1003,7 +1003,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             }
           ],
           "showIf": {
@@ -1064,7 +1064,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             }
           ]
         },
@@ -1131,7 +1131,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66769",
@@ -1181,7 +1181,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66776",
@@ -1237,7 +1237,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66778",
@@ -1293,7 +1293,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66779",
@@ -1349,7 +1349,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66732",
@@ -1405,7 +1405,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_38_P1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66734",
@@ -1461,7 +1461,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66736",
@@ -1517,7 +1517,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             }
           ]
         },
@@ -1576,7 +1576,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             }
           ]
         }
@@ -1671,7 +1671,7 @@
                   }
                 }
               ],
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66104",
@@ -1728,7 +1728,7 @@
                   }
                 }
               ],
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66124",
@@ -1785,7 +1785,7 @@
                   }
                 }
               ],
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66085",
@@ -1833,7 +1833,7 @@
                 }
               },
               "tubeLength": 240,
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66105",
@@ -1881,7 +1881,7 @@
                 }
               },
               "tubeLength": 240,
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66125",
@@ -1929,7 +1929,7 @@
                 }
               },
               "tubeLength": 240,
-              "variantType": "image"
+              "variantType": "coloris"
             }
           ]
         },
@@ -2076,7 +2076,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66808",
@@ -2125,7 +2125,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66809",
@@ -2174,7 +2174,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66935",
@@ -2221,7 +2221,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66937",
@@ -2267,7 +2267,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "none",
@@ -2332,7 +2332,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66874",
@@ -2375,7 +2375,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66878",
@@ -2418,7 +2418,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             }
           ]
         }
@@ -2488,7 +2488,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66906",
@@ -2537,7 +2537,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66906/66906_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66892",
@@ -2586,7 +2586,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66892/66892_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66902",
@@ -2635,7 +2635,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66902/66902_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66891",
@@ -2684,7 +2684,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66891/66891_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66901",
@@ -2733,7 +2733,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66901/66901_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66957",
@@ -2782,7 +2782,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66957/66957_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66958",
@@ -2831,7 +2831,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66958/66958_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66819",
@@ -2880,7 +2880,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66819/66819_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66919",
@@ -2929,7 +2929,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66919/66919_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66960",
@@ -2978,7 +2978,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66961",
@@ -3027,7 +3027,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66962",
@@ -3076,7 +3076,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_38_L1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             }
           ],
           "labelByConfig": {
@@ -3151,7 +3151,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66961",
@@ -3200,7 +3200,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             },
             {
               "refBase": "66962",
@@ -3249,7 +3249,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_38_S1_1.jpg"
                 }
               },
-              "variantType": "image"
+              "variantType": "coloris"
             }
           ]
         }

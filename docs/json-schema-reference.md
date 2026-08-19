@@ -38,14 +38,20 @@
 ### `collection.coloris[]`
 
 ```json
-{ "id": "laiton", "label": "Laiton brillant", "image": "/img/coloris/laiton.jpg" }
+{
+  "id": "laiton",
+  "label": "Laiton brillant",
+  "image": "/img/coloris/laiton.jpg",
+  "thumbnail": "/img/coloris/laiton-thumb.jpg"
+}
 ```
 
 | Propriété | Type | Description |
 |---|---|---|
 | `id` | string | Identifiant du coloris, clé des `variants` des produits |
 | `label` | string | Libellé affiché dans le nuancier |
-| `image` | string | URL de la vignette couleur. Utilisée pour le champ `coloris` de l'étape 1, et pour les pastilles coloris des options `product` déclarées en `variantType: "coloris"` (voir plus bas) |
+| `image` | string | Photo de référence de la couleur (grand format). Non consommée par le moteur actuellement — donnée descriptive, gardée pour référence / usage futur |
+| `thumbnail` | string | Vignette compacte de la couleur (petit format, ex : swatch rond). Utilisée pour le champ `coloris` de l'étape 1 (`variant: "label"`, affichée à côté du label si disponible — retirée du DOM sinon) et pour les pastilles coloris des options `product` déclarées en `variantType: "coloris"` (voir plus bas) |
 
 > **Propagation du coloris global** : cliquer une option du champ `coloris` (étape 1) réaligne le
 > coloris de tous les produits déjà sélectionnés qui proposent cette couleur — pas seulement le
@@ -216,7 +222,7 @@ Grille de cartes produits avec variantes coloris.
 | `showIf` | object | non | Conditions de visibilité de cette option |
 | `showIfAny` | array | non | Conditions de visibilité en OU (voir section Visibilité) |
 | `variants` | object | non | Variantes par coloris (absent si produit sans coloris) |
-| `variantType` | string | non | `"image"` (défaut) ou `"coloris"` — source du visuel des pastilles coloris de cette option : photo du produit dans la couleur (`variants[coloris].image`), ou vignette générique de la couleur (`collection.coloris[].image`, indépendante du produit) |
+| `variantType` | string | non | `"image"` (défaut) ou `"coloris"` — source du visuel des pastilles coloris de cette option : photo du produit dans la couleur (`variants[coloris].image`), ou vignette de coloris dédiée (`collection.coloris[].thumbnail`, indépendante du produit) |
 | `id` | string | non | Référence complète si produit sans coloris (pas de `variants`) |
 | `noColoris` | boolean | non | `true` pour les produits sans coloris (visserie, rouleurs…) |
 | `tubeLength` | number | non | Longueur du tube en cm — requis sur les options de type tube pour le calcul `segmented` |

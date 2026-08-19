@@ -150,12 +150,12 @@ export default class ProductField extends Base {
 
   // `variantType` (par option, JSON) choisit la source du visuel de chaque pastille coloris :
   // "image" (défaut) = photo du produit dans cette couleur (option.variants[coloris].image) ;
-  // "coloris" = vignette générique de la couleur (collection.coloris[].image), indépendante du
+  // "coloris" = vignette de coloris dédiée (collection.coloris[].thumbnail), indépendante du
   // produit — utile quand les photos produit par coloris ne sont pas toutes disponibles.
   _fillSwatches(container, option, activeColoris) {
     if (!container || !option.variants) return;
     container.innerHTML = '';
-    const useColorisImage = option.variantType === 'coloris';
+    const useColorisThumbnail = option.variantType === 'coloris';
     for (const colorisId of Object.keys(option.variants)) {
       const btn = this._cloneSwatchTemplate();
       if (!btn) continue;
@@ -164,7 +164,7 @@ export default class ProductField extends Base {
       btn.dataset.product = option.refBase;
       btn.title = info?.label ?? colorisId;
       btn.classList.toggle('is-active', colorisId === activeColoris);
-      const swatchImage = useColorisImage ? info?.image : option.variants[colorisId]?.image;
+      const swatchImage = useColorisThumbnail ? info?.thumbnail : option.variants[colorisId]?.image;
       if (swatchImage) { btn.style.backgroundImage = `url(${swatchImage})`; btn.style.backgroundSize = 'cover'; }
       container.appendChild(btn);
     }

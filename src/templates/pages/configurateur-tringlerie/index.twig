@@ -40,10 +40,11 @@
               <div data-ref="options" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
             </fieldset>
 
-            {# Template d'une option : label seul #}
+            {# Template d'une option : label seul (+ thumbnail coloris si disponible) #}
             <template data-template="radio-option--label">
-              <label class="flex items-center cursor-pointer  px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+              <label class="flex items-center gap-2 cursor-pointer  px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
                 <input data-ref="input" type="radio" class="sr-only" />
+                <img data-ref="thumbnail" alt="" class="w-6 h-6 rounded-full object-cover shrink-0" />
                 <span data-ref="optLabel"></span>
               </label>
             </template>

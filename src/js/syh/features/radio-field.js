@@ -10,11 +10,13 @@ export default class RadioField extends Base {
 
   _field = null;
   _selection = null;
+  _coloris = [];
 
   mounted() {
     try {
       this._field = this.$el._syhField ?? null;
       this._selection = this.$el._syhSelection ?? {};
+      this._coloris = this.$el._syhColoris ?? [];
       if (!this._field) return;
       this.$refs.label.textContent = resolveLabel(this._field, this._selection);
       this._render();
@@ -63,6 +65,19 @@ export default class RadioField extends Base {
           img.alt = opt.label;
         } else {
           img.remove();
+        }
+      }
+
+      // Thumbnail coloris (radio-option--label) : résolu par id via collection.coloris[], pas
+      // porté par l'option elle-même. Retiré du DOM si aucun thumbnail dispo pour cette option.
+      const thumbnail = el.querySelector('[data-ref="thumbnail"]');
+      if (thumbnail) {
+        const info = this._coloris.find((c) => String(c.id) === String(opt.id));
+        if (info?.thumbnail) {
+          thumbnail.src = info.thumbnail;
+          thumbnail.alt = '';
+        } else {
+          thumbnail.remove();
         }
       }
 

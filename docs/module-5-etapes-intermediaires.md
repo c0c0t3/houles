@@ -340,8 +340,8 @@ Deux points importants :
 
 Chaque option produit peut déclarer `variantType: "image"` (défaut) ou `"coloris"` — voir
 `json-schema-reference.md`. Ça ne change que la **source de l'image** affichée dans les pastilles
-de sélection coloris d'une carte produit (`variants[coloris].image` vs `collection.coloris[].image`
-générique) ; ça ne touche ni la résolution du coloris, ni `applyGlobalColoris`. Utile quand les
+de sélection coloris d'une carte produit (`variants[coloris].image` vs `collection.coloris[].thumbnail`
+dédié) ; ça ne touche ni la résolution du coloris, ni `applyGlobalColoris`. Utile quand les
 photos produit dans chaque coloris ne sont pas toutes disponibles : la pastille tombe alors sur la
 vignette générique de la couleur plutôt que sur une image manquante ou incohérente.
 
