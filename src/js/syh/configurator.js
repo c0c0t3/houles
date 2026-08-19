@@ -275,6 +275,13 @@ export default class Configurator extends Base {
     // Early exit si la valeur n'a pas changé (ex : double-clic sur un radio déjà sélectionné).
     if (this.selection[fieldId] === value) return;
     this.selection[fieldId] = value;
+    // Coloris global (étape 1) : repropage vers tous les produits déjà sélectionnés qui
+    // proposent cette couleur (tous champs, pas seulement l'étape courante — voir Module 3).
+    if (fieldId === 'coloris') {
+      for (const child of this.$children.ProductField ?? []) {
+        child.applyGlobalColoris(value);
+      }
+    }
     this._invalidateDownstream(fieldId);
     this._initDefaultSelection();
     // Le défaut recalculé du support peut désormais remplacer les embouts (ex : changement de diamètre).

@@ -297,6 +297,54 @@ rose). Voir Module 3 pour la résolution variante.
 Pour les produits **sans coloris** (rouleurs, raccords...), pas de sélecteur couleur : l'`id` est
 pris à la racine du produit (voir Module 3, section Produits sans coloris).
 
+### Propagation : `ProductField.applyGlobalColoris(coloris)`
+
+Chaque `ProductField` monté (un par champ produit, **toutes étapes confondues** — pas seulement
+celle affichée, voir Module 3 sur le montage anticipé de tous les champs) mémorise en interne le
+coloris résolu par `refBase` (`_cardColoris`, une `Map`), pour que chaque carte produit garde sa
+couleur d'une carte à l'autre sans redemander la résolution à chaque rendu.
+
+À chaque changement du champ `coloris` global, l'orchestrateur (`configurator.js`) appelle
+`applyGlobalColoris(coloris)` sur **tous** les `ProductField` montés. La méthode parcourt **toutes
+les options déclarées du champ** (`field.options`, pas uniquement les options actuellement visibles
+ni le `refBase` actuellement sélectionné) :
+
+```js
+applyGlobalColoris(coloris) {
+  let selectedChanged = false;
+  for (const option of this._field.options) {
+    if (!option.variants?.[coloris]) continue;       // option sans cette couleur : inchangée
+    this._cardColoris.set(option.refBase, coloris);  // met à jour le cache, visible ou non
+    if (option.refBase === this._selectedRefBase) selectedChanged = true;
+  }
+  this._render();
+  if (selectedChanged) this._emitChange();            // selection.produits mis à jour seulement
+}                                                       // si le produit AFFICHÉ a changé de couleur
+```
+
+Deux points importants :
+
+- **Toutes les options, pas seulement celle sélectionnée ou visible.** Une option masquée par
+  `showIf` au moment du clic (ex : un support Ø25 alors que le diamètre courant est 16) reçoit
+  quand même sa mise à jour de cache, pour que la couleur soit déjà correcte si cette option
+  redevient le défaut plus tard (changement de diamètre → nouvelle résolution `first_visible`,
+  voir section 1). Sans cette règle, revenir sur une étape après un changement de config ferait
+  retomber le produit sur le premier coloris disponible (`Object.keys(variants)[0]`) au lieu du
+  coloris global — bug corrigé le 2026-08-19.
+- **Pas de fallback.** Une option qui n'a pas cette couleur garde son coloris actuel — cohérent
+  avec la règle « pas de fallback silencieux vers un autre coloris à cette étape » (le fallback
+  premier-coloris-disponible ne s'applique qu'à la toute première résolution du défaut, section 1
+  ci-dessus).
+
+### `variantType` — source visuelle des pastilles coloris
+
+Chaque option produit peut déclarer `variantType: "image"` (défaut) ou `"coloris"` — voir
+`json-schema-reference.md`. Ça ne change que la **source de l'image** affichée dans les pastilles
+de sélection coloris d'une carte produit (`variants[coloris].image` vs `collection.coloris[].image`
+générique) ; ça ne touche ni la résolution du coloris, ni `applyGlobalColoris`. Utile quand les
+photos produit dans chaque coloris ne sont pas toutes disponibles : la pastille tombe alors sur la
+vignette générique de la couleur plutôt que sur une image manquante ou incohérente.
+
 ---
 
 ## 6. Lien avec le pricing

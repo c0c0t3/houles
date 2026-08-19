@@ -39,6 +39,28 @@ export default class ProductField extends Base {
     if (this._selectedRefBase !== prev) this._emitChange();
   }
 
+  /**
+   * Réaligne le coloris de TOUTES les options de ce champ sur le coloris global choisi à
+   * l'étape 1 — pas seulement l'option actuellement sélectionnée : une option masquée aujourd'hui
+   * (showIf non satisfait) peut redevenir le défaut plus tard (ex : après un changement de
+   * diamètre qui invalide la sélection courante), elle doit donc déjà porter le bon coloris en
+   * cache. Les options qui n'ont pas cette variante gardent leur coloris actuel (pas de fallback
+   * ici — volontaire, voir docs/module-5-etapes-intermediaires.md).
+   * Appelé par le Configurator à chaque changement du champ `coloris` global.
+   *
+   * @param {string} coloris - Id du coloris global sélectionné.
+   */
+  applyGlobalColoris(coloris) {
+    let selectedChanged = false;
+    for (const option of this._field?.options ?? []) {
+      if (!option.variants?.[coloris]) continue;
+      this._cardColoris.set(option.refBase, coloris);
+      if (option.refBase === this._selectedRefBase) selectedChanged = true;
+    }
+    this._render();
+    if (selectedChanged) this._emitChange();
+  }
+
   // -------------------------------------------------------------------------
   // Rendu — reconstruit toutes les cartes visibles, n'émet jamais
   // -------------------------------------------------------------------------
@@ -126,9 +148,14 @@ export default class ProductField extends Base {
     return card;
   }
 
+  // `variantType` (par option, JSON) choisit la source du visuel de chaque pastille coloris :
+  // "image" (défaut) = photo du produit dans cette couleur (option.variants[coloris].image) ;
+  // "coloris" = vignette générique de la couleur (collection.coloris[].image), indépendante du
+  // produit — utile quand les photos produit par coloris ne sont pas toutes disponibles.
   _fillSwatches(container, option, activeColoris) {
     if (!container || !option.variants) return;
     container.innerHTML = '';
+    const useColorisImage = option.variantType === 'coloris';
     for (const colorisId of Object.keys(option.variants)) {
       const btn = this._cloneSwatchTemplate();
       if (!btn) continue;
@@ -137,8 +164,8 @@ export default class ProductField extends Base {
       btn.dataset.product = option.refBase;
       btn.title = info?.label ?? colorisId;
       btn.classList.toggle('is-active', colorisId === activeColoris);
-      const variantImage = option.variants[colorisId]?.image;
-      if (variantImage) { btn.style.backgroundImage = `url(${variantImage})`; btn.style.backgroundSize = 'cover'; }
+      const swatchImage = useColorisImage ? info?.image : option.variants[colorisId]?.image;
+      if (swatchImage) { btn.style.backgroundImage = `url(${swatchImage})`; btn.style.backgroundSize = 'cover'; }
       container.appendChild(btn);
     }
   }

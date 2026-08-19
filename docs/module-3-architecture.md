@@ -96,6 +96,25 @@ y compris `none`. Elle ne dépend pas du `renderMode`.
 Ce qui varie d'un mode à l'autre, c'est le **rendu visuel**, pas la possibilité de personnaliser
 les coloris.
 
+### Propagation du coloris global après sélection
+
+Le pré-remplissage ne joue pas qu'au premier chargement : **cliquer une option du champ `coloris`
+répercute la couleur sur tous les produits déjà sélectionnés qui proposent cette couleur** — pas
+seulement le produit actuellement affiché à l'écran. Un produit dont l'étape n'est pas visible au
+moment du clic (pas encore visitée, ou masqué par `showIf`) est mis à jour de la même façon, pour
+qu'il affiche déjà la bonne couleur le jour où il redevient le défaut (ex : après un changement de
+diamètre qui invalide la sélection courante et fait retomber le moteur sur `first_visible`).
+
+Un produit qui ne propose pas la couleur choisie **garde sa couleur actuelle** — pas de fallback
+vers un autre coloris à cette étape (le fallback « premier coloris disponible » ne s'applique qu'à
+la résolution du défaut initial, voir Module 5). Ce réalignement est un geste volontaire de
+l'utilisateur (« repartir sur cette base de couleur ») ; une fois fait, chaque pièce reste à nouveau
+librement modifiable indépendamment, comme décrit ci-dessus.
+
+Implémenté par `ProductField.applyGlobalColoris()` (un par champ produit monté, y compris ceux des
+étapes non affichées), appelé par l'orchestrateur à chaque changement du champ `coloris` — voir
+Module 5, section « Coloris par élément ».
+
 ### Étapes (`steps`)
 
 `steps` est un **tableau** (l'ordre est garanti, on itère dessus pour générer le stepper).
