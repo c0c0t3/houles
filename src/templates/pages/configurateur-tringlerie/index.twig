@@ -142,6 +142,17 @@
                   <span data-ref="productQty" class="text-gray-500"></span>
                 </div>
                 <span data-ref="productStock" class="text-xs"></span>
+                {# Masqué par défaut en renderMode none/live (JS) ; jamais nécessaire en          #}
+                {# live_colored où les swatches restent visibles en permanence.                    #}
+                <button
+                  type="button"
+                  data-ref="toggleColoris"
+                  class="absolute top-4 right-4 text-xs underline underline-offset-2 text-purple"
+                >
+                  Changer de couleur
+                </button>
+                {# display géré en JS (style.display), pas via l'attribut hidden : la classe    #}
+                {# "flex" l'emporterait sinon sur [hidden] dans la cascade Tailwind.             #}
                 <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-1 absolute bottom-4 left-4 right-4"></div>
               </label>
             </template>

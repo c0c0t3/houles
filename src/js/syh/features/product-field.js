@@ -11,6 +11,7 @@ export default class ProductField extends Base {
   _field = null;
   _selection = null;
   _coloris = [];
+  _renderMode = 'none';
   _selectedRefBase = null;
   _cardColoris = new Map(); // refBase → coloris sélectionné sur cette carte
   // Vrai tant que la sélection courante vient de la résolution automatique (jamais cliquée par
@@ -25,6 +26,7 @@ export default class ProductField extends Base {
       this._field = this.$el._syhField ?? null;
       this._selection = this.$el._syhSelection ?? {};
       this._coloris = this.$el._syhColoris ?? [];
+      this._renderMode = this.$el._syhRenderMode ?? 'none';
       if (!this._field) return;
       this.$refs.label.textContent = resolveLabel(this._field, this._selection);
       this._render();
@@ -217,8 +219,35 @@ export default class ProductField extends Base {
 
     this._fillStock(card.querySelector('[data-ref="productStock"]'), variant?.stock ?? null);
     this._fillSwatches(card.querySelector('[data-ref="colorSwatches"]'), option, coloris);
+    this._applySwatchVisibility(card, option);
 
     return card;
+  }
+
+  /**
+   * Masque les swatches de coloris derrière un bouton "Changer de couleur" en `renderMode`
+   * `none` / `live` — visibles en permanence en `live_colored` (surcouche colorisée, pas besoin
+   * d'un clic supplémentaire). Sans effet si le produit n'a pas de coloris (rien à basculer).
+   *
+   * @param {HTMLElement} card - Carte produit clonée.
+   * @param {object} option - Option JSON correspondante.
+   */
+  _applySwatchVisibility(card, option) {
+    const toggleBtn = card.querySelector('[data-ref="toggleColoris"]');
+    const swatches = card.querySelector('[data-ref="colorSwatches"]');
+    if (!swatches) return;
+
+    // style.display plutôt que l'attribut hidden : colorSwatches porte la classe Tailwind "flex"
+    // (display:flex), qui l'emporterait sur [hidden] dans la cascade (utilities après preflight).
+    if (!option.variants) {
+      swatches.style.display = 'none';
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      return;
+    }
+
+    const alwaysVisible = this._renderMode === 'live_colored';
+    swatches.style.display = alwaysVisible ? '' : 'none';
+    if (toggleBtn) toggleBtn.style.display = alwaysVisible ? 'none' : '';
   }
 
   // `variantType` (par option, JSON) choisit la source du visuel de chaque pastille coloris :
@@ -300,6 +329,20 @@ export default class ProductField extends Base {
   // Clic sur un swatch — change le coloris de la carte concernée uniquement
   // Le clic sur un <button> dans un <label> ne déclenche pas le radio, pas besoin de stopPropagation
   onCardsClick({ event }) {
+    // Bouton "Changer de couleur" : bascule l'affichage des swatches de cette carte uniquement.
+    // Le bouton lui-même reste toujours visible (c'est lui qui permet de rouvrir les swatches
+    // après les avoir refermées) — seul l'état des swatches change.
+    const toggleBtn = event.target.closest('[data-ref="toggleColoris"]');
+    if (toggleBtn) {
+      const card = toggleBtn.closest('label');
+      const swatches = card?.querySelector('[data-ref="colorSwatches"]');
+      if (swatches) {
+        const isHidden = swatches.style.display === 'none';
+        swatches.style.display = isHidden ? '' : 'none';
+      }
+      return;
+    }
+
     const btn = event.target.closest('[data-coloris]');
     if (!btn) return;
 
@@ -352,9 +395,12 @@ export default class ProductField extends Base {
     const toHide = ['[class*="aspect-square"]', '[data-ref="productRef"]',
                     '[data-ref="productPrice"]', '[data-ref="productQty"]',
                     '[data-ref="productStock"]', '[data-ref="colorSwatches"]',
+                    '[data-ref="toggleColoris"]',
                     '.text-gray-400']; // le séparateur "×"
+    // style.display plutôt que l'attribut hidden : certains éléments (colorSwatches) portent une
+    // classe Tailwind de display ("flex") qui l'emporterait sinon dans la cascade.
     toHide.forEach((sel) => {
-      card.querySelectorAll(sel).forEach((el) => { el.hidden = true; });
+      card.querySelectorAll(sel).forEach((el) => { el.style.display = 'none'; });
     });
 
     return card;

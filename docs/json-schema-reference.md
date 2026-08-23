@@ -59,6 +59,12 @@
 > Module 3 (« Personnalisation du coloris par élément ») et au Module 5 (section « Coloris par
 > élément »).
 
+> **Swatches masqués par défaut (`renderMode` `none` / `live`)** : sur chaque carte produit, les
+> pastilles de sélection coloris sont masquées derrière un bouton « Changer de couleur », plutôt
+> qu'affichées en permanence. En `live_colored`, elles restent visibles en permanence (pas de bouton)
+> — cohérent avec la surcouche de colorisation temps réel. Comportement moteur, pas une propriété
+> JSON, piloté par `collection.renderMode`.
+
 ---
 
 ## `steps[]`

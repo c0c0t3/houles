@@ -6,6 +6,15 @@
 
 ---
 
+## 2026-08-23 — Coloris masqués derrière un bouton sur les cartes produit
+
+Sur chaque carte produit, les pastilles de couleur ne s'affichent plus en permanence : elles sont
+désormais cachées derrière un bouton « Changer de couleur », pour alléger l'affichage. Ce
+comportement ne concerne que les modes d'affichage sans rendu colorisé — le futur mode avec rendu
+temps réel colorisé gardera les pastilles visibles en permanence, plus cohérent avec ce mode.
+
+---
+
 ## 2026-08-23 — Les seuils de longueur n'excluent plus, ils recommandent
 
 Jusqu'ici, un seuil comme « support intermédiaire conseillé au-delà de 160 cm » rendait le produit
@@ -26,11 +35,14 @@ Deux correctifs complémentaires le même jour :
 
 ---
 
-## 2026-08-19/20 — Ajustement du sélecteur de coloris
+## 2026-08-19/20 — Ajustement de l'affichage des champs à choix
 
-Trois façons d'afficher un choix (texte seul / texte + photo produit / texte + vignette couleur)
-sont maintenant clairement séparées et explicitement choisies selon le champ, plutôt que déduites
-automatiquement — évite les affichages incohérents si une donnée venait à manquer.
+À ne pas confondre avec le point « Choix de l'affichage des couleurs par produit » ci-dessous (qui
+concerne les pastilles de couleur sur une carte produit, 2 choix). Ici il s'agit du champ
+sélecteur lui-même à l'étape 1 (ex : coloris, type de pose...) : trois façons de l'afficher
+existent maintenant côté moteur (texte seul / texte + photo produit / texte + vignette couleur),
+choisies explicitement par champ plutôt que déduites de la donnée présente — évite les affichages
+incohérents si une donnée venait à manquer. Le sélecteur de coloris utilise la 3ᵉ (vignette couleur).
 
 ---
 

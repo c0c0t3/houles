@@ -154,6 +154,7 @@ export default class Configurator extends Base {
         el._syhField = field;
         el._syhSelection = this.selection;
         el._syhColoris = this.schema.collection.coloris ?? [];
+        el._syhRenderMode = this.schema.collection.renderMode;
         // Visibilité initiale au niveau champ (showIf field-level, ex : embout_arriere en simple).
         el.hidden = !isVisible(field, this.selection);
         stepEl.appendChild(el);
