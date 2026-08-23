@@ -6,6 +6,28 @@
 
 ---
 
+## 2026-08-23 — Les seuils de longueur n'excluent plus, ils recommandent
+
+Jusqu'ici, un seuil comme « support intermédiaire conseillé au-delà de 160 cm » rendait le produit
+**invisible** en dessous de ce seuil — le client final ne pouvait pas le choisir même s'il le
+voulait. Ce n'est plus le cas : ces produits restent désormais sélectionnables à toute longueur,
+le seuil ne sert plus qu'à déterminer si le produit est **pré-sélectionné automatiquement** ou non.
+Corrigé pour les supports intermédiaires et doubles de la collection Auro Concept.
+
+La présélection automatique suit maintenant la longueur en
+temps réel (elle s'ajoute ou se retire tant que l'utilisateur n'a rien choisi lui-même sur ce champ),
+au lieu de rester figée sur le premier calcul.
+
+---
+
+## 2026-08-19/20 — Ajustement du sélecteur de coloris
+
+Trois façons d'afficher un choix (texte seul / texte + photo produit / texte + vignette couleur)
+sont maintenant clairement séparées et explicitement choisies selon le champ, plutôt que déduites
+automatiquement — évite les affichages incohérents si une donnée venait à manquer.
+
+---
+
 ## 2026-08-19 — Coloris global, correction d'images, nouveau sélecteur
 
 **Coloris global plus cohérent.** Choisir une couleur à l'étape 1 met à jour tous les produits déjà

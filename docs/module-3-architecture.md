@@ -307,13 +307,22 @@ Tolérance aux attributs absents : une condition portant sur une valeur non enco
 est traitée comme non bloquante au choix du moteur (à caler — typiquement on masque tant que le
 critère amont n'est pas renseigné).
 
-### Sélection par défaut : `first_visible`
+### Sélection par défaut : premier visible, ou `defaultIf`
 
-Le champ `default` d'un `product` accepte un `refBase` fixe, ou le mot-clé `"first_visible"`.
-Avec `first_visible`, le moteur pré-sélectionne **le premier produit qui passe le filtrage `showIf`**
-selon la sélection courante (type, diamètre, pose...), puis résout sa variante coloris. La résolution
-détaillée (filtrage produits puis résolution coloris avec fallback) est décrite au Module 5.
-L'ordre de déclaration des options devient alors significatif : le premier visible = le défaut.
+Le moteur pré-sélectionne **la première option qui passe le filtrage `showIf`** selon la sélection
+courante (type, diamètre, pose...), puis résout sa variante coloris. L'ordre de déclaration des
+options est donc significatif : le premier visible = le défaut.
+
+> **Précision (2026-08-23) :** le champ `default` (`refBase` fixe ou `"first_visible"`) décrit à
+> l'origine dans ce document n'est **pas lu par le moteur** — il n'a jamais été implémenté ainsi.
+> Le vrai mécanisme est le premier-visible décrit ci-dessus, éventuellement réordonné par
+> `defaultIf` (propriété d'option, voir `json-schema-reference.md` et Module 5) pour faire
+> gagner en priorité une option dont une condition (souvent un seuil de longueur) est remplie,
+> sans jamais la retirer de la liste des choix possibles. `default` reste toléré dans le JSON
+> (ignoré silencieusement) mais ne doit plus être utilisé comme documentation du comportement réel.
+
+La résolution détaillée (filtrage produits, priorité `defaultIf`, puis résolution coloris avec
+fallback) est décrite au Module 5.
 
 ### Contexte
 

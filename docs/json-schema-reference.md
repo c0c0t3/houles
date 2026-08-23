@@ -221,6 +221,7 @@ Grille de cartes produits avec variantes coloris.
 | `qtyParUnite` | number | non | Conditionnement — divise la quantité calculée (défaut : 1) |
 | `showIf` | object | non | Conditions de visibilité de cette option |
 | `showIfAny` | array | non | Conditions de visibilité en OU (voir section Visibilité) |
+| `defaultIf` | object | non | Même forme que `showIf`, mais influence **uniquement** le choix de l'option par défaut — jamais la visibilité. Voir « Sélection par défaut conditionnelle » ci-dessous |
 | `variants` | object | non | Variantes par coloris (absent si produit sans coloris) |
 | `variantType` | string | non | `"image"` (défaut) ou `"coloris"` — source du visuel des pastilles coloris de cette option : photo du produit dans la couleur (`variants[coloris].image`), ou vignette de coloris dédiée (`collection.coloris[].thumbnail`, indépendante du produit) |
 | `id` | string | non | Référence complète si produit sans coloris (pas de `variants`) |
@@ -261,6 +262,11 @@ Un champ `product` peut proposer une option "sans ce produit" en ajoutant une op
 > Les options `isNone` n'ont pas de `showIf` : elles sont toujours visibles, quelle que soit la configuration.
 
 > `product_toggle` n'existe plus. Tout champ autrefois `product_toggle` doit être converti en `product` avec une option `isNone`.
+
+> **Défaut conditionnel** : si une ou plusieurs options réelles portent un `defaultIf`, placer
+> l'option `isNone` **en premier, sans `defaultIf`** — elle sert alors de choix par défaut « neutre »
+> tant qu'aucune option réelle ne remplit sa condition, sans jamais masquer ces options. Voir
+> « Sélection par défaut conditionnelle — `defaultIf` » plus haut.
 
 ---
 
@@ -327,6 +333,58 @@ Utilisé quand un produit doit apparaître pour deux plages de valeurs non conti
 Chaque entrée du tableau est un bloc `showIf` complet (AND interne). Il suffit qu'**un** bloc soit vrai pour que l'option soit visible.
 
 > **Convention** : `showIf` pour les conditions simples et les plages uniques. `showIfAny` uniquement quand deux plages de longueur non contiguës doivent activer la même option (exemple typique : tube 180 cm visible pour ≤ 180 cm **ou** > 240 cm et donc en plusieurs qty avec coupe).
+
+---
+
+## Sélection par défaut conditionnelle — `defaultIf`
+
+`defaultIf` porte la **même forme** que `showIf` (mêmes formes de condition : liste de valeurs, seuils
+`gt`/`gte`/`lt`/`lte`, `not`, `selected:`), mais son rôle est différent : il n'affecte **jamais** la
+visibilité d'une option, seulement son éligibilité à devenir le choix pré-sélectionné par défaut.
+
+```json
+{
+  "refBase": "66732",
+  "label": "2 Supports mixtes plafond-mur Ø 16 mm",
+  "showIf": { "type_pose": ["mur", "plafond"], "diametre": ["16"] },
+  "defaultIf": { "longueur": { "gt": 160 } }
+}
+```
+
+Dans cet exemple, l'option est **visible et sélectionnable manuellement quelle que soit la
+longueur** (le `showIf` ne porte plus de condition de longueur) ; mais elle ne devient le choix
+**automatique** que si la longueur configurée dépasse 160 cm.
+
+### Algorithme de résolution du défaut
+
+Parmi les options visibles (déjà filtrées par `showIf`), le moteur choisit dans cet ordre :
+
+1. La première option visible dont le `defaultIf` correspond à la sélection courante.
+2. Sinon, la première option visible qui ne porte **aucun** `defaultIf` (comportement historique,
+   inchangé pour tout champ qui ne déclare pas cette propriété).
+3. Sinon (toutes les options visibles portent un `defaultIf` qui ne correspond pas), la première
+   option visible tout court — filet de sécurité qui garantit qu'un champ obligatoire n'est jamais
+   laissé sans sélection.
+
+L'option retenue en 2 ou 3 reste un choix par défaut ordinaire ; `defaultIf` ne fait que faire
+gagner en priorité une option normalement plus bas dans l'ordre de déclaration quand sa condition
+est remplie. Une option jamais choisie par défaut reste toujours sélectionnable manuellement par
+l'utilisateur — c'est tout l'intérêt de séparer `defaultIf` de `showIf`.
+
+### Combiner avec une option `isNone`
+
+Pour qu'un champ optionnel ne présélectionne **rien** tant qu'aucune option n'est recommandée,
+combiner `defaultIf` avec une option `isNone` (voir plus bas) placée sans `defaultIf` : elle sert de
+palier 2 (choix par défaut « neutre ») tant qu'aucune option réelle ne remplit son `defaultIf`.
+
+```json
+{ "refBase": "none", "label": "Sans support intermédiaire", "isNone": true },
+{ "refBase": "66732", "label": "…", "showIf": { "...": "..." }, "defaultIf": { "longueur": { "gt": 160 } } }
+```
+
+En dessous de 160 cm : aucune option réelle ne remplit son `defaultIf` → l'option `isNone` (palier 2,
+premier ungated) est retenue par défaut. Au-dessus de 160 cm : l'option réelle remplit son
+`defaultIf` → elle passe en palier 1 et devient le défaut, sans jamais avoir été masquée.
 
 ---
 

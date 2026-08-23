@@ -26,54 +26,98 @@ sélection amont, et une **mini-modale** pour choisir une alternative.
 
 ### Comportement
 
-- Le produit par défaut est déterminé par `default` : un `refBase` fixe, ou `"first_visible"`
-  (premier produit compatible selon la sélection — voir ci-dessous).
-- Les options sont filtrées par `showIf` (voir Module 3).
+- Le produit par défaut est le premier qui passe `showIf`, sauf priorité donnée par `defaultIf`
+  (voir ci-dessous).
+- Les options sont filtrées par `showIf` (voir Module 3) — `defaultIf` n'y participe jamais.
 - Une mini-modale informative présente les alternatives (visuel, label, prix, variantes coloris).
 - Le coloris du produit est pré-rempli par le coloris global de l'étape 1, mais reste modifiable
   par pièce (voir section Coloris).
 
 ### Champs facultatifs
 
-Certains champs produit sont optionnels (`required: false`, `default: null`) : jambes de force,
-supports intermédiaires, agrafes, accessoires. Ils ne sont pas sélectionnés au départ.
+Certains champs produit sont optionnels : jambes de force, supports intermédiaires, agrafes,
+accessoires. Ils ne sont **pas** rendus optionnels par une propriété `default: null` au niveau du
+champ (cette propriété n'est pas lue par le moteur) — l'unique mécanisme réel est une option
+`isNone` dans `options[]` (voir `json-schema-reference.md`, section "Champs produit optionnels").
+Placée en premier et sans `defaultIf`, elle devient le choix par défaut tant qu'aucune autre option
+ne remplit sa condition (voir `defaultIf` ci-dessous) ; placée en dernier, elle ne joue le rôle de
+défaut que si aucune option réelle n'est visible du tout.
 
-### Sélection par défaut : `first_visible`
+### Sélection par défaut : premier visible, priorité `defaultIf`
 
-Le champ `default` accepte un `refBase` fixe, ou le mot-clé `"first_visible"`. Avec `first_visible`,
-le défaut s'adapte à la sélection courante — utile quand le produit compatible change selon le
-diamètre, la pose, etc.
-
-La résolution se fait en **deux temps** :
+Résolution en **3 niveaux de priorité**, implémentée dans `ProductField._resolveDefault()`
+(`src/js/syh/features/product-field.js`) :
 
 ```js
-function resolveDefault(field, selection) {
-  // 1. Filtrer les produits compatibles (showIf : type, diamètre, pose, selected:...)
-  const visibles = field.options.filter(o => isVisible(o, selection));
-  if (!visibles.length) return null;
+function resolveDefault(visibleOptions, selection) {
+  // 1. Première option visible dont le defaultIf correspond à la sélection courante.
+  const matching = visibleOptions.find(
+    (o) => o.defaultIf && isVisible({ showIf: o.defaultIf }, selection)
+  );
+  if (matching) return matching;
 
-  // 2. Premier visible (l'ordre de déclaration des options fait foi)
-  const produit = visibles[0];
+  // 2. Sinon, première option visible sans defaultIf du tout (comportement historique).
+  const ungated = visibleOptions.find((o) => !o.defaultIf);
+  if (ungated) return ungated;
 
-  // 3. Résolution du coloris : coloris global si dispo, sinon fallback
-  let coloris = null;
-  if (produit.variants) {
-    coloris = produit.variants[selection.coloris]
-      ? selection.coloris
-      : Object.keys(produit.variants)[0]; // fallback : premier coloris dispo
-  }
-  return { refBase: produit.refBase, coloris };
+  // 3. Filet de sécurité : première option visible tout court (jamais de champ vide).
+  return visibleOptions[0];
 }
 ```
 
-Deux choses importantes :
+Puis résolution du coloris de l'option retenue :
 
-- **L'ordre de déclaration des options compte** : le premier produit qui passe `showIf` devient le
-  défaut. Ranger les options par ordre de préférence commerciale.
+```js
+function resolveColoris(produit, selection) {
+  if (!produit.variants) return null;
+  return produit.variants[selection.coloris]
+    ? selection.coloris
+    : Object.keys(produit.variants)[0]; // fallback : premier coloris dispo
+}
+```
+
+Points importants :
+
+- **`showIf` et `defaultIf` ont des rôles strictement séparés.** `showIf` décide ce qui est
+  sélectionnable ; `defaultIf` décide seulement ce qui est pré-sélectionné. Une option jamais
+  choisie par défaut reste toujours sélectionnable manuellement — c'est précisément le problème que
+  `defaultIf` résout : avant son introduction (2026-08-23), un seuil numérique dans `showIf` (ex :
+  « support intermédiaire conseillé au-delà de 160 cm ») rendait l'option totalement invisible en
+  dessous du seuil, alors que le client final doit pouvoir la choisir quand même.
+- **L'ordre de déclaration des options compte** pour le niveau 2 (fallback ungated) et le niveau 3
+  (filet de sécurité) : ranger les options par ordre de préférence commerciale. Pour le niveau 1
+  (`defaultIf` correspondant), c'est la première correspondance qui gagne, indépendamment de sa
+  position par rapport aux options non gatées.
 - **Fallback coloris** : si le coloris global de l'étape 1 n'existe pas pour ce produit, le moteur
   prend le premier coloris disponible. Pour les collections où tous les produits ont tous les coloris
   (ex : ACEA, Auro), ce cas ne se présente pas. Pour les collections hétérogènes, à décider :
   fallback silencieux (comportement actuel) ou message « produit indisponible dans ce coloris ».
+- **La résolution reste dynamique tant que l'utilisateur n'a rien cliqué sur ce champ.** Un champ
+  jamais touché manuellement recalcule son défaut à **chaque** changement de sélection (pas
+  seulement quand l'option courante devient invisible) : si la longueur passe de 200 à 100 cm, un
+  support intermédiaire auto-sélectionné à 200 cm redescend automatiquement sur `none` en dessous du
+  seuil. Dès qu'un choix explicite a lieu (clic sur une carte), ce suivi s'arrête : le choix de
+  l'utilisateur reste figé tant qu'il reste visible, même si les conditions changent ensuite —
+  jamais réécrasé silencieusement. État porté par `ProductField._isDefaultSelection` (bascule à
+  `false` au premier clic).
+
+### Exemple réel : support intermédiaire conseillé au-delà de 160 cm
+
+```json
+{ "refBase": "none", "label": "Sans support intermédiaire", "isNone": true },
+{
+  "refBase": "66732",
+  "label": "2 Supports mixtes plafond-mur Ø 16 mm (interm.)",
+  "showIf": { "type_pose": ["mur", "plafond"], "diametre": ["16"] },
+  "defaultIf": { "longueur": { "gt": 160 } }
+}
+```
+
+- Longueur ≤ 160 cm : les deux options sont visibles ; aucune ne remplit son `defaultIf` (l'option
+  `none` n'en a pas) → niveau 2 retient `none` → rien n'est ajouté au panier, mais l'utilisateur
+  peut sélectionner 66732 manuellement s'il le souhaite.
+- Longueur > 160 cm : 66732 remplit son `defaultIf` → niveau 1 la retient → elle devient le défaut,
+  sans jamais avoir été masquée aux longueurs inférieures.
 
 ### Dépendance produit → produit
 

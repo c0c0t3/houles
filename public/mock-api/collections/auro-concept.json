@@ -609,10 +609,7 @@
                 ],
                 "diametre": [
                   "16"
-                ],
-                "longueur": {
-                  "gt": 160
-                }
+                ]
               },
               "variants": {
                 "24": {
@@ -646,7 +643,12 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_38_P1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              }
             },
             {
               "refBase": "66734",
@@ -659,10 +661,7 @@
                 ],
                 "diametre": [
                   "25"
-                ],
-                "longueur": {
-                  "gt": 160
-                }
+                ]
               },
               "variants": {
                 "24": {
@@ -696,7 +695,12 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              }
             },
             {
               "refBase": "66736",
@@ -709,10 +713,7 @@
                 ],
                 "diametre": [
                   "31"
-                ],
-                "longueur": {
-                  "gt": 160
-                }
+                ]
               },
               "variants": {
                 "24": {
@@ -746,7 +747,12 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              }
             },
             {
               "refBase": "66785",
@@ -758,10 +764,7 @@
                 ],
                 "diametre": [
                   "16+25"
-                ],
-                "longueur": {
-                  "gt": 160
-                }
+                ]
               },
               "variants": {
                 "24": {
@@ -795,7 +798,12 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              }
             },
             {
               "refBase": "66783",
@@ -1081,6 +1089,11 @@
           },
           "options": [
             {
+              "refBase": "none",
+              "label": "Sans support intermédiaire",
+              "isNone": true
+            },
+            {
               "refBase": "66764",
               "label": "Support mur pour anneaux ouverts Ø 25 mm",
               "qtyParUnite": 1,
@@ -1092,9 +1105,6 @@
                 "diametre": [
                   "25"
                 ],
-                "longueur": {
-                  "gt": 160
-                },
                 "type_rideau": [
                   "simple"
                 ]
@@ -1131,7 +1141,12 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              }
             },
             {
               "refBase": "66769",
@@ -1144,10 +1159,7 @@
                 ],
                 "diametre": [
                   "31"
-                ],
-                "longueur": {
-                  "gt": 160
-                }
+                ]
               },
               "variants": {
                 "24": {
@@ -1181,12 +1193,22 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 220
+                }
+              }
             },
             {
               "refBase": "66776",
               "label": "2 Supports mur extensibles 110mm Ø 16 mm (interm.)",
               "qtyParUnite": 2,
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              },
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -1195,9 +1217,6 @@
                 "diametre": [
                   "16"
                 ],
-                "longueur": {
-                  "gt": 160
-                },
                 "selected:support": [
                   "66776",
                   "66778",
@@ -1251,9 +1270,6 @@
                 "diametre": [
                   "25"
                 ],
-                "longueur": {
-                  "gt": 160
-                },
                 "selected:support": [
                   "66776",
                   "66778",
@@ -1293,7 +1309,12 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              }
             },
             {
               "refBase": "66779",
@@ -1307,9 +1328,6 @@
                 "diametre": [
                   "31"
                 ],
-                "longueur": {
-                  "gt": 160
-                },
                 "selected:support": [
                   "66776",
                   "66778",
@@ -1349,7 +1367,12 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              }
             },
             {
               "refBase": "66732",
@@ -1363,9 +1386,6 @@
                 "diametre": [
                   "16"
                 ],
-                "longueur": {
-                  "gt": 160
-                },
                 "selected:support": [
                   "66732",
                   "66734",
@@ -1405,7 +1425,12 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_38_P1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              }
             },
             {
               "refBase": "66734",
@@ -1419,9 +1444,6 @@
                 "diametre": [
                   "25"
                 ],
-                "longueur": {
-                  "gt": 160
-                },
                 "selected:support": [
                   "66732",
                   "66734",
@@ -1461,7 +1483,12 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              }
             },
             {
               "refBase": "66736",
@@ -1475,9 +1502,6 @@
                 "diametre": [
                   "31"
                 ],
-                "longueur": {
-                  "gt": 160
-                },
                 "selected:support": [
                   "66732",
                   "66734",
@@ -1517,7 +1541,12 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              }
             }
           ]
         },

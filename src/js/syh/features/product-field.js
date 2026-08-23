@@ -13,6 +13,12 @@ export default class ProductField extends Base {
   _coloris = [];
   _selectedRefBase = null;
   _cardColoris = new Map(); // refBase → coloris sélectionné sur cette carte
+  // Vrai tant que la sélection courante vient de la résolution automatique (jamais cliquée par
+  // l'utilisateur) : dans ce cas elle continue à suivre `defaultIf` en temps réel (ex : un
+  // changement de longueur peut la faire basculer). Devient faux dès qu'un clic explicite a lieu
+  // (onCardsChange) — la sélection de l'utilisateur n'est alors plus jamais réécrasée tant qu'elle
+  // reste visible. Voir docs/module-5-etapes-intermediaires.md.
+  _isDefaultSelection = true;
 
   mounted() {
     try {
@@ -80,15 +86,47 @@ export default class ProductField extends Base {
 
     this.$refs.label.style.display = '';
 
-    // Sélection par défaut ou fallback si le produit actuel n'est plus visible
-    if (!this._selectedRefBase || !visible.find((o) => o.refBase === this._selectedRefBase)) {
-      this._selectedRefBase = visible[0].refBase;
+    // Sélection par défaut : recalculée tant que l'utilisateur n'a rien cliqué explicitement
+    // (_isDefaultSelection), pour suivre defaultIf en temps réel (ex : changement de longueur qui
+    // fait franchir un seuil). Sinon, seulement si le choix de l'utilisateur n'est plus visible.
+    if (this._isDefaultSelection || !this._selectedRefBase || !visible.find((o) => o.refBase === this._selectedRefBase)) {
+      this._selectedRefBase = this._resolveDefault(visible, effectiveSel).refBase;
+      this._isDefaultSelection = true;
     }
 
     for (const option of visible) {
       const coloris = this._resolveColoris(option);
       container.appendChild(this._buildCard(option, coloris));
     }
+  }
+
+  /**
+   * Résout l'option par défaut parmi les options visibles, en 3 niveaux de priorité :
+   *   1. La première option visible dont le `defaultIf` correspond à la sélection courante.
+   *   2. Sinon, la première option visible sans `defaultIf` du tout (comportement historique,
+   *      inchangé pour tous les champs qui ne déclarent pas `defaultIf`).
+   *   3. Sinon (toutes les options visibles sont gatées par un `defaultIf` qui ne correspond pas),
+   *      la première option visible tout court — filet de sécurité pour ne jamais laisser un champ
+   *      obligatoire sans sélection.
+   *
+   * `defaultIf` (même forme que `showIf`) ne filtre jamais la visibilité — seulement le choix du
+   * défaut. Une option non retenue comme défaut reste sélectionnable manuellement par
+   * l'utilisateur. Voir docs/module-5-etapes-intermediaires.md.
+   *
+   * @param {object[]} visible - Options déjà filtrées par `showIf`.
+   * @param {object} effectiveSelection - Sélection courante (diamètre déjà résolu avant/arrière).
+   * @returns {object} L'option retenue comme défaut.
+   */
+  _resolveDefault(visible, effectiveSelection) {
+    const matchingDefault = visible.find(
+      (o) => o.defaultIf && isVisible({ showIf: o.defaultIf }, effectiveSelection)
+    );
+    if (matchingDefault) return matchingDefault;
+
+    const ungated = visible.find((o) => !o.defaultIf);
+    if (ungated) return ungated;
+
+    return visible[0];
   }
 
   // Sélection effective : remplace diametre par la part avant/arriere si diametreFrom est déclaré.
@@ -220,6 +258,7 @@ export default class ProductField extends Base {
     const radio = event.target.closest('input[type="radio"]');
     if (!radio) return;
     this._selectedRefBase = radio.dataset.product;
+    this._isDefaultSelection = false; // choix explicite : ne plus suivre defaultIf automatiquement
     this._emitChange();
   }
 
