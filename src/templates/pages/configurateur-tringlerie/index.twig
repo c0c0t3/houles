@@ -119,6 +119,10 @@
           <div data-component="ProductField" class="mb-6">
             <p data-ref="label" class="block text-sm font-medium uppercase mb-3"></p>
 
+            {# Justification de la présélection automatique (option.defaultMessage, affiché  #}
+            {# quand l'option sélectionnée a un defaultIf qui correspond) — masqué sinon.     #}
+            <p data-ref="defaultMessage" class="text-sm text-gray-600 italic mb-3" hidden></p>
+
             {# Grille des cartes produit (générées dynamiquement) #}
             <div data-ref="cards" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
 

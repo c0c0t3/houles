@@ -45,25 +45,33 @@ défaut que si aucune option réelle n'est visible du tout.
 
 ### Sélection par défaut : premier visible, priorité `defaultIf`
 
-Résolution en **3 niveaux de priorité**, implémentée dans `ProductField._resolveDefault()`
+**L'ordre de déclaration reste prioritaire** — `defaultIf` ne fait jamais sauter une option devant
+une option normale (sans condition) déclarée avant elle dans le JSON ; il comble seulement l'absence
+d'alternative. Implémenté dans `ProductField._resolveDefault()`
 (`src/js/syh/features/product-field.js`) :
 
 ```js
 function resolveDefault(visibleOptions, selection) {
-  // 1. Première option visible dont le defaultIf correspond à la sélection courante.
-  const matching = visibleOptions.find(
-    (o) => o.defaultIf && isVisible({ showIf: o.defaultIf }, selection)
-  );
-  if (matching) return matching;
+  // 1. Parmi les options réelles (hors isNone), dans l'ordre de déclaration : la première qui n'a
+  //    pas de defaultIf (toujours éligible), ou dont le defaultIf correspond à la sélection.
+  const real = visibleOptions.filter((o) => !o.isNone);
+  const eligible = real.find((o) => !o.defaultIf || isVisible({ showIf: o.defaultIf }, selection));
+  if (eligible) return eligible;
 
-  // 2. Sinon, première option visible sans defaultIf du tout (comportement historique).
-  const ungated = visibleOptions.find((o) => !o.defaultIf);
-  if (ungated) return ungated;
+  // 2. Sinon (tout est gaté, rien ne correspond), la première option isNone si le champ en a une.
+  const none = visibleOptions.find((o) => o.isNone);
+  if (none) return none;
 
   // 3. Filet de sécurité : première option visible tout court (jamais de champ vide).
   return visibleOptions[0];
 }
 ```
+
+Une option gatée par `defaultIf` ne devient donc jamais le défaut si une option non gatée la
+précède dans la liste — même quand sa condition est remplie. Elle ne prend le relais que si elle
+est la première option réelle **ou** si toutes les options qui la précèdent sont elles-mêmes gatées
+et ne correspondent pas. C'est cette règle qui a corrigé un bug initial (2026-08-23) où une option
+gatée doublait systématiquement une option normale mieux placée dès que sa condition devenait vraie.
 
 Puis résolution du coloris de l'option retenue :
 
@@ -84,10 +92,17 @@ Points importants :
   `defaultIf` résout : avant son introduction (2026-08-23), un seuil numérique dans `showIf` (ex :
   « support intermédiaire conseillé au-delà de 160 cm ») rendait l'option totalement invisible en
   dessous du seuil, alors que le client final doit pouvoir la choisir quand même.
-- **L'ordre de déclaration des options compte** pour le niveau 2 (fallback ungated) et le niveau 3
-  (filet de sécurité) : ranger les options par ordre de préférence commerciale. Pour le niveau 1
-  (`defaultIf` correspondant), c'est la première correspondance qui gagne, indépendamment de sa
-  position par rapport aux options non gatées.
+- **L'ordre de déclaration des options compte partout, y compris pour `defaultIf`** : ranger les
+  options par ordre de préférence commerciale reste la règle générale. Une option `defaultIf` ne
+  gagne que si aucune option non gatée ne la précède — elle ne double jamais une alternative
+  normale mieux placée dans la liste, même quand sa condition est remplie.
+- **`defaultMessage`** (string, sur l'option) : texte affiché au-dessus de la grille de produits,
+  après le label du champ, dès qu'une option visible du champ a un `defaultIf` qui correspond à la
+  configuration courante — **indépendamment de la sélection réelle**. C'est une recommandation liée
+  à la config (ex : la longueur), pas à ce que l'utilisateur a choisi : si celui-ci sélectionne
+  "Sans support intermédiaire" malgré la recommandation, le message reste affiché tant que la
+  condition est remplie — il ne disparaît que si la config repasse sous le seuil. Sans effet sans
+  `defaultIf`. Voir `json-schema-reference.md`.
 - **Fallback coloris** : si le coloris global de l'étape 1 n'existe pas pour ce produit, le moteur
   prend le premier coloris disponible. Pour les collections où tous les produits ont tous les coloris
   (ex : ACEA, Auro), ce cas ne se présente pas. Pour les collections hétérogènes, à décider :
@@ -109,15 +124,27 @@ Points importants :
   "refBase": "66732",
   "label": "2 Supports mixtes plafond-mur Ø 16 mm (interm.)",
   "showIf": { "type_pose": ["mur", "plafond"], "diametre": ["16"] },
-  "defaultIf": { "longueur": { "gt": 160 } }
+  "defaultIf": { "longueur": { "gt": 160 } },
+  "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
 }
 ```
 
-- Longueur ≤ 160 cm : les deux options sont visibles ; aucune ne remplit son `defaultIf` (l'option
-  `none` n'en a pas) → niveau 2 retient `none` → rien n'est ajouté au panier, mais l'utilisateur
-  peut sélectionner 66732 manuellement s'il le souhaite.
-- Longueur > 160 cm : 66732 remplit son `defaultIf` → niveau 1 la retient → elle devient le défaut,
-  sans jamais avoir été masquée aux longueurs inférieures.
+- Longueur ≤ 160 cm : les deux options sont visibles ; 66732 ne remplit pas son `defaultIf` → l'option
+  `none` (seule option réelle éligible — elle n'a pas de `defaultIf`) est retenue → rien n'est ajouté
+  au panier, mais l'utilisateur peut sélectionner 66732 manuellement s'il le souhaite. Pas de message.
+- Longueur > 160 cm : 66732 remplit son `defaultIf` et est la seule option réelle → elle devient le
+  défaut, sans jamais avoir été masquée aux longueurs inférieures, et `defaultMessage` s'affiche
+  au-dessus de la grille. **Le message reste affiché même si l'utilisateur clique ensuite "Sans
+  support intermédiaire"** : il dépend de la longueur configurée, pas de la sélection réelle — il ne
+  disparaît que si la longueur repasse à 160 cm ou moins.
+
+**Remarque sur `support` (champ obligatoire, pas `opt_support_interm`)** : les refBase 66732,
+66734, 66736 y sont précédées par une alternative sans condition (66776, 66778, 66779 —
+« Supports extensibles »), qui gagne donc toujours au niveau 1 malgré le seuil de longueur. Leur
+`defaultIf` n'y déclenche jamais la présélection automatique — il reste utile si l'utilisateur les
+sélectionne manuellement (`defaultMessage` s'affiche alors pour confirmer que le choix est dans la
+plage recommandée), mais n'agit comme véritable défaut que dans `opt_support_interm`, où elles sont
+les seules options réelles disponibles pour ce cas.
 
 ### Dépendance produit → produit
 

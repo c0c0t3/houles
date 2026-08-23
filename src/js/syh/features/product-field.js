@@ -4,7 +4,7 @@ import { isVisible, resolveLabel } from './show-if.js';
 export default class ProductField extends Base {
   static config = {
     name: 'ProductField',
-    refs: ['label', 'cards'],
+    refs: ['label', 'cards', 'defaultMessage'],
     emits: ['changed'],
   };
 
@@ -94,6 +94,8 @@ export default class ProductField extends Base {
       this._isDefaultSelection = true;
     }
 
+    this._updateDefaultMessage(visible, effectiveSel);
+
     for (const option of visible) {
       const coloris = this._resolveColoris(option);
       container.appendChild(this._buildCard(option, coloris));
@@ -101,13 +103,17 @@ export default class ProductField extends Base {
   }
 
   /**
-   * Résout l'option par défaut parmi les options visibles, en 3 niveaux de priorité :
-   *   1. La première option visible dont le `defaultIf` correspond à la sélection courante.
-   *   2. Sinon, la première option visible sans `defaultIf` du tout (comportement historique,
-   *      inchangé pour tous les champs qui ne déclarent pas `defaultIf`).
-   *   3. Sinon (toutes les options visibles sont gatées par un `defaultIf` qui ne correspond pas),
-   *      la première option visible tout court — filet de sécurité pour ne jamais laisser un champ
-   *      obligatoire sans sélection.
+   * Résout l'option par défaut parmi les options visibles. L'ordre de déclaration reste
+   * prioritaire — `defaultIf` ne fait jamais sauter une option gatée devant une option normale
+   * déclarée avant elle, il ne comble que l'absence d'alternative :
+   *   1. Parmi les options réelles (hors `isNone`), dans l'ordre de déclaration : la première qui
+   *      n'a pas de `defaultIf` (toujours éligible), OU dont le `defaultIf` correspond à la
+   *      sélection courante. Une option gatée ne devient donc le défaut que si aucune option non
+   *      gatée ne la précède dans la liste.
+   *   2. Sinon (aucune option réelle éligible — toutes gatées, aucune ne correspond), la première
+   *      option `isNone` si le champ en a une (ex : "Sans support intermédiaire").
+   *   3. Sinon, la première option visible tout court — filet de sécurité pour ne jamais laisser un
+   *      champ obligatoire sans sélection.
    *
    * `defaultIf` (même forme que `showIf`) ne filtre jamais la visibilité — seulement le choix du
    * défaut. Une option non retenue comme défaut reste sélectionnable manuellement par
@@ -118,15 +124,44 @@ export default class ProductField extends Base {
    * @returns {object} L'option retenue comme défaut.
    */
   _resolveDefault(visible, effectiveSelection) {
-    const matchingDefault = visible.find(
-      (o) => o.defaultIf && isVisible({ showIf: o.defaultIf }, effectiveSelection)
+    const real = visible.filter((o) => !o.isNone);
+    const eligible = real.find(
+      (o) => !o.defaultIf || isVisible({ showIf: o.defaultIf }, effectiveSelection)
     );
-    if (matchingDefault) return matchingDefault;
+    if (eligible) return eligible;
 
-    const ungated = visible.find((o) => !o.defaultIf);
-    if (ungated) return ungated;
+    const none = visible.find((o) => o.isNone);
+    if (none) return none;
 
     return visible[0];
+  }
+
+  /**
+   * Affiche le message qui justifie une recommandation (option.defaultMessage) dès qu'une option
+   * visible du champ a un `defaultIf` qui correspond **actuellement** à la sélection — que cette
+   * option soit sélectionnée ou non. C'est une recommandation liée à la configuration, pas à la
+   * sélection : elle reste affichée même si l'utilisateur choisit explicitement "Sans" ou une
+   * autre option, tant que la condition (ex : longueur) reste remplie. Masqué uniquement si aucune
+   * option ne correspond à son `defaultIf`.
+   *
+   * @param {object[]} visible - Options déjà filtrées par `showIf`.
+   * @param {object} effectiveSelection - Sélection courante (diamètre déjà résolu avant/arrière).
+   */
+  _updateDefaultMessage(visible, effectiveSelection) {
+    const el = this.$refs.defaultMessage;
+    if (!el) return;
+
+    const matching = visible.find(
+      (o) => o.defaultIf && o.defaultMessage && isVisible({ showIf: o.defaultIf }, effectiveSelection)
+    );
+    const message = matching?.defaultMessage ?? null;
+
+    if (message) {
+      el.textContent = message;
+      el.hidden = false;
+    } else {
+      el.hidden = true;
+    }
   }
 
   // Sélection effective : remplace diametre par la part avant/arriere si diametreFrom est déclaré.

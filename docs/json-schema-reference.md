@@ -222,6 +222,7 @@ Grille de cartes produits avec variantes coloris.
 | `showIf` | object | non | Conditions de visibilité de cette option |
 | `showIfAny` | array | non | Conditions de visibilité en OU (voir section Visibilité) |
 | `defaultIf` | object | non | Même forme que `showIf`, mais influence **uniquement** le choix de l'option par défaut — jamais la visibilité. Voir « Sélection par défaut conditionnelle » ci-dessous |
+| `defaultMessage` | string | non | Texte affiché au-dessus de la grille de produits (après le label du champ) dès que le `defaultIf` de **cette option** correspond à la sélection courante — **indépendamment de ce qui est réellement sélectionné**. Reste visible même si l'utilisateur choisit une autre option (ex : "Sans"). Sans effet sans `defaultIf` |
 | `variants` | object | non | Variantes par coloris (absent si produit sans coloris) |
 | `variantType` | string | non | `"image"` (défaut) ou `"coloris"` — source du visuel des pastilles coloris de cette option : photo du produit dans la couleur (`variants[coloris].image`), ou vignette de coloris dédiée (`collection.coloris[].thumbnail`, indépendante du produit) |
 | `id` | string | non | Référence complète si produit sans coloris (pas de `variants`) |
@@ -353,23 +354,26 @@ visibilité d'une option, seulement son éligibilité à devenir le choix pré-s
 
 Dans cet exemple, l'option est **visible et sélectionnable manuellement quelle que soit la
 longueur** (le `showIf` ne porte plus de condition de longueur) ; mais elle ne devient le choix
-**automatique** que si la longueur configurée dépasse 160 cm.
+**automatique** que si la longueur configurée dépasse 160 cm **et** qu'aucune option non gatée ne
+la précède dans la liste (voir algorithme ci-dessous).
 
 ### Algorithme de résolution du défaut
 
-Parmi les options visibles (déjà filtrées par `showIf`), le moteur choisit dans cet ordre :
+**L'ordre de déclaration reste prioritaire** — `defaultIf` ne fait jamais sauter une option devant
+une option normale (sans condition) déclarée avant elle ; il comble seulement l'absence
+d'alternative. Parmi les options visibles (déjà filtrées par `showIf`), hors options `isNone` :
 
-1. La première option visible dont le `defaultIf` correspond à la sélection courante.
-2. Sinon, la première option visible qui ne porte **aucun** `defaultIf` (comportement historique,
-   inchangé pour tout champ qui ne déclare pas cette propriété).
-3. Sinon (toutes les options visibles portent un `defaultIf` qui ne correspond pas), la première
-   option visible tout court — filet de sécurité qui garantit qu'un champ obligatoire n'est jamais
-   laissé sans sélection.
+1. Dans l'ordre de déclaration, la première option qui n'a **pas** de `defaultIf` (toujours
+   éligible), OU dont le `defaultIf` correspond à la sélection courante.
+2. Si aucune ne qualifie (toutes gatées, aucune ne correspond), la première option `isNone` du
+   champ, s'il en a une.
+3. Sinon, la première option visible tout court — filet de sécurité qui garantit qu'un champ
+   obligatoire n'est jamais laissé sans sélection.
 
-L'option retenue en 2 ou 3 reste un choix par défaut ordinaire ; `defaultIf` ne fait que faire
-gagner en priorité une option normalement plus bas dans l'ordre de déclaration quand sa condition
-est remplie. Une option jamais choisie par défaut reste toujours sélectionnable manuellement par
-l'utilisateur — c'est tout l'intérêt de séparer `defaultIf` de `showIf`.
+Une option `defaultIf` déclarée après une option sans condition ne prend donc jamais le dessus sur
+elle, même quand sa condition est remplie — sauf s'il n'y a rien d'autre. Une option jamais choisie
+par défaut reste toujours sélectionnable manuellement par l'utilisateur — c'est tout l'intérêt de
+séparer `defaultIf` de `showIf`.
 
 ### Combiner avec une option `isNone`
 
@@ -379,12 +383,22 @@ palier 2 (choix par défaut « neutre ») tant qu'aucune option réelle ne rempl
 
 ```json
 { "refBase": "none", "label": "Sans support intermédiaire", "isNone": true },
-{ "refBase": "66732", "label": "…", "showIf": { "...": "..." }, "defaultIf": { "longueur": { "gt": 160 } } }
+{
+  "refBase": "66732",
+  "label": "…",
+  "showIf": { "...": "..." },
+  "defaultIf": { "longueur": { "gt": 160 } },
+  "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+}
 ```
 
-En dessous de 160 cm : aucune option réelle ne remplit son `defaultIf` → l'option `isNone` (palier 2,
-premier ungated) est retenue par défaut. Au-dessus de 160 cm : l'option réelle remplit son
-`defaultIf` → elle passe en palier 1 et devient le défaut, sans jamais avoir été masquée.
+En dessous de 160 cm : l'option réelle ne remplit pas son `defaultIf` → l'option `isNone` (palier 2)
+est retenue par défaut, et aucun message ne s'affiche. Au-dessus de 160 cm : l'option réelle remplit
+son `defaultIf` → elle passe en palier 1 et devient le défaut, sans jamais avoir été masquée ; le
+`defaultMessage` s'affiche au-dessus de la grille de produits pour signaler la recommandation —
+**et continue de s'afficher même si l'utilisateur choisit ensuite "Sans support intermédiaire"**
+manuellement, tant que la longueur reste au-dessus de 160 cm. Le message dépend uniquement de la
+configuration, jamais de ce qui est effectivement sélectionné.
 
 ---
 

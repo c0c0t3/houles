@@ -18,6 +18,12 @@ La présélection automatique suit maintenant la longueur en
 temps réel (elle s'ajoute ou se retire tant que l'utilisateur n'a rien choisi lui-même sur ce champ),
 au lieu de rester figée sur le premier calcul.
 
+Deux correctifs complémentaires le même jour :
+- Un produit « recommandé au-delà d'une longueur » ne doublait pas toujours le bon produit par
+  défaut — corrigé pour respecter l'ordre de préférence prévu dans les données.
+- Message explicatif ajouté au-dessus des produits quand l'un d'eux est présélectionné parce qu'il
+  correspond à une recommandation (ex : « Recommandé au-delà de 160 cm d'entraxe »).
+
 ---
 
 ## 2026-08-19/20 — Ajustement du sélecteur de coloris

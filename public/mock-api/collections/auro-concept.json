@@ -648,7 +648,8 @@
                 "longueur": {
                   "gt": 160
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             },
             {
               "refBase": "66734",
@@ -700,7 +701,8 @@
                 "longueur": {
                   "gt": 160
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             },
             {
               "refBase": "66736",
@@ -752,7 +754,8 @@
                 "longueur": {
                   "gt": 160
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             },
             {
               "refBase": "66785",
@@ -803,7 +806,8 @@
                 "longueur": {
                   "gt": 160
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             },
             {
               "refBase": "66783",
@@ -1146,7 +1150,8 @@
                 "longueur": {
                   "gt": 160
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             },
             {
               "refBase": "66769",
@@ -1198,7 +1203,8 @@
                 "longueur": {
                   "gt": 220
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 220 cm d'entraxe."
             },
             {
               "refBase": "66776",
@@ -1256,7 +1262,8 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris"
+              "variantType": "coloris",
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             },
             {
               "refBase": "66778",
@@ -1314,7 +1321,8 @@
                 "longueur": {
                   "gt": 160
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             },
             {
               "refBase": "66779",
@@ -1372,7 +1380,8 @@
                 "longueur": {
                   "gt": 160
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             },
             {
               "refBase": "66732",
@@ -1430,7 +1439,8 @@
                 "longueur": {
                   "gt": 160
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             },
             {
               "refBase": "66734",
@@ -1488,7 +1498,8 @@
                 "longueur": {
                   "gt": 160
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             },
             {
               "refBase": "66736",
@@ -1546,7 +1557,8 @@
                 "longueur": {
                   "gt": 160
                 }
-              }
+              },
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
             }
           ]
         },
