@@ -51,7 +51,7 @@
 | `id` | string | Identifiant du coloris, clé des `variants` des produits |
 | `label` | string | Libellé affiché dans le nuancier |
 | `image` | string | Photo de référence de la couleur (grand format). Non consommée par le moteur actuellement — donnée descriptive, gardée pour référence / usage futur |
-| `thumbnail` | string | Vignette compacte de la couleur (petit format, ex : swatch rond). Utilisée pour le champ `coloris` de l'étape 1 (`variant: "label"`, affichée à côté du label si disponible — retirée du DOM sinon) et pour les pastilles coloris des options `product` déclarées en `variantType: "coloris"` (voir plus bas) |
+| `thumbnail` | string | Vignette compacte de la couleur (petit format, ex : swatch rond). Utilisée pour le champ `coloris` de l'étape 1 (`variant: "label_thumbnail"`, réservé à ce champ — voir Module 4) et pour les pastilles coloris des options `product` déclarées en `variantType: "coloris"` (voir plus bas) |
 
 > **Propagation du coloris global** : cliquer une option du champ `coloris` (étape 1) réaligne le
 > coloris de tous les produits déjà sélectionnés qui proposent cette couleur — pas seulement le

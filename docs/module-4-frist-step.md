@@ -57,8 +57,15 @@ composants séparés (le châssis — bordure, indicateur de sélection — est 
 | `variant` | Contenu affiché | Layout |
 |---|---|---|
 | `label` | label seul | compact, centré |
-| `label_image` | label + image | titre + image |
+| `label_image` | label + image (`opt.image`, photo de l'option) | image au-dessus du label |
+| `label_thumbnail` | label + vignette coloris (`collection.coloris[].thumbnail`, résolue par id) | vignette ronde à côté du label — réservé au champ `coloris` |
 | `card` | label + image + description | image à gauche, texte à droite |
+
+Le `variant` détermine **quelle source d'image** utiliser, jamais l'inverse : `label_image` lit
+toujours `opt.image` et `label_thumbnail` résout toujours `collection.coloris[]` par id, même si la
+donnée est absente (dans ce cas l'élément image est retiré du DOM, mais le variant ne change pas
+tout seul). Cohérent avec la règle générale : le variant est explicite dans le JSON, jamais déduit
+des données présentes.
 
 Les classes sont calculées en haut du template Twig (map de variantes), le markup reste lisible.
 Le `variant` est **explicite dans le JSON**, jamais déduit des données présentes.
@@ -184,7 +191,7 @@ Ces paramètres servent de critères de filtrage pour les étapes produit suivan
 | `type_rideau` | radio | label_image | simple / double |
 | `type_pose` | radio | label_image | mur, plafond, mur à mur, corner (corner conditionnel) |
 | `longueur` | length | — | presets + sur-mesure (min/max) |
-| `coloris` | radio | — | coloris global, pré-remplit les produits (modifiable par pièce ensuite) |
+| `coloris` | radio | label_thumbnail | coloris global, pré-remplit les produits (modifiable par pièce ensuite) |
 
 ### Points spécifiques de l'étape 1
 

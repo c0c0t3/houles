@@ -40,20 +40,29 @@
               <div data-ref="options" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
             </fieldset>
 
-            {# Template d'une option : label seul (+ thumbnail coloris si disponible) #}
+            {# Template d'une option : label seul #}
             <template data-template="radio-option--label">
-              <label class="flex items-center gap-2 cursor-pointer  px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+              <label class="flex items-center cursor-pointer  px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
                 <input data-ref="input" type="radio" class="sr-only" />
-                <img data-ref="thumbnail" alt="" class="w-6 h-6 rounded-full object-cover shrink-0" />
                 <span data-ref="optLabel"></span>
               </label>
             </template>
 
-            {# Template d'une option : label + image #}
+            {# Template d'une option : label + image (photo produit, opt.image) #}
             <template data-template="radio-option--label_image">
               <label class="flex flex-col aspect-square shrink-0 lg:aspect-auto justify-center items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
                 <input data-ref="input" type="radio" class="sr-only" />
                 <img data-ref="image" alt="" class=" w-44 mix-blend-multiply h-auto object-contain" />
+                <span data-ref="optLabel"></span>
+              </label>
+            </template>
+
+            {# Template d'une option : label + vignette coloris (collection.coloris[].thumbnail) #}
+            {# Réservé au champ `coloris` — voir docs/json-schema-reference.md.                  #}
+            <template data-template="radio-option--label_thumbnail">
+              <label class="flex items-center gap-2 cursor-pointer  px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+                <input data-ref="input" type="radio" class="sr-only" />
+                <img data-ref="image" alt="" class="w-6 h-6 rounded-full object-cover shrink-0" />
                 <span data-ref="optLabel"></span>
               </label>
             </template>
@@ -115,8 +124,8 @@
 
             {# Template d'une carte produit                                     #}
             {# label + radio : sélection accessible, pas de <button> imbriqué  #}
-            <template data-template="product-card">
-              <label class="flex flex-col gap-2 p-4 w-72 rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
+            <template data-template="product-card" >
+              <label class="relative pb-16 flex flex-col gap-2 p-4 w-72 rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
                 <input type="radio" class="sr-only" />
                 <div class="w-full aspect-square bg-gray-50 rounded overflow-hidden">
                   <img data-ref="productImage" alt="" class="mix-blend-multiply w-full h-full object-contain" />
@@ -129,7 +138,7 @@
                   <span data-ref="productQty" class="text-gray-500"></span>
                 </div>
                 <span data-ref="productStock" class="text-xs"></span>
-                <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-1"></div>
+                <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-1 absolute bottom-4 left-4 right-4"></div>
               </label>
             </template>
 
@@ -137,7 +146,7 @@
             <template data-template="product-swatch">
               <button
                 type="button"
-                class="w-10 h-10 rounded-full ring-1 ring-offset-1 ring-transparent [&.is-active]:ring-2 [&.is-active]:ring-purple/80 [&.is-active]:ring-offset-2"
+                class="w-10 h-10 rounded-sm ring-1 ring-offset-1 ring-transparent [&.is-active]:ring-2 [&.is-active]:ring-purple/80 [&.is-active]:ring-offset-2"
                 title=""
               ></button>
             </template>

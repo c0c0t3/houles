@@ -8,13 +8,13 @@
         "id": "24",
         "label": "Laiton brossé",
         "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_24_L1_1.jpg",
-        "thumbnail": "/assets/syh/tmp/24.png"
+        "thumbnail": "/assets/syh/tmp/24.jpg"
       },
       {
         "id": "31",
         "label": "Acier brossé",
         "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_31_L1_1.jpg",
-        "thumbnail": "/assets/syh/tmp/31.jpg"
+        "thumbnail": "/assets/syh/tmp/31.png"
       },
       {
         "id": "34",
@@ -177,7 +177,7 @@
           "id": "coloris",
           "label": "Coloris",
           "type": "radio",
-          "variant": "label",
+          "variant": "label_thumbnail",
           "isParam": true,
           "options": [
             {
