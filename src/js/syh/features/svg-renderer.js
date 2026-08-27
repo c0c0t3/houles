@@ -42,21 +42,17 @@ function applyFill(svgEl, hex) {
 }
 
 /**
- * Construit le calque (fetch + parsing + wrapper DOM), sans le coloriser — la couleur est
- * appliquée séparément par l'appelant, une fois le calque en place.
+ * Parse un texte SVG et normalise l'élément `<svg>` pour l'empilement en calque.
  *
  * Si le SVG source n'a pas de `viewBox`, on en dérive un depuis `width`/`height` **avant** de les
  * retirer : sans ça, un SVG sans viewBox retombe sur la taille par défaut du navigateur et son
  * contenu (le `<g>`, les paths...) se retrouve décalé/mal mis à l'échelle une fois étiré en
  * `w-full h-full` par CSS — le viewBox est ce qui garde le système de coordonnées d'origine.
  *
- * @param {HTMLElement} container
- * @param {string} layerKey
- * @param {string} svgUrl
- * @returns {Promise<HTMLElement|null>}
+ * @param {string} svgText
+ * @returns {SVGElement|null} L'élément `<svg>` normalisé, ou `null` si le texte est invalide.
  */
-async function createLayer(container, layerKey, svgUrl) {
-  const svgText = await fetchSvgText(svgUrl);
+function buildSvgElement(svgText) {
   const template = document.createElement('template');
   template.innerHTML = svgText.trim();
   const svgEl = template.content.querySelector('svg');
@@ -70,13 +66,35 @@ async function createLayer(container, layerKey, svgUrl) {
   svgEl.removeAttribute('width');
   svgEl.removeAttribute('height');
   svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-  // mix-blend-multiply : même traitement que les photos produit (voir index.twig), pour que la
-  // teinte se fonde avec les ombres/reliefs du calque photo dessous plutôt que de l'écraser.
-  svgEl.classList.add('w-full', 'h-full', 'mix-blend-multiply');
+  // `absolute` : les deux SVG du calque (voir SVG_BLEND_LAYERS) se superposent dans le wrapper.
+  svgEl.classList.add('w-full', 'h-full', 'absolute', 'inset-0');
+  return svgEl;
+}
 
-  // Un calque pour ce layerKey a pu être créé entre-temps par un autre appel (autre svgUrl) —
-  // on le remplace plutôt que d'empiler.
-  container.querySelector(`[data-svg-layer="${layerKey}"]`)?.remove();
+// Le même fichier SVG est inliné deux fois dans le calque, superposé avec deux modes de fusion —
+// même intention que les photos produit (voir index.twig) : faire réagir la teinte aux
+// ombres/reliefs du calque photo dessous plutôt que de l'écraser en aplat.
+//  - svg1 (opacity-50 + multiply) : dépose la teinte dans les ombres et les creux.
+//  - svg2 (overlay) : relance le contraste et les reliefs.
+// Ordre du tableau = ordre DOM = ordre d'empilement (svg2 au-dessus de svg1).
+// Les deux reçoivent la même couleur via applyFill (voir renderSvgLayer).
+const SVG_BLEND_LAYERS = [
+  ['opacity-50', 'mix-blend-multiply'],
+  ['mix-blend-overlay'],
+];
+
+/**
+ * Construit le calque (fetch + parsing + wrapper DOM), sans le coloriser — la couleur est
+ * appliquée séparément par l'appelant, une fois le calque en place. Le wrapper contient les
+ * deux `<svg>` décrits par `SVG_BLEND_LAYERS`, empilés par ordre DOM.
+ *
+ * @param {HTMLElement} container
+ * @param {string} layerKey
+ * @param {string} svgUrl
+ * @returns {Promise<HTMLElement|null>}
+ */
+async function createLayer(container, layerKey, svgUrl) {
+  const svgText = await fetchSvgText(svgUrl);
 
   const wrapper = document.createElement('div');
   wrapper.dataset.svgLayer = layerKey;
@@ -85,7 +103,17 @@ async function createLayer(container, layerKey, svgUrl) {
   // Pas de z-index ici : l'appelant (live-preview.js) gère l'empilement au niveau du wrapper de
   // champ, en insérant ce calque après le calque photo dans le DOM.
   wrapper.className = 'absolute inset-0 pointer-events-none';
-  wrapper.appendChild(svgEl);
+
+  for (const blendClasses of SVG_BLEND_LAYERS) {
+    const svgEl = buildSvgElement(svgText);
+    if (!svgEl) return null; // fichier invalide : pas de calque plutôt qu'un calque cassé
+    svgEl.classList.add(...blendClasses);
+    wrapper.appendChild(svgEl);
+  }
+
+  // Un calque pour ce layerKey a pu être créé entre-temps par un autre appel (autre svgUrl) —
+  // on le remplace plutôt que d'empiler.
+  container.querySelector(`[data-svg-layer="${layerKey}"]`)?.remove();
   container.appendChild(wrapper);
   return wrapper;
 }
@@ -116,8 +144,8 @@ export async function renderSvgLayer(container, layerKey, svgUrl, hex) {
     if (!wrapper) return; // fichier invalide (voir createLayer)
   }
 
-  const svgEl = wrapper.querySelector('svg');
-  if (svgEl) applyFill(svgEl, hex);
+  // Les deux SVG du calque (voir SVG_BLEND_LAYERS) reçoivent la même couleur.
+  wrapper.querySelectorAll('svg').forEach((svgEl) => applyFill(svgEl, hex));
 }
 
 /**
