@@ -28,6 +28,12 @@ export default class ProductField extends Base {
       this._coloris = this.$el._syhColoris ?? [];
       this._renderMode = this.$el._syhRenderMode ?? 'none';
       if (!this._field) return;
+      // En `live_colored`, les cartes sont horizontales (voir `product-card--live-colored` dans
+      // index.twig) et s'empilent en colonne — la grille par défaut reste en ligne/wrap.
+      if (this._renderMode === 'live_colored') {
+        this.$refs.cards.classList.remove('lg:flex-wrap');
+        this.$refs.cards.classList.add('flex-col');
+      }
       this.$refs.label.textContent = resolveLabel(this._field, this._selection);
       this._render();
       // Ne pas émettre si le champ est masqué (showIf non satisfait) :
@@ -498,8 +504,14 @@ export default class ProductField extends Base {
   // Clonage des templates
   // -------------------------------------------------------------------------
 
+  // En `live_colored`, la carte est horizontale (image à gauche, colonne texte + swatchs à droite,
+  // swatchs dans le flux) — template Twig distinct `product-card--live-colored`. Fallback sur la
+  // carte standard s'il est absent. Mêmes data-ref dans les deux, le reste du build est inchangé.
   _cloneCardTemplate() {
-    const tpl = this.$el.querySelector('[data-template="product-card"]');
+    const key = this._renderMode === 'live_colored' ? 'product-card--live-colored' : 'product-card';
+    const tpl =
+      this.$el.querySelector(`[data-template="${key}"]`) ??
+      this.$el.querySelector('[data-template="product-card"]');
     if (!tpl) { console.warn('[ProductField] template "product-card" introuvable'); return document.createElement('div'); }
     return tpl.content.cloneNode(true).firstElementChild;
   }

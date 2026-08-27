@@ -373,6 +373,26 @@
               "renderImage": "/assets/syh/tmp/support-argent.png"
             },
             {
+              "refBase": "66772",
+              "label": "2 Supports mur extensibles 110mm Ø 16 mm ROND",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_pose": [
+                  "mur"
+                ],
+                "diametre": [
+                  "16"
+                ]
+              },
+              "svgUrl": "/assets/syh/tmp/support-argent-rond-detourage.svg",
+              "noColoris": true,
+              "id": "667762-31",
+              "prix": 76.92,
+              "stock": 86,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_31_L1_1.jpg",
+              "renderImage": "/assets/syh/tmp/support-argent-rond.png"
+            },
+            {
               "refBase": "66778",
               "label": "2 Supports mur extensibles 110mm Ø 25 mm",
               "qtyParUnite": 2,

@@ -163,11 +163,38 @@
               </label>
             </template>
 
+            {# Template d'une carte produit — variante renderMode "live_colored"    #}
+            {# Horizontale : image à gauche, colonne texte + swatchs à droite       #}
+            {# (parent flex-col). Les swatchs sont dans le flux, à la suite du       #}
+            {# texte (pas en absolute) : en live_colored ils restent toujours        #}
+            {# visibles. Mêmes data-ref que la carte standard — le JS clone l'un ou  #}
+            {# l'autre selon _renderMode (voir product-field.js _cloneCardTemplate). #}
+            <template data-template="product-card--live-colored">
+              <label class="relative flex gap-4 p-4 w-full rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
+                <input type="radio" class="sr-only" />
+                <div class="w-32 shrink-0 aspect-square bg-gray-50 rounded overflow-hidden">
+                  <img data-ref="productImage" alt="" class="mix-blend-multiply w-full h-full object-contain" />
+                </div>
+                <div class="flex flex-col gap-1 min-w-0 flex-1">
+                  <span data-ref="productName" class="text-sm font-medium leading-tight"></span>
+                  <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>
+                  <div class="flex items-center gap-1 text-sm">
+                    <span data-ref="productPrice" class="font-medium"></span>
+                    <span class="text-gray-400">×</span>
+                    <span data-ref="productQty" class="text-gray-500"></span>
+                  </div>
+                  <span data-ref="productStock" class="text-xs"></span>
+                  {# Dans le flux ici (pas d'absolute) — swatchs à la suite du texte. #}
+                  <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-2"></div>
+                </div>
+              </label>
+            </template>
+
             {# Template d'un swatch coloris #}
             <template data-template="product-swatch">
               <button
                 type="button"
-                class="w-10 h-10 rounded-sm ring-1 ring-offset-1 ring-transparent [&.is-active]:ring-2 [&.is-active]:ring-purple/80 [&.is-active]:ring-offset-2"
+                class="w-6 h-6 rounded-full ring-1 ring-offset-1 ring-transparent [&.is-active]:ring-2 [&.is-active]:ring-purple/80 [&.is-active]:ring-offset-2"
                 title=""
               ></button>
             </template>
