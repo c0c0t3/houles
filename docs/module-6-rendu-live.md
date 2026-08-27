@@ -63,6 +63,16 @@ donnée — cohérent avec le principe directeur du configurateur (« piloté pa
 Module 3). Détail de la propriété à formaliser dans `json-schema-reference.md` lors de
 l'implémentation.
 
+**Calque photo + calque SVG du même champ : pas de z-index intermédiaire (2026-08-27).** Un
+champ avec `svgUrl` a deux calques (photo `renderImage` + SVG colorisé). Premier essai : donner au
+SVG un z-index `layerOrder + 0.5` pour le faire passer au-dessus de sa photo — **invalide en CSS**
+(`z-index` n'accepte que des entiers, une valeur comme `2.5` est silencieusement ignorée par le
+navigateur, le calque retombe sur l'empilement par défaut). Corrigé : les deux calques d'un même
+champ partagent un **wrapper commun** (`getFieldLayerWrapper()`) qui porte le seul z-index entier
+(`layerOrder`) ; à l'intérieur, c'est l'**ordre DOM** qui décide — le calque photo est toujours
+inséré en premier (`wrapper.prepend`), le calque SVG après, donc visuellement au-dessus. Aucun
+calcul de z-index entre les deux n'est plus nécessaire.
+
 ### Source des images : `renderImage` (distinct de `variant.image`)
 
 **Les visuels du rendu live sont différents des visuels du `ProductField`.** L'image affichée dans la
@@ -144,11 +154,69 @@ Correspondance avec la configuration :
 | `live_colored` | images produits superposées | + couche de colorisation SVG par-dessus |
 
 `live_colored` = `live` + une surcouche SVG colorisable (fill dynamique selon le coloris choisi).
-Le mécanisme de colorisation SVG (calques SVG, `data-fill`, simulation mat/brillant) est **à définir
-ultérieurement** — non couvert par cette version du doc.
 
 Le moteur de composition des calques est le même pour les deux modes ; seule la surcouche SVG
 s'ajoute en `live_colored`.
+
+### Mécanisme de colorisation SVG (2026-08-26)
+
+Un champ produit dont l'option sélectionnée porte `svgUrl` (voir `json-schema-reference.md`) reçoit
+un calque SVG supplémentaire, superposé juste au-dessus de son calque photo (`renderImage`) :
+
+1. Le SVG est chargé **en inline via fetch** (jamais en `<img>` ou `url()`), pour pouvoir cibler ses
+   éléments en JS — voir CLAUDE.md, section « Rendu SVG ».
+2. Chaque élément colorisable porte un attribut `data-fill` (pas de valeur imposée pour l'instant —
+   le premier gabarit de test utilise `data-fill=""`, une seule zone).
+3. Le fichier SVG est **coloris-agnostique** : `svgUrl` est une propriété d'**option**, pas de
+   variante — un seul fichier sert pour toutes les couleurs d'un produit. La couleur réellement
+   appliquée vient de `collection.coloris[<coloris sélectionné>].hex`, injectée via
+   `element.setAttribute('fill', hex)` sur chaque `[data-fill]`.
+4. Le SVG chargé est mis en cache par URL (`svgTextCache` dans `svg-renderer.js`) : changer de
+   coloris ne refait pas de `fetch`, seule la couleur des éléments déjà en DOM est mise à jour.
+5. Un champ dont l'option sélectionnée n'a pas de `svgUrl`, ou dont le coloris sélectionné n'a pas
+   de `hex` dans `collection.coloris[]`, ne pilote aucun calque SVG (comportement cohérent avec
+   `renderImage` : pas de placeholder, pas de calque cassé).
+6. Le calque SVG porte `mix-blend-mode: multiply` (classe Tailwind `mix-blend-multiply`) — même
+   traitement que les photos produit du reste du configurateur — pour que la teinte se fonde avec
+   les ombres/reliefs de la photo dessous plutôt que de l'aplatir en couleur opaque.
+
+Implémenté dans `svg-renderer.js` (chargement, cache, application de la couleur) et branché depuis
+`live-preview.js` (`refreshLivePreview` prend un 4ᵉ paramètre `coloris` = `collection.coloris[]`).
+
+Testé sur un seul produit (support, collection de démo `auro-concept-live-colored.json`) avec un
+SVG placeholder très simple (une forme, un seul `data-fill`) — le cadrage/alignement réel et la
+simulation mat/brillant restent à affiner une fois les vrais visuels fournis par Houlès (voir
+Points de décision encore ouverts).
+
+### Décorrélation coloris / variants dans `auro-concept-live-colored.json` (2026-08-27)
+
+Cette collection de test n'a plus de `variants` sur ses options produit — toutes sont passées au
+modèle `noColoris: true` (id/prix/stock/image/renderImage au niveau option, voir
+`json-schema-reference.md` section « Champs produit optionnels »). Périmètre limité à cette
+collection : `auro-concept.json` et `auro-concept-live.json` gardent le système `coloris`/`variants`
+actuel, inchangé.
+
+### Palette de coloris pour les produits `noColoris` (2026-08-27)
+
+Le champ `coloris` (étape 1, radio `variant: "label_thumbnail"`) est réintroduit dans cette
+collection avec **20 options placeholder** (au lieu des 5 couleurs catalogue des autres
+collections) — en attendant la vraie palette Houlès. Aucun changement de composant : c'est le même
+`RadioField` que pour `auro-concept.json`.
+
+Côté cartes produit, `ProductField` distingue maintenant deux cas dans `_resolveColoris`,
+`_fillSwatches`, `_applySwatchVisibility` et `applyGlobalColoris` :
+- **`option.variants` présent** (autres collections) : comportement inchangé, résolution par clé de
+  variante.
+- **`option.noColoris` en `renderMode: "live_colored"`** : la couleur est choisie librement dans
+  toute la palette (`collection.coloris[]`), sans variante à faire correspondre — n'importe quelle
+  entrée de la palette est valide. Les pastilles utilisent `hex` en fond uni faute de vignette
+  dédiée pour les couleurs placeholder.
+
+Le point ouvert précédent (« rien ne renseigne jamais `produit.coloris` ») est levé : le circuit
+`coloris` global → `applyGlobalColoris` → `_cardColoris` → `_emitChange` → `selection.produits.
+<champ>.coloris` fonctionne pour les options `noColoris` exactement comme pour les options à
+`variants` — c'est ce qui alimente `resolveHex()` dans `live-preview.js` pour coloriser le calque
+SVG.
 
 ---
 
@@ -158,7 +226,7 @@ Un seul moteur gère les trois modes ; il adapte le layout et l'aperçu :
 
 - `none` → `.colG` masquée, layout 1 colonne, aucun rendu.
 - `live` → `.colG` visible, layout 2 colonnes, composition de calques images.
-- `live_colored` → idem `live` + surcouche colorisation SVG (à définir).
+- `live_colored` → idem `live` + surcouche colorisation SVG (voir section 3 ci-dessus).
 
 Le passage d'un mode à l'autre est piloté par la seule valeur `renderMode` de la collection. Le front
 lit ce champ et active/masque `.colG` en conséquence.
@@ -170,7 +238,7 @@ lit ce champ et active/masque `.colG` en conséquence.
 ```
 src/js/syh/features/
   live-preview.js      ← composition et mise à jour des calques (colonne gauche)
-  svg-renderer.js      ← surcouche colorisation SVG (live_colored, à définir)
+  svg-renderer.js      ← chargement, cache et colorisation des calques SVG (live_colored)
 ```
 
 `live-preview.js` écoute les changements de `selection.produits` et met à jour les calques. Il ne
@@ -181,8 +249,11 @@ gère aucune interaction sur l'image (pas de zones cliquables) — c'est un rend
 ## Points de décision encore ouverts
 
 - Cadrage / alignement des visuels produits fournis par le client (référentiel commun des calques).
-- Mécanisme complet de colorisation SVG pour `live_colored` (calques SVG, `data-fill`, mat/brillant)
-  — à spécifier dans une version ultérieure de ce doc.
+- Simulation mat/brillant sur les calques SVG (le mécanisme actuel applique une teinte plate via
+  `fill`, sans distinction de finition).
+- Convention définitive pour `data-fill` (valeur libre pour l'instant, ex. `"primary"`/`"shadow"`
+  pour distinguer plusieurs zones colorisables dans un même SVG — pas encore nécessaire avec un
+  seul gabarit de test à une seule zone).
 
 ## Décisions tranchées (2026-08-12)
 

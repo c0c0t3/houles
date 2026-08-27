@@ -143,6 +143,15 @@ export default class Configurator extends Base {
         stepEl.appendChild(createEmboutsMessageElement());
       }
 
+      // Étape Récapitulatif : reprend le même rendu que le bandeau permanent (renderRecap),
+      // dans un conteneur dédié — voir _renderRecap(). `fields: []` dans le JSON, rien à cloner ici.
+      if (step.id === 'recap') {
+        const recapStepContent = document.createElement('div');
+        recapStepContent.dataset.ref = 'recapStepContent';
+        recapStepContent.className = 'flex flex-col gap-3';
+        stepEl.appendChild(recapStepContent);
+      }
+
       const expanded = this._expandFields(step.fields);
       this._expandedStepFields[i] = expanded;
 
@@ -430,9 +439,18 @@ export default class Configurator extends Base {
    * Reconstruit le bandeau de récapitulatif de l'étape 1 (paramètres de configuration), plus
    * le dernier total calculé dans la modale "Calcul de longueur".
    * Affiché en permanence au-dessus du stepper pour rappeler les choix structurants.
+   *
+   * Si la collection déclare une étape `recap` (voir _renderAllSteps), son conteneur dédié reçoit
+   * le même rendu — pas de logique différente, juste une seconde cible pour renderRecap().
    */
   _renderRecap() {
     renderRecap(this.$refs.recap, this.schema, this.selection, this._longueurTotalAvecEmbouts);
+
+    const recapStepIndex = this.schema.steps.findIndex((s) => s.id === 'recap');
+    const recapStepContent = this._stepEls[recapStepIndex]?.querySelector('[data-ref="recapStepContent"]');
+    if (recapStepContent) {
+      renderRecap(recapStepContent, this.schema, this.selection, this._longueurTotalAvecEmbouts);
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -448,7 +466,7 @@ export default class Configurator extends Base {
   _refreshLivePreview() {
     if (!this._hasLive) return;
     const allFields = this._expandedStepFields.flat();
-    refreshLivePreview(this._renderedImageEl, allFields, this.selection);
+    refreshLivePreview(this._renderedImageEl, allFields, this.selection, this.schema.collection.coloris ?? []);
   }
 
   // -------------------------------------------------------------------------

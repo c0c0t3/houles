@@ -42,7 +42,8 @@
   "id": "laiton",
   "label": "Laiton brillant",
   "image": "/img/coloris/laiton.jpg",
-  "thumbnail": "/img/coloris/laiton-thumb.jpg"
+  "thumbnail": "/img/coloris/laiton-thumb.jpg",
+  "hex": "#C9A66B"
 }
 ```
 
@@ -52,6 +53,7 @@
 | `label` | string | Libellé affiché dans le nuancier |
 | `image` | string | Photo de référence de la couleur (grand format). Non consommée par le moteur actuellement — donnée descriptive, gardée pour référence / usage futur |
 | `thumbnail` | string | Vignette compacte de la couleur (petit format, ex : swatch rond). Utilisée pour le champ `coloris` de l'étape 1 (`variant: "label_thumbnail"`, réservé à ce champ — voir Module 4) et pour les pastilles coloris des options `product` déclarées en `variantType: "coloris"` (voir plus bas) |
+| `hex` | string | Couleur hexadécimale appliquée aux éléments `[data-fill]` des calques SVG en `renderMode: "live_colored"` (voir Module 6). Sans effet dans les autres modes |
 
 > **Propagation du coloris global** : cliquer une option du champ `coloris` (étape 1) réaligne le
 > coloris de tous les produits déjà sélectionnés qui proposent cette couleur — pas seulement le
@@ -64,6 +66,12 @@
 > qu'affichées en permanence. En `live_colored`, elles restent visibles en permanence (pas de bouton)
 > — cohérent avec la surcouche de colorisation temps réel. Comportement moteur, pas une propriété
 > JSON, piloté par `collection.renderMode`.
+
+> **Taille de la palette** : `collection.coloris[]` n'a pas de limite imposée par le moteur — 5
+> entrées ou 20, aucune différence de code. `auro-concept-live-colored.json` en déclare 20
+> (placeholder, en attendant la vraie palette Houlès), affichées via le champ `coloris` (variant
+> `label_thumbnail`) et, sur chaque carte produit `noColoris`, via les mêmes pastilles que le
+> système `variants` (`_fillSwatches`/`applyGlobalColoris` couvrent les deux cas — voir Module 6).
 
 ---
 
@@ -232,11 +240,12 @@ Grille de cartes produits avec variantes coloris.
 | `variants` | object | non | Variantes par coloris (absent si produit sans coloris) |
 | `variantType` | string | non | `"image"` (défaut) ou `"coloris"` — source du visuel des pastilles coloris de cette option : photo du produit dans la couleur (`variants[coloris].image`), ou vignette de coloris dédiée (`collection.coloris[].thumbnail`, indépendante du produit) |
 | `id` | string | non | Référence complète si produit sans coloris (pas de `variants`) |
-| `noColoris` | boolean | non | `true` pour les produits sans coloris (visserie, rouleurs…) |
+| `noColoris` | boolean | non | `true` pour les produits sans coloris (visserie, rouleurs…). Cas particulier en `renderMode: "live_colored"` : une option `noColoris` porte quand même une couleur, choisie librement dans toute la palette `collection.coloris[]` (pas de variante à faire correspondre) — voir note ci-dessous |
 | `tubeLength` | number | non | Longueur du tube en cm — requis sur les options de type tube pour le calcul `segmented` |
 | `replacesEmbouts` | boolean | non | `true` sur une option du champ `support` (naissances murales, corners) — voir section dédiée ci-dessous |
 | `longueurEmbout` | number | non | Longueur en cm de l'embout — sur les options du champ `embout`, utilisée par la modale "Calcul de longueur" |
 | `recouvrementEmbout` | number | non | Recouvrement en cm de l'embout sur le tube — sur les options du champ `embout`, utilisée par la modale "Calcul de longueur" |
+| `svgUrl` | string | Chemin du calque SVG colorisable pour `renderMode: "live_colored"` (voir Module 6). Propriété d'**option**, pas de variante : un seul fichier sert pour toutes les couleurs — les éléments `[data-fill]` du SVG sont recolorés dynamiquement en JS selon `collection.coloris[].hex` |
 
 **Propriétés d'une variante :**
 
@@ -247,7 +256,6 @@ Grille de cartes produits avec variantes coloris.
 | `stock` | number | Quantité en stock |
 | `image` | string | Image catalogue de la variante — carte produit / mini-modale (colonne droite). Prioritaire sur l'image coloris |
 | `renderImage` | string | Image détourée dédiée au calque du rendu visuel — colonne gauche `.colG`. Modes `live` / `live_colored` uniquement (voir Module 6). Distincte de `image` : cadrage différent, pensé pour la superposition |
-| `svgUrl` | string | Chemin SVG pour la composition visuelle (mode `live_colored`) |
 
 ---
 

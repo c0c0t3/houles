@@ -3,13 +3,17 @@
 {% block body %}
   <div class="container">
     <div data-component="Syh" data-option-collection="auro-concept-live" class="flex max-w-full">
-      <div data-ref="colG" class="flex-1">
+      {# min-w-0 sur les deux colonnes : un enfant flex-1 refuse par défaut de rétrécir sous la  #}
+      {# taille min-content de son contenu (min-width:auto implicite). Sans ça, une étape avec   #}
+      {# beaucoup de contenu horizontal (ex : la ligne de swatches coloris, 20 pastilles) pousse  #}
+      {# la colonne de droite à réclamer toute la largeur et écrase colG à 0.                    #}
+      <div data-ref="colG" class="flex-1 min-w-0">
         {# Ratio fixe indépendant de la hauteur du panneau de droite (qui varie selon l'étape) — #}
         {# référentiel commun aux calques, voir docs/module-6-rendu-live.md. À ajuster une fois   #}
         {# le ratio réel des visuels connu (placeholder 3:4 pour l'instant).                      #}
         <div id="renderedImage" class="w-full aspect-[3/4] sticky top-20"></div>
       </div>
-      <div class=" text-black flex-1 max-w-full">
+      <div class=" text-black flex-1 max-w-full min-w-0">
         {# Récapitulatif persistant de la sélection courante #}
         <div data-ref="recap" class=" max-w-full flex lg:overflow-auto overflow-scroll items-start lg:flex-wrap lg:items-center gap-x-6 gap-y-1 px-6 py-3 bg-gray-50 border-b text-sm min-h-10"></div>
 
@@ -62,7 +66,9 @@
             <template data-template="radio-option--label_thumbnail">
               <label class="flex items-center gap-2 cursor-pointer  px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
                 <input data-ref="input" type="radio" class="sr-only" />
-                <img data-ref="image" alt="" class="w-6 h-6 rounded-full object-cover shrink-0" />
+                {# span plutôt qu'img : accepte aussi bien une vignette (background-image) qu'une #}
+                {# couleur unie (background-color) quand il n'y a pas de vignette dédiée.          #}
+                <span data-ref="image" class="w-6 h-6 rounded-full shrink-0 bg-cover bg-center"></span>
                 <span data-ref="optLabel"></span>
               </label>
             </template>

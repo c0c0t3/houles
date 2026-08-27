@@ -58,22 +58,31 @@ export default class RadioField extends Base {
 
       el.querySelector('[data-ref="optLabel"]').textContent = opt.label;
 
-      // Source de l'image déterminée par le `variant` déclaré, jamais déduite de la donnée
-      // présente : "label_image" = photo de l'option (opt.image) ; "label_thumbnail" = vignette
-      // coloris résolue par id via collection.coloris[] (pas portée par l'option elle-même).
-      const img = el.querySelector('[data-ref="image"]');
-      if (img) {
-        let src = null;
-        if (variant === 'label_thumbnail') {
-          src = this._coloris.find((c) => String(c.id) === String(opt.id))?.thumbnail ?? null;
-        } else {
-          src = opt.image ?? null;
+      // Source déterminée par le `variant` déclaré, jamais déduite de la donnée présente :
+      // "label_image" = photo de l'option (opt.image, <img>) ; "label_thumbnail" = vignette coloris
+      // résolue par id via collection.coloris[] (pas portée par l'option elle-même, <span>).
+      if (variant === 'label_thumbnail') {
+        const swatch = el.querySelector('[data-ref="image"]');
+        if (swatch) {
+          const info = this._coloris.find((c) => String(c.id) === String(opt.id));
+          if (info?.thumbnail) {
+            swatch.style.backgroundImage = `url(${info.thumbnail})`;
+          } else if (info?.hex) {
+            // Pas de vignette dédiée (ex : palette placeholder) : couleur unie depuis `hex`.
+            swatch.style.backgroundColor = info.hex;
+          } else {
+            swatch.remove();
+          }
         }
-        if (src) {
-          img.src = src;
-          img.alt = opt.label;
-        } else {
-          img.remove();
+      } else {
+        const img = el.querySelector('[data-ref="image"]');
+        if (img) {
+          if (opt.image) {
+            img.src = opt.image;
+            img.alt = opt.label;
+          } else {
+            img.remove();
+          }
         }
       }
 

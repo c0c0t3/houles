@@ -1,0 +1,1278 @@
+{
+  "collection": {
+    "id": "auro",
+    "name": "Auro Concept",
+    "renderMode": "live_colored",
+    "coloris": [
+      {
+        "id": "1",
+        "label": "Couleur 1 (placeholder)",
+        "hex": "#CB4D4D"
+      },
+      {
+        "id": "2",
+        "label": "Couleur 2 (placeholder)",
+        "hex": "#CB734D"
+      },
+      {
+        "id": "3",
+        "label": "Couleur 3 (placeholder)",
+        "hex": "#CB984D"
+      },
+      {
+        "id": "4",
+        "label": "Couleur 4 (placeholder)",
+        "hex": "#CBBE4D"
+      },
+      {
+        "id": "5",
+        "label": "Couleur 5 (placeholder)",
+        "hex": "#B2CB4D"
+      },
+      {
+        "id": "6",
+        "label": "Couleur 6 (placeholder)",
+        "hex": "#8CCB4D"
+      },
+      {
+        "id": "7",
+        "label": "Couleur 7 (placeholder)",
+        "hex": "#66CB4D"
+      },
+      {
+        "id": "8",
+        "label": "Couleur 8 (placeholder)",
+        "hex": "#4DCB59"
+      },
+      {
+        "id": "9",
+        "label": "Couleur 9 (placeholder)",
+        "hex": "#4DCB7F"
+      },
+      {
+        "id": "10",
+        "label": "Couleur 10 (placeholder)",
+        "hex": "#4DCBA5"
+      },
+      {
+        "id": "11",
+        "label": "Couleur 11 (placeholder)",
+        "hex": "#4DCBCB"
+      },
+      {
+        "id": "12",
+        "label": "Couleur 12 (placeholder)",
+        "hex": "#4DA5CB"
+      },
+      {
+        "id": "13",
+        "label": "Couleur 13 (placeholder)",
+        "hex": "#4D7FCB"
+      },
+      {
+        "id": "14",
+        "label": "Couleur 14 (placeholder)",
+        "hex": "#4D59CB"
+      },
+      {
+        "id": "15",
+        "label": "Couleur 15 (placeholder)",
+        "hex": "#664DCB"
+      },
+      {
+        "id": "16",
+        "label": "Couleur 16 (placeholder)",
+        "hex": "#8C4DCB"
+      },
+      {
+        "id": "17",
+        "label": "Couleur 17 (placeholder)",
+        "hex": "#B24DCB"
+      },
+      {
+        "id": "18",
+        "label": "Couleur 18 (placeholder)",
+        "hex": "#CB4DBE"
+      },
+      {
+        "id": "19",
+        "label": "Couleur 19 (placeholder)",
+        "hex": "#CB4D98"
+      },
+      {
+        "id": "20",
+        "label": "Couleur 20 (placeholder)",
+        "hex": "#CB4D73"
+      }
+    ],
+    "_notes": [
+      "Diametre arriere toujours 16 mm dans les combinaisons double de cette collection.",
+      "image au niveau variante (depend du coloris). URL en dur au format Houlès : {1er}/{refBase}/{refBase}_{coloris}_L1_1.jpg. Le front consomme l'URL, ne la compose jamais. Valeurs prix/stock = placeholders de demo.",
+      "TODO : confirmer le format d'URL image pour les produits sans coloris (about de tube).",
+      "Palette de 20 couleurs PLACEHOLDER (teintes generees automatiquement) en attendant la vraie palette Houles."
+    ],
+    "serviceCoupeEan": "EAN13_COUPETUBE"
+  },
+  "steps": [
+    {
+      "id": "configuration",
+      "label": "Configuration",
+      "fields": [
+        {
+          "id": "type_de_support",
+          "label": "Type de configuration",
+          "type": "radio",
+          "variant": "label_image",
+          "isParam": true,
+          "options": [
+            {
+              "id": "simple",
+              "label": "Simple",
+              "image": "/assets/syh/picto_config_simple.webp"
+            }
+          ]
+        },
+        {
+          "id": "diametre",
+          "label": "Diametre",
+          "type": "radio",
+          "variant": "label",
+          "isParam": true,
+          "dependsOn": "type_de_support",
+          "options": {
+            "simple": [
+              {
+                "id": "16",
+                "label": "16 mm"
+              },
+              {
+                "id": "25",
+                "label": "25 mm"
+              },
+              {
+                "id": "31",
+                "label": "31 mm"
+              }
+            ],
+            "double": [
+              {
+                "id": "16+16",
+                "label": "16 + 16 mm",
+                "avant": "16",
+                "arriere": "16"
+              },
+              {
+                "id": "16+25",
+                "label": "16 + 25 mm",
+                "avant": "25",
+                "arriere": "16"
+              },
+              {
+                "id": "16+31",
+                "label": "16 + 31 mm",
+                "avant": "31",
+                "arriere": "16"
+              }
+            ]
+          }
+        },
+        {
+          "id": "type_rideau",
+          "label": "Type de rideau",
+          "type": "radio",
+          "variant": "label_image",
+          "isParam": true,
+          "options": [
+            {
+              "id": "simple",
+              "label": "Simple",
+              "image": "/assets/syh/picto_simple_rideau.webp"
+            },
+            {
+              "id": "double",
+              "label": "Double",
+              "image": "/assets/syh/picto_double_rideaux.webp"
+            }
+          ]
+        },
+        {
+          "id": "type_pose",
+          "label": "Type de pose",
+          "type": "radio",
+          "variant": "label_image",
+          "isParam": true,
+          "options": [
+            {
+              "id": "mur",
+              "label": "Mur",
+              "image": "/assets/syh/picto_mur_plafond.webp"
+            },
+            {
+              "id": "plafond",
+              "label": "Plafond",
+              "image": "/assets/syh/picto_mur_plafond.webp"
+            },
+            {
+              "id": "mur_mur",
+              "label": "Mur a mur",
+              "image": "/assets/syh/picto_mur_a_mur.webp"
+            },
+            {
+              "id": "corner",
+              "label": "Corner",
+              "image": "/assets/syh/picto_corner.webp",
+              "showIf": {
+                "diametre": [
+                  "25"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "longueur",
+          "label": "Longueur",
+          "type": "length",
+          "isParam": true,
+          "presets": [
+            180,
+            240
+          ],
+          "custom": {
+            "enabled": true,
+            "min": "100",
+            "max": "350"
+          },
+          "_note": "En custom, le moteur JS calcule les tubes a decouper (segmentation)."
+        },
+        {
+          "id": "coloris",
+          "label": "Couleur",
+          "type": "radio",
+          "isParam": true,
+          "variant": "label_thumbnail",
+          "options": [
+            {
+              "id": "1",
+              "label": "Couleur 1 (placeholder)"
+            },
+            {
+              "id": "2",
+              "label": "Couleur 2 (placeholder)"
+            },
+            {
+              "id": "3",
+              "label": "Couleur 3 (placeholder)"
+            },
+            {
+              "id": "4",
+              "label": "Couleur 4 (placeholder)"
+            },
+            {
+              "id": "5",
+              "label": "Couleur 5 (placeholder)"
+            },
+            {
+              "id": "6",
+              "label": "Couleur 6 (placeholder)"
+            },
+            {
+              "id": "7",
+              "label": "Couleur 7 (placeholder)"
+            },
+            {
+              "id": "8",
+              "label": "Couleur 8 (placeholder)"
+            },
+            {
+              "id": "9",
+              "label": "Couleur 9 (placeholder)"
+            },
+            {
+              "id": "10",
+              "label": "Couleur 10 (placeholder)"
+            },
+            {
+              "id": "11",
+              "label": "Couleur 11 (placeholder)"
+            },
+            {
+              "id": "12",
+              "label": "Couleur 12 (placeholder)"
+            },
+            {
+              "id": "13",
+              "label": "Couleur 13 (placeholder)"
+            },
+            {
+              "id": "14",
+              "label": "Couleur 14 (placeholder)"
+            },
+            {
+              "id": "15",
+              "label": "Couleur 15 (placeholder)"
+            },
+            {
+              "id": "16",
+              "label": "Couleur 16 (placeholder)"
+            },
+            {
+              "id": "17",
+              "label": "Couleur 17 (placeholder)"
+            },
+            {
+              "id": "18",
+              "label": "Couleur 18 (placeholder)"
+            },
+            {
+              "id": "19",
+              "label": "Couleur 19 (placeholder)"
+            },
+            {
+              "id": "20",
+              "label": "Couleur 20 (placeholder)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "support",
+      "label": "Support",
+      "_note": "Supports lateraux (obligatoires) + supports intermediaires (option, conseilles >160cm).",
+      "fields": [
+        {
+          "id": "support",
+          "label": "Support lateral",
+          "type": "product",
+          "default": "first_visible",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "66776",
+              "label": "2 Supports mur extensibles 110mm Ø 16 mm",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_pose": [
+                  "mur"
+                ],
+                "diametre": [
+                  "16"
+                ]
+              },
+              "svgUrl": "/assets/syh/tmp/support-argent.svg",
+              "noColoris": true,
+              "id": "66776-31",
+              "prix": 76.92,
+              "stock": 86,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_31_L1_1.jpg",
+              "renderImage": "/assets/syh/tmp/support-argent.png"
+            },
+            {
+              "refBase": "66778",
+              "label": "2 Supports mur extensibles 110mm Ø 25 mm",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "25"
+                ]
+              },
+              "noColoris": true,
+              "id": "66778-24",
+              "prix": 60.54,
+              "stock": 137,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_24_L1_1.jpg",
+              "renderImage": "/assets/syh/tmp/support-or.png"
+            },
+            {
+              "refBase": "66779",
+              "label": "2 Supports mur extensibles 110mm Ø 31 mm",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "31"
+                ]
+              },
+              "noColoris": true,
+              "id": "66779-24",
+              "prix": 49.57,
+              "stock": 180,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_24_L1_1.jpg",
+              "renderImage": "/assets/syh/tmp/support-or.png"
+            }
+          ],
+          "layerOrder": 2
+        },
+        {
+          "id": "opt_adaptateur_corner",
+          "label": "Adaptateur de tube pour corner",
+          "type": "product",
+          "default": null,
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "66754",
+              "label": "2 Adaptateurs arrière corner extra-longs (tube Ø 16 mm)",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_de_support": [
+                  "double"
+                ],
+                "type_pose": [
+                  "corner"
+                ],
+                "selected:support": [
+                  "66744"
+                ]
+              },
+              "noColoris": true,
+              "id": "66754-24",
+              "prix": 17.24,
+              "stock": 121,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66754/66754_24_L1_1.jpg"
+            }
+          ],
+          "showIf": {
+            "type_pose": [
+              "corner"
+            ]
+          }
+        },
+        {
+          "id": "opt_jambe_force",
+          "label": "Jambe de force reglable",
+          "type": "product",
+          "default": null,
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans jambes de force",
+              "isNone": true
+            },
+            {
+              "refBase": "66480",
+              "label": "2 Jambes de force réglables",
+              "qtyParUnite": 2,
+              "noColoris": true,
+              "id": "66480-24",
+              "prix": 60.56,
+              "stock": 51,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_24_S1_1.jpg"
+            }
+          ]
+        },
+        {
+          "id": "opt_support_interm",
+          "label": "Support intermediaire",
+          "type": "product",
+          "default": null,
+          "_note": "Conseille au-dela de 160 cm d'entraxe. Quantite ajustable par l'utilisateur.",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "66764",
+              "label": "Support mur pour anneaux ouverts Ø 25 mm",
+              "qtyParUnite": 1,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "25"
+                ],
+                "longueur": {
+                  "gt": 160
+                },
+                "type_rideau": [
+                  "simple"
+                ]
+              },
+              "noColoris": true,
+              "id": "66764-24",
+              "prix": 28.01,
+              "stock": 162,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66769",
+              "label": "Support mur pour anneaux ouverts Ø 31 mm",
+              "qtyParUnite": 1,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "31"
+                ],
+                "longueur": {
+                  "gt": 160
+                }
+              },
+              "noColoris": true,
+              "id": "66769-24",
+              "prix": 28.01,
+              "stock": 162,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66776",
+              "label": "2 Supports mur extensibles 110mm Ø 16 mm (interm.)",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "16"
+                ],
+                "longueur": {
+                  "gt": 160
+                },
+                "selected:support": [
+                  "66776",
+                  "66778",
+                  "66779",
+                  "66739"
+                ]
+              },
+              "noColoris": true,
+              "id": "66776-24",
+              "prix": 24.18,
+              "stock": 86,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66778",
+              "label": "2 Supports mur extensibles 110mm Ø 25 mm (interm.)",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "25"
+                ],
+                "longueur": {
+                  "gt": 160
+                },
+                "selected:support": [
+                  "66776",
+                  "66778",
+                  "66779",
+                  "66739"
+                ]
+              },
+              "noColoris": true,
+              "id": "66778-24",
+              "prix": 12.85,
+              "stock": 8,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66779",
+              "label": "2 Supports mur extensibles 110mm Ø 31 mm (interm.)",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "31"
+                ],
+                "longueur": {
+                  "gt": 160
+                },
+                "selected:support": [
+                  "66776",
+                  "66778",
+                  "66779",
+                  "66739"
+                ]
+              },
+              "noColoris": true,
+              "id": "66779-24",
+              "prix": 75.36,
+              "stock": 146,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66732",
+              "label": "2 Supports mixtes plafond-mur Ø 16 mm (interm.)",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "16"
+                ],
+                "longueur": {
+                  "gt": 160
+                },
+                "selected:support": [
+                  "66732",
+                  "66734",
+                  "66736",
+                  "66739"
+                ]
+              },
+              "noColoris": true,
+              "id": "66732-24",
+              "prix": 38.5,
+              "stock": 119,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66734",
+              "label": "2 Supports mixtes plafond-mur Ø 25 mm (interm.)",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "25"
+                ],
+                "longueur": {
+                  "gt": 160
+                },
+                "selected:support": [
+                  "66732",
+                  "66734",
+                  "66736",
+                  "66739"
+                ]
+              },
+              "noColoris": true,
+              "id": "66734-24",
+              "prix": 25.9,
+              "stock": 48,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66736",
+              "label": "2 Supports mixtes plafond-mur Ø 31 mm (interm.)",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "31"
+                ],
+                "longueur": {
+                  "gt": 160
+                },
+                "selected:support": [
+                  "66732",
+                  "66734",
+                  "66736",
+                  "66739"
+                ]
+              },
+              "noColoris": true,
+              "id": "66736-24",
+              "prix": 15.05,
+              "stock": 166,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_24_L1_1.jpg"
+            }
+          ]
+        },
+        {
+          "id": "opt_jambe_force_interm",
+          "label": "Jambe de force reglable (interm.)",
+          "type": "product",
+          "default": null,
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "66480",
+              "label": "2 Jambes de force réglables",
+              "qtyParUnite": 2,
+              "showIf": {
+                "selected:support": [
+                  "66854",
+                  "66785",
+                  "66783",
+                  "66744"
+                ]
+              },
+              "noColoris": true,
+              "id": "66480-24",
+              "prix": 23.39,
+              "stock": 102,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66480/66480_24_L1_1.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tube",
+      "label": "Tube",
+      "fields": [
+        {
+          "id": "tube",
+          "label": "Tube",
+          "type": "product",
+          "_note": "Presets 180/240 + custom. En custom, le moteur calcule la combinaison de tubes a decouper.",
+          "quantity": {
+            "mode": "segmented",
+            "lengthFrom": "configuration.longueur"
+          },
+          "splitByConfig": "type_de_support",
+          "configs": {
+            "simple": [
+              {
+                "id": "tube"
+              }
+            ],
+            "double": [
+              {
+                "id": "tube_avant",
+                "label": "Tube (avant)",
+                "diametreFrom": "avant"
+              },
+              {
+                "id": "tube_arriere",
+                "label": "Tube (arrière)",
+                "diametreFrom": "arriere"
+              }
+            ]
+          },
+          "options": [
+            {
+              "refBase": "66084",
+              "label": "Tube Ø 16 mm - 180 cm",
+              "qtyParUnite": 1,
+              "tubeLength": 180,
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "16"
+                  ],
+                  "longueur": {
+                    "lte": 180
+                  }
+                },
+                {
+                  "diametre": [
+                    "16"
+                  ],
+                  "longueur": {
+                    "gt": 240
+                  }
+                }
+              ],
+              "noColoris": true,
+              "id": "66084-24",
+              "prix": 38.46,
+              "stock": 187,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_24_L1_1.jpg",
+              "renderImage": "/assets/syh/tmp/tube-or.png"
+            },
+            {
+              "refBase": "66104",
+              "label": "Tube Ø 25 mm - 180 cm",
+              "qtyParUnite": 1,
+              "tubeLength": 180,
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "25"
+                  ],
+                  "longueur": {
+                    "lte": 180
+                  }
+                },
+                {
+                  "diametre": [
+                    "25"
+                  ],
+                  "longueur": {
+                    "gt": 240
+                  }
+                }
+              ],
+              "noColoris": true,
+              "id": "66104-24",
+              "prix": 49.7,
+              "stock": 138,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66104/66104_24_L1_1.jpg",
+              "renderImage": "/assets/syh/tmp/tube-or.png"
+            },
+            {
+              "refBase": "66124",
+              "label": "Tube Ø 31 mm - 180 cm",
+              "qtyParUnite": 1,
+              "tubeLength": 180,
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "31"
+                  ],
+                  "longueur": {
+                    "lte": 180
+                  }
+                },
+                {
+                  "diametre": [
+                    "31"
+                  ],
+                  "longueur": {
+                    "gt": 240
+                  }
+                }
+              ],
+              "noColoris": true,
+              "id": "66124-24",
+              "prix": 13.77,
+              "stock": 47,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66124/66124_24_L1_1.jpg",
+              "renderImage": "/assets/syh/tmp/tube-or.png"
+            }
+          ],
+          "layerOrder": 1
+        },
+        {
+          "id": "about_tube",
+          "label": "About de tube",
+          "type": "product",
+          "_note": "Raccord auto si plusieurs tubes. Quantite = segments - 1. Produit sans coloris.",
+          "quantity": {
+            "mode": "segmented_minus_1",
+            "lengthFrom": "configuration.longueur"
+          },
+          "splitByConfig": "type_de_support",
+          "configs": {
+            "simple": [
+              {
+                "id": "about_tube"
+              }
+            ],
+            "double": [
+              {
+                "id": "about_tube_avant",
+                "label": "About de tube (avant)",
+                "diametreFrom": "avant"
+              },
+              {
+                "id": "about_tube_arriere",
+                "label": "About de tube (arrière)",
+                "diametreFrom": "arriere"
+              }
+            ]
+          },
+          "options": [
+            {
+              "refBase": "66601",
+              "id": "66601",
+              "noColoris": true,
+              "label": "About de tube Ø 16 mm",
+              "qtyParUnite": 1,
+              "showIf": {
+                "diametre": [
+                  "16"
+                ]
+              },
+              "prix": 4.28,
+              "stock": 162,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66601/66601_L1_1.jpg"
+            },
+            {
+              "refBase": "66603",
+              "id": "66603",
+              "noColoris": true,
+              "label": "About de tube Ø 25 mm",
+              "qtyParUnite": 1,
+              "showIf": {
+                "diametre": [
+                  "25"
+                ]
+              },
+              "prix": 8.67,
+              "stock": 230,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66603/66603_L1_1.jpg"
+            },
+            {
+              "refBase": "66605",
+              "id": "66605",
+              "noColoris": true,
+              "label": "About de tube Ø 31 mm",
+              "qtyParUnite": 1,
+              "showIf": {
+                "diametre": [
+                  "31"
+                ]
+              },
+              "prix": 4.42,
+              "stock": 256,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66605/66605_L1_1.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "anneaux",
+      "label": "Anneaux",
+      "fields": [
+        {
+          "id": "anneaux",
+          "label": "Anneaux",
+          "type": "product",
+          "quantity": {
+            "mode": "per_interval",
+            "interval": 10,
+            "extra": 1,
+            "lengthFrom": "configuration.longueur",
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "66804",
+              "label": "6 Anneaux fermes Ø 16 mm (lot de 6)",
+              "qtyParUnite": 6,
+              "showIf": {
+                "diametre": [
+                  "16"
+                ],
+                "selected:support": {
+                  "not": [
+                    "66764",
+                    "66769"
+                  ]
+                }
+              },
+              "_note": "Fermes par defaut. Masques si support anneaux ouverts (66764/66769).",
+              "noColoris": true,
+              "id": "66804-24",
+              "prix": 55.09,
+              "stock": 2,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66808",
+              "label": "Anneaux fermes Ø 25 mm (lot de 6)",
+              "qtyParUnite": 6,
+              "showIf": {
+                "diametre": [
+                  "25"
+                ],
+                "selected:support": {
+                  "not": [
+                    "66764",
+                    "66769"
+                  ]
+                }
+              },
+              "noColoris": true,
+              "id": "66808-24",
+              "prix": 61.45,
+              "stock": 39,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66808/66808_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66809",
+              "label": "Anneaux fermes Ø 31 mm (lot de 6)",
+              "qtyParUnite": 6,
+              "showIf": {
+                "diametre": [
+                  "31"
+                ],
+                "selected:support": {
+                  "not": [
+                    "66764",
+                    "66769"
+                  ]
+                }
+              },
+              "noColoris": true,
+              "id": "66809-24",
+              "prix": 43.17,
+              "stock": 13,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66809/66809_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66935",
+              "label": "Anneaux ouverts Ø 25 mm (lot de 6)",
+              "qtyParUnite": 6,
+              "showIf": {
+                "diametre": [
+                  "25"
+                ],
+                "selected:support": [
+                  "66764"
+                ]
+              },
+              "_note": "Ouverts uniquement si support 66764.",
+              "noColoris": true,
+              "id": "66935-24",
+              "prix": 19.63,
+              "stock": 113,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66935/66935_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66937",
+              "label": "Anneaux ouverts Ø 31 mm (lot de 6)",
+              "qtyParUnite": 6,
+              "showIf": {
+                "diametre": [
+                  "31"
+                ],
+                "selected:support": [
+                  "66769"
+                ]
+              },
+              "noColoris": true,
+              "id": "66937-24",
+              "prix": 10.59,
+              "stock": 94,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66937/66937_24_L1_1.jpg"
+            },
+            {
+              "refBase": "none",
+              "label": "Sans anneaux",
+              "isNone": true
+            }
+          ]
+        },
+        {
+          "id": "opt_anneaux_blocage",
+          "label": "Anneaux de blocage",
+          "type": "product",
+          "quantity": {
+            "mode": "fixed",
+            "value": 2,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans anneaux de blocage",
+              "isNone": true
+            },
+            {
+              "refBase": "66870",
+              "label": "Anneaux de blocage Ø 16 mm",
+              "qtyParUnite": 1,
+              "showIf": {
+                "diametre": [
+                  "16"
+                ]
+              },
+              "noColoris": true,
+              "id": "66870-24",
+              "prix": 57.11,
+              "stock": 170,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66870/66870_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66874",
+              "label": "Anneaux de blocage Ø 25 mm",
+              "qtyParUnite": 1,
+              "showIf": {
+                "diametre": [
+                  "25"
+                ]
+              },
+              "noColoris": true,
+              "id": "66874-24",
+              "prix": 70.25,
+              "stock": 45,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66874/66874_24_L1_1.jpg"
+            },
+            {
+              "refBase": "66878",
+              "label": "Anneaux de blocage Ø 31 mm",
+              "qtyParUnite": 1,
+              "showIf": {
+                "diametre": [
+                  "31"
+                ]
+              },
+              "noColoris": true,
+              "id": "66878-24",
+              "prix": 66.37,
+              "stock": 68,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66878/66878_24_L1_1.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "embouts",
+      "label": "Embouts",
+      "_note": "Masque si support replacesEmbouts. Champ 'embout' : principal, visible en simple ET double (label adaptatif via labelByConfig, 'Embout' en simple / 'Embout (avant)' en double). Champ 'embout_arriere' : visible uniquement en double. Chaque ref filtree par son diametre via showIf ; le champ lit la part avant/arriere via diametreFrom. En simple, diametreFrom 'avant' resout le diametre unique.",
+      "fields": [
+        {
+          "id": "embout",
+          "label": "Embout",
+          "type": "product",
+          "default": "first_visible",
+          "diametreFrom": "avant",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "66896",
+              "label": "2 Embouts Absis",
+              "svgUrl": "/assets/syh/tmp/tete-or.svg",
+              "qtyParUnite": 2,
+              "longueurEmbout": 2,
+              "recouvrementEmbout": 1,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ]
+              },
+              "noColoris": true,
+              "id": "66896-24",
+              "prix": 33.18,
+              "stock": 58,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66896/66896_24_S1_1.jpg",
+              "renderImage": "/assets/syh/tmp/tete-argent.png"
+            }
+          ],
+          "labelByConfig": {
+            "type_de_support": {
+              "simple": "Embout",
+              "double": "Embout (avant)"
+            }
+          },
+          "layerOrder": 3
+        },
+        {
+          "id": "embout_arriere",
+          "label": "Embout (arrière)",
+          "type": "product",
+          "default": "first_visible",
+          "diametreFrom": "arriere",
+          "_note": "Visible uniquement en double. Arriere = O16 dans cette collection, seul Bouchons existe en 16. Modelise avec les 3 refs Bouchons filtrees par diametre.",
+          "showIf": {
+            "type_de_support": [
+              "double"
+            ]
+          },
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "66960",
+              "label": "2 Embouts Bouchons O16",
+              "qtyParUnite": 2,
+              "longueurEmbout": 1,
+              "recouvrementEmbout": 2.5,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "16"
+                ]
+              },
+              "noColoris": true,
+              "id": "66960-24",
+              "prix": 40.11,
+              "stock": 40,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66960/66960_24_S1_1.jpg"
+            },
+            {
+              "refBase": "66961",
+              "label": "2 Embouts Bouchons O25",
+              "qtyParUnite": 2,
+              "longueurEmbout": 1,
+              "recouvrementEmbout": 2.5,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "25"
+                ]
+              },
+              "noColoris": true,
+              "id": "66961-24",
+              "prix": 45.53,
+              "stock": 160,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66961/66961_24_S1_1.jpg"
+            },
+            {
+              "refBase": "66962",
+              "label": "2 Embouts Bouchons O31",
+              "qtyParUnite": 2,
+              "longueurEmbout": 1,
+              "recouvrementEmbout": 2.5,
+              "showIf": {
+                "type_pose": [
+                  "mur",
+                  "plafond"
+                ],
+                "diametre": [
+                  "31"
+                ]
+              },
+              "noColoris": true,
+              "id": "66962-24",
+              "prix": 13.8,
+              "stock": 38,
+              "image": "https://www.houles.com/commun/visuels_articles/6/66962/66962_24_S1_1.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "recap",
+      "label": "Recapitulatif",
+      "fields": []
+    }
+  ]
+}

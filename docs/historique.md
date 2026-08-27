@@ -6,6 +6,55 @@
 
 ---
 
+## 2026-08-27 — Colonne d'aperçu réduite à zéro sur l'étape de configuration
+
+La colonne d'aperçu (à gauche) pouvait se retrouver totalement écrasée (largeur nulle) sur l'étape
+de configuration, à cause de la nouvelle rangée de 20 pastilles de couleur qui réclamait plus de
+place que prévu. Corrigé — l'aperçu garde sa largeur normale sur toutes les étapes.
+
+---
+
+## 2026-08-27 — Ajustements visuels du rendu colorisé et du sélecteur de couleur
+
+Quatre correctifs suite aux premiers tests : la vignette de couleur à l'étape 1 ne s'affichait plus
+pour les couleurs sans photo dédiée (elle affiche maintenant la couleur unie) ; le calque coloré
+pouvait passer sous la photo du produit au lieu de la superposer (problème d'empilement corrigé de
+façon plus robuste) ; ajout d'un effet de fusion (« multiply ») sur le calque coloré pour qu'il se
+fonde avec les ombres et reliefs de la photo plutôt que de l'aplatir en couleur unie.
+
+---
+
+## 2026-08-27 — Choix de couleur fonctionnel pour le rendu colorisé + étape récapitulatif
+
+Le rendu colorisé (mis en place la veille) est maintenant pilotable : une palette de 20 couleurs
+(temporaire, en attendant les vraies teintes Houlès) permet de choisir une couleur globale à
+l'étape 1, avec possibilité de changer la couleur d'une pièce individuellement sur chaque carte
+produit — le calque coloré se met à jour en conséquence. Ajout aussi d'une étape « Récapitulatif »
+en fin de parcours, qui reprend le contenu du bandeau récapitulatif déjà existant.
+
+---
+
+## 2026-08-27 — Corrections du rendu colorisé + simplification des données de test
+
+Trois correctifs sur le premier test du rendu colorisé : le calque coloré était décalé par rapport
+au visuel photo (problème d'alignement corrigé), et se dupliquait en plusieurs exemplaires au
+chargement de la page (également corrigé). Décision de simplifier la collection de test : elle ne
+propose plus de choix de couleur à l'étape 1 pour l'instant — un nouveau sélecteur dédié à ce mode
+reste à concevoir avant de rebrancher le choix de couleur. Aucun impact sur les autres collections.
+
+---
+
+## 2026-08-26 — Premier test du rendu colorisé (mode "live_colored")
+
+Amorce du futur mode d'affichage le plus abouti : en plus de la photo du produit, un calque coloré
+en temps réel se superpose selon la teinte choisie — le produit change visuellement de couleur à
+l'écran, sans recharger d'image. Testé pour l'instant sur un seul produit (support) avec un visuel
+provisoire très simple, le temps de valider le mécanisme avant d'y intégrer les vrais visuels une
+fois fournis par Houlès. Nouvelle collection de démo dédiée à ce test (« Auro Live Colored »),
+accessible depuis le bouton de changement de collection.
+
+---
+
 ## 2026-08-23 — Coloris masqués derrière un bouton sur les cartes produit
 
 Sur chaque carte produit, les pastilles de couleur ne s'affichent plus en permanence : elles sont

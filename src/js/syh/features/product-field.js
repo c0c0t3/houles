@@ -54,6 +54,11 @@ export default class ProductField extends Base {
    * diamètre qui invalide la sélection courante), elle doit donc déjà porter le bon coloris en
    * cache. Les options qui n'ont pas cette variante gardent leur coloris actuel (pas de fallback
    * ici — volontaire, voir docs/module-5-etapes-intermediaires.md).
+   *
+   * Cas `noColoris` (renderMode `live_colored`, pas de `variants` du tout — voir Module 6) :
+   * n'importe quel coloris de la palette (`this._coloris`) est accepté sans vérification, il n'y a
+   * pas de variante à faire correspondre — la couleur ne fait que teinter le calque SVG.
+   *
    * Appelé par le Configurator à chaque changement du champ `coloris` global.
    *
    * @param {string} coloris - Id du coloris global sélectionné.
@@ -61,7 +66,8 @@ export default class ProductField extends Base {
   applyGlobalColoris(coloris) {
     let selectedChanged = false;
     for (const option of this._field?.options ?? []) {
-      if (!option.variants?.[coloris]) continue;
+      const matches = option.noColoris ? true : Boolean(option.variants?.[coloris]);
+      if (!matches) continue;
       this._cardColoris.set(option.refBase, coloris);
       if (option.refBase === this._selectedRefBase) selectedChanged = true;
     }
@@ -176,8 +182,25 @@ export default class ProductField extends Base {
     return { ...this._selection, diametre: diametreFrom === 'avant' ? avant : arriere };
   }
 
-  // Coloris mémorisé sur cette carte, sinon coloris global, sinon premier dispo
+  /**
+   * Coloris mémorisé sur cette carte, sinon coloris global, sinon premier disponible.
+   * `noColoris` (renderMode `live_colored`) : résout depuis la palette complète
+   * (`this._coloris` = `collection.coloris[]`) plutôt que depuis les clés de `variants`, puisqu'il
+   * n'y a pas de variante par coloris — n'importe quelle couleur de la palette est valide.
+   */
   _resolveColoris(option) {
+    if (option.noColoris) {
+      const cachedNone = this._cardColoris.get(option.refBase);
+      if (cachedNone && this._coloris.some((c) => String(c.id) === String(cachedNone))) return cachedNone;
+      if (!this._coloris.length) return null;
+      const globalNone = String(this._selection.coloris ?? '');
+      const colorisNone = this._coloris.some((c) => String(c.id) === globalNone)
+        ? globalNone
+        : this._coloris[0].id;
+      this._cardColoris.set(option.refBase, colorisNone);
+      return colorisNone;
+    }
+
     const cached = this._cardColoris.get(option.refBase);
     if (cached && option.variants?.[cached]) return cached;
 
@@ -204,20 +227,25 @@ export default class ProductField extends Base {
     radio.dataset.product = option.refBase;
     radio.checked = option.refBase === this._selectedRefBase;
 
+    // Fallback au niveau option (pas variante) pour les produits `noColoris: true` — un seul
+    // prix/id/stock/image, pas de déclinaison par coloris. Corrige un manque préexistant : ces
+    // champs n'étaient lus que depuis `variant`, jamais depuis l'option elle-même.
     const img = card.querySelector('[data-ref="productImage"]');
-    if (variant?.image) { img.src = variant.image; img.alt = option.label; }
+    const imageSrc = variant?.image ?? option.image;
+    if (imageSrc) { img.src = imageSrc; img.alt = option.label; }
 
     card.querySelector('[data-ref="productName"]').textContent = option.label;
-    card.querySelector('[data-ref="productRef"]').textContent = variant?.id ?? option.refBase;
+    card.querySelector('[data-ref="productRef"]').textContent = variant?.id ?? option.id ?? option.refBase;
 
+    const prix = variant?.prix ?? option.prix;
     card.querySelector('[data-ref="productPrice"]').textContent =
-      variant?.prix != null
-        ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(variant.prix)
+      prix != null
+        ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(prix)
         : '—';
 
     card.querySelector('[data-ref="productQty"]').textContent = this._computeQty(option) ?? '—';
 
-    this._fillStock(card.querySelector('[data-ref="productStock"]'), variant?.stock ?? null);
+    this._fillStock(card.querySelector('[data-ref="productStock"]'), variant?.stock ?? option.stock ?? null);
     this._fillSwatches(card.querySelector('[data-ref="colorSwatches"]'), option, coloris);
     this._applySwatchVisibility(card, option);
 
@@ -229,6 +257,10 @@ export default class ProductField extends Base {
    * `none` / `live` — visibles en permanence en `live_colored` (surcouche colorisée, pas besoin
    * d'un clic supplémentaire). Sans effet si le produit n'a pas de coloris (rien à basculer).
    *
+   * Cas `noColoris` : masqué partout SAUF en `live_colored`, où au contraire la palette complète
+   * est ce qui pilote la teinte du calque SVG — c'est le seul mode où ces produits ont un coloris
+   * à choisir du tout.
+   *
    * @param {HTMLElement} card - Carte produit clonée.
    * @param {object} option - Option JSON correspondante.
    */
@@ -239,13 +271,21 @@ export default class ProductField extends Base {
 
     // style.display plutôt que l'attribut hidden : colorSwatches porte la classe Tailwind "flex"
     // (display:flex), qui l'emporterait sur [hidden] dans la cascade (utilities après preflight).
+    const alwaysVisible = this._renderMode === 'live_colored';
+
+    if (option.noColoris) {
+      swatches.style.display = alwaysVisible ? '' : 'none';
+      // Toujours visible en live_colored, jamais ailleurs — pas de bouton à basculer ici.
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      return;
+    }
+
     if (!option.variants) {
       swatches.style.display = 'none';
       if (toggleBtn) toggleBtn.style.display = 'none';
       return;
     }
 
-    const alwaysVisible = this._renderMode === 'live_colored';
     swatches.style.display = alwaysVisible ? '' : 'none';
     if (toggleBtn) toggleBtn.style.display = alwaysVisible ? 'none' : '';
   }
@@ -254,8 +294,34 @@ export default class ProductField extends Base {
   // "image" (défaut) = photo du produit dans cette couleur (option.variants[coloris].image) ;
   // "coloris" = vignette de coloris dédiée (collection.coloris[].thumbnail), indépendante du
   // produit — utile quand les photos produit par coloris ne sont pas toutes disponibles.
+  //
+  // Cas `noColoris` (live_colored) : itère toute la palette (`this._coloris`) plutôt que les clés
+  // de `variants` (il n'y en a pas). Pastille = vignette si fournie, sinon `hex` en fond uni — les
+  // couleurs placeholder n'ont pas de vignette dédiée.
   _fillSwatches(container, option, activeColoris) {
-    if (!container || !option.variants) return;
+    if (!container) return;
+
+    if (option.noColoris) {
+      container.innerHTML = '';
+      for (const info of this._coloris) {
+        const btn = this._cloneSwatchTemplate();
+        if (!btn) continue;
+        btn.dataset.coloris = info.id;
+        btn.dataset.product = option.refBase;
+        btn.title = info.label ?? info.id;
+        btn.classList.toggle('is-active', String(info.id) === String(activeColoris));
+        if (info.thumbnail) {
+          btn.style.backgroundImage = `url(${info.thumbnail})`;
+          btn.style.backgroundSize = 'cover';
+        } else if (info.hex) {
+          btn.style.backgroundColor = info.hex;
+        }
+        container.appendChild(btn);
+      }
+      return;
+    }
+
+    if (!option.variants) return;
     container.innerHTML = '';
     const useColorisThumbnail = option.variantType === 'coloris';
     for (const colorisId of Object.keys(option.variants)) {
@@ -355,16 +421,21 @@ export default class ProductField extends Base {
     const option = this._field.options.find((o) => o.refBase === refBase);
     if (!option) return;
 
-    // Mise à jour partielle de la carte (image, ref, prix, stock, swatches)
+    // Mise à jour partielle de la carte (image, ref, prix, stock, swatches). Sautée pour les
+    // produits `noColoris` : rien de tout ça ne varie par coloris (prix/réf/image sont fixes au
+    // niveau option, déjà posés par _buildCard) — seule la couleur du calque SVG change ailleurs
+    // (via selection.produits[fieldId].coloris, résolu par live-preview.js).
     const card = btn.closest('label');
-    const variant = option.variants?.[colorisId];
-    if (variant?.image) card.querySelector('[data-ref="productImage"]').src = variant.image;
-    card.querySelector('[data-ref="productRef"]').textContent = variant?.id ?? refBase;
-    if (variant?.prix != null) {
-      card.querySelector('[data-ref="productPrice"]').textContent =
-        new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(variant.prix);
+    if (!option.noColoris) {
+      const variant = option.variants?.[colorisId];
+      if (variant?.image) card.querySelector('[data-ref="productImage"]').src = variant.image;
+      card.querySelector('[data-ref="productRef"]').textContent = variant?.id ?? refBase;
+      if (variant?.prix != null) {
+        card.querySelector('[data-ref="productPrice"]').textContent =
+          new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(variant.prix);
+      }
+      this._fillStock(card.querySelector('[data-ref="productStock"]'), variant?.stock ?? null);
     }
-    this._fillStock(card.querySelector('[data-ref="productStock"]'), variant?.stock ?? null);
     this._fillSwatches(card.querySelector('[data-ref="colorSwatches"]'), option, colorisId);
 
     if (refBase === this._selectedRefBase) this._emitChange();
