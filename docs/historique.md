@@ -12,10 +12,11 @@ Le mode d'affichage colorisé récupère un vrai sélecteur de couleur, en rempl
 retiré fin août. Sur chaque carte produit, seules **6 pastilles** restent visibles (la couleur
 actuelle + 5 autres), suivies d'un lien « Voir plus de couleurs » qui ouvre une modale dédiée.
 
-La modale s'ouvre sur le côté droit, **sans assombrir l'écran** : l'aperçu du produit reste visible
-pendant qu'on essaie les teintes. Elle contient tout le nuancier, un champ de recherche qui filtre à
-la frappe (par nom, code Pantone ou code couleur), et un rappel des **5 dernières couleurs utilisées**
-dans la configuration en cours (non conservées d'une visite à l'autre).
+La modale s'ouvre sur le côté droit, avec un voile noir semi-transparent : l'aperçu du produit
+reste devinable pendant qu'on essaie les teintes. Elle contient tout le nuancier, un champ de
+recherche qui filtre à la frappe (par nom, code Pantone ou code couleur), et un rappel des
+**5 dernières couleurs utilisées** dans la configuration en cours (non conservées d'une visite à
+l'autre).
 
 Chaque clic sur une couleur l'applique **immédiatement en aperçu** sur la pièce concernée, la modale
 restant ouverte pour comparer. Trois issues : « Annuler » revient à la couleur de départ,

@@ -457,12 +457,13 @@ export default class Configurator extends Base {
    */
   _initModals() {
     // Positionnement par-modale sur le panel unique `#extra` : la modale couleur est ancrée à
-    // droite et sans voile pour laisser visible le rendu live de gauche (.colG) pendant l'essai
-    // des couleurs (voir modal-router.js `layouts` et docs/module-8b). `calcul-longueur` et
-    // `collections` gardent l'apparence par défaut du Twig (centrée en haut, voile sombre).
+    // droite, avec un voile noir semi-transparent (`bg-black/50`) — le rendu live de gauche
+    // (.colG) reste devinable pendant l'essai des couleurs (voir modal-router.js `layouts` et
+    // docs/module-8b). `calcul-longueur` et `collections` gardent l'apparence par défaut du Twig
+    // (centrée en haut, voile sombre).
     const layouts = {
       couleur: {
-        overlay: ['!bg-transparent'],
+        overlay: ['!bg-black/50'],
         wrapper: ['!items-stretch', '!justify-end', '!p-0'],
         container: ['h-full', '!max-w-md', '!rounded-none'],
       },
