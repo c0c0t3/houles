@@ -7,6 +7,7 @@ import { isVisible } from './features/show-if.js';
 import { computeTubeQty } from './features/tube-coupe.js';
 import { initModalRouter } from './features/modal-router.js';
 import { initLongueurCalculator } from './features/longueur-calculator.js';
+import { initColorModal } from './features/color-modal.js';
 import {
   purgeEmboutsIfReplaced,
   refreshEmboutsStep,
@@ -40,6 +41,10 @@ export default class Configurator extends Base {
   // Rendu visuel live (colonne gauche `.colG`) : actif seulement en renderMode live/live_colored.
   _hasLive = false;
   _renderedImageEl = null;
+  // « Dernières couleurs utilisées » proposées par la modale couleur (renderMode live_colored,
+  // voir docs/module-8b). Ids de coloris, plus récent en tête, borné à 5, sans persistance :
+  // repart de zéro à chaque chargement de page ou changement de collection.
+  _recentColoris = [];
 
   // Point d'entrée : charge le schéma, initialise la sélection, génère le DOM, affiche l'étape 0.
   async mounted() {
@@ -249,8 +254,7 @@ export default class Configurator extends Base {
     // et non masqué derrière.
     const stepEl = this._stepEls[index];
     if (stepEl) {
-      const stepperBottom = this.$refs.stepper.getBoundingClientRect().bottom;
-      const targetTop = window.scrollY + stepEl.getBoundingClientRect().top - stepperBottom;
+      const targetTop = window.top;
       window.scrollTo({ top: targetTop, behavior: 'smooth' });
     }
   }
@@ -308,6 +312,10 @@ export default class Configurator extends Base {
       delete this.selection.produits[fieldId];
     } else {
       this.selection.produits[fieldId] = value;
+      // Alimente les « dernières couleurs utilisées » de la modale couleur (live_colored seulement).
+      if (value.coloris != null && this.schema.collection.renderMode === 'live_colored') {
+        this._pushRecentColoris(value.coloris);
+      }
     }
     // Un nouveau support "naissance murale" remplace les embouts : purge la sélection embout existante.
     if (fieldId === 'support') this._purgeEmboutsIfReplaced();
@@ -448,21 +456,104 @@ export default class Configurator extends Base {
    * d'invalidation (`_applyChange`), comme si elle avait été saisie dans le champ `length` de l'étape 1.
    */
   _initModals() {
-    initModalRouter('#extra', {
-      'calcul-longueur': (contentEl) =>
-        initLongueurCalculator(contentEl, {
-          getEmbout: () => selectedEmboutInfo(this.schema, this.selection),
-          onValider: (longueurTube) => {
-            this._applyChange('longueur', longueurTube);
-            document.querySelector('#extra')?.close();
-          },
-          onCompute: (total) => {
-            this._longueurTotalAvecEmbouts = total;
-            this._renderRecap();
-          },
-        }),
-      collections: (contentEl) => initCollectionSwitcher(contentEl),
+    // Positionnement par-modale sur le panel unique `#extra` : la modale couleur est ancrée à
+    // droite et sans voile pour laisser visible le rendu live de gauche (.colG) pendant l'essai
+    // des couleurs (voir modal-router.js `layouts` et docs/module-8b). `calcul-longueur` et
+    // `collections` gardent l'apparence par défaut du Twig (centrée en haut, voile sombre).
+    const layouts = {
+      couleur: {
+        overlay: ['!bg-transparent'],
+        wrapper: ['!items-stretch', '!justify-end', '!p-0'],
+        container: ['h-full', '!max-w-md', '!rounded-none'],
+      },
+    };
+
+    initModalRouter(
+      '#extra',
+      {
+        'calcul-longueur': (contentEl) =>
+          initLongueurCalculator(contentEl, {
+            getEmbout: () => selectedEmboutInfo(this.schema, this.selection),
+            onValider: (longueurTube) => {
+              this._applyChange('longueur', longueurTube);
+              document.querySelector('#extra')?.close();
+            },
+            onCompute: (total) => {
+              this._longueurTotalAvecEmbouts = total;
+              this._renderRecap();
+            },
+          }),
+        collections: (contentEl) => initCollectionSwitcher(contentEl),
+        couleur: (contentEl, trigger) => this._initColorModal(contentEl, trigger),
+      },
+      layouts
+    );
+  }
+
+  /**
+   * Câble la modale de sélection de couleur (renderMode `live_colored`) pour la pièce d'où provient
+   * le trigger « Voir plus de couleurs » (`data-piece` = id du champ produit, voir product-field.js).
+   *
+   * Aperçu temps réel : chaque clic couleur écrit directement dans `selection.produits[fieldId]` et
+   * ne rafraîchit que le rendu live (`_refreshLivePreview`), sans toucher au récap ni au panier —
+   * la modale reste ouverte. La validation passe, elle, par le circuit normal du composant
+   * (`ProductField.setColorisFromModal` → `changed` → `onProductFieldChanged`).
+   *
+   * @param {HTMLElement} contentEl - Contenu de la modale (cloné depuis son template).
+   * @param {HTMLElement|null} trigger - Bouton déclencheur, porteur de `data-piece`.
+   */
+  _initColorModal(contentEl, trigger) {
+    const fieldId = trigger?.dataset.piece ?? null;
+    const child = (this.$children.ProductField ?? []).find((c) => c.fieldId === fieldId);
+    if (!child) return;
+
+    const palette = this.schema.collection.coloris ?? [];
+    // Couleur d'origine mémorisée à l'ouverture — restaurée si l'utilisateur annule.
+    const originalColorisId = child.currentColorisId;
+
+    // Écrit un coloris sur une pièce sans repasser par le composant : sert à l'aperçu (non validé)
+    // et à annuler celui-ci.
+    const previewColoris = (id) => {
+      const sel = this.selection.produits[fieldId];
+      if (sel) sel.coloris = id;
+      this._refreshLivePreview();
+    };
+
+    initColorModal(contentEl, {
+      panel: document.querySelector('#extra'),
+      palette,
+      currentColorisId: originalColorisId,
+      recentIds: this._recentColoris,
+      onPreview: (id) => previewColoris(id),
+      onCancel: () => previewColoris(originalColorisId),
+      onApplyCurrent: (id) => {
+        // Annule d'abord la mutation d'aperçu pour que le circuit normal ne court-circuite pas son
+        // early-exit (coloris déjà égal) — puis valide proprement.
+        previewColoris(originalColorisId);
+        child.setColorisFromModal(id);
+      },
+      onApplyAll: (id) => {
+        previewColoris(originalColorisId);
+        // Écrase toutes les pièces colorisables réellement teintées (option sélectionnée avec
+        // `svgUrl`), pièce d'origine comprise. Voir module-8b (point de décision : « écrase tout »).
+        for (const c of this.$children.ProductField ?? []) {
+          if (c.$el.hidden) continue;
+          if (c === child || c.selectedOption?.svgUrl) c.setColorisFromModal(id);
+        }
+      },
     });
+  }
+
+  /**
+   * Mémorise un coloris en tête de la liste des « dernières couleurs utilisées » de la config en
+   * cours (voir docs/module-8b) : plus récent d'abord, sans doublon, borné à 5. Aucune persistance.
+   *
+   * @param {string|null} colorisId
+   */
+  _pushRecentColoris(colorisId) {
+    if (colorisId == null) return;
+    const id = String(colorisId);
+    this._recentColoris = [id, ...this._recentColoris.filter((c) => c !== id)].slice(0, 5);
   }
 
   // -------------------------------------------------------------------------

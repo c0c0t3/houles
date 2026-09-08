@@ -6,6 +6,27 @@
 
 ---
 
+## 2026-09-08 — Modale de choix de couleur pour le rendu colorisé
+
+Le mode d'affichage colorisé récupère un vrai sélecteur de couleur, en remplacement du choix global
+retiré fin août. Sur chaque carte produit, seules **6 pastilles** restent visibles (la couleur
+actuelle + 5 autres), suivies d'un lien « Voir plus de couleurs » qui ouvre une modale dédiée.
+
+La modale s'ouvre sur le côté droit, **sans assombrir l'écran** : l'aperçu du produit reste visible
+pendant qu'on essaie les teintes. Elle contient tout le nuancier, un champ de recherche qui filtre à
+la frappe (par nom, code Pantone ou code couleur), et un rappel des **5 dernières couleurs utilisées**
+dans la configuration en cours (non conservées d'une visite à l'autre).
+
+Chaque clic sur une couleur l'applique **immédiatement en aperçu** sur la pièce concernée, la modale
+restant ouverte pour comparer. Trois issues : « Annuler » revient à la couleur de départ,
+« Appliquer au produit » valide la pièce en cours, « Appliquer à tous » applique la teinte à toutes
+les pièces colorisées d'un coup. La modale de calcul de longueur, elle, ne change pas.
+
+Palette encore provisoire (20 couleurs de test) en attendant les vraies teintes Houlès et leurs
+codes Pantone.
+
+---
+
 ## 2026-08-27 — Colonne d'aperçu réduite à zéro sur l'étape de configuration
 
 La colonne d'aperçu (à gauche) pouvait se retrouver totalement écrasée (largeur nulle) sur l'étape

@@ -394,3 +394,61 @@
     </button>
   </div>
 </template>
+
+{# ------------------------------------------------------------------ #}
+{# Modale : Sélection de couleur d'une pièce (renderMode live_colored) #}
+{# Ancrée à droite et sans voile (positionnement JS par clé, voir     #}
+{# modal-router.js `layouts`) : le rendu live de gauche (.colG) reste  #}
+{# visible pendant l'essai des couleurs. Câblage : color-modal.js.    #}
+{# Voir docs/module-8b-modale-couleurs.md.                            #}
+{# ------------------------------------------------------------------ #}
+<template data-modal="couleur" data-modal-title="Choisir une couleur">
+  <div class="flex flex-col gap-4">
+    {# Recherche — filtre la grille à la frappe (nom, code Pantone, hex) #}
+    <input
+      data-ref="search"
+      type="search"
+      placeholder="Rechercher (nom, Pantone, hex)"
+      class="w-full ring-1 ring-inset ring-purple/40 rounded px-3 py-2 text-sm bg-transparent outline-none focus-visible:ring-purple"
+    />
+
+    {# Dernières couleurs utilisées dans la config en cours (max 5, sans persistance) #}
+    <div data-ref="recentWrap" hidden>
+      <p class="text-xs uppercase font-medium text-gray-500 mb-2">Dernières couleurs utilisées</p>
+      <div data-ref="recent" class="flex flex-wrap gap-2"></div>
+    </div>
+
+    {# Grille du nuancier complet #}
+    <div data-ref="grid" class="grid grid-cols-5 gap-2"></div>
+    <p data-ref="empty" class="text-sm text-gray-500 italic" hidden>Aucune couleur ne correspond.</p>
+
+    {# Pastille clonée par color-modal.js (grille + récents). is-active porté par le <span>. #}
+    <template data-template="color-modal-swatch">
+      <button type="button" class="flex items-center justify-center p-0.5 focus:outline-none">
+        <span class="w-9 h-9 rounded-full ring-1 ring-black/10 ring-offset-1 ring-offset-sand [&.is-active]:ring-2 [&.is-active]:ring-purple"></span>
+      </button>
+    </template>
+  </div>
+
+  {# Footer — 3 actions (voir module-8b §4) #}
+  <div class="flex flex-col s:flex-row gap-2 mt-6">
+    {% include '@components/button.twig' with {
+      label: 'Annuler',
+      variant: 'link',
+      icon: false,
+      attr: { type: 'button', 'data-ref': 'fermer', class: 'flex-1' }
+    } only %}
+    {% include '@components/button.twig' with {
+      label: 'Appliquer au produit',
+      variant: 'link',
+      icon: false,
+      attr: { type: 'button', 'data-ref': 'applyCurrent', class: 'flex-1' }
+    } only %}
+    {% include '@components/button.twig' with {
+      label: 'Appliquer à tous',
+      variant: 'solid',
+      href: '#',
+      attr: { type: 'button', 'data-ref': 'applyAll', class: 'flex-1' }
+    } only %}
+  </div>
+</template>
