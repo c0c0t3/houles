@@ -643,13 +643,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_38_P1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultIf": {
-                "longueur": {
-                  "gt": 160
-                }
-              },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "variantType": "coloris"
             },
             {
               "refBase": "66734",
@@ -696,13 +690,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultIf": {
-                "longueur": {
-                  "gt": 160
-                }
-              },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "variantType": "coloris"
             },
             {
               "refBase": "66736",
@@ -749,13 +737,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultIf": {
-                "longueur": {
-                  "gt": 160
-                }
-              },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "variantType": "coloris"
             },
             {
               "refBase": "66785",
@@ -801,13 +783,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66785/66785_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultIf": {
-                "longueur": {
-                  "gt": 160
-                }
-              },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "variantType": "coloris"
             },
             {
               "refBase": "66783",

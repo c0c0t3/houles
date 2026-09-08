@@ -1,181 +1,152 @@
 {% extends '@layouts/base.twig' %}
 
 {% block body %}
-  <div class="container">
-    <div data-component="Syh" data-option-collection="auro-concept-live" class="flex max-w-full">
-      {# min-w-0 sur les deux colonnes : un enfant flex-1 refuse par défaut de rétrécir sous la  #}
-      {# taille min-content de son contenu (min-width:auto implicite). Sans ça, une étape avec   #}
-      {# beaucoup de contenu horizontal (ex : la ligne de swatches coloris, 20 pastilles) pousse  #}
-      {# la colonne de droite à réclamer toute la largeur et écrase colG à 0.                    #}
-      <div data-ref="colG" class="flex-1 min-w-0">
-        {# Ratio fixe indépendant de la hauteur du panneau de droite (qui varie selon l'étape) — #}
-        {# référentiel commun aux calques, voir docs/module-6-rendu-live.md. À ajuster une fois   #}
-        {# le ratio réel des visuels connu (placeholder 3:4 pour l'instant).                      #}
-        <div id="renderedImage" class="w-full aspect-[3/4] sticky top-20"></div>
-      </div>
-      <div class=" text-black flex-1 max-w-full min-w-0">
-        {# Récapitulatif persistant de la sélection courante #}
-        <div data-ref="recap" class=" max-w-full flex lg:overflow-auto overflow-scroll items-start lg:flex-wrap lg:items-center gap-x-6 gap-y-1 px-6 py-3 bg-gray-50 border-b text-sm min-h-10"></div>
+  
+    <div data-component="Syh" data-option-collection="auro-concept-live">
+      <div class="container">
+      <div  class="flex max-w-full">
+        {# min-w-0 sur les deux colonnes : un enfant flex-1 refuse par défaut de rétrécir sous la  #}
+        {# taille min-content de son contenu (min-width:auto implicite). Sans ça, une étape avec   #}
+        {# beaucoup de contenu horizontal (ex : la ligne de swatches coloris, 20 pastilles) pousse  #}
+        {# la colonne de droite à réclamer toute la largeur et écrase colG à 0.                    #}
+        <div data-ref="colG" class="flex-1 min-w-0">
+          {# Ratio fixe indépendant de la hauteur du panneau de droite (qui varie selon l'étape) — #}
+          {# référentiel commun aux calques, voir docs/module-6-rendu-live.md. À ajuster une fois   #}
+          {# le ratio réel des visuels connu (placeholder 3:4 pour l'instant).                      #}
+          <div id="renderedImage" class="w-full aspect-[3/4] sticky top-20"></div>
+        </div>
+        <div class=" text-black flex-1 max-w-full min-w-0">
 
-        {# Stepper — boutons générés dynamiquement par JS #}
-        <nav data-ref="stepper" class="flex overflow-auto max-w-full lg:flex-wrap gap-4 py-4 px-6 border-b"></nav>
 
-        {# Zone de l'étape courante — réécrite à chaque step #}
-        <div data-ref="stepContent" class="container py-8"></div>
+          {# Stepper horizontal — boutons générés dynamiquement par JS (_renderStepper) #}
+          {# items-start : les pastilles restent alignées quel que soit le nb de lignes du libellé #}
+          <nav data-ref="stepper" class=" sticky z-10 top-28 -translate-y-[14px] flex items-start overflow-x-auto max-w-full pt-4 pb-2 px-6 bg-sand border-b "></nav>
 
-        {# Prix total #}
-        <div data-ref="totalPrice" class="container py-4 font-medium"></div>
+          {# Zone de l'étape courante — réécrite à chaque step #}
+          <div data-ref="stepContent" class="py-8"></div>
 
-        {# ------------------------------------------------------------------ #}
-        {# Templates HTML clonés par le JS selon field.type                   #}
-        {# Les classes Tailwind ci-dessous sont provisoires — à remplacer     #}
-        {# par ton markup pixel-perfect. Le contrat data-* est obligatoire.   #}
-        {# ------------------------------------------------------------------ #}
+          {# Prix total #}
+          <div data-ref="totalPrice" class="py-4 font-medium"></div>
 
-        {# ------------------------------------------------------------------ #}
-        {# Template RadioField                                               #}
-        {# Le JS clone ce template, remplit les data-ref, n'écrit jamais    #}
-        {# de HTML. Personnalise librement les classes Tailwind ici.        #}
-        {# ------------------------------------------------------------------ #}
-        <template data-template="radio">
-          <div data-component="RadioField" class="mb-6">
-            <fieldset class="border-0 p-0 m-0">
-              <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
-              <div data-ref="options" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
-            </fieldset>
+          {# ------------------------------------------------------------------ #}
+          {# Templates HTML clonés par le JS selon field.type                   #}
+          {# Les classes Tailwind ci-dessous sont provisoires — à remplacer     #}
+          {# par ton markup pixel-perfect. Le contrat data-* est obligatoire.   #}
+          {# ------------------------------------------------------------------ #}
 
-            {# Template d'une option : label seul #}
-            <template data-template="radio-option--label">
-              <label class="flex items-center cursor-pointer  px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
-                <input data-ref="input" type="radio" class="sr-only" />
-                <span data-ref="optLabel"></span>
-              </label>
-            </template>
+          {# ------------------------------------------------------------------ #}
+          {# Template RadioField                                               #}
+          {# Le JS clone ce template, remplit les data-ref, n'écrit jamais    #}
+          {# de HTML. Personnalise librement les classes Tailwind ici.        #}
+          {# ------------------------------------------------------------------ #}
+          <template data-template="radio">
+            <div data-component="RadioField" class="mb-6">
+              {# min-w-0 : sans ça le fieldset prend sa taille min-content (largeur cumulée #}
+              {# des options) et refuse de rétrécir sous son parent flex — l'overflow-x     #}
+              {# du conteneur d'options ci-dessous n'a alors jamais rien à scroller.        #}
+              <fieldset class="border-0 p-0 m-0 min-w-0 max-w-full">
+                <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
+                {# flex-nowrap + overflow-x-auto sous lg : les options défilent horizontalement. #}
+                {# lg:flex-wrap : à partir de lg elles passent à la ligne, plus de scroll.        #}
+                <div data-ref="options" class="flex flex-nowrap overflow-x-auto lg:flex-wrap gap-3 p-1"></div>
+              </fieldset>
 
-            {# Template d'une option : label + image (photo produit, opt.image) #}
-            <template data-template="radio-option--label_image">
-              <label class="flex flex-col aspect-square shrink-0 lg:aspect-auto justify-center items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
-                <input data-ref="input" type="radio" class="sr-only" />
-                <img data-ref="image" alt="" class=" w-44 mix-blend-multiply h-auto object-contain" />
-                <span data-ref="optLabel"></span>
-              </label>
-            </template>
+              {# Template d'une option : label seul #}
+              <template data-template="radio-option--label">
+                <label class="flex shrink-0 items-center cursor-pointer whitespace-nowrap px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+                  <input data-ref="input" type="radio" class="sr-only" />
+                  <span data-ref="optLabel"></span>
+                </label>
+              </template>
 
-            {# Template d'une option : label + vignette coloris (collection.coloris[].thumbnail) #}
-            {# Réservé au champ `coloris` — voir docs/json-schema-reference.md.                  #}
-            <template data-template="radio-option--label_thumbnail">
-              <label class="flex items-center gap-2 cursor-pointer  px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
-                <input data-ref="input" type="radio" class="sr-only" />
-                {# span plutôt qu'img : accepte aussi bien une vignette (background-image) qu'une #}
-                {# couleur unie (background-color) quand il n'y a pas de vignette dédiée.          #}
-                <span data-ref="image" class="w-6 h-6 rounded-full shrink-0 bg-cover bg-center"></span>
-                <span data-ref="optLabel"></span>
-              </label>
-            </template>
-          </div>
-        </template>
+              {# Template d'une option : label + image (photo produit, opt.image) #}
+              <template data-template="radio-option--label_image">
+                <label class="flex flex-col aspect-square shrink-0 lg:aspect-auto justify-center items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+                  <input data-ref="input" type="radio" class="sr-only" />
+                  <img data-ref="image" alt="" class=" w-44 mix-blend-multiply h-auto object-contain" />
+                  <span data-ref="optLabel"></span>
+                </label>
+              </template>
 
-        {# ------------------------------------------------------------------ #}
-        {# Template LengthField                                              #}
-        {# ------------------------------------------------------------------ #}
-        <template data-template="length">
-          <div data-component="LengthField" class="mb-6">
-            <fieldset class="border-0 p-0 m-0">
-              <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
-              <div class="flex flex-wrap items-center gap-3">
-                <div data-ref="presets" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
+              {# Template d'une option : label + vignette coloris (collection.coloris[].thumbnail) #}
+              {# Réservé au champ `coloris` — voir docs/json-schema-reference.md.                  #}
+              <template data-template="radio-option--label_thumbnail">
+                <label class="flex shrink-0 items-center gap-2 cursor-pointer whitespace-nowrap px-4 py-2 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+                  <input data-ref="input" type="radio" class="sr-only" />
+                  {# span plutôt qu'img : accepte aussi bien une vignette (background-image) qu'une #}
+                  {# couleur unie (background-color) quand il n'y a pas de vignette dédiée.          #}
+                  <span data-ref="image" class="w-6 h-6 rounded-full shrink-0 bg-cover bg-center"></span>
+                  <span data-ref="optLabel"></span>
+                </label>
+              </template>
+            </div>
+          </template>
 
-                {# Ouvre la modale de calcul de longueur (panel #extra, clé calcul-longueur). #}
-                {# Déclenchement géré directement par LengthField (onCalcButtonClick) — pas   #}
-                {# de data-component="Action" ici, ce bouton est injecté dynamiquement et ne   #}
-                {# serait pas garanti d'être découvert par l'arbre de composants de l'App.     #}
-                <button
-                  type="button"
-                  data-ref="calcButton"
-                  class="px-4 py-2 rounded ring-1 ring-purple/40 text-sm underline underline-offset-2"
-                >
-                  Calcul de longueur
+          {# ------------------------------------------------------------------ #}
+          {# Template LengthField                                              #}
+          {# ------------------------------------------------------------------ #}
+          <template data-template="length">
+            <div data-component="LengthField" class="mb-6">
+              <fieldset class="border-0 p-0 m-0">
+                <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
+                <div class="flex flex-wrap items-center gap-3">
+                  <div data-ref="presets" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
+
+                  {# Ouvre la modale de calcul de longueur (panel #extra, clé calcul-longueur). #}
+                  {# Déclenchement géré directement par LengthField (onCalcButtonClick) — pas   #}
+                  {# de data-component="Action" ici, ce bouton est injecté dynamiquement et ne   #}
+                  {# serait pas garanti d'être découvert par l'arbre de composants de l'App.     #}
+                  <button
+                    type="button"
+                    data-ref="calcButton"
+                    class="px-4 py-2 rounded ring-1 ring-purple/40 text-sm underline underline-offset-2"
+                  >
+                    Calcul de longueur
+                  </button>
+                </div>
+              </fieldset>
+
+              {# Template d'un bouton preset standard #}
+              <template data-template="length-preset">
+                <button type="button" class="px-4 py-2 rounded ring-1 [&.is-active]:ring-2 [&.is-active]:ring-purple/80 ring-purple/20"></button>
+              </template>
+
+              {# Template du bouton sur-mesure — l'input est intégré et caché par défaut #}
+              <template data-template="length-custom">
+                <button type="button" data-value="custom" class="flex items-center gap-2 px-4 py-2 rounded ring-1 [&.is-active]:ring-2 [&.is-active]:ring-purple/80 ring-purple/20">
+                  <span>Sur-mesure</span>
+                  <input
+                    type="number"
+                    class="hidden w-20 bg-transparent border-b border-current outline-none text-sm"
+                    placeholder="cm"
+                  />
                 </button>
-              </div>
-            </fieldset>
+              </template>
+            </div>
+          </template>
 
-            {# Template d'un bouton preset standard #}
-            <template data-template="length-preset">
-              <button type="button" class="px-4 py-2 rounded ring-1 [&.is-active]:ring-2 [&.is-active]:ring-purple/80 ring-purple/20"></button>
-            </template>
+          {# ------------------------------------------------------------------ #}
+          {# Template ProductField — grille de toutes les options visibles   #}
+          {# ------------------------------------------------------------------ #}
+          <template data-template="product">
+            <div data-component="ProductField" class="mb-6">
+              <p data-ref="label" class="block text-sm font-medium uppercase mb-3"></p>
 
-            {# Template du bouton sur-mesure — l'input est intégré et caché par défaut #}
-            <template data-template="length-custom">
-              <button type="button" data-value="custom" class="flex items-center gap-2 px-4 py-2 rounded ring-1 [&.is-active]:ring-2 [&.is-active]:ring-purple/80 ring-purple/20">
-                <span>Sur-mesure</span>
-                <input
-                  type="number"
-                  class="hidden w-20 bg-transparent border-b border-current outline-none text-sm"
-                  placeholder="cm"
-                />
-              </button>
-            </template>
-          </div>
-        </template>
+              {# Justification de la présélection automatique (option.defaultMessage, affiché  #}
+              {# quand l'option sélectionnée a un defaultIf qui correspond) — masqué sinon.     #}
+              <p data-ref="defaultMessage" class="text-sm text-gray-600 italic mb-3" hidden></p>
 
-        {# ------------------------------------------------------------------ #}
-        {# Template ProductField — grille de toutes les options visibles   #}
-        {# ------------------------------------------------------------------ #}
-        <template data-template="product">
-          <div data-component="ProductField" class="mb-6">
-            <p data-ref="label" class="block text-sm font-medium uppercase mb-3"></p>
+              {# Grille des cartes produit (générées dynamiquement) #}
+              <div data-ref="cards" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
 
-            {# Justification de la présélection automatique (option.defaultMessage, affiché  #}
-            {# quand l'option sélectionnée a un defaultIf qui correspond) — masqué sinon.     #}
-            <p data-ref="defaultMessage" class="text-sm text-gray-600 italic mb-3" hidden></p>
-
-            {# Grille des cartes produit (générées dynamiquement) #}
-            <div data-ref="cards" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
-
-            {# Template d'une carte produit                                     #}
-            {# label + radio : sélection accessible, pas de <button> imbriqué  #}
-            <template data-template="product-card" >
-              <label class="relative pb-16 flex flex-col gap-2 p-4 w-72 rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
-                <input type="radio" class="sr-only" />
-                <div class="w-full aspect-square bg-gray-50 rounded overflow-hidden">
-                  <img data-ref="productImage" alt="" class="mix-blend-multiply w-full h-full object-contain" />
-                </div>
-                <span data-ref="productName" class="text-sm font-medium leading-tight"></span>
-                <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>
-                <div class="flex items-center gap-1 text-sm">
-                  <span data-ref="productPrice" class="font-medium"></span>
-                  <span class="text-gray-400">×</span>
-                  <span data-ref="productQty" class="text-gray-500"></span>
-                </div>
-                <span data-ref="productStock" class="text-xs"></span>
-                {# Masqué par défaut en renderMode none/live (JS) ; jamais nécessaire en          #}
-                {# live_colored où les swatches restent visibles en permanence.                    #}
-                <button
-                  type="button"
-                  data-ref="toggleColoris"
-                  class="absolute top-4 right-4 text-xs underline underline-offset-2 text-purple"
-                >
-                  Changer de couleur
-                </button>
-                {# display géré en JS (style.display), pas via l'attribut hidden : la classe    #}
-                {# "flex" l'emporterait sinon sur [hidden] dans la cascade Tailwind.             #}
-                <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-1 absolute bottom-4 left-4 right-4"></div>
-              </label>
-            </template>
-
-            {# Template d'une carte produit — variante renderMode "live_colored"    #}
-            {# Horizontale : image à gauche, colonne texte + swatchs à droite       #}
-            {# (parent flex-col). Les swatchs sont dans le flux, à la suite du       #}
-            {# texte (pas en absolute) : en live_colored ils restent toujours        #}
-            {# visibles. Mêmes data-ref que la carte standard — le JS clone l'un ou  #}
-            {# l'autre selon _renderMode (voir product-field.js _cloneCardTemplate). #}
-            <template data-template="product-card--live-colored">
-              <label class="relative flex gap-4 p-4 w-full rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
-                <input type="radio" class="sr-only" />
-                <div class="w-32 shrink-0 aspect-square bg-gray-50 rounded overflow-hidden">
-                  <img data-ref="productImage" alt="" class="mix-blend-multiply w-full h-full object-contain" />
-                </div>
-                <div class="flex flex-col gap-1 min-w-0 flex-1">
+              {# Template d'une carte produit                                     #}
+              {# label + radio : sélection accessible, pas de <button> imbriqué  #}
+              <template data-template="product-card" >
+                <label class="shrink-0 relative pb-16 flex flex-col gap-2 p-4 w-72 rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
+                  <input type="radio" class="sr-only" />
+                  <div class="w-full aspect-square bg-gray-50 rounded overflow-hidden">
+                    <img data-ref="productImage" alt="" class="mix-blend-multiply w-full h-full object-contain" />
+                  </div>
                   <span data-ref="productName" class="text-sm font-medium leading-tight"></span>
                   <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>
                   <div class="flex items-center gap-1 text-sm">
@@ -184,27 +155,69 @@
                     <span data-ref="productQty" class="text-gray-500"></span>
                   </div>
                   <span data-ref="productStock" class="text-xs"></span>
-                  {# Dans le flux ici (pas d'absolute) — swatchs à la suite du texte. #}
-                  <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-2"></div>
-                </div>
-              </label>
-            </template>
+                  {# Masqué par défaut en renderMode none/live (JS) ; jamais nécessaire en          #}
+                  {# live_colored où les swatches restent visibles en permanence.                    #}
+                  <button
+                    type="button"
+                    data-ref="toggleColoris"
+                    class="absolute top-4 right-4 text-xs underline underline-offset-2 text-purple"
+                  >
+                    Changer de couleur
+                  </button>
+                  {# display géré en JS (style.display), pas via l'attribut hidden : la classe    #}
+                  {# "flex" l'emporterait sinon sur [hidden] dans la cascade Tailwind.             #}
+                  <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-1 absolute bottom-4 left-4 right-4"></div>
+                </label>
+              </template>
 
-            {# Template d'un swatch coloris #}
-            <template data-template="product-swatch">
-              <button
-                type="button"
-                class="w-6 h-6 rounded-full ring-1 ring-offset-1 ring-transparent [&.is-active]:ring-2 [&.is-active]:ring-purple/80 [&.is-active]:ring-offset-2"
-                title=""
-              ></button>
-            </template>
-          </div>
-        </template>
+              {# Template d'une carte produit — variante renderMode "live_colored"    #}
+              {# Horizontale : image à gauche, colonne texte + swatchs à droite       #}
+              {# (parent flex-col). Les swatchs sont dans le flux, à la suite du       #}
+              {# texte (pas en absolute) : en live_colored ils restent toujours        #}
+              {# visibles. Mêmes data-ref que la carte standard — le JS clone l'un ou  #}
+              {# l'autre selon _renderMode (voir product-field.js _cloneCardTemplate). #}
+              <template data-template="product-card--live-colored">
+                <label class="relative flex gap-4 p-4 w-full rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
+                  <input type="radio" class="sr-only" />
+                  <div class="w-32 shrink-0 aspect-square bg-gray-50 rounded overflow-hidden">
+                    <img data-ref="productImage" alt="" class="mix-blend-multiply w-full h-full object-contain" />
+                  </div>
+                  <div class="flex flex-col gap-1 min-w-0 flex-1">
+                    <span data-ref="productName" class="text-sm font-medium leading-tight"></span>
+                    <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>
+                    <div class="flex items-center gap-1 text-sm">
+                      <span data-ref="productPrice" class="font-medium"></span>
+                      <span class="text-gray-400">×</span>
+                      <span data-ref="productQty" class="text-gray-500"></span>
+                    </div>
+                    <span data-ref="productStock" class="text-xs"></span>
+                    {# Dans le flux ici (pas d'absolute) — swatchs à la suite du texte. #}
+                    <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-2"></div>
+                  </div>
+                </label>
+              </template>
 
+              {# Template d'un swatch coloris #}
+              <template data-template="product-swatch">
+                <button
+                  type="button"
+                  class="w-6 h-6 rounded-full ring-1 ring-offset-1 ring-transparent [&.is-active]:ring-2 [&.is-active]:ring-purple/80 [&.is-active]:ring-offset-2"
+                  title=""
+                ></button>
+              </template>
+            </div>
+          </template>
+
+
+        </div>
       </div>
+      </div>
+      {# Récapitulatif persistant de la sélection courante #}
+      <div data-ref="recap" class="max-w-full flex lg:overflow-auto overflow-scroll items-start lg:flex-wrap lg:items-center gap-x-6 gap-y-1 px-6 py-3 text-sm min-h-10 sticky bottom-0 left-0 right-0 z-10 bg-sand border-y border-purple"></div>
+
     </div>
 
-  </div>
+
 
   {# Ouvre la modale "Changer de collection" (panel #extra, clé collections) — voir            #}
   {# modal-router.js. Le data-modal="collections" suffit : le clic global du router ouvre le   #}

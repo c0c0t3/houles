@@ -17,6 +17,8 @@ export default {
     customVariants: {
       'is-active': '&.is-active',
       'parent-is-active': '.is-active &',
+      'is-done': '&.is-done',
+      'parent-is-done': '.is-done &',
       'search-cancel': '&::-webkit-search-cancel-button',
       'piece-selected': '&.pieceSelected,',
       'piece-selected-parent': '.pieceSelected &',

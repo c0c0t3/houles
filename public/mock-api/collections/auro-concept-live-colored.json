@@ -803,6 +803,7 @@
               "label": "Tube Ø 16 mm - 180 cm",
               "qtyParUnite": 1,
               "tubeLength": 180,
+              "svgUrl": "/assets/syh/tmp/tube-detourage.svg",
               "showIfAny": [
                 {
                   "diametre": [
@@ -826,7 +827,7 @@
               "prix": 38.46,
               "stock": 187,
               "image": "https://www.houles.com/commun/visuels_articles/6/66084/66084_24_L1_1.jpg",
-              "renderImage": "/assets/syh/tmp/tube-or.png"
+              "renderImage": "/assets/syh/tmp/tube-argent.png"
             },
             {
               "refBase": "66104",

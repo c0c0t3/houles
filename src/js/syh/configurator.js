@@ -208,13 +208,31 @@ export default class Configurator extends Base {
   // Stepper
   // -------------------------------------------------------------------------
 
-  // Génère les boutons de navigation inter-étapes depuis le schéma. Appelé une seule fois au montage.
+  /**
+   * Génère les boutons de navigation inter-étapes depuis le schéma. Appelé une seule fois au montage.
+   *
+   * Rendu : stepper horizontal. Un bouton par étape (pastille numérotée + libellé),
+   * les pastilles étant reliées par une barre horizontale passant par leur centre.
+   * L'état visuel (opacité) est piloté par {@link _showStep} via les classes
+   * `is-active` (étape courante) et `is-done` (étapes déjà parcourues).
+   */
   _renderStepper() {
+    const lastIndex = this.schema.steps.length - 1;
+
     this.$refs.stepper.innerHTML = this.schema.steps
-      .map(
-        (step, i) =>
-          `<button type="button" data-step="${i}">${step.label}</button>`
-      )
+      .map((step, i) => {
+        // Barre de liaison vers l'étape suivante — absente sur la dernière étape.
+        // Part du centre de la pastille courante (left-1/2) et s'étend sur toute la
+        // largeur du bouton (w-full) : elle rejoint donc le centre de la pastille
+        // suivante (boutons de largeur égale via flex-1). z-0 + pointer-events-none
+        // pour passer sous la pastille (bg-white) et laisser le clic au bouton.
+        const connector =
+          i < lastIndex
+            ? '<span aria-hidden="true" class="pointer-events-none absolute left-1/2 top-4 z-0 h-0.5 w-full bg-brown"></span>'
+            : '';
+
+        return `<button type="button" data-step="${i}" class="relative flex flex-1 flex-col items-center gap-2 px-2 text-purple-extra-light is-active:text-purple is-done:text-purple">${connector}<span class="relative z-10 grid size-8 place-items-center rounded-full border-2 border-brown bg-white text-sm parent-is-active:bg-brown parent-is-active:text-white parent-is-done:bg-brown parent-is-done:text-white">${i + 1}</span><span class="text-center text-sm leading-tight">${step.label}</span></button>`;
+      })
       .join('');
   }
 
@@ -223,7 +241,18 @@ export default class Configurator extends Base {
     const btn = event.target.closest('button[data-step]');
     // Clic sur le conteneur stepper lui-même, pas sur un bouton d'étape.
     if (!btn) return;
-    this._showStep(Number(btn.dataset.step));
+    const index = Number(btn.dataset.step);
+    this._showStep(index);
+    // Au changement d'étape, on repositionne la vue en haut de l'étape cible.
+    // Le stepper (data-ref="stepper") est sticky en haut : on retranche sa
+    // position basse pour que le contenu de l'étape commence juste sous lui,
+    // et non masqué derrière.
+    const stepEl = this._stepEls[index];
+    if (stepEl) {
+      const stepperBottom = this.$refs.stepper.getBoundingClientRect().bottom;
+      const targetTop = window.scrollY + stepEl.getBoundingClientRect().top - stepperBottom;
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+    }
   }
 
   /**
@@ -239,9 +268,14 @@ export default class Configurator extends Base {
       el.hidden = i !== index;
     });
 
-    // Met à jour l'état visuel is-active sur les boutons du stepper.
+    // Met à jour l'état visuel du stepper :
+    // - is-active : étape courante                → opacity-100 (+ pastille pleine)
+    // - is-done   : étapes précédentes parcourues → opacity-100
+    // Les étapes futures restent à opacity-50 (état par défaut du bouton).
     this.$refs.stepper.querySelectorAll('button[data-step]').forEach((btn) => {
-      btn.classList.toggle('is-active', Number(btn.dataset.step) === index);
+      const step = Number(btn.dataset.step);
+      btn.classList.toggle('is-active', step === index);
+      btn.classList.toggle('is-done', step < index);
     });
 
     this._refreshCurrentStep();
