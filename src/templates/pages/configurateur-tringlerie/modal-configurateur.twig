@@ -419,13 +419,13 @@
     </div>
 
     {# Grille du nuancier complet #}
-    <div data-ref="grid" class="grid grid-cols-5 gap-2"></div>
+    <div data-ref="grid" class="grid grid-flow-col auto-rows-auto grid-rows-1 m:grid-rows-3 gap-2 m:flex m:flex-wrap overflow-x-auto -mx-4 px-4 l:px-px l:mx-0 py-px"></div>
     <p data-ref="empty" class="text-sm text-gray-500 italic" hidden>Aucune couleur ne correspond.</p>
 
     {# Pastille clonée par color-modal.js (grille + récents). is-active porté par le <span>. #}
     <template data-template="color-modal-swatch">
       <button type="button" class="flex items-center justify-center p-0.5 focus:outline-none">
-        <span class="w-9 h-9 rounded-full ring-1 ring-black/10 ring-offset-1 ring-offset-sand [&.is-active]:ring-2 [&.is-active]:ring-purple"></span>
+        <span class="size-6 rounded-full ring-1 ring-black/10 ring-offset-1 ring-offset-sand [&.is-active]:ring-2 [&.is-active]:ring-purple"></span>
       </button>
     </template>
   </div>

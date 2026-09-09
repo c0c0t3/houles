@@ -4,24 +4,34 @@ import RadioField from './features/radio-field.js';
 import LengthField from './features/length-field.js';
 import ProductField from './features/product-field.js';
 import { isVisible } from './features/show-if.js';
-import { computeTubeQty } from './features/tube-coupe.js';
-import { initModalRouter } from './features/modal-router.js';
-import { initLongueurCalculator } from './features/longueur-calculator.js';
-import { initColorModal } from './features/color-modal.js';
-import {
-  purgeEmboutsIfReplaced,
-  refreshEmboutsStep,
-  selectedEmboutInfo,
-  createEmboutsMessageElement,
-} from './features/embouts.js';
+import { initDefaultSelection, invalidateDownstream } from './features/default-selection.js';
+import { renderAllSteps } from './features/steps-renderer.js';
+import { renderStepper, updateStepperState } from './features/stepper.js';
+import { refreshTubeStep } from './features/tube-step.js';
+import { initConfiguratorModals } from './features/configurator-modals.js';
+import { purgeEmboutsIfReplaced, refreshEmboutsStep } from './features/embouts.js';
 import { computeCartPayload } from './features/cart-payload.js';
 import { renderRecap } from './features/recap.js';
 import { refreshLivePreview } from './features/live-preview.js';
-import { initCollectionSwitcher } from './features/collection-switcher.js';
 import { initImageFormatFallback } from './features/image-format-fallback.js';
 
 console.log('[SYH] configurator.js chargé');
 
+/**
+ * Composant racine du configurateur (Style Your Hardware). Chef d'orchestre : charge le schéma de
+ * collection, tient l'état `selection`, génère le DOM des étapes et relaie les changements des
+ * champs enfants vers les recalculs (visibilité, récap, rendu live, panier).
+ *
+ * La logique lourde est déléguée à des modules `features/` :
+ * - `default-selection.js` : valeurs par défaut + invalidation des champs dépendants
+ * - `steps-renderer.js`     : génération du DOM de toutes les étapes (+ `splitByConfig`)
+ * - `stepper.js`            : rendu et état visuel du stepper
+ * - `tube-step.js`          : quantité de tubes / masquage `about_tube`
+ * - `configurator-modals.js`: câblage des modales (`#extra`)
+ * - `embouts.js`, `recap.js`, `live-preview.js`, `cart-payload.js` : voir chaque module
+ *
+ * Voir docs/module-3-architecture.md.
+ */
 export default class Configurator extends Base {
   static config = {
     name: 'Syh',
@@ -55,21 +65,21 @@ export default class Configurator extends Base {
       const params = new URLSearchParams(window.location.search);
       const slug = params.get('collection') ?? this.$el.dataset.optionCollection ?? 'auro-concept';
       this.schema = await fetchCollection(slug);
-      
+
       // La colonne visuelle n'est visible qu'en mode live/live_colored (rendu SVG temps réel).
       this._hasLive = ['live', 'live_colored'].includes(this.schema.collection.renderMode);
       this.$refs.colG.hidden = !this._hasLive;
       // Pas de data-ref : conteneur des calques déclaré en dur dans le Twig (id="renderedImage").
       this._renderedImageEl = this.$el.querySelector('#renderedImage');
 
-      this._initDefaultSelection();
+      initDefaultSelection(this.schema, this.selection);
       this._renderAllSteps();
       this._purgeEmboutsIfReplaced();
-      this._renderStepper();
+      renderStepper(this.$refs.stepper, this.schema.steps);
       this._showStep(0);
       this._renderRecap();
       this._refreshLivePreview();
-      this._initModals();
+      initConfiguratorModals(this);
       // Accès console en dev : window.__syh.buildCartPayload()
       if (process.env.NODE_ENV !== 'production') {
         window.__syh = this;
@@ -83,163 +93,28 @@ export default class Configurator extends Base {
   }
 
   // -------------------------------------------------------------------------
-  // Sélection par défaut
-  // -------------------------------------------------------------------------
-
-  /**
-   * Pré-sélectionne la première option visible de chaque champ isParam.
-   * Traitement dans l'ordre de déclaration JSON : garantit que dependsOn est résolu
-   * avant le champ qui en dépend (ex : diametre après type_de_support).
-   * Idempotent : saute les champs déjà valorisés — safe à rappeler après invalidation.
-   */
-  _initDefaultSelection() {
-    for (const step of this.schema.steps) {
-      for (const field of step.fields) {
-        // Seuls les params alimentent selection{}. Les produits sont dans selection.produits{}.
-        if (!field.isParam) continue;
-        // Idempotence : ne pas écraser une sélection déjà présente (ex : rappel post-invalidation).
-        if (this.selection[field.id] !== undefined) continue;
-
-        // Les champs length n'ont pas d'options[] mais des presets[].
-        if (field.type === 'length') {
-          this.selection[field.id] = field.presets?.[0] ?? null;
-          continue;
-        }
-
-        let opts = [];
-        if (field.dependsOn) {
-          // Options groupées par valeur parente, ex : options["simple"] ou options["double"].
-          opts = field.options[this.selection[field.dependsOn]] ?? [];
-        } else if (Array.isArray(field.options)) {
-          opts = field.options;
-        }
-
-        const first = opts.find((o) => isVisible(o, this.selection));
-        // N'affecte rien si toutes les options sont masquées par showIf.
-        if (first) this.selection[field.id] = first.id;
-      }
-    }
-  }
-
-  // -------------------------------------------------------------------------
   // Rendu
   // -------------------------------------------------------------------------
 
   /**
-   * Génère une seule fois le DOM de toutes les étapes et les cache (hidden).
-   * La navigation se fait par show/hide, pas par re-render — évite de perdre l'état
-   * des composants JS Toolkit déjà montés.
-   * Les champs avec `splitByConfig` sont expandés ici en autant de variantes que nécessaire.
+   * Génère (une seule fois) le DOM de toutes les étapes via `steps-renderer.js`, stocke les
+   * éléments d'étape et leurs champs expandés, puis monte les composants JS Toolkit insérés.
    */
   _renderAllSteps() {
-    const container = this.$refs.stepContent;
-    container.innerHTML = '';
-    this._stepEls = [];
-    this._expandedStepFields = [];
-
-    for (const [i, step] of this.schema.steps.entries()) {
-      const stepEl = document.createElement('div');
-      stepEl.dataset.step = i;
-      stepEl.hidden = true;
-
-      // Étape Embouts : message affiché quand le support choisi remplace déjà les embouts
-      // (naissances murales, corners — flag `replacesEmbouts`). Visibilité gérée par refreshEmboutsStep().
-      if (step.id === 'embouts') {
-        stepEl.appendChild(createEmboutsMessageElement());
-      }
-
-      // Étape Récapitulatif : reprend le même rendu que le bandeau permanent (renderRecap),
-      // dans un conteneur dédié — voir _renderRecap(). `fields: []` dans le JSON, rien à cloner ici.
-      if (step.id === 'recap') {
-        const recapStepContent = document.createElement('div');
-        recapStepContent.dataset.ref = 'recapStepContent';
-        recapStepContent.className = 'flex flex-col gap-3';
-        stepEl.appendChild(recapStepContent);
-      }
-
-      const expanded = this._expandFields(step.fields);
-      this._expandedStepFields[i] = expanded;
-
-      for (const field of expanded) {
-        const el = this._cloneTemplate(field.type);
-        // Type de champ non supporté (template absent du Twig) : on ignore silencieusement.
-        if (!el) continue;
-        el.dataset.fieldId = field.id;
-        el._syhField = field;
-        el._syhSelection = this.selection;
-        el._syhColoris = this.schema.collection.coloris ?? [];
-        el._syhRenderMode = this.schema.collection.renderMode;
-        // Visibilité initiale au niveau champ (showIf field-level, ex : embout_arriere en simple).
-        el.hidden = !isVisible(field, this.selection);
-        stepEl.appendChild(el);
-      }
-
-      container.appendChild(stepEl);
-      this._stepEls.push(stepEl);
-    }
-
-    this.$update();
-  }
-
-  /**
-   * Expand les champs `splitByConfig` en autant de variantes que de valeurs déclarées dans `configs`.
-   * Chaque variante hérite des propriétés de base, surcharge avec ses propres overrides,
-   * et reçoit un `showIf` automatique sur le paramètre de split.
-   * Les champs sans `splitByConfig` sont retournés tels quels.
-   */
-  _expandFields(fields) {
-    return fields.flatMap((field) => {
-      if (!field.splitByConfig) return [field];
-      const { splitByConfig, configs, ...baseProps } = field;
-      return Object.entries(configs).flatMap(([configValue, instances]) =>
-        instances.map((instance) => ({
-          ...baseProps,
-          ...instance,
-          // Fusionne le showIf de base avec la condition de config générée automatiquement.
-          showIf: { ...(baseProps.showIf ?? {}), [splitByConfig]: [configValue] },
-        }))
-      );
+    const { stepEls, expandedStepFields } = renderAllSteps({
+      rootEl: this.$el,
+      container: this.$refs.stepContent,
+      schema: this.schema,
+      selection: this.selection,
     });
-  }
-
-  // Clone le <template data-template="${type}"> déclaré dans le Twig. Retourne null si absent.
-  _cloneTemplate(type) {
-    const tpl = this.$el.querySelector(`[data-template="${type}"]`);
-    if (!tpl) return null;
-    return tpl.content.cloneNode(true).firstElementChild;
+    this._stepEls = stepEls;
+    this._expandedStepFields = expandedStepFields;
+    this.$update();
   }
 
   // -------------------------------------------------------------------------
   // Stepper
   // -------------------------------------------------------------------------
-
-  /**
-   * Génère les boutons de navigation inter-étapes depuis le schéma. Appelé une seule fois au montage.
-   *
-   * Rendu : stepper horizontal. Un bouton par étape (pastille numérotée + libellé),
-   * les pastilles étant reliées par une barre horizontale passant par leur centre.
-   * L'état visuel (opacité) est piloté par {@link _showStep} via les classes
-   * `is-active` (étape courante) et `is-done` (étapes déjà parcourues).
-   */
-  _renderStepper() {
-    const lastIndex = this.schema.steps.length - 1;
-
-    this.$refs.stepper.innerHTML = this.schema.steps
-      .map((step, i) => {
-        // Barre de liaison vers l'étape suivante — absente sur la dernière étape.
-        // Part du centre de la pastille courante (left-1/2) et s'étend sur toute la
-        // largeur du bouton (w-full) : elle rejoint donc le centre de la pastille
-        // suivante (boutons de largeur égale via flex-1). z-0 + pointer-events-none
-        // pour passer sous la pastille (bg-white) et laisser le clic au bouton.
-        const connector =
-          i < lastIndex
-            ? '<span aria-hidden="true" class="pointer-events-none absolute left-1/2 top-4 z-0 h-0.5 w-full bg-brown"></span>'
-            : '';
-
-        return `<button type="button" data-step="${i}" class="relative flex flex-1 flex-col items-center gap-2 px-2 text-purple-extra-light is-active:text-purple is-done:text-purple">${connector}<span class="relative z-10 grid size-8 place-items-center rounded-full border-2 border-brown bg-white text-sm parent-is-active:bg-brown parent-is-active:text-white parent-is-done:bg-brown parent-is-done:text-white">${i + 1}</span><span class="text-center text-sm leading-tight">${step.label}</span></button>`;
-      })
-      .join('');
-  }
 
   // Délégation de clic : remonte jusqu'au bouton [data-step] pour éviter les faux positifs sur les enfants.
   onStepperClick({ event }) {
@@ -272,15 +147,7 @@ export default class Configurator extends Base {
       el.hidden = i !== index;
     });
 
-    // Met à jour l'état visuel du stepper :
-    // - is-active : étape courante                → opacity-100 (+ pastille pleine)
-    // - is-done   : étapes précédentes parcourues → opacity-100
-    // Les étapes futures restent à opacity-50 (état par défaut du bouton).
-    this.$refs.stepper.querySelectorAll('button[data-step]').forEach((btn) => {
-      const step = Number(btn.dataset.step);
-      btn.classList.toggle('is-active', step === index);
-      btn.classList.toggle('is-done', step < index);
-    });
+    updateStepperState(this.$refs.stepper, index);
 
     this._refreshCurrentStep();
   }
@@ -340,30 +207,15 @@ export default class Configurator extends Base {
         child.applyGlobalColoris(value);
       }
     }
-    this._invalidateDownstream(fieldId);
-    this._initDefaultSelection();
+    // Invalidation limitée à l'étape courante — les étapes produit se resynchronisent à l'affichage.
+    invalidateDownstream(this.schema.steps[this.currentStepIndex], this.selection, fieldId);
+    initDefaultSelection(this.schema, this.selection);
     // Le défaut recalculé du support peut désormais remplacer les embouts (ex : changement de diamètre).
     this._purgeEmboutsIfReplaced();
     this._refreshCurrentStep();
     this._renderRecap();
     this._refreshLivePreview();
     console.log('[SYH] selection', { ...this.selection });
-  }
-
-  /**
-   * Supprime les sélections des champs qui dépendent du champ modifié (dependsOn).
-   * Limité à l'étape courante — les étapes produit sont invalidées à leur affichage via refresh().
-   */
-  _invalidateDownstream(changedFieldId) {
-    const step = this.schema.steps[this.currentStepIndex];
-    for (const field of step.fields) {
-      // Ne pas invalider le champ lui-même, uniquement ses dépendants.
-      if (field.id === changedFieldId) continue;
-      // Invalidation des enfants directs uniquement (pas de cascade récursive).
-      if (field.dependsOn === changedFieldId) {
-        delete this.selection[field.id];
-      }
-    }
   }
 
   /**
@@ -386,7 +238,7 @@ export default class Configurator extends Base {
     }
 
     // 2. About_tube : visibilité calculée en JS (qty tubes > 1) et qty injectée dans le descripteur.
-    this._refreshTubeStep(stepEl, expandedFields);
+    refreshTubeStep(stepEl, this.selection, expandedFields);
 
     // 2bis. Étape Embouts : message + masquage si le support sélectionné remplace les embouts.
     if (this.schema.steps[this.currentStepIndex]?.id === 'embouts') {
@@ -406,38 +258,6 @@ export default class Configurator extends Base {
   }
 
   /**
-   * Pour chaque paire tube/about_tube : calcule la qty de tubes, l'injecte dans le descripteur
-   * du champ about_tube (lu par ProductField._computeQty), et ajuste la visibilité.
-   * About_tube est caché si un seul tube suffit (qty ≤ 1), même si son showIf l'autorise.
-   */
-  _refreshTubeStep(stepEl, expandedFields) {
-    const pairs = [
-      ['tube', 'about_tube'],
-      ['tube_avant', 'about_tube_avant'],
-      ['tube_arriere', 'about_tube_arriere'],
-    ];
-
-    for (const [tubeId, aboutId] of pairs) {
-      const tubeEl = stepEl.querySelector(`[data-field-id="${tubeId}"]`);
-      // Si le champ tube est absent ou caché, l'about n'est pas pertinent.
-      if (!tubeEl || tubeEl.hidden) continue;
-
-      const qty = computeTubeQty(this.selection, tubeId, expandedFields);
-
-      // Injecte la qty dans le descripteur partagé : ProductField.refresh() la lira via _field._segmentQty.
-      const aboutField = expandedFields.find((f) => f.id === aboutId);
-      if (aboutField) aboutField._segmentQty = Math.max(0, qty - 1);
-
-      const aboutEl = stepEl.querySelector(`[data-field-id="${aboutId}"]`);
-      if (!aboutEl) continue;
-
-      // Masquage UI uniquement — ne touche pas selection.produits.
-      // Le payload panier est calculé dynamiquement par _resolveQty, pas depuis cette visibilité DOM.
-      if (qty <= 1) aboutEl.hidden = true;
-    }
-  }
-
-  /**
    * Retire les lignes embout du panier si le support sélectionné les remplace déjà.
    * Appelé après toute mise à jour susceptible de changer le support (produit ou défaut recalculé).
    */
@@ -445,109 +265,10 @@ export default class Configurator extends Base {
     purgeEmboutsIfReplaced(this.schema, this.selection);
   }
 
-  // -------------------------------------------------------------------------
-  // Modale — Calcul de longueur
-  // -------------------------------------------------------------------------
-
-  /**
-   * Câble le panel `#extra`, partagé par toutes les modales du configurateur (voir
-   * modal-router.js) : calcul de longueur et changement de collection.
-   * La longueur de tube suggérée (pas D) est appliquée au champ `longueur` via le circuit normal
-   * d'invalidation (`_applyChange`), comme si elle avait été saisie dans le champ `length` de l'étape 1.
-   */
-  _initModals() {
-    // Positionnement par-modale sur le panel unique `#extra` : la modale couleur est ancrée à
-    // droite, avec un voile noir semi-transparent (`bg-black/50`) — le rendu live de gauche
-    // (.colG) reste devinable pendant l'essai des couleurs (voir modal-router.js `layouts` et
-    // docs/module-8b). `calcul-longueur` et `collections` gardent l'apparence par défaut du Twig
-    // (centrée en haut, voile sombre).
-    const layouts = {
-      couleur: {
-        overlay: ['!bg-black/50'],
-        wrapper: ['!items-stretch', '!justify-end', '!p-0'],
-        container: ['h-full', '!max-w-md', '!rounded-none'],
-      },
-    };
-
-    initModalRouter(
-      '#extra',
-      {
-        'calcul-longueur': (contentEl) =>
-          initLongueurCalculator(contentEl, {
-            getEmbout: () => selectedEmboutInfo(this.schema, this.selection),
-            onValider: (longueurTube) => {
-              this._applyChange('longueur', longueurTube);
-              document.querySelector('#extra')?.close();
-            },
-            onCompute: (total) => {
-              this._longueurTotalAvecEmbouts = total;
-              this._renderRecap();
-            },
-          }),
-        collections: (contentEl) => initCollectionSwitcher(contentEl),
-        couleur: (contentEl, trigger) => this._initColorModal(contentEl, trigger),
-      },
-      layouts
-    );
-  }
-
-  /**
-   * Câble la modale de sélection de couleur (renderMode `live_colored`) pour la pièce d'où provient
-   * le trigger « Voir plus de couleurs » (`data-piece` = id du champ produit, voir product-field.js).
-   *
-   * Aperçu temps réel : chaque clic couleur écrit directement dans `selection.produits[fieldId]` et
-   * ne rafraîchit que le rendu live (`_refreshLivePreview`), sans toucher au récap ni au panier —
-   * la modale reste ouverte. La validation passe, elle, par le circuit normal du composant
-   * (`ProductField.setColorisFromModal` → `changed` → `onProductFieldChanged`).
-   *
-   * @param {HTMLElement} contentEl - Contenu de la modale (cloné depuis son template).
-   * @param {HTMLElement|null} trigger - Bouton déclencheur, porteur de `data-piece`.
-   */
-  _initColorModal(contentEl, trigger) {
-    const fieldId = trigger?.dataset.piece ?? null;
-    const child = (this.$children.ProductField ?? []).find((c) => c.fieldId === fieldId);
-    if (!child) return;
-
-    const palette = this.schema.collection.coloris ?? [];
-    // Couleur d'origine mémorisée à l'ouverture — restaurée si l'utilisateur annule.
-    const originalColorisId = child.currentColorisId;
-
-    // Écrit un coloris sur une pièce sans repasser par le composant : sert à l'aperçu (non validé)
-    // et à annuler celui-ci.
-    const previewColoris = (id) => {
-      const sel = this.selection.produits[fieldId];
-      if (sel) sel.coloris = id;
-      this._refreshLivePreview();
-    };
-
-    initColorModal(contentEl, {
-      panel: document.querySelector('#extra'),
-      palette,
-      currentColorisId: originalColorisId,
-      recentIds: this._recentColoris,
-      onPreview: (id) => previewColoris(id),
-      onCancel: () => previewColoris(originalColorisId),
-      onApplyCurrent: (id) => {
-        // Annule d'abord la mutation d'aperçu pour que le circuit normal ne court-circuite pas son
-        // early-exit (coloris déjà égal) — puis valide proprement.
-        previewColoris(originalColorisId);
-        child.setColorisFromModal(id);
-      },
-      onApplyAll: (id) => {
-        previewColoris(originalColorisId);
-        // Écrase toutes les pièces colorisables réellement teintées (option sélectionnée avec
-        // `svgUrl`), pièce d'origine comprise. Voir module-8b (point de décision : « écrase tout »).
-        for (const c of this.$children.ProductField ?? []) {
-          if (c.$el.hidden) continue;
-          if (c === child || c.selectedOption?.svgUrl) c.setColorisFromModal(id);
-        }
-      },
-    });
-  }
-
   /**
    * Mémorise un coloris en tête de la liste des « dernières couleurs utilisées » de la config en
    * cours (voir docs/module-8b) : plus récent d'abord, sans doublon, borné à 5. Aucune persistance.
+   * Lu par la modale couleur à son ouverture (voir features/configurator-modals.js).
    *
    * @param {string|null} colorisId
    */
@@ -566,7 +287,7 @@ export default class Configurator extends Base {
    * le dernier total calculé dans la modale "Calcul de longueur".
    * Affiché en permanence au-dessus du stepper pour rappeler les choix structurants.
    *
-   * Si la collection déclare une étape `recap` (voir _renderAllSteps), son conteneur dédié reçoit
+   * Si la collection déclare une étape `recap` (voir steps-renderer.js), son conteneur dédié reçoit
    * le même rendu — pas de logique différente, juste une seconde cible pour renderRecap().
    */
   _renderRecap() {

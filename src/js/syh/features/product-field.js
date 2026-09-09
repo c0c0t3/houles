@@ -431,7 +431,7 @@ export default class ProductField extends Base {
       return Math.ceil(longueur / tubeLength);
     }
 
-    // Injectée par Configurator._refreshTubeStep() avant chaque refresh().
+    // Injectée par refreshTubeStep() (features/tube-step.js) avant chaque refresh().
     if (quantity.mode === 'segmented_minus_1') {
       return this._field._segmentQty ?? null;
     }
