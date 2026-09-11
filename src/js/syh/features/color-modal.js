@@ -1,3 +1,6 @@
+import 'choices.js/public/assets/styles/choices.css';
+import Choices from 'choices.js';
+
 /**
  * Modale de sélection de couleur d'une pièce colorisable (`renderMode: "live_colored"`).
  * Ouverte depuis le trigger « Voir plus de couleurs » d'une card produit (voir product-field.js,
@@ -5,26 +8,35 @@
  * (modal-configurateur.twig) ; le câblage panel/positionnement est fait par modal-router.js.
  *
  * Comportement clé (voir docs/module-8b-modale-couleurs.md) :
- * - Cliquer une couleur l'applique **en aperçu temps réel** (`onPreview`) sans la valider : le
- *   calque SVG de la pièce se teinte dans `.colG` et la modale reste ouverte.
+ * - La **grille du nuancier reste toujours entièrement affichée** — la recherche ne la filtre pas.
+ * - La recherche est un **menu déroulant** (Choices.js) : pastille + libellé par ligne, avec champ
+ *   de recherche interne (nom / code Pantone / hex). Choisir une entrée revient à cliquer la
+ *   pastille correspondante dans la grille.
+ * - Cliquer une couleur (grille, récents ou menu déroulant) l'applique **en aperçu temps réel**
+ *   (`onPreview`) sans la valider : le calque SVG de la pièce se teinte dans `.colG` et la modale
+ *   reste ouverte.
  * - « Appliquer au produit » (`onApplyCurrent`) valide sur la seule pièce d'origine, « Appliquer à
  *   tous » (`onApplyAll`) sur toutes les pièces colorisables, puis ferme.
  * - « Annuler » / croix / clic hors modale / Échap → `onCancel` (rollback de l'aperçu) puis ferme.
+ *
+ * Choices.js est instancié à la main ici (et non via le composant global `ChoicesSelect`) : le
+ * contenu de la modale est cloné à la volée par modal-router.js, hors de l'arbre de composants
+ * monté au chargement — le `data-component` ne serait jamais découvert.
  */
 
 /**
- * @typedef {Object} ColorisEntry
+ * @typedef {object} ColorisEntry
  * @property {string} id
- * @property {string} [label]   - Libellé interne (nuancier mock).
- * @property {string} [nom]     - Nom commercial du coloris (nuancier réel).
- * @property {string} [pantone] - Code Pantone.
+ * @property {string} [label]   Libellé interne (nuancier mock).
+ * @property {string} [nom]     Nom commercial du coloris (nuancier réel).
+ * @property {string} [pantone] Code Pantone.
  * @property {string} [hex]
  */
 
 /**
  * @param {HTMLElement} contentEl - Conteneur de contenu de la modale, déjà peuplé par le clone du
  *   template `couleur` (recherche, récents, grille, footer).
- * @param {Object} opts
+ * @param {object} opts
  * @param {HTMLElement} opts.panel - L'élément panel (`#extra`) : sert à fermer la modale et à
  *   détecter une fermeture non validée (→ rollback).
  * @param {ColorisEntry[]} opts.palette - Nuancier global de la collection (`collection.coloris[]`).
@@ -52,7 +64,6 @@ export function initColorModal(contentEl, opts) {
   const recentWrapEl = contentEl.querySelector('[data-ref="recentWrap"]');
   const recentEl = contentEl.querySelector('[data-ref="recent"]');
   const gridEl = contentEl.querySelector('[data-ref="grid"]');
-  const emptyEl = contentEl.querySelector('[data-ref="empty"]');
   const applyCurrentBtn = contentEl.querySelector('[data-ref="applyCurrent"]');
   const applyAllBtn = contentEl.querySelector('[data-ref="applyAll"]');
   const swatchTpl = contentEl.querySelector('[data-template="color-modal-swatch"]');
@@ -63,9 +74,14 @@ export function initColorModal(contentEl, opts) {
   // Passe à true dès qu'un bouton « Appliquer » a validé : la fermeture qui suit ne doit alors PAS
   // déclencher le rollback `onCancel`.
   let committed = false;
+  // Instance Choices.js du menu déroulant de recherche — détruite à la fermeture de la modale.
+  let choices = null;
 
   /** @param {string} id */
   const byId = (id) => palette.find((c) => String(c.id) === String(id)) ?? null;
+
+  /** @param {ColorisEntry} entry */
+  const entryName = (entry) => entry.nom ?? entry.label ?? entry.pantone ?? String(entry.id);
 
   /**
    * Clone une pastille pour une entrée de nuancier. La classe `is-active` (mise en évidence de la
@@ -87,10 +103,12 @@ export function initColorModal(contentEl, opts) {
     return btn;
   }
 
-  /** @param {ColorisEntry[]} entries */
-  function renderGrid(entries) {
-    gridEl.replaceChildren(...entries.map(makeSwatch));
-    if (emptyEl) emptyEl.hidden = entries.length > 0;
+  /**
+   * (Re)construit la grille complète du nuancier. Toujours toute la palette — jamais filtrée par
+   * la recherche (voir module-8b : la recherche ne cache pas les autres coloris).
+   */
+  function renderGrid() {
+    gridEl.replaceChildren(...palette.map(makeSwatch));
   }
 
   function renderRecent() {
@@ -101,33 +119,66 @@ export function initColorModal(contentEl, opts) {
   }
 
   /**
-   * Filtre nom / libellé / code Pantone / hex, insensible à la casse.
+   * Met à jour la pastille active partout : grille, récents, et menu déroulant.
    *
-   * @param {ColorisEntry} entry
-   * @param {string} q - Requête déjà normalisée (trim + lowercase).
+   * @param {string} id
    */
-  function matches(entry, q) {
-    return [entry.label, entry.nom, entry.pantone, entry.hex]
-      .filter(Boolean)
-      .join(' ')
-      .toLowerCase()
-      .includes(q);
-  }
-
-  function applyFilter() {
-    const q = (searchEl?.value ?? '').trim().toLowerCase();
-    // Aucune correspondance dans le nuancier → grille vide (pas de couleur hors nuancier ici,
-    // voir module-8b).
-    renderGrid(q ? palette.filter((entry) => matches(entry, q)) : palette);
-  }
-
-  /** @param {string} id */
   function markSelected(id) {
     selectedId = String(id);
     for (const btn of contentEl.querySelectorAll('[data-coloris]')) {
       const dot = btn.querySelector('span') ?? btn;
       dot.classList.toggle('is-active', String(btn.dataset.coloris) === selectedId);
     }
+    // Reflète la sélection dans le menu déroulant sans redéclencher d'événement `choice`.
+    try {
+      choices?.setChoiceByValue(selectedId);
+    } catch {
+      /* valeur absente de la liste : rien à refléter */
+    }
+  }
+
+  /**
+   * Instancie le menu déroulant de recherche (Choices.js) à partir de la palette. Chaque entrée
+   * affiche une pastille de couleur + le nom (+ code Pantone si présent). La recherche interne de
+   * Choices porte sur ce libellé — le `hex` y figure via le `style` inline, donc cherchable aussi.
+   */
+  function setupSearch() {
+    if (!searchEl) return;
+    choices = new Choices(searchEl, {
+      allowHTML: true,
+      searchEnabled: true,
+      searchResultLimit: 100,
+      shouldSort: false,
+      itemSelectText: '',
+      placeholder: true,
+      placeholderValue: 'Rechercher un coloris (nom, Pantone, hex)',
+      searchPlaceholderValue: 'Rechercher…',
+    });
+
+    choices.setChoices(
+      palette.map((entry) => {
+        const pantone = entry.pantone ? ` — ${entry.pantone}` : '';
+        return {
+          value: String(entry.id),
+          label: `<span class="inline-block align-middle mr-2 size-4 rounded-full border border-purple" style="background-color: ${
+            entry.hex ?? 'transparent'
+          }"></span>${entryName(entry)}${pantone}`,
+          selected: selectedId != null && String(entry.id) === selectedId,
+        };
+      }),
+      'value',
+      'label',
+      true,
+    );
+
+    // Choices émet un CustomEvent `choice` sur le <select> ; on s'aligne sur ui/ChoicesSelect.js.
+    searchEl.addEventListener('choice', (event) => {
+      if (!(event instanceof CustomEvent) || !event.detail) return;
+      const id = event.detail.value ?? event.detail.choice?.value;
+      if (id == null) return;
+      markSelected(id);
+      onPreview?.(id);
+    });
   }
 
   // Aperçu au clic — délégué sur tout le contenu pour couvrir la grille ET les récents.
@@ -137,8 +188,6 @@ export function initColorModal(contentEl, opts) {
     markSelected(btn.dataset.coloris);
     onPreview?.(btn.dataset.coloris);
   });
-
-  searchEl?.addEventListener('input', applyFilter);
 
   applyCurrentBtn?.addEventListener('click', () => {
     committed = true;
@@ -152,16 +201,24 @@ export function initColorModal(contentEl, opts) {
     panel?.close?.();
   });
 
-  // Fermeture non validée (Annuler via data-ref="fermer", croix, overlay, Échap) → rollback.
+  // Fermeture (Annuler via data-ref="fermer", croix, overlay, Échap, ou après un « Appliquer ») :
+  // on détruit toujours l'instance Choices ; on ne rollback l'aperçu que si rien n'a été validé.
   // `once` : cette instance de modale est jetable, un nouvel init() a lieu à chaque réouverture.
   panel?.addEventListener(
     'close',
     () => {
+      try {
+        choices?.destroy();
+      } catch {
+        /* déjà détruite */
+      }
+      choices = null;
       if (!committed) onCancel?.();
     },
-    { once: true }
+    { once: true },
   );
 
   renderRecent();
-  applyFilter();
+  renderGrid();
+  setupSearch();
 }

@@ -73,24 +73,31 @@ export default class ProductField extends Base {
   }
 
   /**
-   * Applique un coloris à l'option actuellement sélectionnée, piloté depuis la modale couleur
-   * (voir color-modal.js). Équivalent d'un clic sur une pastille inline : met à jour le cache de
-   * coloris, redessine les pastilles de la card, et émet le changement (→ récap + panier + rendu
-   * live via le Configurator). No-op si aucune option n'est sélectionnée.
+   * Applique un coloris à ce champ depuis la modale couleur (voir color-modal.js), pour
+   * « Appliquer au produit » comme pour « Appliquer à tous ».
+   *
+   * Le coloris est appliqué à **toutes les options** du champ, pas seulement à celle sélectionnée :
+   * le coloris est lié au slot (au calque SVG de la pièce), pas à une référence produit précise.
+   * Sinon, changer de produit dans ce slot après validation perdrait la couleur — le nouveau
+   * produit ré-émettrait son ancien coloris en cache (défaut, ou couleur d'avant). Même raison que
+   * `applyGlobalColoris` ci-dessous : une option masquée aujourd'hui peut redevenir sélectionnée
+   * plus tard, elle doit déjà porter le bon coloris.
+   *
+   * Redessine les cards (pastilles à jour) et émet le changement si l'option courante est touchée
+   * (→ récap + panier + rendu live via le Configurator). No-op si le champ n'a pas d'options.
    *
    * @param {string} colorisId - Id du coloris choisi dans la modale.
    */
   setColorisFromModal(colorisId) {
-    const refBase = this._selectedRefBase;
-    if (!refBase || colorisId == null) return;
-    this._cardColoris.set(refBase, colorisId);
-    const option = this._field.options.find((o) => o.refBase === refBase);
-    if (!option) return;
-    const card = this.$refs.cards
-      .querySelector(`input[data-product="${refBase}"]`)
-      ?.closest('label');
-    if (card) this._fillSwatches(card.querySelector('[data-ref="colorSwatches"]'), option, colorisId);
-    this._emitChange();
+    if (colorisId == null || !this._field) return;
+    let touchedSelected = false;
+    for (const option of this._field.options ?? []) {
+      if (option.isNone) continue; // une option « sans … » n'a pas de coloris
+      this._cardColoris.set(option.refBase, colorisId);
+      if (option.refBase === this._selectedRefBase) touchedSelected = true;
+    }
+    this._render();
+    if (touchedSelected) this._emitChange();
   }
 
   /**

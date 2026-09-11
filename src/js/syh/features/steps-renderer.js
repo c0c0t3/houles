@@ -27,7 +27,7 @@ export function expandFields(fields) {
         ...instance,
         // Fusionne le showIf de base avec la condition de config générée automatiquement.
         showIf: { ...(baseProps.showIf ?? {}), [splitByConfig]: [configValue] },
-      }))
+      })),
     );
   });
 }

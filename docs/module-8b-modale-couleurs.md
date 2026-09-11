@@ -111,6 +111,11 @@ for (const pieceId of piecesColorisables) {
 Chaque écriture déclenche la mise à jour du calque SVG correspondant (colorisation, Module 8) et
 alimente la liste des « 5 dernières couleurs » de la config en cours.
 
+La couleur validée est liée au **slot** (au calque SVG de la pièce), pas à la référence produit
+choisie à cet instant : elle est mémorisée pour **toutes les options** du champ concerné. Ainsi,
+changer de produit dans ce slot après validation (ex : choisir un autre support) conserve la
+couleur — sans ça, le nouveau produit réafficherait son ancienne teinte en cache.
+
 ---
 
 ## Points de décision encore ouverts

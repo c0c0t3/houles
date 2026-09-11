@@ -5,8 +5,10 @@ import { initColorModal } from './color-modal.js';
 import { selectedEmboutInfo } from './embouts.js';
 
 /**
- * Câblage des modales du configurateur sur le panel unique `#extra` (voir modal-router.js) :
- * calcul de longueur, changement de collection, et sélection de couleur (renderMode `live_colored`).
+ * Câblage des modales du configurateur (voir modal-router.js) :
+ * - panel `#extra`       : calcul de longueur, changement de collection ;
+ * - panel `#syh-couleur` : sélection de couleur (renderMode `live_colored`) — tiroir venant de la
+ *   droite (voir l'embed dans modal-configurateur.twig).
  * Extrait de `configurator.js`. Ces fonctions ont besoin de l'instance Configurator (`host`) pour
  * lire l'état (`schema`, `selection`, `_recentColoris`) et déclencher ses recalculs
  * (`_applyChange`, `_renderRecap`, `_refreshLivePreview`).
@@ -14,47 +16,36 @@ import { selectedEmboutInfo } from './embouts.js';
  * @typedef {import('../configurator.js').default} Configurator
  */
 
+/** Sélecteur du panel dédié à la modale de sélection de couleur. */
+const COULEUR_PANEL = '#syh-couleur';
+
 /**
- * Câble le panel `#extra`, partagé par toutes les modales du configurateur.
+ * Câble les deux panels de modales du configurateur.
  * La longueur de tube suggérée (pas D) est appliquée au champ `longueur` via le circuit normal
  * d'invalidation (`_applyChange`), comme si elle avait été saisie dans le champ `length` de l'étape 1.
  *
  * @param {Configurator} host - L'instance Configurator.
  */
 export function initConfiguratorModals(host) {
-  // Positionnement par-modale sur le panel unique `#extra` : la modale couleur est ancrée à
-  // droite, avec un voile noir semi-transparent (`bg-black/50`) — le rendu live de gauche
-  // (.colG) reste devinable pendant l'essai des couleurs (voir modal-router.js `layouts` et
-  // docs/module-8b). `calcul-longueur` et `collections` gardent l'apparence par défaut du Twig
-  // (centrée en haut, voile sombre).
-  const layouts = {
-    couleur: {
-      overlay: ['!bg-black/50'],
-      wrapper: ['!items-stretch', '!justify-end', '!p-0'],
-      container: ['h-full', '!max-w-md', '!rounded-none'],
-    },
-  };
+  initModalRouter('#extra', {
+    'calcul-longueur': (contentEl) =>
+      initLongueurCalculator(contentEl, {
+        getEmbout: () => selectedEmboutInfo(host.schema, host.selection),
+        onValider: (longueurTube) => {
+          host._applyChange('longueur', longueurTube);
+          document.querySelector('#extra')?.close();
+        },
+        onCompute: (total) => {
+          host._longueurTotalAvecEmbouts = total;
+          host._renderRecap();
+        },
+      }),
+    collections: (contentEl) => initCollectionSwitcher(contentEl),
+  });
 
-  initModalRouter(
-    '#extra',
-    {
-      'calcul-longueur': (contentEl) =>
-        initLongueurCalculator(contentEl, {
-          getEmbout: () => selectedEmboutInfo(host.schema, host.selection),
-          onValider: (longueurTube) => {
-            host._applyChange('longueur', longueurTube);
-            document.querySelector('#extra')?.close();
-          },
-          onCompute: (total) => {
-            host._longueurTotalAvecEmbouts = total;
-            host._renderRecap();
-          },
-        }),
-      collections: (contentEl) => initCollectionSwitcher(contentEl),
-      couleur: (contentEl, trigger) => initColorModalForPiece(host, contentEl, trigger),
-    },
-    layouts
-  );
+  initModalRouter(COULEUR_PANEL, {
+    couleur: (contentEl, trigger) => initColorModalForPiece(host, contentEl, trigger),
+  });
 }
 
 /**
@@ -88,7 +79,7 @@ function initColorModalForPiece(host, contentEl, trigger) {
   };
 
   initColorModal(contentEl, {
-    panel: document.querySelector('#extra'),
+    panel: document.querySelector(COULEUR_PANEL),
     palette,
     currentColorisId: originalColorisId,
     recentIds: host._recentColoris,
