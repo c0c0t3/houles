@@ -53,53 +53,6 @@ export default class ProductField extends Base {
     if (this._selectedRefBase !== prev) this._emitChange();
   }
 
-  // -------------------------------------------------------------------------
-  // Accès publics — consommés par le Configurator (modale couleur, module-8b)
-  // -------------------------------------------------------------------------
-
-  /** @returns {string|null} Id du champ produit piloté par ce composant. */
-  get fieldId() {
-    return this._field?.id ?? null;
-  }
-
-  /** @returns {string|null} Coloris actuel de l'option sélectionnée sur ce champ. */
-  get currentColorisId() {
-    return this._selectedRefBase ? this._cardColoris.get(this._selectedRefBase) ?? null : null;
-  }
-
-  /** @returns {object|null} Option produit actuellement sélectionnée (descripteur JSON). */
-  get selectedOption() {
-    return this._field?.options?.find((o) => o.refBase === this._selectedRefBase) ?? null;
-  }
-
-  /**
-   * Applique un coloris à ce champ depuis la modale couleur (voir color-modal.js), pour
-   * « Appliquer au produit » comme pour « Appliquer à tous ».
-   *
-   * Le coloris est appliqué à **toutes les options** du champ, pas seulement à celle sélectionnée :
-   * le coloris est lié au slot (au calque SVG de la pièce), pas à une référence produit précise.
-   * Sinon, changer de produit dans ce slot après validation perdrait la couleur — le nouveau
-   * produit ré-émettrait son ancien coloris en cache (défaut, ou couleur d'avant). Même raison que
-   * `applyGlobalColoris` ci-dessous : une option masquée aujourd'hui peut redevenir sélectionnée
-   * plus tard, elle doit déjà porter le bon coloris.
-   *
-   * Redessine les cards (pastilles à jour) et émet le changement si l'option courante est touchée
-   * (→ récap + panier + rendu live via le Configurator). No-op si le champ n'a pas d'options.
-   *
-   * @param {string} colorisId - Id du coloris choisi dans la modale.
-   */
-  setColorisFromModal(colorisId) {
-    if (colorisId == null || !this._field) return;
-    let touchedSelected = false;
-    for (const option of this._field.options ?? []) {
-      if (option.isNone) continue; // une option « sans … » n'a pas de coloris
-      this._cardColoris.set(option.refBase, colorisId);
-      if (option.refBase === this._selectedRefBase) touchedSelected = true;
-    }
-    this._render();
-    if (touchedSelected) this._emitChange();
-  }
-
   /**
    * Réaligne le coloris de TOUTES les options de ce champ sur le coloris global choisi à
    * l'étape 1 — pas seulement l'option actuellement sélectionnée : une option masquée aujourd'hui
@@ -274,16 +227,12 @@ export default class ProductField extends Base {
     if (option.isNone) return this._buildNoneCard(option);
     const card = this._cloneCardTemplate();
     const variant = option.variants?.[coloris] ?? null;
-
-    // Trigger « Voir plus de couleurs » (card live_colored uniquement) : porte l'id de pièce pour
-    // que la modale couleur sache quel champ colorer (voir modal-router.js / color-modal.js).
-    const moreColorsBtn = card.querySelector('[data-ref="moreColors"]');
-    if (moreColorsBtn) moreColorsBtn.dataset.piece = this._field.id;
+    const isSelected = option.refBase === this._selectedRefBase;
 
     const radio = card.querySelector('input[type="radio"]');
     radio.name = this._field.id;
     radio.dataset.product = option.refBase;
-    radio.checked = option.refBase === this._selectedRefBase;
+    radio.checked = isSelected;
 
     // Fallback au niveau option (pas variante) pour les produits `noColoris: true` — un seul
     // prix/id/stock/image, pas de déclinaison par coloris. Corrige un manque préexistant : ces
@@ -304,65 +253,82 @@ export default class ProductField extends Base {
     card.querySelector('[data-ref="productQty"]').textContent = this._computeQty(option) ?? '—';
 
     this._fillStock(card.querySelector('[data-ref="productStock"]'), variant?.stock ?? option.stock ?? null);
-    this._fillSwatches(card.querySelector('[data-ref="colorSwatches"]'), option, coloris);
-    this._applySwatchVisibility(card, option);
+    this._applyColorisUI(card, option, coloris, isSelected);
 
     return card;
   }
 
   /**
-   * Masque les swatches de coloris derrière un bouton "Changer de couleur" en `renderMode`
-   * `none` / `live` — visibles en permanence en `live_colored` (surcouche colorisée, pas besoin
-   * d'un clic supplémentaire). Sans effet si le produit n'a pas de coloris (rien à basculer).
+   * Pilote l'affichage des pastilles de coloris sur une card.
    *
-   * Cas `noColoris` : masqué partout SAUF en `live_colored`, où au contraire la palette complète
-   * est ce qui pilote la teinte du calque SVG — c'est le seul mode où ces produits ont un coloris
-   * à choisir du tout.
+   * - `none` / `live` : coloris par variante (`option.variants`), masqué derrière un bouton
+   *   « Changer de couleur » — comportement indépendant de la sélection, inchangé.
+   * - `live_colored` : plus de bouton, plus de variante par coloris. Les pastilles (nuancier
+   *   complet, voir `_fillSwatches`) n'existent que pour les produits réellement teintés
+   *   (`option.svgUrl`) et **seulement sur la card du produit sélectionné** — elle s'agrandit pour
+   *   les accueillir. Les autres cards du champ n'ont aucune pastille. Pas de modale ici : la
+   *   sélection d'une couleur se fait directement dans la card (voir docs/module-8b, historique de
+   *   la décision — la modale envisagée un temps a été abandonnée).
    *
    * @param {HTMLElement} card - Carte produit clonée.
    * @param {object} option - Option JSON correspondante.
+   * @param {string|null} coloris - Coloris actif résolu par `_resolveColoris` pour cette option.
+   * @param {boolean} isSelected - Vrai si `option` est l'option actuellement sélectionnée du champ.
    */
-  _applySwatchVisibility(card, option) {
+  _applyColorisUI(card, option, coloris, isSelected) {
     const toggleBtn = card.querySelector('[data-ref="toggleColoris"]');
     const swatches = card.querySelector('[data-ref="colorSwatches"]');
     if (!swatches) return;
 
-    // style.display plutôt que l'attribut hidden : colorSwatches porte la classe Tailwind "flex"
-    // (display:flex), qui l'emporterait sur [hidden] dans la cascade (utilities après preflight).
-    const alwaysVisible = this._renderMode === 'live_colored';
-
-    if (option.noColoris) {
-      swatches.style.display = alwaysVisible ? '' : 'none';
-      // Toujours visible en live_colored, jamais ailleurs — pas de bouton à basculer ici.
-      if (toggleBtn) toggleBtn.style.display = 'none';
+    if (this._renderMode === 'live_colored') {
+      if (toggleBtn) toggleBtn.style.display = 'none'; // pas de bouton à basculer en live_colored
+      const showSwatches = Boolean(option.svgUrl) && isSelected;
+      if (showSwatches) {
+        this._fillSwatches(swatches, option, coloris);
+        swatches.style.display = '';
+      } else {
+        swatches.replaceChildren();
+        swatches.style.display = 'none';
+      }
       return;
     }
 
+    // none / live : coloris par variante, masqué derrière un bouton, indépendant de la sélection.
+    // style.display plutôt que l'attribut hidden : colorSwatches porte la classe Tailwind "flex"
+    // (display:flex), qui l'emporterait sur [hidden] dans la cascade (utilities après preflight).
     if (!option.variants) {
       swatches.style.display = 'none';
       if (toggleBtn) toggleBtn.style.display = 'none';
       return;
     }
-
-    swatches.style.display = alwaysVisible ? '' : 'none';
-    if (toggleBtn) toggleBtn.style.display = alwaysVisible ? 'none' : '';
+    this._fillSwatches(swatches, option, coloris);
+    swatches.style.display = 'none';
+    if (toggleBtn) toggleBtn.style.display = '';
   }
 
   /**
-   * Coloris à afficher en pastilles inline sur la card. En `live_colored`, la card ne montre qu'un
-   * aperçu réduit — le coloris actif + 5 autres (6 max) — le nuancier complet et la recherche
-   * vivant dans la modale couleur (voir color-modal.js / docs/module-8b-modale-couleurs.md). Le
-   * coloris actif est toujours inclus. Hors `live_colored`, toute la palette est rendue (inchangé).
+   * Affiche ou masque les pastilles de coloris d'une card précise (`live_colored`), sans
+   * reconstruire toute la grille — utilisé par `onCardsChange` pour ne toucher que les deux cards
+   * concernées par un changement de sélection (l'ancienne et la nouvelle). Sans effet si l'option
+   * n'a pas de calque SVG (pas de coloris à choisir pour elle, voir `_applyColorisUI`).
    *
-   * @param {string|null} activeColoris - Id du coloris actuellement sélectionné sur la card.
-   * @returns {object[]} Sous-ensemble de `this._coloris`.
+   * @param {string|null} refBase - Réf de l'option dont la card doit être mise à jour.
+   * @param {boolean} show
    */
-  _inlineSwatchColoris(activeColoris) {
-    const MAX = 6;
-    if (this._renderMode !== 'live_colored' || this._coloris.length <= MAX) return this._coloris;
-    const active = this._coloris.find((c) => String(c.id) === String(activeColoris));
-    const others = this._coloris.filter((c) => c !== active);
-    return active ? [active, ...others].slice(0, MAX) : others.slice(0, MAX);
+  _toggleCardColoris(refBase, show) {
+    if (!refBase) return;
+    const card = this.$refs.cards.querySelector(`input[data-product="${refBase}"]`)?.closest('label');
+    const option = this._field.options?.find((o) => o.refBase === refBase);
+    const swatches = card?.querySelector('[data-ref="colorSwatches"]');
+    if (!option || !swatches || !option.svgUrl) return;
+
+    if (show) {
+      this._fillSwatches(swatches, option, this._resolveColoris(option));
+      swatches.style.display = '';
+    } else {
+      swatches.replaceChildren();
+      swatches.style.display = 'none';
+    }
   }
 
   // `variantType` (par option, JSON) choisit la source du visuel de chaque pastille coloris :
@@ -370,15 +336,15 @@ export default class ProductField extends Base {
   // "coloris" = vignette de coloris dédiée (collection.coloris[].thumbnail), indépendante du
   // produit — utile quand les photos produit par coloris ne sont pas toutes disponibles.
   //
-  // Cas `noColoris` (live_colored) : itère la palette réduite (`_inlineSwatchColoris`) plutôt que
-  // les clés de `variants` (il n'y en a pas). Pastille = vignette si fournie, sinon `hex` en fond
-  // uni — les couleurs placeholder n'ont pas de vignette dédiée.
+  // Cas `noColoris` (live_colored) : itère toute la palette (`this._coloris`) plutôt que les clés
+  // de `variants` (il n'y en a pas) — nuancier complet, pas de limite. Pastille = vignette si
+  // fournie, sinon `hex` en fond uni — les couleurs placeholder n'ont pas de vignette dédiée.
   _fillSwatches(container, option, activeColoris) {
     if (!container) return;
 
     if (option.noColoris) {
       container.innerHTML = '';
-      for (const info of this._inlineSwatchColoris(activeColoris)) {
+      for (const info of this._coloris) {
         const btn = this._cloneSwatchTemplate();
         if (!btn) continue;
         btn.dataset.coloris = info.id;
@@ -462,8 +428,17 @@ export default class ProductField extends Base {
   onCardsChange({ event }) {
     const radio = event.target.closest('input[type="radio"]');
     if (!radio) return;
+    const previousRefBase = this._selectedRefBase;
     this._selectedRefBase = radio.dataset.product;
     this._isDefaultSelection = false; // choix explicite : ne plus suivre defaultIf automatiquement
+
+    // live_colored : les pastilles ne vivent que sur la card sélectionnée (voir _applyColorisUI) —
+    // bascule l'affichage entre l'ancienne et la nouvelle card sans reconstruire toute la grille.
+    if (this._renderMode === 'live_colored' && previousRefBase !== this._selectedRefBase) {
+      this._toggleCardColoris(previousRefBase, false);
+      this._toggleCardColoris(this._selectedRefBase, true);
+    }
+
     this._emitChange();
   }
 

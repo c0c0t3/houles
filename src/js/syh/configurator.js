@@ -51,10 +51,6 @@ export default class Configurator extends Base {
   // Rendu visuel live (colonne gauche `.colG`) : actif seulement en renderMode live/live_colored.
   _hasLive = false;
   _renderedImageEl = null;
-  // « Dernières couleurs utilisées » proposées par la modale couleur (renderMode live_colored,
-  // voir docs/module-8b). Ids de coloris, plus récent en tête, borné à 5, sans persistance :
-  // repart de zéro à chaque chargement de page ou changement de collection.
-  _recentColoris = [];
 
   // Point d'entrée : charge le schéma, initialise la sélection, génère le DOM, affiche l'étape 0.
   async mounted() {
@@ -179,10 +175,6 @@ export default class Configurator extends Base {
       delete this.selection.produits[fieldId];
     } else {
       this.selection.produits[fieldId] = value;
-      // Alimente les « dernières couleurs utilisées » de la modale couleur (live_colored seulement).
-      if (value.coloris != null && this.schema.collection.renderMode === 'live_colored') {
-        this._pushRecentColoris(value.coloris);
-      }
     }
     // Un nouveau support "naissance murale" remplace les embouts : purge la sélection embout existante.
     if (fieldId === 'support') this._purgeEmboutsIfReplaced();
@@ -263,19 +255,6 @@ export default class Configurator extends Base {
    */
   _purgeEmboutsIfReplaced() {
     purgeEmboutsIfReplaced(this.schema, this.selection);
-  }
-
-  /**
-   * Mémorise un coloris en tête de la liste des « dernières couleurs utilisées » de la config en
-   * cours (voir docs/module-8b) : plus récent d'abord, sans doublon, borné à 5. Aucune persistance.
-   * Lu par la modale couleur à son ouverture (voir features/configurator-modals.js).
-   *
-   * @param {string|null} colorisId
-   */
-  _pushRecentColoris(colorisId) {
-    if (colorisId == null) return;
-    const id = String(colorisId);
-    this._recentColoris = [id, ...this._recentColoris.filter((c) => c !== id)].slice(0, 5);
   }
 
   // -------------------------------------------------------------------------

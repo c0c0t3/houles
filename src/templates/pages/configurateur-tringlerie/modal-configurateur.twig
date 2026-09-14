@@ -1,15 +1,13 @@
 {#
-  Panels partagés par les modales du configurateur.
+  Panel partagé par les modales du configurateur.
   Le contenu affiché dépend du bouton déclencheur (attribut data-modal="{clé}") : le JS
   (src/js/syh/features/modal-router.js) clone le <template data-modal="{clé}"> correspondant
-  dans [data-ref="modalContent"] du panel qui gère cette clé, à l'ouverture. Ne pas ajouter de
-  contenu statique ici : déclarer une nouvelle modale = ajouter un nouveau <template> ci-dessous.
+  dans [data-ref="modalContent"] à l'ouverture. Ne pas ajouter de contenu statique ici :
+  déclarer une nouvelle modale = ajouter un nouveau <template> ci-dessous.
 
-  Deux panels :
-  - #extra        : calcul de longueur, changement de collection — centré en haut, voile sombre.
-  - #syh-couleur  : sélection de couleur (renderMode live_colored) — tiroir venant de la droite,
-                    large (max-w-4xl), pour garder visible le rendu live à gauche pendant l'essai
-                    des couleurs. Voir docs/module-8b-modale-couleurs.md.
+  La sélection de couleur (renderMode live_colored) n'utilise plus de modale — les pastilles
+  vivent directement dans la card du produit sélectionné (voir product-field.js et
+  docs/module-8b-modale-couleurs.md, historique de la décision).
 #}
 
 {% embed '@components/modal/Panel.twig'
@@ -27,39 +25,6 @@
     },
     container_attr: {
       class: 'w-full max-w-2xl rounded bg-sand !overflow-hidden flex justify-stretch'
-    },
-    content_attr: {
-      class: 'p-4 s:p-6 m:p-8 w-full flex flex-col'
-    }
-  }
-%}
-  {% block open %}{% endblock %}
-  {% block close %}{% endblock %}
-
-  {% block content_header %}
-    <h2 data-ref="modalTitle" class="font-serif text-2xl m:text-3xl uppercase leading-none text-gray text-center w-full"></h2>
-  {% endblock %}
-
-  {% block content_modal %}
-    <div data-ref="modalContent"></div>
-  {% endblock %}
-{% endembed %}
-
-{% embed '@components/modal/Panel.twig'
-  with {
-    attr: {
-      id: 'syh-couleur',
-      data_component: 'Panel Configurateur Couleur'
-    },
-    position: 'right',
-    overlay_attr: {
-      class: 'z-50 bg-black/50 absolute inset-0'
-    },
-    wrapper_attr: {
-      class: 'z-50'
-    },
-    container_attr: {
-      class: 'w-full !max-w-3xl h-full bg-sand !overflow-hidden flex'
     },
     content_attr: {
       class: 'p-4 s:p-6 m:p-8 w-full flex flex-col'
@@ -434,67 +399,3 @@
   </div>
 </template>
 
-{# ------------------------------------------------------------------ #}
-{# Modale : Sélection de couleur d'une pièce (renderMode live_colored) #}
-{# Contenu cloné dans le panel #syh-couleur (tiroir venant de la       #}
-{# droite, max-w-4xl) — voir l'embed en tête de fichier et             #}
-{# color-modal.js. Voir docs/module-8b-modale-couleurs.md.            #}
-{# ------------------------------------------------------------------ #}
-<template data-modal="couleur" data-modal-title="Choisir une couleur">
-  <div class="flex flex-col gap-4 divide-y divide-purple/20">
-    {# Recherche : menu déroulant type Choices.js (pastille + libellé par ligne, champ de       #}
-    {# recherche interne). Ne filtre PAS la grille ci-dessous — le nuancier reste toujours      #}
-    {# entièrement visible. Peuplé et piloté par color-modal.js (instance Choices créée à la    #}
-    {# main : le composant global ChoicesSelect n'est pas monté sur un contenu de modale cloné). #}
-    <label class="flex flex-col m:flex-row m:items-center m:justify-between gap-4 text-xs s:text-sm leading-none font-medium uppercase text-purple">
-      <span class="whitespace-nowrap">Chercher votre coloris</span>
-      <div class="max-w-80">
-        <select data-ref="search" data-search="true"></select>
-      </div>
-    </label>
-
-    {# Dernières couleurs utilisées dans la config en cours (max 5, sans persistance) #}
-    <div class="pt-4" data-ref="recentWrap" hidden>
-      <p class="text-xs s:text-sm leading-none font-medium uppercase text-purple mb-4">Dernières couleurs utilisées</p>
-      <div data-ref="recent" class="flex flex-wrap gap-2"></div>
-    </div>
-
-    {# Grille du nuancier complet — toujours affichée, jamais filtrée par la recherche #}
-    <div class="pt-4">
-      <p class="text-xs s:text-sm leading-none font-medium uppercase text-purple mb-4">Toutes les couleurs</p>
-      <div data-ref="grid" class="grid grid-flow-col auto-rows-auto grid-rows-1 m:grid-rows-3 gap-2 m:flex m:flex-wrap overflow-x-auto -mx-4 px-4 l:px-px l:mx-0 py-px"></div>
-    </div>
-
-    {# Pastille clonée par color-modal.js (grille + récents). is-active porté par le <span>. #}
-    <template data-template="color-modal-swatch">
-      <button type="button" class="flex items-center justify-center p-0.5 focus:outline-none">
-        <span class="size-6 rounded-full ring-1 ring-black/10 ring-offset-1 ring-offset-sand [&.is-active]:ring-2 [&.is-active]:ring-purple"></span>
-      </button>
-    </template>
-  </div>
-
-  {# Footer — 3 actions (voir module-8b §4) #}
-  <div class="flex flex-col items-center justify-center">
-    
-    <div class="flex flex-col s:flex-row gap-2 mt-6 w-full">
-      {% include '@components/button.twig' with {
-      label: 'Annuler',
-      variant: 'link',
-      icon: false,
-      attr: { type: 'button', 'data-ref': 'fermer', class: 'flex-1' }
-    } only %}
-      {% include '@components/button.twig' with {
-        label: 'Appliquer au produit',
-        variant: 'solid',
-        icon: false,
-        attr: { type: 'button', 'data-ref': 'applyCurrent', class: 'flex-1' }
-      } only %}
-      {% include '@components/button.twig' with {
-        label: 'Appliquer à tous les elements',
-        variant: 'solid',
-        href: '#',
-        attr: { type: 'button', 'data-ref': 'applyAll', class: 'flex-1' }
-      } only %}
-    </div>
-  </div>
-</template>

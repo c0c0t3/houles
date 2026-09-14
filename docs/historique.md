@@ -6,6 +6,24 @@
 
 ---
 
+## 2026-09-12 — Retour en arrière : plus de modale, couleurs directement dans la carte produit
+
+Houlès revient sur la modale de choix de couleur mise en place quelques jours plus tôt (voir plus
+bas) : décision trop lourde pour l'usage. Nouveau comportement, plus simple :
+
+Les pastilles de couleur (nuancier complet, sans limite ni recherche) apparaissent **directement
+dans la carte du produit sélectionné**, qui s'agrandit pour les accueillir. Sélectionner un autre
+produit fait disparaître le nuancier de l'ancienne carte et apparaître celui de la nouvelle.
+
+Seuls les produits qui ont un rendu visuel colorisable (support, tube, embout) proposent un choix
+de couleur — les pièces sans rendu dédié (anneaux, embout arrière, supports intermédiaires...)
+n'en ont pas. Cliquer une couleur l'applique immédiatement, pas d'étape de confirmation séparée.
+
+La modale, la recherche, le rappel des dernières couleurs utilisées et le bouton « Appliquer à
+toutes les pièces » sont retirés.
+
+---
+
 ## 2026-09-08 — Modale de choix de couleur pour le rendu colorisé
 
 Le mode d'affichage colorisé récupère un vrai sélecteur de couleur, en remplacement du choix global

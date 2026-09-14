@@ -12,7 +12,7 @@
  * Plusieurs routeurs peuvent coexister (un par panel) : chaque instance n'ouvre que les clés
  * qu'elle déclare dans `onInsert` — un clic sur un `data-modal` géré par un autre panel est ignoré.
  *
- * @param {string} panelSelector - Sélecteur CSS du panel (ex : '#extra', '#syh-couleur').
+ * @param {string} panelSelector - Sélecteur CSS du panel (ex : '#extra').
  * @param {Object<string, (contentEl: HTMLElement, trigger: HTMLElement|null) => void>} onInsert -
  *   Callback par clé de modale gérée par ce panel, appelé avec le conteneur de contenu juste après
  *   le clonage du template correspondant, plus l'élément déclencheur du clic (`null` si l'ouverture
@@ -25,8 +25,8 @@ export function initModalRouter(panelSelector, onInsert = {}) {
   const titleEl = panel.querySelector('[data-ref="modalTitle"]');
   const contentEl = panel.querySelector('[data-ref="modalContent"]');
 
-  // Ce routeur ne réagit qu'aux clés qu'il déclare — les autres `data-modal` appartiennent à un
-  // autre panel (voir modal-configurateur.twig : #extra et #syh-couleur).
+  // Ce routeur ne réagit qu'aux clés qu'il déclare — utile si un autre panel routé venait à
+  // coexister sur la même page (chacun avec son propre appel initModalRouter).
   const ownsKey = (key) => Boolean(key) && Object.prototype.hasOwnProperty.call(onInsert, key);
 
   document.addEventListener(

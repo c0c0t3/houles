@@ -191,21 +191,12 @@
                       <span data-ref="productQty" class="text-gray-500"></span>
                     </div>
                     <span data-ref="productStock" class="text-xs"></span>
-                    {# Dans le flux ici (pas d'absolute) — swatchs à la suite du texte, suivis du #}
-                    {# trigger qui ouvre la modale couleur (nuancier complet + recherche +      #}
-                    {# récents). Le JS pose data-piece = id du champ (voir product-field.js).    #}
-                    {# data-modal="couleur" : le clic global de modal-router.js ouvre le panel.  #}
-                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-2">
-                      <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5"></div>
-                      <button
-                        type="button"
-                        data-ref="moreColors"
-                        data-modal="couleur"
-                        class="text-xs underline underline-offset-2 text-purple whitespace-nowrap"
-                      >
-                        Voir plus de couleurs
-                      </button>
-                    </div>
+                    {# Dans le flux ici (pas d'absolute) — swatchs à la suite du texte. Nuancier   #}
+                    {# complet, affiché uniquement sur la card du produit sélectionné (et pour un  #}
+                    {# produit avec calque SVG, option.svgUrl) : la card s'agrandit pour les       #}
+                    {# accueillir. Pas de modale ni de trigger — piloté par product-field.js       #}
+                    {# (_applyColorisUI). Voir docs/module-8b-modale-couleurs.md.                  #}
+                    <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-2"></div>
                   </div>
                 </label>
               </template>
