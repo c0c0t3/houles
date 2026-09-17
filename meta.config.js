@@ -5,7 +5,9 @@ import prototyping from '@studiometa/webpack-config-preset-prototyping';
 
 // Sous-dossier FTP où le build est réellement déployé (pas la racine du domaine). Seulement en
 // prod : en dev, le serveur local sert déjà tout à la racine — préfixer casserait le hot-reload.
-const DEPLOY_SUBFOLDER = '/assets/houles';
+// Surchargeable via SYH_DEPLOY_SUBFOLDER (ex: vide pour un preview hébergé à la racine, type
+// Netlify) sans toucher au build FTP par défaut.
+const DEPLOY_SUBFOLDER = process.env.SYH_DEPLOY_SUBFOLDER ?? '/assets/houles';
 
 export default defineConfig({
   presets: [
