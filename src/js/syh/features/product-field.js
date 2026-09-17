@@ -31,7 +31,7 @@ export default class ProductField extends Base {
       // En `live_colored`, les cartes sont horizontales (voir `product-card--live-colored` dans
       // index.twig) et s'empilent en colonne — la grille par défaut reste en ligne/wrap.
       if (this._renderMode === 'live_colored') {
-        this.$refs.cards.classList.remove('lg:flex-wrap');
+        this.$refs.cards.classList.remove('m:flex-wrap');
         this.$refs.cards.classList.add('flex-col');
       }
       this.$refs.label.textContent = resolveLabel(this._field, this._selection);

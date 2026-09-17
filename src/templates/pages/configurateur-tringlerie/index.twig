@@ -20,7 +20,7 @@
 
           {# Stepper horizontal — boutons générés dynamiquement par JS (_renderStepper) #}
           {# items-start : les pastilles restent alignées quel que soit le nb de lignes du libellé #}
-          <nav data-ref="stepper" class=" sticky z-10 top-28 -translate-y-[14px] flex items-start overflow-x-auto max-w-full pt-4 pb-2 px-6 bg-sand border-b "></nav>
+          <nav data-ref="stepper" class=" sticky z-10 top-28 -translate-y-[14px] flex items-start overflow-x-auto max-w-full pt-4 pb-2 bg-sand border-b "></nav>
 
           {# Zone de l'étape courante — réécrite à chaque step #}
           <div data-ref="stepContent" class="py-8"></div>
@@ -46,9 +46,11 @@
               {# du conteneur d'options ci-dessous n'a alors jamais rien à scroller.        #}
               <fieldset class="border-0 p-0 m-0 min-w-0 max-w-full">
                 <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
-                {# flex-nowrap + overflow-x-auto sous lg : les options défilent horizontalement. #}
-                {# lg:flex-wrap : à partir de lg elles passent à la ligne, plus de scroll.        #}
-                <div data-ref="options" class="flex flex-nowrap overflow-x-auto lg:flex-wrap gap-3 p-1"></div>
+                {# flex-nowrap + overflow-x-auto sous m (1024px) : les options défilent horizontalement. #}
+                {# m:flex-wrap : à partir de là elles passent à la ligne, plus de scroll. Attention :    #}
+                {# ce projet redéfinit les breakpoints Tailwind (xxs/xs/s/m/l/xl/xxl/xxxl, voir           #}
+                {# @studiometa/tailwind-config) — "lg" n'existe pas ici, seul "m" (1024px) correspond.    #}
+                <div data-ref="options" class="flex flex-nowrap overflow-x-auto max-w-full m:flex-wrap gap-3 p-1"></div>
               </fieldset>
 
               {# Template d'une option : label seul #}
@@ -61,7 +63,7 @@
 
               {# Template d'une option : label + image (photo produit, opt.image) #}
               <template data-template="radio-option--label_image">
-                <label class="flex flex-col aspect-square shrink-0 lg:aspect-auto justify-center items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+                <label class="flex flex-col aspect-square shrink-0 m:aspect-auto justify-center items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
                   <input data-ref="input" type="radio" class="sr-only" />
                   <img data-ref="image" alt="" class=" w-44 mix-blend-multiply h-auto object-contain" />
                   <span data-ref="optLabel"></span>
@@ -86,11 +88,14 @@
           {# Template LengthField                                              #}
           {# ------------------------------------------------------------------ #}
           <template data-template="length">
-            <div data-component="LengthField" class="mb-6">
-              <fieldset class="border-0 p-0 m-0">
+            <div data-component="LengthField" class="mb-6 min-w-0 max-w-full">
+              {# min-w-0 max-w-full : même correctif que le fieldset du template radio ci-dessus — #}
+              {# sans ça le fieldset refuse de rétrécir sous son parent flex et le scroll horizontal #}
+              {# de #presets déborde de la fenêtre au lieu de rester contenu.                        #}
+              <fieldset class="border-0 p-0 m-0 min-w-0 max-w-full">
                 <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
-                <div class="flex flex-wrap items-center gap-3">
-                  <div data-ref="presets" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
+                <div class="flex flex-wrap items-center gap-3 min-w-0 max-w-full">
+                  <div data-ref="presets" class="flex overflow-auto min-w-0 max-w-full m:flex-wrap gap-3 p-1"></div>
 
                   {# Ouvre la modale de calcul de longueur (panel #extra, clé calcul-longueur). #}
                   {# Déclenchement géré directement par LengthField (onCalcButtonClick) — pas   #}
@@ -137,7 +142,7 @@
               <p data-ref="defaultMessage" class="text-sm text-gray-600 italic mb-3" hidden></p>
 
               {# Grille des cartes produit (générées dynamiquement) #}
-              <div data-ref="cards" class="flex overflow-auto lg:flex-wrap gap-3 p-1"></div>
+              <div data-ref="cards" class="flex overflow-auto m:flex-wrap gap-3 p-1"></div>
 
               {# Template d'une carte produit                                     #}
               {# label + radio : sélection accessible, pas de <button> imbriqué  #}
@@ -217,24 +222,24 @@
       </div>
       </div>
       {# Récapitulatif persistant de la sélection courante #}
-      <div data-ref="recap" class="max-w-full flex lg:overflow-auto overflow-scroll items-start lg:flex-wrap lg:items-center gap-x-6 gap-y-1 px-6 py-3 text-sm min-h-10 sticky bottom-0 left-0 right-0 z-10 bg-sand border-y border-purple"></div>
+      <div data-ref="recap" class="max-w-full flex m:overflow-auto overflow-scroll items-start m:flex-wrap m:items-center gap-x-6 gap-y-1 px-6 py-3 text-sm min-h-10 sticky bottom-0 left-0 right-0 z-10 bg-sand border-y border-purple">
+        {# Ouvre la modale "Changer de collection" (panel #extra, clé collections) — voir          #}
+        {# modal-router.js. Le data-modal="collections" suffit : le clic global du router ouvre    #}
+        {# le panel automatiquement, aucun wiring JS dédié à ce bouton. Premier enfant du recap —   #}
+        {# renderRecap() (features/recap.js) le préserve lors de ses reconstructions du bandeau.    #}
+        {% include '@components/button.twig' with {
+          label: 'Changer de collection',
+          variant: 'outline',
+          size: 'small',
+          attr: {
+            type: 'button',
+            class: 'shrink-0',
+            'data-modal': 'collections'
+          }
+        } only %}
+      </div>
 
     </div>
-
-
-
-  {# Ouvre la modale "Changer de collection" (panel #extra, clé collections) — voir            #}
-  {# modal-router.js. Le data-modal="collections" suffit : le clic global du router ouvre le   #}
-  {# panel automatiquement, aucun wiring JS dédié à ce bouton.                                 #}
-  {% include '@components/button.twig' with {
-    label: 'Changer de collection',
-    variant: 'solid',
-    attr: {
-      type: 'button',
-      class: 'fixed bottom-4 right-4 z-40',
-      'data-modal': 'collections'
-    }
-  } only %}
 
   {% include '@pages/configurateur-tringlerie/modal-configurateur.twig' %}
 {% endblock %}

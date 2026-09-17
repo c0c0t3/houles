@@ -69,7 +69,12 @@ function recapValue(field, schema, selection) {
  * @param {number|null} longueurTotalAvecEmbouts
  */
 export function renderRecap(container, schema, selection, longueurTotalAvecEmbouts) {
+  // Le bouton "Changer de collection" (data-modal="collections") est le premier enfant statique
+  // du recap dans le twig — on le préserve à travers les reconstructions du bandeau plutôt que de
+  // le recréer, pour ne pas perdre le nœud sur lequel modal-router.js s'appuie.
+  const collectionsButton = container.querySelector('[data-modal="collections"]');
   container.innerHTML = '';
+  if (collectionsButton) container.appendChild(collectionsButton);
 
   for (const field of schema.steps[0]?.fields ?? []) {
     const value = recapValue(field, schema, selection);
