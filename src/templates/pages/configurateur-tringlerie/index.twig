@@ -28,6 +28,23 @@
           {# Prix total #}
           <div data-ref="totalPrice" class="py-4 font-medium"></div>
 
+          {# Navigation précédent/suivant — état (visibilité, libellé) piloté par step-nav.js via   #}
+          {# Configurator._updateStepNav(). "Précédent" masqué sur la 1ère étape ; sur la dernière   #}
+          {# étape, "Suivant" devient "Ajouter au panier" (déclenche _addToCart(), voir             #}
+          {# docs/module-7-recap-panier.md section 5 — événement custom `syh:add-to-cart`).          #}
+          <div class="flex items-center justify-between gap-4 py-4 border-t border-purple/20">
+            {% include '@components/button.twig' with {
+              label: 'Précédent',
+              variant: 'outline',
+              attr: { type: 'button', 'data-ref': 'prevStepButton' }
+            } only %}
+            {% include '@components/button.twig' with {
+              label: 'Suivant',
+              variant: 'solid',
+              attr: { type: 'button', 'data-ref': 'nextStepButton' }
+            } only %}
+          </div>
+
           {# ------------------------------------------------------------------ #}
           {# Templates HTML clonés par le JS selon field.type                   #}
           {# Les classes Tailwind ci-dessous sont provisoires — à remplacer     #}

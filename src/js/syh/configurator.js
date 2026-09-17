@@ -7,6 +7,7 @@ import { isVisible } from './features/show-if.js';
 import { initDefaultSelection, invalidateDownstream } from './features/default-selection.js';
 import { renderAllSteps } from './features/steps-renderer.js';
 import { renderStepper, updateStepperState } from './features/stepper.js';
+import { updateStepNav } from './features/step-nav.js';
 import { refreshTubeStep } from './features/tube-step.js';
 import { initConfiguratorModals } from './features/configurator-modals.js';
 import { purgeEmboutsIfReplaced, refreshEmboutsStep } from './features/embouts.js';
@@ -35,7 +36,15 @@ console.log('[SYH] configurator.js chargé');
 export default class Configurator extends Base {
   static config = {
     name: 'Syh',
-    refs: ['recap', 'stepper', 'stepContent', 'totalPrice', 'colG'],
+    refs: [
+      'recap',
+      'stepper',
+      'stepContent',
+      'totalPrice',
+      'colG',
+      'prevStepButton',
+      'nextStepButton',
+    ],
     components: { RadioField, LengthField, ProductField },
   };
 
@@ -117,12 +126,29 @@ export default class Configurator extends Base {
     const btn = event.target.closest('button[data-step]');
     // Clic sur le conteneur stepper lui-même, pas sur un bouton d'étape.
     if (!btn) return;
-    const index = Number(btn.dataset.step);
-    this._showStep(index);
-    // Au changement d'étape, on repositionne la vue en haut de l'étape cible.
-    // Le stepper (data-ref="stepper") est sticky en haut : on retranche sa
-    // position basse pour que le contenu de l'étape commence juste sous lui,
-    // et non masqué derrière.
+    this._showStep(Number(btn.dataset.step));
+  }
+
+  // Bouton "Précédent" de la barre de navigation — masqué sur la 1ère étape, jamais appelé à index 0.
+  onPrevStepButtonClick() {
+    this._showStep(this.currentStepIndex - 1);
+  }
+
+  // Bouton "Suivant" / "Ajouter au panier" — le libellé (et donc l'action) dépend de la position,
+  // voir `_updateStepNav`.
+  onNextStepButtonClick() {
+    const lastIndex = this.schema.steps.length - 1;
+    if (this.currentStepIndex === lastIndex) {
+      this._addToCart();
+    } else {
+      this._showStep(this.currentStepIndex + 1);
+    }
+  }
+
+  // Au changement d'étape, on repositionne la vue en haut de l'étape cible. Le stepper
+  // (data-ref="stepper") est sticky en haut : on retranche sa position basse pour que le contenu
+  // de l'étape commence juste sous lui, et non masqué derrière.
+  _scrollToStepTop(index) {
     const stepEl = this._stepEls[index];
     if (stepEl) {
       const targetTop = window.top;
@@ -144,6 +170,13 @@ export default class Configurator extends Base {
     });
 
     updateStepperState(this.$refs.stepper, index);
+    updateStepNav(
+      this.$refs.prevStepButton,
+      this.$refs.nextStepButton,
+      index,
+      this.schema.steps.length - 1,
+    );
+    this._scrollToStepTop(index);
 
     this._refreshCurrentStep();
   }
@@ -320,5 +353,19 @@ export default class Configurator extends Base {
    */
   buildCartPayload() {
     return computeCartPayload(this.schema, this.selection, this._expandedStepFields);
+  }
+
+  /**
+   * Déclenché par le bouton "Ajouter au panier" (dernière étape du stepper — voir
+   * `onNextStepButtonClick`), et à terme aussi par un bouton équivalent dans l'étape récap
+   * elle-même (même méthode, pas de logique dupliquée).
+   *
+   * Émet l'événement custom recommandé par docs/module-7-recap-panier.md section 5 — ce module ne
+   * fait pas l'appel réseau, c'est au JS panier du client de s'y abonner et de déclencher son Ajax.
+   */
+  _addToCart() {
+    this.$el.dispatchEvent(
+      new CustomEvent('syh:add-to-cart', { bubbles: true, detail: this.buildCartPayload() }),
+    );
   }
 }
