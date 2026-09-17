@@ -20,17 +20,23 @@ export function renderStepper(stepperEl, steps) {
 
   stepperEl.innerHTML = steps
     .map((step, i) => {
-      // Barre de liaison vers l'étape suivante — absente sur la dernière étape.
+      // Barre de progression vers l'étape suivante — absente sur la dernière étape.
       // Part du centre de la pastille courante (left-1/2) et s'étend sur toute la
       // largeur du bouton (w-full) : elle rejoint donc le centre de la pastille
       // suivante (boutons de largeur égale via flex-1). z-0 + pointer-events-none
       // pour passer sous la pastille (bg-white) et laisser le clic au bouton.
+      // -translate-y-1/2 : centre la barre verticalement sur top-4 quelle que soit son
+      // épaisseur — nécessaire ici puisque l'épaisseur change elle-même selon l'état.
+      // h-1 + bg-brown-light par défaut (segment pas encore franchi, fin) → h-2 + bg-brown
+      // une fois l'étape de départ marquée is-done (segment parcouru, plus épais), via le
+      // variant parent-is-done. Le contraste d'épaisseur (pas seulement de couleur) rend
+      // l'avancement lisible même sans distinguer les couleurs.
       const connector =
         i < lastIndex
-          ? '<span aria-hidden="true" class="pointer-events-none absolute left-1/2 top-4 z-0 h-0.5 w-full bg-brown"></span>'
+          ? '<span aria-hidden="true" class="pointer-events-none absolute left-1/2 top-4 -translate-y-1/2 z-0 h-1 w-full rounded-full bg-brown-light parent-is-done:h-1.5 parent-is-done:bg-brown"></span>'
           : '';
 
-      return `<button type="button" data-step="${i}" class="relative flex flex-1 flex-col items-center gap-2 px-2 text-purple-extra-light is-active:text-purple is-done:text-purple">${connector}<span class="relative z-10 grid size-8 place-items-center rounded-full border-2 border-brown bg-white text-sm parent-is-active:bg-brown parent-is-active:text-white parent-is-done:bg-brown parent-is-done:text-white">${i + 1}</span><span class="text-center text-sm leading-tight">${step.label}</span></button>`;
+      return `<button type="button" data-step="${i}" class="relative flex flex-1 flex-col items-center gap-2 px-2 text-purple-extra-light is-active:text-purple is-done:text-purple">${connector}<span class="relative z-10 grid size-8 place-items-center rounded-full border-2 border-brown-light parent-is-active:border-brown bg-sand text-sm parent-is-active:bg-brown parent-is-done:border-brown parent-is-active:text-white parent-is-done:bg-brown parent-is-done:text-white">${i + 1}</span><span class="text-center text-sm leading-tight">${step.label}</span></button>`;
     })
     .join('');
 }
