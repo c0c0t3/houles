@@ -2,3 +2,7 @@
   base = './'
   command = 'npm run build'
   publish = 'dist'
+
+[build.environment]
+  # Preview Netlify servi à la racine du domaine — pas de sous-dossier FTP (voir meta.config.js).
+  SYH_DEPLOY_SUBFOLDER = ''
