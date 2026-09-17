@@ -23,7 +23,7 @@
   </head>
   <body {{ html_attributes(body_attr ?? null) }}>
     {# BEGIN Dev only component #}
-    <nav data-component="Menu" class="z-[9999999] fixed left-4 bottom-4">
+    <nav data-component="Menu" class="z-[9999999] fixed left-4 bottom-20">
       {% include '@components/button.twig' with {
         label: 'DEV',
         attr: {
