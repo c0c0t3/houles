@@ -296,19 +296,23 @@ export default class Configurator extends Base {
 
   /**
    * Reconstruit le bandeau de récapitulatif de l'étape 1 (paramètres de configuration), plus
-   * le dernier total calculé dans la modale "Calcul de longueur".
+   * le dernier total calculé dans la modale "Calcul de longueur", plus le total prix de la
+   * configuration en cours (somme des lignes produit résolues, voir cart-payload.js).
    * Affiché en permanence au-dessus du stepper pour rappeler les choix structurants.
    *
    * Si la collection déclare une étape `recap` (voir steps-renderer.js), son conteneur dédié reçoit
    * le même rendu — pas de logique différente, juste une seconde cible pour renderRecap().
    */
   _renderRecap() {
-    renderRecap(this.$refs.recap, this.schema, this.selection, this._longueurTotalAvecEmbouts);
+    // Recalculé à la volée à chaque appel — cohérent avec buildCartPayload(), pas d'état mis en cache.
+    const { total } = computeCartPayload(this.schema, this.selection, this._expandedStepFields);
+
+    renderRecap(this.$refs.recap, this.schema, this.selection, this._longueurTotalAvecEmbouts, total);
 
     const recapStepIndex = this.schema.steps.findIndex((s) => s.id === 'recap');
     const recapStepContent = this._stepEls[recapStepIndex]?.querySelector('[data-ref="recapStepContent"]');
     if (recapStepContent) {
-      renderRecap(recapStepContent, this.schema, this.selection, this._longueurTotalAvecEmbouts);
+      renderRecap(recapStepContent, this.schema, this.selection, this._longueurTotalAvecEmbouts, total);
     }
   }
 

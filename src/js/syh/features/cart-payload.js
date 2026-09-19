@@ -55,7 +55,7 @@ function resolveQty(field, option, longueur, allExpanded, selection) {
  * @param {object}   schema
  * @param {object}   selection
  * @param {object[]} expandedStepFields - Champs expandés par step (Configurator._expandedStepFields)
- * @returns {Array<{id: string, qty: number, name: string, refBase: string, coloris: string|null}>}
+ * @returns {Array<{id: string, qty: number, name: string, refBase: string, coloris: string|null, prixUnitaire: number, prixTotal: number}>}
  */
 function buildProductItems(schema, selection, expandedStepFields) {
   const longueur = Number(selection.longueur);
@@ -77,17 +77,31 @@ function buildProductItems(schema, selection, expandedStepFields) {
 
     const variant = option.variants?.[sel.coloris];
     const id = variant?.id ?? option.id ?? sel.refBase;
+    // Prix placeholder de démo, porté par la variante coloris ou par l'option (noColoris) — voir
+    // mock-api/collections (données Elastic en production).
+    const prixUnitaire = variant?.prix ?? option.prix ?? 0;
 
     // Calcul à la volée — indépendant de l'état DOM ou de _segmentQty.
     const qty = resolveQty(field, option, longueur, allExpanded, selection);
     if (qty <= 0) continue;
 
+    const prixTotalLigne = prixUnitaire * qty;
+
     // Agrège les lignes avec le même id article (ex : support + opt_support_interm = même ref).
     const existing = itemMap.get(id);
     if (existing) {
       existing.qty += qty;
+      existing.prixTotal += prixTotalLigne;
     } else {
-      itemMap.set(id, { id, qty, name: option.label, refBase: sel.refBase, coloris: sel.coloris ?? null });
+      itemMap.set(id, {
+        id,
+        qty,
+        name: option.label,
+        refBase: sel.refBase,
+        coloris: sel.coloris ?? null,
+        prixUnitaire,
+        prixTotal: prixTotalLigne,
+      });
     }
   }
 
@@ -105,10 +119,14 @@ function buildProductItems(schema, selection, expandedStepFields) {
  * @param {object}   schema
  * @param {object}   selection
  * @param {object[]} expandedStepFields - Champs expandés par step (Configurator._expandedStepFields)
- * @returns {{ items: object[], coupes: object[], forfait: object|null }}
+ * @returns {{ items: object[], coupes: object[], forfait: object|null, total: number }}
  */
 export function computeCartPayload(schema, selection, expandedStepFields) {
   const items = buildProductItems(schema, selection, expandedStepFields);
+
+  // Total de la configuration en cours (somme des lignes produit résolues). Le forfait coupe n'a
+  // pas de prix dans les données de démo (seulement ean/qty) — il n'est donc pas inclus.
+  const total = items.reduce((sum, item) => sum + (item.prixTotal ?? 0), 0);
 
   // Calcul des coupes sur tous les champs tube de toutes les étapes.
   const allExpanded = expandedStepFields.flat();
@@ -123,5 +141,5 @@ export function computeCartPayload(schema, selection, expandedStepFields) {
     items.push({ id: forfait.ean, qty: forfait.qty });
   }
 
-  return { items, coupes, forfait };
+  return { items, coupes, forfait, total };
 }

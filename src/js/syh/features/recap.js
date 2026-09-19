@@ -5,6 +5,10 @@ import { formatFr } from './longueur-calculator.js';
  * au-dessus du stepper pour rappeler les choix structurants.
  */
 
+// Même formatage que la carte produit (product-field.js) — prix placeholders de démo.
+const priceFormatter = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
+const formatPrice = (value) => priceFormatter.format(value);
+
 /**
  * Retourne la valeur lisible d'un champ pour le récap.
  * - isParam + length  → "${val} cm"
@@ -61,14 +65,17 @@ function recapValue(field, schema, selection) {
 
 /**
  * Reconstruit le bandeau de récapitulatif de l'étape 1, plus le dernier total avec embouts
- * calculé dans la modale "Calcul de longueur" (s'il a déjà servi).
+ * calculé dans la modale "Calcul de longueur" (s'il a déjà servi), plus le total prix de la
+ * configuration en cours (somme des lignes produit résolues, toujours affiché).
  *
  * @param {HTMLElement} container - Élément recap (Configurator.$refs.recap)
  * @param {object} schema
  * @param {object} selection
  * @param {number|null} longueurTotalAvecEmbouts
+ * @param {number} total - Total de la configuration en cours (somme des lignes produit résolues,
+ *   voir `computeCartPayload` dans cart-payload.js). Prix placeholders de démo.
  */
-export function renderRecap(container, schema, selection, longueurTotalAvecEmbouts) {
+export function renderRecap(container, schema, selection, longueurTotalAvecEmbouts, total) {
   // Le bouton "Changer de collection" (data-modal="collections") est le premier enfant statique
   // du recap dans le twig — on le préserve à travers les reconstructions du bandeau plutôt que de
   // le recréer, pour ne pas perdre le nœud sur lequel modal-router.js s'appuie.
@@ -92,6 +99,14 @@ export function renderRecap(container, schema, selection, longueurTotalAvecEmbou
     const el = document.createElement('span');
     el.className = 'flex items-baseline gap-1.5';
     el.innerHTML = `<span class="text-gray-400 text-xs uppercase tracking-wide">Longueur avec embouts</span><span class="font-medium text-gray-900">${formatFr(longueurTotalAvecEmbouts)} cm</span>`;
+    container.appendChild(el);
+  }
+
+  // Total de la configuration en cours (produits sélectionnés), à jour à chaque changement.
+  if (total != null) {
+    const el = document.createElement('span');
+    el.className = 'flex items-baseline gap-1.5 ml-auto';
+    el.innerHTML = `<span class="text-gray-400 text-xs uppercase tracking-wide">Total</span><span class="font-semibold text-purple">${formatPrice(total)}</span>`;
     container.appendChild(el);
   }
 }
