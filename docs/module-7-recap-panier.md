@@ -53,11 +53,14 @@ rien à déclarer pour cette étape (et ne risquent pas de l'oublier sur une nou
 - `recap.js` expose aussi `renderProductSummary()`, propre au conteneur
   `[data-ref="recapProductSummary"]` de l'étape `recap` (pas dans le bandeau, trop dense pour un
   affichage permanent) : un **tableau** listant tous les produits sélectionnés, toutes étapes
-  confondues — bouton « voir le produit » (photo réelle du produit, `variant.image ?? option.image`,
-  absent si non disponible), nom (groupé visuellement par label de champ — Support, Tube, Anneaux,
-  Jambe de force réglable...), quantité commandable, prix unitaire. Quantité calculée via
-  `resolveQty()` (exporté par `cart-payload.js` — même calcul « à la volée » que le payload panier
-  réel, pas de logique dupliquée).
+  confondues — bouton « voir le produit » (lien vers la fiche produit Houlès, `option.productUrl`
+  suffixé par le coloris sélectionné — voir `json-schema-reference.md`, absent si `productUrl` non
+  déclaré), nom (groupé visuellement par label de champ — Support, Tube, Anneaux, Jambe de force
+  réglable...), quantité commandable, prix unitaire. Quantité calculée via `resolveQty()` (exporté
+  par `cart-payload.js` — même calcul « à la volée » que le payload panier réel, pas de logique
+  dupliquée).
+- La carte produit (étape produit, avant le récap) porte le même lien « Voir le produit » — voir
+  `_buildCard()` dans `product-field.js` (Module 4).
 - Bloc réassurance (délai, qualité, suivi) : **pas encore implémenté** — contenu éditorial à obtenir
   du client.
 

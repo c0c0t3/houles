@@ -128,7 +128,7 @@ const EYE_ICON_SVG =
  * @param {object} selection
  * @param {number} longueur    - `selection.longueur`, pré-résolu (évite un `Number()` par champ)
  * @param {object[]} allExpanded - Tous les champs expandés, toutes étapes (pour `resolveQty`)
- * @returns {{label: string, name: string, qty: number, prixUnitaire: number, image: string|null}|null}
+ * @returns {{label: string, name: string, qty: number, prixUnitaire: number, productUrl: string|null}|null}
  */
 function buildSummaryRow(field, schema, selection, longueur, allExpanded) {
   const sel = selection.produits?.[field.id];
@@ -143,13 +143,18 @@ function buildSummaryRow(field, schema, selection, longueur, allExpanded) {
   if (value == null) return null;
 
   const variant = option.variants?.[sel.coloris];
+  // Convention Houlès : l'URL de fiche produit se termine toujours par "-{coloris}".
+  const productUrl = option.productUrl
+    ? sel.coloris
+      ? `${option.productUrl}-${sel.coloris}`
+      : option.productUrl
+    : null;
   return {
     label: resolveLabel(field, selection),
     name: value,
     qty,
     prixUnitaire: variant?.prix ?? option.prix ?? 0,
-    // Photo produit réelle (pas `renderImage`, réservé à la composition SVG du rendu live).
-    image: variant?.image ?? option.image ?? null,
+    productUrl,
   };
 }
 
@@ -199,8 +204,8 @@ export function renderProductSummary(container, schema, selection, expandedStepF
         <tr class="border-b border-purple/10 last:border-0">
           <td class="py-2 pr-2">
             ${
-              row.image
-                ? `<a href="${row.image}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-7 h-7 rounded-full text-purple hover:bg-sand-darker" aria-label="Voir le produit" title="Voir le produit">${EYE_ICON_SVG}</a>`
+              row.productUrl
+                ? `<a href="${row.productUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-7 h-7 rounded-full text-purple hover:bg-sand-darker" aria-label="Voir le produit" title="Voir le produit">${EYE_ICON_SVG}</a>`
                 : ''
             }
           </td>

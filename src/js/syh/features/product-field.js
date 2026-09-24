@@ -244,6 +244,16 @@ export default class ProductField extends Base {
     card.querySelector('[data-ref="productName"]').textContent = option.label;
     card.querySelector('[data-ref="productRef"]').textContent = variant?.id ?? option.id ?? option.refBase;
 
+    // Lien fiche produit — base portée par l'option (une fiche par produit), suffixée par le
+    // coloris affiché sur cette carte : convention Houlès, l'URL produit se termine toujours par
+    // "-{coloris}". Masqué si pas de productUrl (mock incomplet) plutôt que de pointer vers "#".
+    const link = card.querySelector('[data-ref="productLink"]');
+    if (option.productUrl) {
+      link.href = coloris ? `${option.productUrl}-${coloris}` : option.productUrl;
+    } else {
+      link.style.display = 'none';
+    }
+
     const prix = variant?.prix ?? option.prix;
     card.querySelector('[data-ref="productPrice"]').textContent =
       prix != null
@@ -486,6 +496,12 @@ export default class ProductField extends Base {
       }
       this._fillStock(card.querySelector('[data-ref="productStock"]'), variant?.stock ?? null);
     }
+    // Contrairement au reste de la carte, la fiche produit varie par coloris même en `noColoris`
+    // (convention Houlès : l'URL se termine toujours par "-{coloris}") — mise à jour dans tous les cas.
+    if (option.productUrl) {
+      const link = card.querySelector('[data-ref="productLink"]');
+      if (link) link.href = `${option.productUrl}-${colorisId}`;
+    }
     this._fillSwatches(card.querySelector('[data-ref="colorSwatches"]'), option, colorisId);
 
     if (refBase === this._selectedRefBase) this._emitChange();
@@ -514,6 +530,7 @@ export default class ProductField extends Base {
 
     // Masque tous les éléments qui n'ont pas de sens pour une option "sans".
     const toHide = ['[class*="aspect-square"]', '[data-ref="productRef"]',
+                    '[data-ref="productLink"]',
                     '[data-ref="productPrice"]', '[data-ref="productQty"]',
                     '[data-ref="productStock"]', '[data-ref="colorSwatches"]',
                     '[data-ref="toggleColoris"]',

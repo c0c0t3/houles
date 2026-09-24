@@ -170,7 +170,21 @@
                     <img data-ref="productImage" alt="" class="mix-blend-multiply w-full h-full object-contain" />
                   </div>
                   <span data-ref="productName" class="text-sm font-medium leading-tight"></span>
-                  <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>
+                  <div class="flex items-center gap-2">
+                    <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>
+                    {# href posé en JS (option.productUrl) — masqué si absent. target="_blank" +   #}
+                    {# rel="noopener" : lien externe (fiche produit Houlès), pas de navigation hors #}
+                    {# du configurateur. Un <a> imbriqué dans le <label> ne coche pas le radio au   #}
+                    {# clic (comportement natif), pas de stopPropagation nécessaire.                #}
+                    <a
+                      data-ref="productLink"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-xs text-purple underline underline-offset-2"
+                    >
+                      Voir le produit
+                    </a>
+                  </div>
                   <div class="flex items-center gap-1 text-sm">
                     <span data-ref="productPrice" class="font-medium"></span>
                     <span class="text-gray-400">×</span>
@@ -206,7 +220,17 @@
                   </div>
                   <div class="flex flex-col gap-1 min-w-0 flex-1">
                     <span data-ref="productName" class="text-sm font-medium leading-tight"></span>
-                    <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>
+                    <div class="flex items-center gap-2">
+                      <span data-ref="productRef" class="text-xs text-gray-400 font-mono"></span>
+                      <a
+                        data-ref="productLink"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-xs text-purple underline underline-offset-2"
+                      >
+                        Voir le produit
+                      </a>
+                    </div>
                     <div class="flex items-center gap-1 text-sm">
                       <span data-ref="productPrice" class="font-medium"></span>
                       <span class="text-gray-400">×</span>

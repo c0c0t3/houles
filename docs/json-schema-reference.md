@@ -245,7 +245,8 @@ Grille de cartes produits avec variantes coloris.
 | `replacesEmbouts` | boolean | non | `true` sur une option du champ `support` (naissances murales, corners) — voir section dédiée ci-dessous |
 | `longueurEmbout` | number | non | Longueur en cm de l'embout — sur les options du champ `embout`, utilisée par la modale "Calcul de longueur" |
 | `recouvrementEmbout` | number | non | Recouvrement en cm de l'embout sur le tube — sur les options du champ `embout`, utilisée par la modale "Calcul de longueur" |
-| `svgUrl` | string | Chemin du calque SVG colorisable pour `renderMode: "live_colored"` (voir Module 6). Propriété d'**option**, pas de variante : un seul fichier sert pour toutes les couleurs — les éléments `[data-fill]` du SVG sont recolorés dynamiquement en JS selon `collection.coloris[].hex` |
+| `svgUrl` | string | non | Chemin du calque SVG colorisable pour `renderMode: "live_colored"` (voir Module 6). Propriété d'**option**, pas de variante : un seul fichier sert pour toutes les couleurs — les éléments `[data-fill]` du SVG sont recolorés dynamiquement en JS selon `collection.coloris[].hex` |
+| `productUrl` | string | non | URL de base de la fiche produit Houlès, **sans le coloris**. Propriété d'**option**, pas de variante : une seule fiche produit pour tous les coloris. Alimente le lien « Voir le produit » de la carte produit et de l'étape Récapitulatif — voir Module 4 et Module 7. Absente sur les options `isNone` (rien à afficher) |
 
 **Propriétés d'une variante :**
 
@@ -256,6 +257,13 @@ Grille de cartes produits avec variantes coloris.
 | `stock` | number | Quantité en stock |
 | `image` | string | Image catalogue de la variante — carte produit / mini-modale (colonne droite). Prioritaire sur l'image coloris |
 | `renderImage` | string | Image détourée dédiée au calque du rendu visuel — colonne gauche `.colG`. Modes `live` / `live_colored` uniquement (voir Module 6). Distincte de `image` : cadrage différent, pensé pour la superposition |
+
+> **Convention d'URL produit — suffixe `-{coloris}`** : chez Houlès, l'URL d'une fiche produit se
+> termine toujours par l'id du coloris affiché. Ce suffixe n'est **jamais stocké dans le JSON** — la
+> donnée ne porte que la base (`productUrl`, ci-dessus), et le front construit l'URL finale au rendu
+> (`${productUrl}-${coloris}`) avec le coloris résolu pour la carte/ligne concernée (variante
+> sélectionnée, ou coloris global résolu pour un produit `noColoris`). Comportement moteur, pas une
+> propriété JSON — voir `renderProductSummary()` (`recap.js`) et `_buildCard()` (`product-field.js`).
 
 ---
 

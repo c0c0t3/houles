@@ -20,17 +20,26 @@ métier réelle (panier réactif, pricing, stock) est côté client. Voir CLAUDE
 
 ## 1. Vue Twig (squelette)
 
-Fichier : `src/templates/pages/configurateurTringlerie/index.twig`
+Fichier : `src/templates/pages/configurateur-tringlerie/index.twig`
 
 La vue fournit la coquille statique : conteneurs que le JS remplit, jamais les options elles-mêmes
 (injectées dynamiquement depuis le JSON). Elle déclare :
 
-- Le conteneur racine du configurateur (`data-component="Configurator"`)
-- Le stepper (navigation entre étapes)
-- Le conteneur de l'étape courante (zone réécrite à chaque changement d'étape)
-- Le conteneur du prix temps réel
-- Le point d'ancrage du panier (drawer)
-- En mode `live` / `live_colored` uniquement : la zone de rendu visuel (2 colonnes)
+- Le conteneur racine du configurateur (`data-component="Syh"` — nom du composant JS Toolkit, voir
+  section 3 ; pas de composant nommé "Configurator")
+- Le stepper (navigation entre étapes, `data-ref="stepper"`)
+- Le conteneur de l'étape courante (`data-ref="stepContent"`, zone réécrite à chaque changement
+  d'étape)
+- Le bandeau récapitulatif persistant (`data-ref="recap"`, sticky en bas de page — voir Module 7),
+  qui reçoit aussi le **Total** de la configuration en cours
+- `data-ref="totalPrice"` : conteneur déclaré mais **non branché à ce jour** — le total affiché
+  vit dans le bandeau récapitulatif ci-dessus (`recap.js`), pas ici. Vestige à nettoyer ou à
+  réutiliser, pas une source fiable pour l'instant
+- Le point d'ancrage du panier (drawer) : **pas encore implémenté** — ni markup Twig, ni
+  `cart-drawer.js` (voir Module 7)
+- En mode `live` / `live_colored` uniquement : la zone de rendu visuel (2 colonnes, `data-ref="colG"`
+  + `#renderedImage`)
+- Les `<template>` clonés par le JS pour générer les champs (voir section 2) et les cartes produit
 
 Le layout (1 ou 2 colonnes) découle du `renderMode` de la collection (voir Module 3).
 
@@ -45,9 +54,14 @@ le JSON. Le moteur de rendu est un switch sur `field.type` :
 |---|---|---|
 | `radio` | RadioField | choix unique, variantes d'affichage via `variant` |
 | `length` | LengthField | presets + saisie sur-mesure (min/max) |
-| `product` | ProductField | carte produit, défaut + mini-modale d'alternatives |
-| `product_toggle` | ProductToggleField | produit avec bascule AVEC / SANS |
-| `coloris` | ColorisField | nuancier + recherche (nom, Pantone, hex) |
+| `product` | ProductField | grille de cartes produit (toutes les options visibles, pas de modale — voir plus bas) |
+
+> **Types retirés** : `product_toggle` n'existe plus — tout champ autrefois `product_toggle` se
+> convertit en `product` avec une option `isNone` (voir `json-schema-reference.md`). `coloris` n'est
+> pas non plus un type de champ séparé ni un composant `ColorisField` dédié : le champ coloris de
+> l'étape 1 est un `radio` classique (`variant: "label_thumbnail"`). La modale de choix de couleur
+> avec recherche (nom / Pantone / hex) envisagée un temps a été abandonnée — voir
+> `docs/module-8b-modale-couleurs.md` et l'entrée du 2026-09-12 dans `docs/historique.md`.
 
 ### Le composant RadioField et ses variantes
 
@@ -59,7 +73,10 @@ composants séparés (le châssis — bordure, indicateur de sélection — est 
 | `label` | label seul | compact, centré |
 | `label_image` | label + image (`opt.image`, photo de l'option) | image au-dessus du label |
 | `label_thumbnail` | label + vignette coloris (`collection.coloris[].thumbnail`, résolue par id) | vignette ronde à côté du label — réservé au champ `coloris` |
-| `card` | label + image + description | image à gauche, texte à droite |
+
+> Un 4ᵉ variant `card` (image + description côte à côte) avait été envisagé mais n'a jamais été
+> implémenté — pas de template `radio-option--card` dans le Twig. Seuls les 3 variants ci-dessus
+> existent aujourd'hui.
 
 Le `variant` détermine **quelle source d'image** utiliser, jamais l'inverse : `label_image` lit
 toujours `opt.image` et `label_thumbnail` résout toujours `collection.coloris[]` par id, même si la
@@ -102,9 +119,15 @@ contre `custom.min` / `custom.max` ; tant que la valeur est invalide, elle n'est
 
 ### Le composant ProductField
 
-Affiche le produit par défaut (`default` : `refBase` fixe ou `first_visible`), avec une mini-modale
-pour choisir une alternative parmi les options visibles. Détail du comportement produit, du défaut
-et des dépendances : Module 5.
+Affiche **toutes les options visibles** du champ sous forme de grille de cartes (radio) — pas de
+mini-modale, pas de produit unique caché derrière un choix « voir les alternatives ». Le choix
+pré-sélectionné suit l'algorithme décrit dans `json-schema-reference.md` (« Sélection par défaut
+conditionnelle ») : ordre de déclaration du JSON + `defaultIf` + option `isNone` en filet de
+sécurité. Détail du comportement produit, du défaut et des dépendances : Module 5.
+
+> La propriété `default` (`"first_visible"` / `null`) encore présente sur certains champs `product`
+> des JSON de collection n'est **plus lue par le moteur** — vestige d'une version antérieure de
+> l'algorithme de défaut, sans effet aujourd'hui.
 
 ### Génération du DOM
 
@@ -207,9 +230,12 @@ Ces paramètres servent de critères de filtrage pour les étapes produit suivan
 
 ## 5. Affichage du prix temps réel
 
-Dès l'étape 1 (puis à chaque sélection), le prix total se met à jour. Il est calculé à partir des
-produits sélectionnés et de leurs quantités. Le prix d'affichage vient du JSON de collection
-(données Elastic, voir Module 3) ; la validation d'autorité a lieu à l'ajout panier (côté client).
+Dès l'étape 1 (puis à chaque sélection), le prix total se met à jour — affiché dans le bandeau
+récapitulatif persistant (`data-ref="recap"`, chip « Total »), pas dans un conteneur dédié séparé
+(voir la note sur `totalPrice` en section 1). Il est calculé par `computeCartPayload()`
+(`cart-payload.js`) à partir des produits sélectionnés et de leurs quantités, et vient du JSON de
+collection (données Elastic, voir Module 3) ; la validation d'autorité a lieu à l'ajout panier (côté
+client). Détail complet : Module 7.
 
 ---
 
@@ -217,33 +243,51 @@ produits sélectionnés et de leurs quantités. Le prix d'affichage vient du JSO
 
 ```
 src/js/syh/
-  syh.js                 ← point d'entrée : createApp(Configurator)
-  configurator.js        ← orchestrateur (état, cycle de rendu, invalidation)
-  configuratorApi.js     ← couche fetch (Module 3)
+  syh.js                     ← point d'entrée : réexporte configurator.js, importé par app.js (hors SYH)
+  configurator.js            ← orchestrateur (état, cycle de rendu, invalidation, navigation, payload panier)
+  configuratorApi.js         ← couche fetch (Module 3) — injecte aussi l'étape recap implicite (Module 7)
   features/
-    radio-field.js
-    length-field.js
-    product-field.js
-    product-toggle.js
-    coloris-field.js
-    show-if.js           ← isVisible (Module 3)
-    embouts.js           ← cas replacesEmbouts (Module 5, section 3)
-    cart-payload.js      ← construction du payload panier
-    recap.js             ← récapitulatif persistant de l'étape 1
+    show-if.js               ← isVisible / resolveLabel (Module 3)
+    default-selection.js     ← valeurs par défaut des params + invalidation en cascade (dependsOn)
+    steps-renderer.js        ← génération du DOM des étapes, expansion splitByConfig
+    stepper.js               ← rendu + état visuel du stepper horizontal
+    step-nav.js              ← état des boutons Précédent / Suivant / Ajouter au panier
+    radio-field.js           ← composant RadioField (variants label / label_image / label_thumbnail)
+    length-field.js          ← composant LengthField (presets + sur-mesure)
+    product-field.js         ← composant ProductField (grille de cartes, coloris, lien fiche produit)
+    tube-step.js             ← quantité de tubes / masquage about_tube (Module 5)
+    tube-coupe.js            ← calcul des coupes de tube (Module 5)
+    embouts.js               ← cas replacesEmbouts (Module 5, section 3)
+    cart-payload.js          ← construction du payload panier + total (Module 7)
+    recap.js                 ← bandeau récapitulatif + étape Récapitulatif (Module 7)
+    modal-router.js          ← routage générique de contenu vers le panel #extra
+    configurator-modals.js   ← câblage des modales (calcul longueur, changement de collection)
+    longueur-calculator.js   ← modale "Calcul de longueur"
+    collection-switcher.js   ← modale "Changer de collection"
+    live-preview.js          ← composition des calques du rendu visuel live (Module 6)
+    svg-renderer.js          ← colorisation SVG dynamique, renderMode live_colored (Module 6)
+    base-path.js             ← préfixe les chemins d'assets root-absolute (sous-dossier de build)
+    image-format-fallback.js ← dev local uniquement, retente les images 404 sous un autre format
 ```
 
 Note : pas de fichier `steps.js` séparé — la navigation entre étapes reste dans `configurator.js`
-(orchestrateur). Le cas `replacesEmbouts` est implémenté dans `features/embouts.js`.
+(orchestrateur), qui délègue la génération du DOM à `steps-renderer.js`. Le cas `replacesEmbouts`
+est implémenté dans `features/embouts.js`.
 
-Chaque field-feature est un composant `Base` autonome avec son `data-component`. L'orchestrateur les
-déclare dans `components` et les monte. Un fichier = un composant = un `data-component`.
+Chaque field-feature (`RadioField`, `LengthField`, `ProductField`) est un composant `Base` autonome
+avec son `data-component`, déclaré dans `Configurator.config.components` et monté automatiquement.
+Les autres fichiers de `features/` sont des modules de fonctions pures ou quasi-pures, pas des
+composants JS Toolkit — importés et appelés directement par `configurator.js` (ou entre eux).
 
 ---
 
 ## Points de décision encore ouverts
 
-- Style d'accroche du JS client (data-attributes, événements, API de composant) — détermine les
-  hooks à exposer.
-- Comportement exact de l'invalidation en cascade (reset total des champs aval, ou tentative de
-  conservation des sélections encore valides).
 - Persistance de la sélection en cours (reprendre où l'utilisateur s'est arrêté) — si demandé.
+- Point d'ancrage du panier (drawer) : pas encore implémenté, voir Module 7.
+
+> Deux points de cette liste sont **résolus depuis** et retirés d'ici :
+> - **Style d'accroche du JS client** : événement custom `syh:add-to-cart` (voir `_addToCart()` dans
+>   `configurator.js` et Module 7, section 5).
+> - **Invalidation en cascade** : reset des champs dépendants (`dependsOn`) sur l'étape courante,
+>   via `invalidateDownstream()` (`default-selection.js`) — pas de tentative de conservation.

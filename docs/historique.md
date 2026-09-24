@@ -6,6 +6,23 @@
 
 ---
 
+## 2026-09-24 — Total et détail produits dans le récapitulatif, lien vers la fiche produit
+
+**Total dans le récapitulatif.** Le bandeau récapitulatif affiche maintenant le prix total de la
+configuration en cours, mis à jour en temps réel à chaque sélection.
+
+**Étape Récapitulatif détaillée.** Elle liste désormais tous les produits sélectionnés (support,
+tube, anneaux, jambes de force...) sous forme de tableau : nom du produit, quantité, prix unitaire,
+et un bouton pour ouvrir la fiche produit correspondante. Cette étape est maintenant générée
+automatiquement par le configurateur — elle n'a plus besoin d'être déclarée dans les données de
+chaque collection, ce qui évite un oubli lors de la création d'une nouvelle collection.
+
+**Lien vers la fiche produit Houlès.** Chaque carte produit et chaque ligne du récapitulatif
+proposent un lien « Voir le produit », qui ouvre la fiche du produit correspondant sur le site
+Houlès, dans le coloris actuellement affiché (l'URL Houlès inclut toujours le coloris).
+
+---
+
 ## 2026-09-12 — Retour en arrière : plus de modale, couleurs directement dans la carte produit
 
 Houlès revient sur la modale de choix de couleur mise en place quelques jours plus tôt (voir plus

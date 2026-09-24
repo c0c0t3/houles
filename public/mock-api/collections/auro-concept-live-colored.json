@@ -355,6 +355,7 @@
             {
               "refBase": "66776",
               "label": "2 Supports mur extensibles 110mm Ø 16 mm",
+              "productUrl": "https://www.houles.com/produit/66776",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -375,6 +376,7 @@
             {
               "refBase": "66772",
               "label": "2 Supports mur extensibles 110mm Ø 16 mm ROND",
+              "productUrl": "https://www.houles.com/produit/66772",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -395,6 +397,7 @@
             {
               "refBase": "66778",
               "label": "2 Supports mur extensibles 110mm Ø 25 mm",
+              "productUrl": "https://www.houles.com/produit/66778",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -415,6 +418,7 @@
             {
               "refBase": "66779",
               "label": "2 Supports mur extensibles 110mm Ø 31 mm",
+              "productUrl": "https://www.houles.com/produit/66779",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -449,6 +453,7 @@
             {
               "refBase": "66754",
               "label": "2 Adaptateurs arrière corner extra-longs (tube Ø 16 mm)",
+              "productUrl": "https://www.houles.com/produit/66754",
               "qtyParUnite": 2,
               "showIf": {
                 "type_de_support": [
@@ -493,6 +498,7 @@
             {
               "refBase": "66480",
               "label": "2 Jambes de force réglables",
+              "productUrl": "https://www.houles.com/produit/66480",
               "qtyParUnite": 2,
               "noColoris": true,
               "id": "66480-24",
@@ -517,6 +523,7 @@
             {
               "refBase": "66764",
               "label": "Support mur pour anneaux ouverts Ø 25 mm",
+              "productUrl": "https://www.houles.com/produit/66764",
               "qtyParUnite": 1,
               "showIf": {
                 "type_pose": [
@@ -542,6 +549,7 @@
             {
               "refBase": "66769",
               "label": "Support mur pour anneaux ouverts Ø 31 mm",
+              "productUrl": "https://www.houles.com/produit/66769",
               "qtyParUnite": 1,
               "showIf": {
                 "type_pose": [
@@ -564,6 +572,7 @@
             {
               "refBase": "66776",
               "label": "2 Supports mur extensibles 110mm Ø 16 mm (interm.)",
+              "productUrl": "https://www.houles.com/produit/66776",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -592,6 +601,7 @@
             {
               "refBase": "66778",
               "label": "2 Supports mur extensibles 110mm Ø 25 mm (interm.)",
+              "productUrl": "https://www.houles.com/produit/66778",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -620,6 +630,7 @@
             {
               "refBase": "66779",
               "label": "2 Supports mur extensibles 110mm Ø 31 mm (interm.)",
+              "productUrl": "https://www.houles.com/produit/66779",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -648,6 +659,7 @@
             {
               "refBase": "66732",
               "label": "2 Supports mixtes plafond-mur Ø 16 mm (interm.)",
+              "productUrl": "https://www.houles.com/produit/66732",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -676,6 +688,7 @@
             {
               "refBase": "66734",
               "label": "2 Supports mixtes plafond-mur Ø 25 mm (interm.)",
+              "productUrl": "https://www.houles.com/produit/66734",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -704,6 +717,7 @@
             {
               "refBase": "66736",
               "label": "2 Supports mixtes plafond-mur Ø 31 mm (interm.)",
+              "productUrl": "https://www.houles.com/produit/66736",
               "qtyParUnite": 2,
               "showIf": {
                 "type_pose": [
@@ -745,6 +759,7 @@
             {
               "refBase": "66480",
               "label": "2 Jambes de force réglables",
+              "productUrl": "https://www.houles.com/produit/66480",
               "qtyParUnite": 2,
               "showIf": {
                 "selected:support": [
@@ -801,6 +816,7 @@
             {
               "refBase": "66084",
               "label": "Tube Ø 16 mm - 180 cm",
+              "productUrl": "https://www.houles.com/produit/66084",
               "qtyParUnite": 1,
               "tubeLength": 180,
               "svgUrl": "/assets/syh/tmp/tube-detourage.svg",
@@ -832,6 +848,7 @@
             {
               "refBase": "66104",
               "label": "Tube Ø 25 mm - 180 cm",
+              "productUrl": "https://www.houles.com/produit/66104",
               "qtyParUnite": 1,
               "tubeLength": 180,
               "showIfAny": [
@@ -862,6 +879,7 @@
             {
               "refBase": "66124",
               "label": "Tube Ø 31 mm - 180 cm",
+              "productUrl": "https://www.houles.com/produit/66124",
               "qtyParUnite": 1,
               "tubeLength": 180,
               "showIfAny": [
@@ -927,6 +945,7 @@
               "id": "66601",
               "noColoris": true,
               "label": "About de tube Ø 16 mm",
+              "productUrl": "https://www.houles.com/produit/66601",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -942,6 +961,7 @@
               "id": "66603",
               "noColoris": true,
               "label": "About de tube Ø 25 mm",
+              "productUrl": "https://www.houles.com/produit/66603",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -957,6 +977,7 @@
               "id": "66605",
               "noColoris": true,
               "label": "About de tube Ø 31 mm",
+              "productUrl": "https://www.houles.com/produit/66605",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -990,6 +1011,7 @@
             {
               "refBase": "66804",
               "label": "6 Anneaux fermes Ø 16 mm (lot de 6)",
+              "productUrl": "https://www.houles.com/produit/66804",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -1012,6 +1034,7 @@
             {
               "refBase": "66808",
               "label": "Anneaux fermes Ø 25 mm (lot de 6)",
+              "productUrl": "https://www.houles.com/produit/66808",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -1033,6 +1056,7 @@
             {
               "refBase": "66809",
               "label": "Anneaux fermes Ø 31 mm (lot de 6)",
+              "productUrl": "https://www.houles.com/produit/66809",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -1054,6 +1078,7 @@
             {
               "refBase": "66935",
               "label": "Anneaux ouverts Ø 25 mm (lot de 6)",
+              "productUrl": "https://www.houles.com/produit/66935",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -1073,6 +1098,7 @@
             {
               "refBase": "66937",
               "label": "Anneaux ouverts Ø 31 mm (lot de 6)",
+              "productUrl": "https://www.houles.com/produit/66937",
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
@@ -1113,6 +1139,7 @@
             {
               "refBase": "66870",
               "label": "Anneaux de blocage Ø 16 mm",
+              "productUrl": "https://www.houles.com/produit/66870",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1128,6 +1155,7 @@
             {
               "refBase": "66874",
               "label": "Anneaux de blocage Ø 25 mm",
+              "productUrl": "https://www.houles.com/produit/66874",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1143,6 +1171,7 @@
             {
               "refBase": "66878",
               "label": "Anneaux de blocage Ø 31 mm",
+              "productUrl": "https://www.houles.com/produit/66878",
               "qtyParUnite": 1,
               "showIf": {
                 "diametre": [
@@ -1179,6 +1208,7 @@
             {
               "refBase": "66896",
               "label": "2 Embouts Absis",
+              "productUrl": "https://www.houles.com/produit/66896",
               "svgUrl": "/assets/syh/tmp/tete-or.svg",
               "qtyParUnite": 2,
               "longueurEmbout": 2,
@@ -1226,6 +1256,7 @@
             {
               "refBase": "66960",
               "label": "2 Embouts Bouchons O16",
+              "productUrl": "https://www.houles.com/produit/66960",
               "qtyParUnite": 2,
               "longueurEmbout": 1,
               "recouvrementEmbout": 2.5,
@@ -1247,6 +1278,7 @@
             {
               "refBase": "66961",
               "label": "2 Embouts Bouchons O25",
+              "productUrl": "https://www.houles.com/produit/66961",
               "qtyParUnite": 2,
               "longueurEmbout": 1,
               "recouvrementEmbout": 2.5,
@@ -1268,6 +1300,7 @@
             {
               "refBase": "66962",
               "label": "2 Embouts Bouchons O31",
+              "productUrl": "https://www.houles.com/produit/66962",
               "qtyParUnite": 2,
               "longueurEmbout": 1,
               "recouvrementEmbout": 2.5,
