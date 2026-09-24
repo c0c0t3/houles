@@ -17,7 +17,7 @@ import { buildTubeInputs, calculCoupes, computeTubeQty } from './tube-coupe.js';
  * @param {object}   selection   - Sélection courante (nécessaire pour segmented_minus_1)
  * @returns {number}
  */
-function resolveQty(field, option, longueur, allExpanded, selection) {
+export function resolveQty(field, option, longueur, allExpanded, selection) {
   const { quantity } = field;
   if (!quantity) return 1;
 

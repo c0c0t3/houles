@@ -34,6 +34,33 @@ et son prix.
 En configuration double, les éléments dédoublés apparaissent en **lignes séparées** (avant / arrière),
 jamais fusionnés en une ligne ×2 (Module 5).
 
+### Étape implicite
+
+L'étape `recap` n'est **jamais déclarée dans le JSON de collection** : elle ne porte aucune donnée
+propre à une collection donnée (dans les 3 mocks, elle n'était qu'un objet identique partout —
+`{ "id": "recap", "label": "Recapitulatif", "fields": [] }`, pur boilerplate). Elle est injectée par
+le front, toujours en dernière étape, dans `configuratorApi.js` (`fetchCollection()`) — un seul point
+d'injection, avant même `steps-renderer.js`. Les équipes qui maintiennent les collections n'ont donc
+rien à déclarer pour cette étape (et ne risquent pas de l'oublier sur une nouvelle collection).
+
+### Implémenté
+
+- `recap.js` expose `renderRecap()` : bandeau persistant (`Configurator.$refs.recap`, limité aux
+  champs de l'étape 1) et le même rendu dans le conteneur dédié de l'étape `recap`
+  (`[data-ref="recapStepContent"]`, voir `steps-renderer.js`). Affiche aussi la dernière longueur
+  totale avec embouts calculée dans la modale dédiée, et le **Total** de la configuration en cours
+  (`computeCartPayload().total`, voir section 3).
+- `recap.js` expose aussi `renderProductSummary()`, propre au conteneur
+  `[data-ref="recapProductSummary"]` de l'étape `recap` (pas dans le bandeau, trop dense pour un
+  affichage permanent) : un **tableau** listant tous les produits sélectionnés, toutes étapes
+  confondues — bouton « voir le produit » (photo réelle du produit, `variant.image ?? option.image`,
+  absent si non disponible), nom (groupé visuellement par label de champ — Support, Tube, Anneaux,
+  Jambe de force réglable...), quantité commandable, prix unitaire. Quantité calculée via
+  `resolveQty()` (exporté par `cart-payload.js` — même calcul « à la volée » que le payload panier
+  réel, pas de logique dupliquée).
+- Bloc réassurance (délai, qualité, suivi) : **pas encore implémenté** — contenu éditorial à obtenir
+  du client.
+
 ---
 
 ## 2. Composant panier (drawer)
@@ -69,9 +96,9 @@ d'ouverture/fermeture du drawer sont côté front.
   id: "66808-35",          // code article complet (refBase-coloris), résolu
   refBase: "66808",
   coloris: "35",
-  label: "Anneaux fermés Ø25 (lot de 6)",
+  name: "Anneaux fermés Ø25 (lot de 6)",
   qty: 2,                  // quantité COMMANDABLE (déjà arrondie au qtyParUnite)
-  prixUnitaire: 8.90,      // depuis le JSON de collection (Elastic)
+  prixUnitaire: 8.90,      // placeholder de démo, depuis le JSON de collection (Elastic en prod)
   prixTotal: 17.80
 }
 ```
@@ -79,6 +106,12 @@ d'ouverture/fermeture du drawer sont côté front.
 - L'`id` est le code article complet résolu (ou code famille seul si `noColoris`).
 - La `qty` est la quantité commandable, pas le besoin brut (Module 5).
 - Le prix vient du JSON de collection (données Elastic, Module 3).
+- Les lignes avec le même `id` article (ex : support + support intermédiaire) sont **agrégées** en une
+  seule ligne (`qty`/`prixTotal` cumulés) — `computeCartPayload()`, dans `cart-payload.js`.
+
+`computeCartPayload(schema, selection, expandedStepFields)` retourne `{ items, coupes, forfait, total }` :
+`total` est la somme des `prixTotal` de toutes les lignes (le forfait coupe n'a pas de prix dans les
+données de démo — seulement `ean`/`qty` — il n'est donc pas inclus dans `total`).
 
 Cet objet — l'ensemble des lignes plus les paramètres de configuration — est ce qui sera transmis au
 client à la validation, et ce qu'il sérialise. **Sa structure doit correspondre à ce qu'attend le
@@ -143,10 +176,12 @@ la config affichée peut être incohérente.
 ## Organisation du code
 
 ```
-src/js/syh/features/
-  recap.js         ← construction et rendu du récapitulatif
-  cart-drawer.js   ← drawer panier (markup, états visuels)
-  cart-payload.js  ← construction de l'objet de configuration transmis au client
+src/js/syh/
+  configuratorApi.js       ← injecte l'étape `recap` implicite (fetchCollection), voir section 1
+  features/
+    recap.js                ← rendu du récapitulatif (bandeau + étape) et du résumé produits (tableau)
+    cart-drawer.js           ← drawer panier (markup, états visuels) — pas encore implémenté
+    cart-payload.js          ← construction de l'objet de configuration transmis au client
 ```
 
 `cart-payload.js` assemble l'objet (paramètres + lignes résolues) et gère l'émission à la validation

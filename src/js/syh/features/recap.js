@@ -1,4 +1,6 @@
 import { formatFr } from './longueur-calculator.js';
+import { isVisible, resolveLabel } from './show-if.js';
+import { resolveQty } from './cart-payload.js';
 
 /**
  * Récapitulatif persistant de l'étape 1 (paramètres de configuration), affiché en permanence
@@ -109,4 +111,110 @@ export function renderRecap(container, schema, selection, longueurTotalAvecEmbou
     el.innerHTML = `<span class="text-gray-400 text-xs uppercase tracking-wide">Total</span><span class="font-semibold text-purple">${formatPrice(total)}</span>`;
     container.appendChild(el);
   }
+}
+
+// Icône "œil" (voir le produit) — inline, pas de dépendance à un sprite d'icônes du reste du
+// projet (hors périmètre SYH, voir CLAUDE.md).
+const EYE_ICON_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-4 h-4"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+
+/**
+ * Construit une ligne du résumé produits : label du champ, nom résolu (produit + coloris),
+ * quantité commandable (calcul à la volée, voir `resolveQty` dans cart-payload.js) et prix
+ * unitaire. `null` si le champ n'a pas de sélection valide ou une quantité nulle.
+ *
+ * @param {object} field       - Champ expandé (product / product_toggle)
+ * @param {object} schema
+ * @param {object} selection
+ * @param {number} longueur    - `selection.longueur`, pré-résolu (évite un `Number()` par champ)
+ * @param {object[]} allExpanded - Tous les champs expandés, toutes étapes (pour `resolveQty`)
+ * @returns {{label: string, name: string, qty: number, prixUnitaire: number, image: string|null}|null}
+ */
+function buildSummaryRow(field, schema, selection, longueur, allExpanded) {
+  const sel = selection.produits?.[field.id];
+  if (!sel?.refBase) return null;
+  const option = field.options?.find((o) => o.refBase === sel.refBase);
+  if (!option) return null;
+
+  const qty = resolveQty(field, option, longueur, allExpanded, selection);
+  if (qty <= 0) return null;
+
+  const value = recapValue(field, schema, selection);
+  if (value == null) return null;
+
+  const variant = option.variants?.[sel.coloris];
+  return {
+    label: resolveLabel(field, selection),
+    name: value,
+    qty,
+    prixUnitaire: variant?.prix ?? option.prix ?? 0,
+    // Photo produit réelle (pas `renderImage`, réservé à la composition SVG du rendu live).
+    image: variant?.image ?? option.image ?? null,
+  };
+}
+
+/**
+ * Résume tous les produits sélectionnés, toutes étapes confondues, sous forme de tableau : bouton
+ * "voir le produit" (photo, si disponible), nom (groupé par label de champ — Support, Tube,
+ * Anneaux, Jambe de force réglable...), quantité commandable, prix unitaire.
+ * Propre à l'étape Récapitulatif (conteneur `recapProductSummary`, voir steps-renderer.js) : plus
+ * complet que le bandeau persistant, qui ne couvre que les champs de l'étape 1.
+ *
+ * @param {HTMLElement} container - Conteneur dédié (`[data-ref="recapProductSummary"]`)
+ * @param {object} schema
+ * @param {object} selection
+ * @param {object[]} expandedStepFields - Champs expandés par step (Configurator._expandedStepFields)
+ */
+export function renderProductSummary(container, schema, selection, expandedStepFields) {
+  container.innerHTML = '';
+
+  const longueur = Number(selection.longueur);
+  const allExpanded = expandedStepFields.flat();
+
+  const rows = allExpanded
+    .filter((field) => field.type === 'product' || field.type === 'product_toggle')
+    // Respecte le showIf du champ (ex : variantes avant/arrière non actives en config simple).
+    .filter((field) => isVisible(field, selection))
+    .map((field) => buildSummaryRow(field, schema, selection, longueur, allExpanded))
+    .filter((row) => row != null);
+
+  // Rien de sélectionné encore (tout début de configuration) : pas de tableau vide.
+  if (!rows.length) return;
+
+  const table = document.createElement('table');
+  table.className = 'w-full text-sm table-auto border-collapse';
+  table.innerHTML = `
+    <thead>
+      <tr class="text-left text-gray-400 text-xs uppercase tracking-wide border-b border-purple/20">
+        <th class="w-10 py-2"><span class="sr-only">Voir le produit</span></th>
+        <th class="py-2">Produit</th>
+        <th class="py-2 text-right">Qté</th>
+        <th class="py-2 text-right">Prix</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${rows
+        .map(
+          (row) => `
+        <tr class="border-b border-purple/10 last:border-0">
+          <td class="py-2 pr-2">
+            ${
+              row.image
+                ? `<a href="${row.image}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-7 h-7 rounded-full text-purple hover:bg-sand-darker" aria-label="Voir le produit" title="Voir le produit">${EYE_ICON_SVG}</a>`
+                : ''
+            }
+          </td>
+          <td class="py-2">
+            <div class="text-gray-400 text-xs uppercase tracking-wide">${row.label}</div>
+            <div class="font-medium text-gray-900">${row.name}</div>
+          </td>
+          <td class="py-2 text-right text-gray-900">${row.qty}</td>
+          <td class="py-2 text-right font-medium text-gray-900">${formatPrice(row.prixUnitaire)}</td>
+        </tr>
+      `,
+        )
+        .join('')}
+    </tbody>
+  `;
+  container.appendChild(table);
 }

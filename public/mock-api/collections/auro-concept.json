@@ -3271,11 +3271,6 @@
           ]
         }
       ]
-    },
-    {
-      "id": "recap",
-      "label": "Recapitulatif",
-      "fields": []
     }
   ]
 }

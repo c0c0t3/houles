@@ -76,13 +76,21 @@ export function renderAllSteps({ rootEl, container, schema, selection }) {
       stepEl.appendChild(createEmboutsMessageElement());
     }
 
-    // Étape Récapitulatif : reprend le même rendu que le bandeau permanent (renderRecap),
-    // dans un conteneur dédié — voir _renderRecap(). `fields: []` dans le JSON, rien à cloner ici.
+    // Étape Récapitulatif : implicite, ajoutée par configuratorApi.js (jamais dans le JSON de
+    // collection — voir fetchCollection), `fields: []`, rien à cloner depuis le Twig ici.
     if (step.id === 'recap') {
+      // Reprend le même rendu que le bandeau permanent (renderRecap) — voir _renderRecap().
       const recapStepContent = document.createElement('div');
       recapStepContent.dataset.ref = 'recapStepContent';
       recapStepContent.className = 'flex flex-col gap-3';
       stepEl.appendChild(recapStepContent);
+
+      // Résumé de tous les produits sélectionnés (toutes étapes), groupé par label de champ —
+      // voir renderProductSummary() dans recap.js. Conteneur dédié, propre à cette étape.
+      const recapProductSummary = document.createElement('div');
+      recapProductSummary.dataset.ref = 'recapProductSummary';
+      recapProductSummary.className = 'flex flex-col gap-4';
+      stepEl.appendChild(recapProductSummary);
     }
 
     const expanded = expandFields(step.fields);

@@ -17,7 +17,13 @@ export async function fetchCollection(slug) {
   // Les chemins d'assets du JSON (image, thumbnail, renderImage, svgUrl...) sont root-absolute —
   // un seul point de réécriture ici (voir features/base-path.js) plutôt que dans chaque composant
   // consommateur (radio-field, product-field, live-preview, svg-renderer...).
-  return prefixAssetPaths(data);
+  const collection = prefixAssetPaths(data);
+  // Étape Récapitulatif : implicite côté front, jamais déclarée dans le JSON de collection — elle
+  // ne porte aucun champ propre à la collection (fields: [] partout), donc pas de raison de faire
+  // porter ce boilerplate aux équipes qui maintiennent les collections (risque d'oubli sur une
+  // nouvelle collection). Toujours ajoutée en dernière étape. Voir docs/module-7-recap-panier.md.
+  collection.steps.push({ id: 'recap', label: 'Récapitulatif', fields: [] });
+  return collection;
 }
 
 export async function checkCart(items) {
