@@ -301,26 +301,30 @@ export default class Configurator extends Base {
    * Affiché en permanence au-dessus du stepper pour rappeler les choix structurants.
    *
    * L'étape `recap` (implicite, ajoutée par configuratorApi.js — voir steps-renderer.js) reçoit en
-   * plus le même rendu dans son conteneur dédié, et le résumé produits groupé par label de champ
+   * plus le même rendu dans son conteneur dédié (sans le Total, déjà affiché en pied du tableau
+   * produits juste en dessous), et le résumé produits groupé par label de champ
    * (renderProductSummary), plus complet que le bandeau qui ne couvre que l'étape 1.
    */
   _renderRecap() {
     // Recalculé à la volée à chaque appel — cohérent avec buildCartPayload(), pas d'état mis en cache.
     const { total } = computeCartPayload(this.schema, this.selection, this._expandedStepFields);
 
-    renderRecap(this.$refs.recap, this.schema, this.selection, this._longueurTotalAvecEmbouts, total);
+    // Coloris masqué ici aussi : redondant avec le coloris affiché par produit sur les cartes.
+    renderRecap(this.$refs.recap, this.schema, this.selection, this._longueurTotalAvecEmbouts, total, false);
 
     const recapStepIndex = this.schema.steps.findIndex((s) => s.id === 'recap');
     const recapStepEl = this._stepEls[recapStepIndex];
 
     const recapStepContent = recapStepEl?.querySelector('[data-ref="recapStepContent"]');
     if (recapStepContent) {
-      renderRecap(recapStepContent, this.schema, this.selection, this._longueurTotalAvecEmbouts, total);
+      // Ni Total (déjà en pied du tableau produits juste en dessous) ni coloris (déjà affiché par
+      // produit dans ce même tableau) — contrairement au bandeau persistant, qui garde les deux.
+      renderRecap(recapStepContent, this.schema, this.selection, this._longueurTotalAvecEmbouts, null, false);
     }
 
     const recapProductSummary = recapStepEl?.querySelector('[data-ref="recapProductSummary"]');
     if (recapProductSummary) {
-      renderProductSummary(recapProductSummary, this.schema, this.selection, this._expandedStepFields);
+      renderProductSummary(recapProductSummary, this.schema, this.selection, this._expandedStepFields, total);
     }
   }
 

@@ -76,8 +76,11 @@ function recapValue(field, schema, selection) {
  * @param {number|null} longueurTotalAvecEmbouts
  * @param {number} total - Total de la configuration en cours (somme des lignes produit résolues,
  *   voir `computeCartPayload` dans cart-payload.js). Prix placeholders de démo.
+ * @param {boolean} [showColoris] - `false` masque le chip "coloris" — redondant avec le coloris déjà
+ *   affiché par produit (carte / tableau récap). `true` par défaut ; les deux appelants actuels
+ *   (bandeau et étape recap) passent explicitement `false`.
  */
-export function renderRecap(container, schema, selection, longueurTotalAvecEmbouts, total) {
+export function renderRecap(container, schema, selection, longueurTotalAvecEmbouts, total, showColoris = true) {
   // Le bouton "Changer de collection" (data-modal="collections") est le premier enfant statique
   // du recap dans le twig — on le préserve à travers les reconstructions du bandeau plutôt que de
   // le recréer, pour ne pas perdre le nœud sur lequel modal-router.js s'appuie.
@@ -86,6 +89,8 @@ export function renderRecap(container, schema, selection, longueurTotalAvecEmbou
   if (collectionsButton) container.appendChild(collectionsButton);
 
   for (const field of schema.steps[0]?.fields ?? []) {
+    if (!showColoris && field.id === 'coloris') continue;
+
     const value = recapValue(field, schema, selection);
     // Champ sans valeur (non encore renseigné) : pas de chip dans le bandeau.
     if (value == null) continue;
@@ -113,10 +118,10 @@ export function renderRecap(container, schema, selection, longueurTotalAvecEmbou
   }
 }
 
-// Icône "œil" (voir le produit) — inline, pas de dépendance à un sprite d'icônes du reste du
+// Icône flèche (voir le produit) — inline, pas de dépendance à un sprite d'icônes du reste du
 // projet (hors périmètre SYH, voir CLAUDE.md).
-const EYE_ICON_SVG =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-4 h-4"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+const ARROW_ICON_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block ml-1 w-2.5 h-2.5 text-purple opacity-0 group-hover:opacity-100 transition-opacity"><path d="M10.0002 5H8.2002C7.08009 5 6.51962 5 6.0918 5.21799C5.71547 5.40973 5.40973 5.71547 5.21799 6.0918C5 6.51962 5 7.08009 5 8.2002V15.8002C5 16.9203 5 17.4801 5.21799 17.9079C5.40973 18.2842 5.71547 18.5905 6.0918 18.7822C6.5192 19 7.07899 19 8.19691 19H15.8031C16.921 19 17.48 19 17.9074 18.7822C18.2837 18.5905 18.5905 18.2839 18.7822 17.9076C19 17.4802 19 16.921 19 15.8031V14M20 9V4M20 4H15M20 4L13 11"/></svg>';
 
 /**
  * Construit une ligne du résumé produits : label du champ, nom résolu (produit + coloris),
@@ -159,9 +164,35 @@ function buildSummaryRow(field, schema, selection, longueur, allExpanded) {
 }
 
 /**
- * Résume tous les produits sélectionnés, toutes étapes confondues, sous forme de tableau : bouton
- * "voir le produit" (photo, si disponible), nom (groupé par label de champ — Support, Tube,
- * Anneaux, Jambe de force réglable...), quantité commandable, prix unitaire.
+ * Construit la ligne HTML d'un produit : nom (avec le lien "voir le produit" — flèche — juste
+ * après, sur la même ligne), sous-étape (label du champ, ex : Anneaux, Support intermédiaire,
+ * Jambe de force réglable), quantité commandable, prix unitaire.
+ *
+ * @param {object} row - Voir `buildSummaryRow`
+ * @returns {string} Markup `<tr>`
+ */
+function buildProductRowHtml(row) {
+  return `
+    <tr class="border-b border-purple/10 last:border-0">
+      <td class="p-2 text-gray-900">
+        ${
+          row.productUrl
+            ? `<a href="${row.productUrl}" target="_blank" rel="noopener noreferrer" class="group hover:underline hover:text-purple/70" aria-label="Voir le produit" title="Voir le produit">${row.name}${ARROW_ICON_SVG}</a>`
+            : row.name
+        }
+      </td>
+      <td class="p-2 text-gray-500">${row.label}</td>
+      <td class="p-2 text-right text-gray-900">${row.qty}</td>
+      <td class="p-2 text-right font-medium text-gray-900">${formatPrice(row.prixUnitaire)}</td>
+    </tr>
+  `;
+}
+
+/**
+ * Résume tous les produits sélectionnés (toutes étapes confondues) dans un seul tableau, encadré
+ * dans un container visuel : nom du produit (avec le lien "voir le produit" en flèche à la fin),
+ * sous-étape (label du champ — Anneaux, Support intermédiaire, Jambe de force réglable...),
+ * quantité commandable, prix unitaire, et le **Total** en pied de tableau.
  * Propre à l'étape Récapitulatif (conteneur `recapProductSummary`, voir steps-renderer.js) : plus
  * complet que le bandeau persistant, qui ne couvre que les champs de l'étape 1.
  *
@@ -169,13 +200,17 @@ function buildSummaryRow(field, schema, selection, longueur, allExpanded) {
  * @param {object} schema
  * @param {object} selection
  * @param {object[]} expandedStepFields - Champs expandés par step (Configurator._expandedStepFields)
+ * @param {number} total - Total de la configuration en cours (même valeur que le bandeau, voir
+ *   `computeCartPayload` dans cart-payload.js) — affiché en pied de tableau.
  */
-export function renderProductSummary(container, schema, selection, expandedStepFields) {
+export function renderProductSummary(container, schema, selection, expandedStepFields, total) {
   container.innerHTML = '';
 
   const longueur = Number(selection.longueur);
   const allExpanded = expandedStepFields.flat();
 
+  // .flat() suit l'ordre des étapes (expandedStepFields est indexé comme schema.steps) : les
+  // lignes restent naturellement groupées par étape sans qu'il faille le marquer explicitement.
   const rows = allExpanded
     .filter((field) => field.type === 'product' || field.type === 'product_toggle')
     // Respecte le showIf du champ (ex : variantes avant/arrière non actives en config simple).
@@ -186,40 +221,31 @@ export function renderProductSummary(container, schema, selection, expandedStepF
   // Rien de sélectionné encore (tout début de configuration) : pas de tableau vide.
   if (!rows.length) return;
 
+  // Container visuel (bordure + fond) qui distingue le tableau du reste de l'étape récap.
+  const wrapper = document.createElement('div');
+  wrapper.className = 'overflow-hidden';
+
   const table = document.createElement('table');
   table.className = 'w-full text-sm table-auto border-collapse';
   table.innerHTML = `
     <thead>
       <tr class="text-left text-gray-400 text-xs uppercase tracking-wide border-b border-purple/20">
-        <th class="w-10 py-2"><span class="sr-only">Voir le produit</span></th>
-        <th class="py-2">Produit</th>
-        <th class="py-2 text-right">Qté</th>
-        <th class="py-2 text-right">Prix</th>
+        <th class="p-2">Produit</th>
+        <th class="p-2">Élément</th>
+        <th class="p-2 text-right">Qté</th>
+        <th class="p-2 text-right">Prix</th>
       </tr>
     </thead>
     <tbody>
-      ${rows
-        .map(
-          (row) => `
-        <tr class="border-b border-purple/10 last:border-0">
-          <td class="py-2 pr-2">
-            ${
-              row.productUrl
-                ? `<a href="${row.productUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-7 h-7 rounded-full text-purple hover:bg-sand-darker" aria-label="Voir le produit" title="Voir le produit">${EYE_ICON_SVG}</a>`
-                : ''
-            }
-          </td>
-          <td class="py-2">
-            <div class="text-gray-400 text-xs uppercase tracking-wide">${row.label}</div>
-            <div class="font-medium text-gray-900">${row.name}</div>
-          </td>
-          <td class="py-2 text-right text-gray-900">${row.qty}</td>
-          <td class="py-2 text-right font-medium text-gray-900">${formatPrice(row.prixUnitaire)}</td>
-        </tr>
-      `,
-        )
-        .join('')}
+      ${rows.map(buildProductRowHtml).join('')}
     </tbody>
+    <tfoot>
+      <tr class="border-t border-purple/20 bg-sand-darker/40">
+        <td colspan="3" class="p-2 text-right font-semibold uppercase tracking-wide text-xs text-gray-500">Total</td>
+        <td class="p-2 text-right font-semibold text-purple">${total != null ? formatPrice(total) : '—'}</td>
+      </tr>
+    </tfoot>
   `;
-  container.appendChild(table);
+  wrapper.appendChild(table);
+  container.appendChild(wrapper);
 }
