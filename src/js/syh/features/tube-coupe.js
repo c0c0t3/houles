@@ -71,7 +71,7 @@ export function computeTubeQty(selection, tubeFieldId, expandedFields) {
  *
  * @param {Array<{reference: string, quantite: number, longueurStock: number}>} tubes
  * @param {number} longueur       - Longueur totale configurée en cm
- * @param {string} forfaitEan     - EAN13 du forfait coupe (fourni par collection.serviceCoupeEan)
+ * @param {string} forfaitEan     - EAN13 du forfait coupe (constante fixe, voir forfait-coupe.js)
  * @returns {{ coupes: object[], forfait: {ean: string, qty: number} | null }}
  */
 export function calculCoupes(tubes, longueur, forfaitEan) {

@@ -1,6 +1,7 @@
 {
   "collection": {
     "id": "auro",
+    "modeleId": 1034,
     "name": "Auro Concept",
     "renderMode": "live",
     "coloris": [
@@ -34,8 +35,7 @@
       "Diametre arriere toujours 16 mm dans les combinaisons double de cette collection.",
       "image au niveau variante (depend du coloris). URL en dur au format Houlès : {1er}/{refBase}/{refBase}_{coloris}_L1_1.jpg. Le front consomme l'URL, ne la compose jamais. Valeurs prix/stock = placeholders de demo.",
       "TODO : confirmer le format d'URL image pour les produits sans coloris (about de tube)."
-    ],
-    "serviceCoupeEan": "EAN13_COUPETUBE"
+    ]
   },
   "steps": [
     {

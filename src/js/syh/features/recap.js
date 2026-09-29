@@ -168,7 +168,7 @@ function buildSummaryRow(field, schema, selection, longueur, allExpanded) {
  * après, sur la même ligne), sous-étape (label du champ, ex : Anneaux, Support intermédiaire,
  * Jambe de force réglable), quantité commandable, prix unitaire.
  *
- * @param {object} row - Voir `buildSummaryRow`
+ * @param {object} row - Voir `buildSummaryRow` (ou la ligne forfait coupe synthétique, sans prix)
  * @returns {string} Markup `<tr>`
  */
 function buildProductRowHtml(row) {
@@ -183,7 +183,7 @@ function buildProductRowHtml(row) {
       </td>
       <td class="p-2 text-gray-500">${row.label}</td>
       <td class="p-2 text-right text-gray-900">${row.qty}</td>
-      <td class="p-2 text-right font-medium text-gray-900">${formatPrice(row.prixUnitaire)}</td>
+      <td class="p-2 text-right font-medium text-gray-900">${row.prixUnitaire != null ? formatPrice(row.prixUnitaire) : '—'}</td>
     </tr>
   `;
 }
@@ -202,8 +202,10 @@ function buildProductRowHtml(row) {
  * @param {object[]} expandedStepFields - Champs expandés par step (Configurator._expandedStepFields)
  * @param {number} total - Total de la configuration en cours (même valeur que le bandeau, voir
  *   `computeCartPayload` dans cart-payload.js) — affiché en pied de tableau.
+ * @param {{ean: string, qty: number}|null} forfait - Forfait de coupe, si des tubes nécessitent une
+ *   découpe (voir `computeCartPayload` dans cart-payload.js) — ajouté comme dernière ligne, sans prix.
  */
-export function renderProductSummary(container, schema, selection, expandedStepFields, total) {
+export function renderProductSummary(container, schema, selection, expandedStepFields, total, forfait) {
   container.innerHTML = '';
 
   const longueur = Number(selection.longueur);
@@ -217,6 +219,11 @@ export function renderProductSummary(container, schema, selection, expandedStepF
     .filter((field) => isVisible(field, selection))
     .map((field) => buildSummaryRow(field, schema, selection, longueur, allExpanded))
     .filter((row) => row != null);
+
+  // Ligne forfait coupe : pas un champ produit, ajoutée à part si des coupes sont nécessaires.
+  if (forfait) {
+    rows.push({ label: 'Service', name: 'Forfait coupe', qty: forfait.qty, prixUnitaire: null, productUrl: null });
+  }
 
   // Rien de sélectionné encore (tout début de configuration) : pas de tableau vide.
   if (!rows.length) return;

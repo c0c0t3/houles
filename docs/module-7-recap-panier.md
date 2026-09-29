@@ -58,7 +58,8 @@ rien à déclarer pour cette étape (et ne risquent pas de l'oublier sur une nou
   déclaré), nom (groupé visuellement par label de champ — Support, Tube, Anneaux, Jambe de force
   réglable...), quantité commandable, prix unitaire. Quantité calculée via `resolveQty()` (exporté
   par `cart-payload.js` — même calcul « à la volée » que le payload panier réel, pas de logique
-  dupliquée).
+  dupliquée). Le forfait de coupe (`computeCartPayload().forfait`), si nécessaire, apparaît en
+  dernière ligne du tableau (« Service » / « Forfait coupe »), sans prix (`—`).
 - La carte produit (étape produit, avant le récap) porte le même lien « Voir le produit » — voir
   `_buildCard()` dans `product-field.js` (Module 4).
 - Bloc réassurance (délai, qualité, suivi) : **pas encore implémenté** — contenu éditorial à obtenir
@@ -91,8 +92,49 @@ d'ouverture/fermeture du drawer sont côté front.
 
 ## 3. Construction de l'objet de configuration
 
-À chaque changement de sélection, le front (re)construit la liste des lignes à partir de l'état
-`selection` (Module 4) et des règles de quantité (Module 5). Chaque ligne porte :
+Deux fonctions distinctes dans `cart-payload.js`, deux usages différents — à ne pas confondre :
+
+### `computeAddToCartPayload()` — l'objet transmis au client (contrat fourni par le client)
+
+C'est **celui-ci** qui part dans l'événement `syh:add-to-cart` (voir section 5) au clic "Ajouter au
+panier" — `Configurator.buildCartPayload()` l'appelle directement. Contrat donné par le client,
+sans ambiguïté restante :
+
+```js
+{
+  modele_id: 1033,       // collection.modeleId (JSON de collection — voir json-schema-reference.md)
+  quantite: 1,            // pas de sélecteur de quantité globale dans l'UI actuelle, toujours 1
+  longueur: 240,           // selection.longueur, brute (sans embouts)
+  selections: [
+    { field_id: "support", refBase: "66778", coloris: "0010", quantite: 3 },
+    { field_id: "tube",    refBase: "64203", coloris: "0010", quantite: 1 },
+    // ...une entrée par champ produit sélectionné, PAS agrégée par article — le client veut
+    // retrouver le field_id d'origine (ex : "support" et "opt_support_interm" restent deux
+    // lignes distinctes même si elles partagent le même refBase).
+    { field_id: "forfait_coupe", refBase: "80099", coloris: null, quantite: 2 },
+    // ...ligne forfait de coupe, ajoutée seulement si au moins une coupe est nécessaire (voir
+    // ci-dessous) — field_id synthétique (pas un vrai champ JSON), refBase = FORFAIT_COUPE_EAN
+    // (forfait-coupe.js) en guise de référence article, pas de coloris.
+  ]
+}
+```
+
+- **Aucun prix** dans ce payload — le client recalcule selon le tarif du compte connecté (voir
+  section 4, "check d'autorité côté client").
+- `field_id` est l'id du champ JSON (ex : `support`, `opt_support_interm`, `tube_avant`...), pas
+  l'id article — c'est ce qui distingue ce format de `computeCartPayload()` ci-dessous.
+- `quantite` (par ligne) est la quantité commandable, calculée à la volée par `resolveQty()` — pas
+  le besoin brut (Module 5).
+- **Forfait de coupe** : le format fourni par le client n'a pas de champ dédié pour ça — ajouté
+  comme ligne `selections[]` de plus (`field_id: "forfait_coupe"`), convention front puisque le
+  contrat ne prévoyait rien. **À confirmer avec le client** que cette convention lui convient (sinon
+  forme alternative à définir ensemble).
+
+### `computeCartPayload()` — usage interne uniquement (Total du récap)
+
+Sert **uniquement** à calculer et afficher le **Total** dans le récapitulatif (bandeau + étape
+recap, voir section 1) — jamais transmis au client. Agrège les lignes par article (`id` complet
+refBase-coloris, pas par `field_id`) et porte les prix (placeholders de démo, JSON de collection) :
 
 ```js
 {
@@ -100,25 +142,15 @@ d'ouverture/fermeture du drawer sont côté front.
   refBase: "66808",
   coloris: "35",
   name: "Anneaux fermés Ø25 (lot de 6)",
-  qty: 2,                  // quantité COMMANDABLE (déjà arrondie au qtyParUnite)
+  qty: 2,                  // quantité COMMANDABLE (déjà arrondie au qtyParUnite), cumulée si agrégée
   prixUnitaire: 8.90,      // placeholder de démo, depuis le JSON de collection (Elastic en prod)
   prixTotal: 17.80
 }
 ```
 
-- L'`id` est le code article complet résolu (ou code famille seul si `noColoris`).
-- La `qty` est la quantité commandable, pas le besoin brut (Module 5).
-- Le prix vient du JSON de collection (données Elastic, Module 3).
-- Les lignes avec le même `id` article (ex : support + support intermédiaire) sont **agrégées** en une
-  seule ligne (`qty`/`prixTotal` cumulés) — `computeCartPayload()`, dans `cart-payload.js`.
-
 `computeCartPayload(schema, selection, expandedStepFields)` retourne `{ items, coupes, forfait, total }` :
 `total` est la somme des `prixTotal` de toutes les lignes (le forfait coupe n'a pas de prix dans les
 données de démo — seulement `ean`/`qty` — il n'est donc pas inclus dans `total`).
-
-Cet objet — l'ensemble des lignes plus les paramètres de configuration — est ce qui sera transmis au
-client à la validation, et ce qu'il sérialise. **Sa structure doit correspondre à ce qu'attend le
-`sauvegarder()` du client** (voir section 5).
 
 ---
 
@@ -134,18 +166,18 @@ changement, le front affiche ce retour — il ne décide rien.
 
 ---
 
-## 5. Point de jonction avec le JS client (à confirmer)
+## 5. Point de jonction avec le JS client
 
-Le client récupère la configuration via **JS + Ajax**. Le mécanisme exact d'accroche reste à
-confirmer — trois possibilités :
+**Résolu et implémenté** : événement custom. Le front émet `syh:add-to-cart` sur `this.$el`
+(bubbles: true) avec le payload de `computeAddToCartPayload()` (section 3) dans `detail` — voir
+`Configurator._addToCart()` dans `configurator.js`. Le client s'y abonne et déclenche son Ajax ; ce
+module ne fait pas l'appel réseau lui-même.
 
-- **Événement custom** : le front émet `syh:add-to-cart` (ou `syh:save-config`) avec la configuration
-  dans `detail` ; le client s'abonne et déclenche son Ajax. *Recommandé* (le plus découplé).
-- **Fonction exposée** : le front expose une API (`SYHConfigurator.getSelection()`) que le client
-  appelle.
-- **Data-attributes** : le front pose les données sur un élément, le client les lit.
-
-À défaut de préférence du client, retenir l'**événement custom**.
+```js
+document.querySelector('[data-component="Syh"]').addEventListener('syh:add-to-cart', (e) => {
+  console.log(e.detail); // { modele_id, quantite, longueur, selections }
+});
+```
 
 ### Bidirectionnel : sauvegarde ET rechargement
 
@@ -165,14 +197,22 @@ la config affichée peut être incohérente.
 
 ## Points de décision encore ouverts (bloquants pour cette couche)
 
-- **Structure exacte de l'objet sérialisé par le client** (`sauvegarder()`) : c'est le contrat. Le
-  front doit produire un objet aux mêmes champs, sans trou ni renommage. À obtenir du client.
-- **Mécanisme d'accroche** : événement / fonction / data-attributes (voir section 5).
-- **Format de ligne** attendu par le JS panier du client (pour le markup templatisable).
+- **Convention forfait de coupe à valider** : `computeAddToCartPayload()` (section 3) ajoute le
+  forfait comme ligne `selections[]` de plus (`field_id: "forfait_coupe"`) — le format fourni par le
+  client n'ayant pas de champ dédié pour ça, c'est une convention front. À faire confirmer par le
+  client (ou forme alternative à définir si elle ne convient pas).
+- **Format de ligne** attendu par le JS panier du client (pour le markup templatisable du drawer,
+  section 2 — pas encore implémenté).
 - **Config rechargée périmée** : si un produit d'une config sauvegardée n'existe plus dans le
   catalogue actuel, comportement à définir (bloquer + message, config partielle en signalant l'élément
   manquant, substitution...).
 - **Origines du rechargement** : panier vs « mon compte » — même flux technique ou deux mécanismes.
+
+> Deux points de cette liste sont **résolus depuis** et retirés d'ici :
+> - **Structure exacte de l'objet transmis au client** : contrat fourni par le client, implémenté
+>   dans `computeAddToCartPayload()` (section 3) — `modele_id` / `quantite` / `longueur` /
+>   `selections[]` (`field_id`/`refBase`/`coloris`/`quantite`), sans prix.
+> - **Mécanisme d'accroche** : événement custom `syh:add-to-cart` (section 5).
 
 ---
 
@@ -184,8 +224,10 @@ src/js/syh/
   features/
     recap.js                ← rendu du récapitulatif (bandeau + étape) et du résumé produits (tableau)
     cart-drawer.js           ← drawer panier (markup, états visuels) — pas encore implémenté
-    cart-payload.js          ← construction de l'objet de configuration transmis au client
+    cart-payload.js          ← computeAddToCartPayload() (transmis au client) + computeCartPayload() (Total récap, interne)
 ```
 
-`cart-payload.js` assemble l'objet (paramètres + lignes résolues) et gère l'émission à la validation
-ainsi que la reconstruction à partir d'un objet rechargé.
+`cart-payload.js` expose deux fonctions distinctes (voir section 3) : `computeAddToCartPayload()`
+pour l'objet réellement transmis au client (`Configurator.buildCartPayload()`/`_addToCart()`), et
+`computeCartPayload()` pour le calcul interne du Total affiché dans le récapitulatif. La
+reconstruction à partir d'un objet rechargé (section 5) reste à faire.

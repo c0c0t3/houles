@@ -22,6 +22,7 @@
 ```json
 "collection": {
   "id": "auro-concept",
+  "modeleId": 1033,
   "name": "Auro Concept",
   "renderMode": "none",
   "coloris": [ ... ]
@@ -31,6 +32,7 @@
 | Propriété | Type | Obligatoire | Description |
 |---|---|---|---|
 | `id` | string | oui | Identifiant unique, correspond au nom du fichier JSON |
+| `modeleId` | number | oui | Identifiant numérique du modèle côté Houlès (`modele_id` du payload panier — voir Module 7, section 3). Plusieurs collections JSON (variantes de démo, ex : `none`/`live`/`live_colored`) peuvent partager le même `modeleId` si elles représentent le même modèle réel |
 | `name` | string | oui | Nom affiché dans l'UI |
 | `renderMode` | string | oui | `"none"` / `"live"` / `"live_colored"` — voir Module 3 |
 | `coloris` | array | non | Liste des coloris disponibles (voir section Coloris) |

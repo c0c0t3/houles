@@ -1,5 +1,6 @@
 import { isVisible } from './show-if.js';
 import { buildTubeInputs, calculCoupes, computeTubeQty } from './tube-coupe.js';
+import { FORFAIT_COUPE_EAN } from './forfait-coupe.js';
 
 /**
  * Construction du payload panier : lignes produit (avec quantités calculées) + coupes de tube
@@ -128,13 +129,11 @@ export function computeCartPayload(schema, selection, expandedStepFields) {
   // pas de prix dans les données de démo (seulement ean/qty) — il n'est donc pas inclus.
   const total = items.reduce((sum, item) => sum + (item.prixTotal ?? 0), 0);
 
-  // Calcul des coupes sur tous les champs tube de toutes les étapes.
+  // Calcul des coupes sur tous les champs tube de toutes les étapes. Code article du forfait fixe
+  // (FORFAIT_COUPE_EAN, voir forfait-coupe.js) — ne dépend jamais de la collection.
   const allExpanded = expandedStepFields.flat();
   const tubes = buildTubeInputs(selection, allExpanded);
-  const forfaitEan = schema.collection.serviceCoupeEan ?? null;
-  const { coupes, forfait } = forfaitEan
-    ? calculCoupes(tubes, Number(selection.longueur), forfaitEan)
-    : { coupes: [], forfait: null };
+  const { coupes, forfait } = calculCoupes(tubes, Number(selection.longueur), FORFAIT_COUPE_EAN);
 
   // Ajoute le forfait coupe comme ligne article si au moins une coupe est nécessaire.
   if (forfait) {
@@ -142,4 +141,75 @@ export function computeCartPayload(schema, selection, expandedStepFields) {
   }
 
   return { items, coupes, forfait, total };
+}
+
+// field_id synthétique pour la ligne forfait de coupe dans `selections[]` — pas un vrai champ JSON,
+// juste une convention pour rester dans le format demandé sans ajouter de clé au contrat.
+const FORFAIT_COUPE_FIELD_ID = 'forfait_coupe';
+
+/**
+ * Construit le payload transmis au panier du client au clic "Ajouter au panier" — contrat fourni
+ * par le client (pas de prix : il recalcule selon le tarif du compte connecté). Une entrée par
+ * **champ** sélectionné (pas d'agrégation par article comme `computeCartPayload` : le client veut
+ * retrouver le `field_id` d'origine, ex : `support` et `opt_support_interm` restent deux lignes
+ * distinctes même si elles partagent le même `refBase`), plus, si des coupes sont nécessaires, une
+ * ligne forfait de coupe (`field_id: "forfait_coupe"`, `refBase: FORFAIT_COUPE_EAN` — l'EAN sert de
+ * référence article faute de refBase produit ; pas de coloris).
+ *
+ * @param {object}   schema
+ * @param {object}   selection
+ * @param {object[]} expandedStepFields - Champs expandés par step (Configurator._expandedStepFields)
+ * @returns {{
+ *   modele_id: number|null,
+ *   quantite: number,
+ *   longueur: number,
+ *   selections: Array<{ field_id: string, refBase: string, coloris: string|null, quantite: number }>
+ * }}
+ */
+export function computeAddToCartPayload(schema, selection, expandedStepFields) {
+  const longueur = Number(selection.longueur);
+  const allExpanded = expandedStepFields.flat();
+
+  const selections = allExpanded
+    .filter((field) => field.type === 'product' || field.type === 'product_toggle')
+    // Visibilité JSON uniquement — pas de dépendance DOM (stale si step non actif).
+    .filter((field) => isVisible(field, selection))
+    .map((field) => {
+      const sel = selection.produits?.[field.id];
+      if (!sel?.refBase) return null;
+      const option = field.options?.find((o) => o.refBase === sel.refBase);
+      if (!option) return null;
+
+      // Calcul à la volée — indépendant de l'état DOM ou de _segmentQty.
+      const qty = resolveQty(field, option, longueur, allExpanded, selection);
+      if (qty <= 0) return null;
+
+      return {
+        field_id: field.id,
+        refBase: sel.refBase,
+        coloris: sel.coloris ?? null,
+        quantite: qty,
+      };
+    })
+    .filter((entry) => entry != null);
+
+  // Forfait de coupe : ajouté comme ligne supplémentaire si au moins une coupe est nécessaire.
+  const tubes = buildTubeInputs(selection, allExpanded);
+  const { forfait } = calculCoupes(tubes, longueur, FORFAIT_COUPE_EAN);
+  if (forfait) {
+    selections.push({
+      field_id: FORFAIT_COUPE_FIELD_ID,
+      refBase: forfait.ean,
+      coloris: null,
+      quantite: forfait.qty,
+    });
+  }
+
+  return {
+    modele_id: schema.collection.modeleId ?? null,
+    // Pas de sélecteur de quantité globale dans l'UI actuelle — une configuration = un article.
+    quantite: 1,
+    longueur,
+    selections,
+  };
 }

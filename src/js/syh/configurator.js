@@ -11,7 +11,7 @@ import { updateStepNav } from './features/step-nav.js';
 import { refreshTubeStep } from './features/tube-step.js';
 import { initConfiguratorModals } from './features/configurator-modals.js';
 import { purgeEmboutsIfReplaced, refreshEmboutsStep } from './features/embouts.js';
-import { computeCartPayload } from './features/cart-payload.js';
+import { computeCartPayload, computeAddToCartPayload } from './features/cart-payload.js';
 import { renderRecap, renderProductSummary } from './features/recap.js';
 import { refreshLivePreview } from './features/live-preview.js';
 import { initImageFormatFallback } from './features/image-format-fallback.js';
@@ -307,7 +307,7 @@ export default class Configurator extends Base {
    */
   _renderRecap() {
     // Recalculé à la volée à chaque appel — cohérent avec buildCartPayload(), pas d'état mis en cache.
-    const { total } = computeCartPayload(this.schema, this.selection, this._expandedStepFields);
+    const { total, forfait } = computeCartPayload(this.schema, this.selection, this._expandedStepFields);
 
     // Coloris masqué ici aussi : redondant avec le coloris affiché par produit sur les cartes.
     renderRecap(this.$refs.recap, this.schema, this.selection, this._longueurTotalAvecEmbouts, total, false);
@@ -324,7 +324,7 @@ export default class Configurator extends Base {
 
     const recapProductSummary = recapStepEl?.querySelector('[data-ref="recapProductSummary"]');
     if (recapProductSummary) {
-      renderProductSummary(recapProductSummary, this.schema, this.selection, this._expandedStepFields, total);
+      renderProductSummary(recapProductSummary, this.schema, this.selection, this._expandedStepFields, total, forfait);
     }
   }
 
@@ -358,17 +358,17 @@ export default class Configurator extends Base {
   // -------------------------------------------------------------------------
 
   /**
-   * Construit le payload complet à envoyer au système panier du client.
-   * Inclut tous les produits sélectionnés, leurs quantités, et le forfait de coupe
-   * si des tubes nécessitent une découpe.
+   * Construit le payload à envoyer au panier du client au clic "Ajouter au panier" — contrat fourni
+   * par le client (voir `computeAddToCartPayload` dans cart-payload.js) : `modele_id`, `quantite`,
+   * `longueur`, et un tableau `selections` (field_id/refBase/coloris/quantite, un par champ produit
+   * sélectionné). Pas de prix — recalculé côté client selon le tarif du compte connecté.
    *
-   * La coupe se base sur `selection.longueur` brute (sans embouts), conforme au PHP d'origine.
    * Ce payload est passé tel quel au JS panier du client — ce module ne fait pas l'appel réseau.
    *
-   * @returns {{ items: object[], coupes: object[], forfait: object|null }}
+   * @returns {{ modele_id: number|null, quantite: number, longueur: number, selections: object[] }}
    */
   buildCartPayload() {
-    return computeCartPayload(this.schema, this.selection, this._expandedStepFields);
+    return computeAddToCartPayload(this.schema, this.selection, this._expandedStepFields);
   }
 
   /**
