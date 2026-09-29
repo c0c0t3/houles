@@ -6,6 +6,22 @@
 
 ---
 
+## 2026-09-29 — Nouvelle étape Accessoires + correctif sur les présélections automatiques
+
+**Étape « Accessoire » ajoutée** après Embouts, sur Auro Concept : lance-rideau, gond et crochet,
+col de cygne — trois choix indépendants, chacun avec une option « Sans » que l'utilisateur peut
+garder ou remplacer par un vrai produit.
+
+**Correctif : la présélection automatique ne respectait pas toujours l'option « Sans ».** En creusant
+la demande ci-dessus, un bug plus ancien est ressorti : sur certains champs conçus pour ne rien
+présélectionner par défaut (jambe de force réglable, anneaux de blocage), le configurateur ajoutait
+quand même automatiquement un produit à la configuration, contrairement à ce qui était prévu. Corrigé
+— ces champs (et les 3 nouveaux accessoires) partent maintenant bien sur « Sans » tant que
+l'utilisateur n'a rien choisi lui-même. Les autres champs (recommandation automatique au-delà d'une
+certaine longueur, produits inclus par défaut) ne sont pas affectés, leur comportement reste le même.
+
+---
+
 ## 2026-09-24 — Total et détail produits dans le récapitulatif, lien vers la fiche produit
 
 **Total dans le récapitulatif.** Le bandeau récapitulatif affiche maintenant le prix total de la

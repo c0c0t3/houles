@@ -281,8 +281,8 @@ Un champ `product` peut proposer une option "sans ce produit" en ajoutant une op
 
 | Position de l'option `isNone` | Sélection par défaut |
 |---|---|
-| En **dernier** | La première vraie option visible — ex : anneaux (inclus par défaut) |
-| En **premier** | L'option `isNone` elle-même — ex : anneaux de blocage (exclus par défaut) |
+| Absente, ou en **dernier** | La première vraie option visible — ex : anneaux (inclus par défaut) |
+| En **premier** (ou avant une option réelle) | `isNone` — ex : anneaux de blocage, jambe de force (exclus par défaut) — **sauf** si cette option réelle porte un `defaultIf` qui correspond à la sélection courante (voir « Défaut conditionnel » ci-dessous), auquel cas c'est elle qui devient le défaut |
 
 > Les options `isNone` n'ont pas de `showIf` : elles sont toujours visibles, quelle que soit la configuration.
 
@@ -383,21 +383,24 @@ la précède dans la liste (voir algorithme ci-dessous).
 
 ### Algorithme de résolution du défaut
 
-**L'ordre de déclaration reste prioritaire** — `defaultIf` ne fait jamais sauter une option devant
-une option normale (sans condition) déclarée avant elle ; il comble seulement l'absence
-d'alternative. Parmi les options visibles (déjà filtrées par `showIf`), hors options `isNone` :
+**L'ordre de déclaration reste prioritaire, `isNone` inclus** — c'est justement ce qui permet à sa
+position de piloter le défaut (tableau ci-dessus). Parmi les options visibles (déjà filtrées par
+`showIf`) :
 
-1. Dans l'ordre de déclaration, la première option qui n'a **pas** de `defaultIf` (toujours
-   éligible), OU dont le `defaultIf` correspond à la sélection courante.
-2. Si aucune ne qualifie (toutes gatées, aucune ne correspond), la première option `isNone` du
-   champ, s'il en a une.
+1. Dans l'ordre de déclaration, la première option **réelle** (hors `isNone`) qui est éligible :
+   - si aucune option `isNone` ne la précède dans le tableau, elle est **toujours éligible**, qu'elle
+     ait un `defaultIf` ou non ;
+   - si une option `isNone` la précède, elle n'est éligible **que si** son `defaultIf` correspond à
+     la sélection courante — sans `defaultIf` du tout, elle n'est alors **jamais** auto-éligible.
+2. Si aucune ne qualifie (toutes gatées derrière un `isNone` antérieur, aucune ne correspond), la
+   première option `isNone` du champ, s'il en a une.
 3. Sinon, la première option visible tout court — filet de sécurité qui garantit qu'un champ
    obligatoire n'est jamais laissé sans sélection.
 
-Une option `defaultIf` déclarée après une option sans condition ne prend donc jamais le dessus sur
-elle, même quand sa condition est remplie — sauf s'il n'y a rien d'autre. Une option jamais choisie
-par défaut reste toujours sélectionnable manuellement par l'utilisateur — c'est tout l'intérêt de
-séparer `defaultIf` de `showIf`.
+Une option `defaultIf` déclarée après une option non gatée (pas précédée d'`isNone`) ne prend donc
+jamais le dessus sur elle, même quand sa condition est remplie — sauf s'il n'y a rien d'autre. Une
+option jamais choisie par défaut reste toujours sélectionnable manuellement par l'utilisateur — c'est
+tout l'intérêt de séparer `defaultIf` de `showIf`.
 
 ### Combiner avec une option `isNone`
 

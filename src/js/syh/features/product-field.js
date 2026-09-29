@@ -118,30 +118,43 @@ export default class ProductField extends Base {
 
   /**
    * Résout l'option par défaut parmi les options visibles. L'ordre de déclaration reste
-   * prioritaire — `defaultIf` ne fait jamais sauter une option gatée devant une option normale
-   * déclarée avant elle, il ne comble que l'absence d'alternative :
-   *   1. Parmi les options réelles (hors `isNone`), dans l'ordre de déclaration : la première qui
-   *      n'a pas de `defaultIf` (toujours éligible), OU dont le `defaultIf` correspond à la
-   *      sélection courante. Une option gatée ne devient donc le défaut que si aucune option non
-   *      gatée ne la précède dans la liste.
-   *   2. Sinon (aucune option réelle éligible — toutes gatées, aucune ne correspond), la première
-   *      option `isNone` si le champ en a une (ex : "Sans support intermédiaire").
+   * prioritaire, `isNone` inclus — c'est ce qui permet à sa **position** de piloter le défaut :
+   *   1. Dans l'ordre de déclaration, la première option réelle (hors `isNone`) qui est éligible :
+   *      - si aucune option `isNone` ne la précède dans le tableau, elle est **toujours éligible**
+   *        qu'elle ait un `defaultIf` ou non (`isNone` en dernier, ou absent → "en dernier" du
+   *        tableau ci-dessous) ;
+   *      - si une option `isNone` la précède, elle n'est éligible que si son `defaultIf` correspond
+   *        à la sélection courante — sans `defaultIf` du tout, elle n'est **jamais** auto-éligible
+   *        (`isNone` en premier → "en premier" ci-dessous, y compris sans aucun `defaultIf` nulle
+   *        part dans le champ, ex : accessoires purement optionnels).
+   *      Une option gatée ne devient donc le défaut que si aucune option éligible ne la précède.
+   *   2. Sinon (aucune option réelle éligible), la première option `isNone` si le champ en a une
+   *      (ex : "Sans support intermédiaire" tant que la longueur ne dépasse pas le seuil).
    *   3. Sinon, la première option visible tout court — filet de sécurité pour ne jamais laisser un
    *      champ obligatoire sans sélection.
    *
+   * | Position de `isNone` | Défaut |
+   * |---|---|
+   * | Absente, ou après toutes les options réelles | La première option réelle visible |
+   * | Avant une ou plusieurs options réelles | `isNone`, sauf si l'une de ces options a un `defaultIf` qui correspond |
+   *
    * `defaultIf` (même forme que `showIf`) ne filtre jamais la visibilité — seulement le choix du
    * défaut. Une option non retenue comme défaut reste sélectionnable manuellement par
-   * l'utilisateur. Voir docs/module-5-etapes-intermediaires.md.
+   * l'utilisateur. Voir docs/module-5-etapes-intermediaires.md et json-schema-reference.md.
    *
    * @param {object[]} visible - Options déjà filtrées par `showIf`.
    * @param {object} effectiveSelection - Sélection courante (diamètre déjà résolu avant/arrière).
    * @returns {object} L'option retenue comme défaut.
    */
   _resolveDefault(visible, effectiveSelection) {
-    const real = visible.filter((o) => !o.isNone);
-    const eligible = real.find(
-      (o) => !o.defaultIf || isVisible({ showIf: o.defaultIf }, effectiveSelection)
-    );
+    const noneIndex = visible.findIndex((o) => o.isNone);
+
+    const eligible = visible.find((o, index) => {
+      if (o.isNone) return false;
+      const precededByNone = noneIndex !== -1 && noneIndex < index;
+      if (!o.defaultIf) return !precededByNone;
+      return isVisible({ showIf: o.defaultIf }, effectiveSelection);
+    });
     if (eligible) return eligible;
 
     const none = visible.find((o) => o.isNone);
