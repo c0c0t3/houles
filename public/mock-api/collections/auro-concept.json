@@ -3330,6 +3330,133 @@
           ]
         }
       ]
+    },
+    {
+      "id": "accessoire",
+      "label": "Accessoire",
+      "_note": "Accessoires optionnels (lance-rideau, gond/crochet, col de cygne) - independants du diametre/type de pose, aucun rendu visuel dedie (pas de layerOrder). Donnees issues d'un export catalogue partiel : poids/composition/matiere non repris (non consommes par le moteur).",
+      "fields": [
+        {
+          "id": "accessoire_lance_rideau",
+          "label": "Lance-rideau",
+          "type": "product",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans lance-rideau",
+              "isNone": true
+            },
+            {
+              "refBase": "60100",
+              "label": "Lance-rideau Plexiglass 100cm",
+              "productUrl": "https://www.houles.com/produit/60100",
+              "qtyParUnite": 1,
+              "noColoris": true,
+              "id": "60100",
+              "prix": 5.34,
+              "stock": 232
+            },
+            {
+              "refBase": "60128",
+              "label": "Lance-rideau 100cm",
+              "productUrl": "https://www.houles.com/produit/60128",
+              "qtyParUnite": 1,
+              "variantType": "coloris",
+              "variants": {
+                "35": {
+                  "id": "60128-35",
+                  "prix": 15.13,
+                  "stock": 77
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "accessoire_gond",
+          "label": "Gond et crochet",
+          "type": "product",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans gond ni crochet",
+              "isNone": true
+            },
+            {
+              "refBase": "66376",
+              "label": "2 Gonds 50mm",
+              "productUrl": "https://www.houles.com/produit/66376",
+              "qtyParUnite": 2,
+              "variantType": "coloris",
+              "_note": "Existe aussi en col. 12 et col. 65 chez Houles (collections Petit Palace / Auro Black Edition) - hors palette de cette collection, non repris.",
+              "variants": {
+                "35": {
+                  "id": "66376-35",
+                  "prix": 18.15,
+                  "stock": 246
+                }
+              }
+            },
+            {
+              "refBase": "66377",
+              "label": "2 Gonds 110mm",
+              "productUrl": "https://www.houles.com/produit/66377",
+              "qtyParUnite": 2,
+              "variantType": "coloris",
+              "_note": "Existe aussi en col. 12 et col. 65 chez Houles (collections Petit Palace / Auro Black Edition) - hors palette de cette collection, non repris.",
+              "variants": {
+                "35": {
+                  "id": "66377-35",
+                  "prix": 18.98,
+                  "stock": 18
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "accessoire_col_cygne",
+          "label": "Col de cygne",
+          "type": "product",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans col de cygne",
+              "isNone": true
+            },
+            {
+              "refBase": "66374",
+              "label": "Col de cygne",
+              "productUrl": "https://www.houles.com/produit/66374",
+              "qtyParUnite": 1,
+              "variantType": "coloris",
+              "_note": "Fiche source tronquee (scrap incomplet) : qtyParUnite suppose a 1, dimensions/poids/composition absents.",
+              "variants": {
+                "35": {
+                  "id": "66374-35",
+                  "prix": 19.53,
+                  "stock": 86
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
