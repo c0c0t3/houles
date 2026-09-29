@@ -3347,11 +3347,6 @@
           },
           "options": [
             {
-              "refBase": "none",
-              "label": "Sans lance-rideau",
-              "isNone": true
-            },
-            {
               "refBase": "60100",
               "label": "Lance-rideau Plexiglass 100cm",
               "productUrl": "https://www.houles.com/produit/60100",
@@ -3374,6 +3369,11 @@
                   "stock": 77
                 }
               }
+            },
+            {
+              "refBase": "none",
+              "label": "Sans lance-rideau",
+              "isNone": true
             }
           ]
         },
@@ -3387,11 +3387,6 @@
             "unitSource": "qtyParUnite"
           },
           "options": [
-            {
-              "refBase": "none",
-              "label": "Sans gond ni crochet",
-              "isNone": true
-            },
             {
               "refBase": "66376",
               "label": "2 Gonds 50mm",
@@ -3421,6 +3416,11 @@
                   "stock": 18
                 }
               }
+            },
+            {
+              "refBase": "none",
+              "label": "Sans gond ni crochet",
+              "isNone": true
             }
           ]
         },
@@ -3435,11 +3435,6 @@
           },
           "options": [
             {
-              "refBase": "none",
-              "label": "Sans col de cygne",
-              "isNone": true
-            },
-            {
               "refBase": "66374",
               "label": "Col de cygne",
               "productUrl": "https://www.houles.com/produit/66374",
@@ -3453,6 +3448,11 @@
                   "stock": 86
                 }
               }
+            },
+            {
+              "refBase": "none",
+              "label": "Sans col de cygne",
+              "isNone": true
             }
           ]
         }
