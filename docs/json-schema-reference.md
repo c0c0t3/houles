@@ -63,11 +63,12 @@
 > Module 3 (« Personnalisation du coloris par élément ») et au Module 5 (section « Coloris par
 > élément »).
 
-> **Swatches masqués par défaut (`renderMode` `none` / `live`)** : sur chaque carte produit, les
-> pastilles de sélection coloris sont masquées derrière un bouton « Changer de couleur », plutôt
-> qu'affichées en permanence. En `live_colored`, elles restent visibles en permanence (pas de bouton)
-> — cohérent avec la surcouche de colorisation temps réel. Comportement moteur, pas une propriété
-> JSON, piloté par `collection.renderMode`.
+> **Swatches toujours visibles, quel que soit le `renderMode`** : sur chaque carte produit, les
+> pastilles de sélection coloris s'affichent en permanence dès que l'option a des `variants` — plus
+> de bouton « Changer de couleur » à basculer (retiré, voir historique). Comportement identique en
+> `none` / `live` / `live_colored`, sauf sur un point propre à `live_colored` : les pastilles n'y
+> existent que sur la card du produit **sélectionné** et seulement s'il a un rendu SVG colorisable
+> (`option.svgUrl`) — voir Module 6. Comportement moteur, pas une propriété JSON.
 
 > **Taille de la palette** : `collection.coloris[]` n'a pas de limite imposée par le moteur — 5
 > entrées ou 20, aucune différence de code. `auro-concept-live-colored.json` en déclare 20

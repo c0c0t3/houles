@@ -22,6 +22,16 @@ certaine longueur, produits inclus par défaut) ne sont pas affectés, leur comp
 
 ---
 
+## 2026-09-29 — Pastilles de couleur toujours visibles, plus de bouton à cliquer
+
+Retour en arrière sur un détail d'affichage : sur les modes d'affichage sans rendu colorisé (photo
+seule), les pastilles de couleur étaient cachées derrière un bouton « Changer de couleur » qu'il
+fallait cliquer pour les révéler. Elles sont maintenant visibles directement sur chaque carte
+produit, sans action préalable — même comportement que le mode avec rendu colorisé, qui n'a jamais
+eu ce bouton.
+
+---
+
 ## 2026-09-24 — Total et détail produits dans le récapitulatif, lien vers la fiche produit
 
 **Total dans le récapitulatif.** Le bandeau récapitulatif affiche maintenant le prix total de la

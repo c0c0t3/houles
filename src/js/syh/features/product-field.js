@@ -282,16 +282,17 @@ export default class ProductField extends Base {
   }
 
   /**
-   * Pilote l'affichage des pastilles de coloris sur une card.
+   * Pilote l'affichage des pastilles de coloris sur une card. Toujours visibles quand il y a
+   * quelque chose à afficher — plus de bouton "Changer de couleur" à basculer, dans aucun mode.
    *
-   * - `none` / `live` : coloris par variante (`option.variants`), masqué derrière un bouton
-   *   « Changer de couleur » — comportement indépendant de la sélection, inchangé.
-   * - `live_colored` : plus de bouton, plus de variante par coloris. Les pastilles (nuancier
-   *   complet, voir `_fillSwatches`) n'existent que pour les produits réellement teintés
-   *   (`option.svgUrl`) et **seulement sur la card du produit sélectionné** — elle s'agrandit pour
-   *   les accueillir. Les autres cards du champ n'ont aucune pastille. Pas de modale ici : la
-   *   sélection d'une couleur se fait directement dans la card (voir docs/module-8b, historique de
-   *   la décision — la modale envisagée un temps a été abandonnée).
+   * - `none` / `live` : coloris par variante (`option.variants`), pastilles visibles en permanence
+   *   dès que l'option en a.
+   * - `live_colored` : plus de variante par coloris. Les pastilles (nuancier complet, voir
+   *   `_fillSwatches`) n'existent que pour les produits réellement teintés (`option.svgUrl`) et
+   *   **seulement sur la card du produit sélectionné** — elle s'agrandit pour les accueillir. Les
+   *   autres cards du champ n'ont aucune pastille. Pas de modale ici : la sélection d'une couleur se
+   *   fait directement dans la card (voir docs/module-8b, historique de la décision — la modale
+   *   envisagée un temps a été abandonnée).
    *
    * @param {HTMLElement} card - Carte produit clonée.
    * @param {object} option - Option JSON correspondante.
@@ -299,12 +300,10 @@ export default class ProductField extends Base {
    * @param {boolean} isSelected - Vrai si `option` est l'option actuellement sélectionnée du champ.
    */
   _applyColorisUI(card, option, coloris, isSelected) {
-    const toggleBtn = card.querySelector('[data-ref="toggleColoris"]');
     const swatches = card.querySelector('[data-ref="colorSwatches"]');
     if (!swatches) return;
 
     if (this._renderMode === 'live_colored') {
-      if (toggleBtn) toggleBtn.style.display = 'none'; // pas de bouton à basculer en live_colored
       const showSwatches = Boolean(option.svgUrl) && isSelected;
       if (showSwatches) {
         this._fillSwatches(swatches, option, coloris);
@@ -316,17 +315,15 @@ export default class ProductField extends Base {
       return;
     }
 
-    // none / live : coloris par variante, masqué derrière un bouton, indépendant de la sélection.
+    // none / live : coloris par variante, visibles en permanence dès que l'option en a.
     // style.display plutôt que l'attribut hidden : colorSwatches porte la classe Tailwind "flex"
     // (display:flex), qui l'emporterait sur [hidden] dans la cascade (utilities après preflight).
     if (!option.variants) {
       swatches.style.display = 'none';
-      if (toggleBtn) toggleBtn.style.display = 'none';
       return;
     }
     this._fillSwatches(swatches, option, coloris);
-    swatches.style.display = 'none';
-    if (toggleBtn) toggleBtn.style.display = '';
+    swatches.style.display = '';
   }
 
   /**
@@ -468,20 +465,6 @@ export default class ProductField extends Base {
   // Clic sur un swatch — change le coloris de la carte concernée uniquement
   // Le clic sur un <button> dans un <label> ne déclenche pas le radio, pas besoin de stopPropagation
   onCardsClick({ event }) {
-    // Bouton "Changer de couleur" : bascule l'affichage des swatches de cette carte uniquement.
-    // Le bouton lui-même reste toujours visible (c'est lui qui permet de rouvrir les swatches
-    // après les avoir refermées) — seul l'état des swatches change.
-    const toggleBtn = event.target.closest('[data-ref="toggleColoris"]');
-    if (toggleBtn) {
-      const card = toggleBtn.closest('label');
-      const swatches = card?.querySelector('[data-ref="colorSwatches"]');
-      if (swatches) {
-        const isHidden = swatches.style.display === 'none';
-        swatches.style.display = isHidden ? '' : 'none';
-      }
-      return;
-    }
-
     const btn = event.target.closest('[data-coloris]');
     if (!btn) return;
 
@@ -546,7 +529,6 @@ export default class ProductField extends Base {
                     '[data-ref="productLink"]',
                     '[data-ref="productPrice"]', '[data-ref="productQty"]',
                     '[data-ref="productStock"]', '[data-ref="colorSwatches"]',
-                    '[data-ref="toggleColoris"]',
                     '.text-gray-400']; // le séparateur "×"
     // style.display plutôt que l'attribut hidden : certains éléments (colorSwatches) portent une
     // classe Tailwind de display ("flex") qui l'emporterait sinon dans la cascade.
