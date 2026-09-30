@@ -2081,6 +2081,11 @@
           },
           "options": [
             {
+              "refBase": "none",
+              "label": "Sans anneaux",
+              "isNone": true
+            },
+            {
               "refBase": "66804",
               "label": "6 Anneaux fermes Ø 16 mm (lot de 6)",
               "productUrl": "https://www.houles.com/produit/66804",
@@ -2325,11 +2330,6 @@
                 }
               },
               "variantType": "coloris"
-            },
-            {
-              "refBase": "none",
-              "label": "Sans anneaux",
-              "isNone": true
             }
           ]
         },
