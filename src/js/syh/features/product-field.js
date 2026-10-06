@@ -4,7 +4,7 @@ import { isVisible, resolveLabel } from './show-if.js';
 export default class ProductField extends Base {
   static config = {
     name: 'ProductField',
-    refs: ['label', 'cards', 'defaultMessage'],
+    refs: ['label', 'cards', 'defaultMessage', 'defaultMessageTitle', 'defaultMessageText'],
     emits: ['changed'],
   };
 
@@ -171,6 +171,11 @@ export default class ProductField extends Base {
    * autre option, tant que la condition (ex : longueur) reste remplie. Masqué uniquement si aucune
    * option ne correspond à son `defaultIf`.
    *
+   * Icône fixe dans le Twig (box jaune) ; titre et texte viennent de la donnée. Le titre est
+   * généré ici, pas déclaré dans le JSON — "{label du champ} recommandé" (ex : "Support
+   * intermédiaire recommandé"), via `resolveLabel` pour rester cohérent avec le label affiché
+   * au-dessus de la grille (`labelByConfig` déjà résolu le cas échéant).
+   *
    * @param {object[]} visible - Options déjà filtrées par `showIf`.
    * @param {object} effectiveSelection - Sélection courante (diamètre déjà résolu avant/arrière).
    */
@@ -178,16 +183,20 @@ export default class ProductField extends Base {
     const el = this.$refs.defaultMessage;
     if (!el) return;
 
+    // trim() : exclut aussi un defaultMessage réduit à des espaces, pas seulement vide/absent.
     const matching = visible.find(
-      (o) => o.defaultIf && o.defaultMessage && isVisible({ showIf: o.defaultIf }, effectiveSelection)
+      (o) => o.defaultIf && o.defaultMessage?.trim() && isVisible({ showIf: o.defaultIf }, effectiveSelection)
     );
-    const message = matching?.defaultMessage ?? null;
+    const message = matching?.defaultMessage?.trim() || null;
 
     if (message) {
-      el.textContent = message;
-      el.hidden = false;
+      this.$refs.defaultMessageTitle.textContent = `${resolveLabel(this._field, this._selection)} recommandé`;
+      this.$refs.defaultMessageText.textContent = message;
+      // style.display plutôt que .hidden : la box porte la classe Tailwind "flex", qui
+      // l'emporterait sinon sur [hidden] dans la cascade (utilities après preflight).
+      el.style.display = '';
     } else {
-      el.hidden = true;
+      el.style.display = 'none';
     }
   }
 

@@ -1145,7 +1145,7 @@
                   "gt": 160
                 }
               },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "defaultMessage": "Pour une tringle superieure a 160cm, nous vous reocmmandons l'ajout d'un support intermediaire."
             },
             {
               "refBase": "66769",

@@ -156,7 +156,19 @@
 
               {# Justification de la présélection automatique (option.defaultMessage, affiché  #}
               {# quand l'option sélectionnée a un defaultIf qui correspond) — masqué sinon.     #}
-              <p data-ref="defaultMessage" class="text-sm text-gray-600 italic mb-3" hidden></p>
+              {# Icône fixe (Twig) ; titre ("{label du champ} recommandé") et texte viennent     #}
+              {# de la donnée (JS) — voir _updateDefaultMessage dans product-field.js.           #}
+              {# style="display:none" plutôt que l'attribut hidden : la classe "flex" l'emporte  #}
+              {# sinon sur [hidden] dans la cascade Tailwind (utilities après preflight).        #}
+              <div data-ref="defaultMessage" class="mb-3 flex items-start gap-2 rounded-md border border-amber-300 bg-amber-50 p-3" style="display:none">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 shrink-0 text-amber-600 mt-0.5">
+                  <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-6 6c0 2.2 1.1 3.5 2 4.5.6.7 1 1.2 1 2.5h6c0-1.3.4-1.8 1-2.5.9-1 2-2.3 2-4.5a6 6 0 0 0-6-6Z" />
+                </svg>
+                <div>
+                  <p data-ref="defaultMessageTitle" class="text-sm font-semibold text-amber-900"></p>
+                  <p data-ref="defaultMessageText" class="text-sm text-amber-800"></p>
+                </div>
+              </div>
 
               {# Grille des cartes produit (générées dynamiquement) #}
               <div data-ref="cards" class="flex overflow-auto m:flex-wrap gap-3 p-1"></div>
