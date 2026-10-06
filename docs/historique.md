@@ -32,6 +32,21 @@ eu ce bouton.
 
 ---
 
+## 2026-09-29 — Format JSON définitif pour « Ajouter au panier »
+
+Le format exact de l'objet transmis au panier client au clic « Ajouter au panier » est maintenant
+figé, sur la base du contrat fourni par le client : `modele_id`, `quantité`, `longueur`, et le détail
+des sélections (référence produit, coloris, quantité — un par produit choisi). Aucun prix n'y
+figure : le prix est recalculé côté client selon le tarif du compte connecté.
+
+Le forfait de coupe (service de découpe des tubes, code article fixe `80099`) est désormais inclus
+dans cet objet quand une coupe est nécessaire, et apparaît aussi comme ligne à part dans le tableau
+du récapitulatif. Ce code article a été sorti des données de collection : il est le même pour toutes
+les collections, il n'y a donc plus de raison de le ressaisir à chaque nouvelle collection créée côté
+admin (source d'oublis et de fautes de frappe).
+
+---
+
 ## 2026-09-24 — Total et détail produits dans le récapitulatif, lien vers la fiche produit
 
 **Total dans le récapitulatif.** Le bandeau récapitulatif affiche maintenant le prix total de la
