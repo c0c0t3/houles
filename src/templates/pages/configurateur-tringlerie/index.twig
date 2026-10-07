@@ -176,7 +176,12 @@
               {# Template d'une carte produit                                     #}
               {# label + radio : sélection accessible, pas de <button> imbriqué  #}
               <template data-template="product-card" >
-                <label class="shrink-0 relative pb-16 flex flex-col gap-2 p-4 w-72 rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
+                <label class="group shrink-0 relative flex flex-col justify-center gap-2 p-4 w-72 rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
+                  <div class="size-8 rounded-full hidden text-white group-has-[:checked]:flex absolute top-2 right-2 bg-purple items-center justify-center">
+                    <svg fill="currentColor" class="size-4" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1743.858 267.012 710.747 1300.124 176.005 765.382 0 941.387l710.747 710.871 1209.24-1209.116z" fill-rule="evenodd"/>
+                    </svg>
+                  </div>
                   <input type="radio" class="sr-only" />
                   <div class="w-full aspect-square bg-gray-50 rounded overflow-hidden">
                     <img data-ref="productImage" alt="" class="mix-blend-multiply w-full h-full object-contain" />
@@ -205,7 +210,7 @@
                   <span data-ref="productStock" class="text-xs"></span>
                   {# Toujours visibles quand l'option a des variantes coloris — plus de bouton     #}
                   {# "Changer de couleur" à basculer, même comportement qu'en live_colored.         #}
-                  <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-1 absolute bottom-4 left-4 right-4"></div>
+                  <div data-ref="colorSwatches" class="flex flex-wrap gap-1.5 mt-1"></div>
                 </label>
               </template>
 
@@ -216,7 +221,12 @@
               {# visibles. Mêmes data-ref que la carte standard — le JS clone l'un ou  #}
               {# l'autre selon _renderMode (voir product-field.js _cloneCardTemplate). #}
               <template data-template="product-card--live-colored">
-                <label class="relative flex gap-4 p-4 w-full rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
+                <label class="group relative flex gap-4 p-4 w-full rounded ring-1 ring-purple/20 cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-purple/80">
+                  <div class="size-8 rounded-full hidden text-white group-has-[:checked]:flex absolute top-2 right-2 bg-purple items-center justify-center">
+                    <svg fill="currentColor" class="size-4" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1743.858 267.012 710.747 1300.124 176.005 765.382 0 941.387l710.747 710.871 1209.24-1209.116z" fill-rule="evenodd"/>
+                    </svg>
+                  </div>
                   <input type="radio" class="sr-only" />
                   <div class="w-32 shrink-0 aspect-square bg-gray-50 rounded overflow-hidden">
                     <img data-ref="productImage" alt="" class="mix-blend-multiply w-full h-full object-contain" />

@@ -525,12 +525,6 @@ export default class ProductField extends Base {
     radio.dataset.product = option.refBase;
     radio.checked = option.refBase === this._selectedRefBase;
 
-    // Style grisé : remplace l'anneau coloré par un anneau neutre.
-    card.className = card.className
-      .replace('ring-purple/20', 'ring-gray-200')
-      .replace('has-[:checked]:ring-purple/80', 'has-[:checked]:ring-gray-400');
-    card.classList.add('opacity-60');
-
     card.querySelector('[data-ref="productName"]').textContent = option.label;
 
     // Masque tous les éléments qui n'ont pas de sens pour une option "sans".

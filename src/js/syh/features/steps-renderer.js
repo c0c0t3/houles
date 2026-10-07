@@ -89,7 +89,7 @@ export function renderAllSteps({ rootEl, container, schema, selection }) {
       // voir renderProductSummary() dans recap.js. Conteneur dédié, propre à cette étape.
       const recapProductSummary = document.createElement('div');
       recapProductSummary.dataset.ref = 'recapProductSummary';
-      recapProductSummary.className = 'flex flex-col gap-4';
+      recapProductSummary.className = 'flex flex-col gap-4 mt-8';
       stepEl.appendChild(recapProductSummary);
     }
 

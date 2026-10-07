@@ -174,16 +174,16 @@ function buildSummaryRow(field, schema, selection, longueur, allExpanded) {
 function buildProductRowHtml(row) {
   return `
     <tr class="border-b border-purple/10 last:border-0">
-      <td class="p-2 text-gray-900">
+      <td class="py-2 text-gray-900">
         ${
           row.productUrl
             ? `<a href="${row.productUrl}" target="_blank" rel="noopener noreferrer" class="group hover:underline hover:text-purple/70" aria-label="Voir le produit" title="Voir le produit">${row.name}${ARROW_ICON_SVG}</a>`
             : row.name
         }
       </td>
-      <td class="p-2 text-gray-500">${row.label}</td>
-      <td class="p-2 text-right text-gray-900">${row.qty}</td>
-      <td class="p-2 text-right font-medium text-gray-900">${row.prixUnitaire != null ? formatPrice(row.prixUnitaire) : '—'}</td>
+      <td class="py-2 text-gray-500">${row.label}</td>
+      <td class="py-2 text-right text-gray-900">${row.qty}</td>
+      <td class="py-2 text-right font-medium text-gray-900">${row.prixUnitaire != null ? formatPrice(row.prixUnitaire) : '—'}</td>
     </tr>
   `;
 }
@@ -237,10 +237,10 @@ export function renderProductSummary(container, schema, selection, expandedStepF
   table.innerHTML = `
     <thead>
       <tr class="text-left text-gray-400 text-xs uppercase tracking-wide border-b border-purple/20">
-        <th class="p-2">Produit</th>
-        <th class="p-2">Élément</th>
-        <th class="p-2 text-right">Qté</th>
-        <th class="p-2 text-right">Prix</th>
+        <th class="py-2">Produit</th>
+        <th class="py-2">Élément</th>
+        <th class="py-2 text-right">Qté</th>
+        <th class="py-2 text-right">Prix</th>
       </tr>
     </thead>
     <tbody>
@@ -248,8 +248,8 @@ export function renderProductSummary(container, schema, selection, expandedStepF
     </tbody>
     <tfoot>
       <tr class="border-t border-purple/20 bg-sand-darker/40">
-        <td colspan="3" class="p-2 text-right font-semibold uppercase tracking-wide text-xs text-gray-500">Total</td>
-        <td class="p-2 text-right font-semibold text-purple">${total != null ? formatPrice(total) : '—'}</td>
+        <td colspan="3" class="py-2 text-right font-semibold uppercase tracking-wide text-xs text-gray-500">Total</td>
+        <td class="py-2 text-right font-semibold text-purple">${total != null ? formatPrice(total) : '—'}</td>
       </tr>
     </tfoot>
   `;
