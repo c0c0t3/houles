@@ -80,7 +80,12 @@
 
               {# Template d'une option : label + image (photo produit, opt.image) #}
               <template data-template="radio-option--label_image">
-                <label class="flex flex-col aspect-square shrink-0 m:aspect-auto justify-center items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+                <label class="group relative flex flex-col aspect-square shrink-0 m:aspect-auto justify-center items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
+                  <div class="size-8 rounded-full hidden text-white group-has-[:checked]:flex absolute top-2 right-2 bg-purple items-center justify-center">
+                    <svg fill="currentColor" class="size-4" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1743.858 267.012 710.747 1300.124 176.005 765.382 0 941.387l710.747 710.871 1209.24-1209.116z" fill-rule="evenodd"/>
+                    </svg>
+                  </div>
                   <input data-ref="input" type="radio" class="sr-only" />
                   <img data-ref="image" alt="" class=" w-44 mix-blend-multiply h-auto object-contain" />
                   <span data-ref="optLabel"></span>
