@@ -1149,7 +1149,9 @@
                   "gt": 160
                 }
               },
-              "defaultMessage": "Pour une tringle superieure a 160cm, nous vous reocmmandons l'ajout d'un support intermediaire."
+              "defaultMessage": "Pour une tringle superieure a 160cm, nous vous reocmmandons l'ajout d'un support intermediaire.",
+              "defaultColor": "info",
+              "defaultIcon": "info"
             },
             {
               "refBase": "66769",
@@ -1203,7 +1205,9 @@
                   "gt": 220
                 }
               },
-              "defaultMessage": "Recommandé au-delà de 220 cm d'entraxe."
+              "defaultMessage": "Recommandé au-delà de 220 cm d'entraxe.",
+              "defaultColor": "info",
+              "defaultIcon": "info"
             },
             {
               "refBase": "66776",
@@ -1263,7 +1267,9 @@
                 }
               },
               "variantType": "coloris",
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
+              "defaultColor": "dark",
+              "defaultIcon": "info"
             },
             {
               "refBase": "66778",
@@ -1323,7 +1329,9 @@
                   "gt": 160
                 }
               },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
+              "defaultColor": "info",
+              "defaultIcon": "info"
             },
             {
               "refBase": "66779",
@@ -1383,7 +1391,9 @@
                   "gt": 160
                 }
               },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
+              "defaultColor": "info",
+              "defaultIcon": "info"
             },
             {
               "refBase": "66732",
@@ -1443,7 +1453,9 @@
                   "gt": 160
                 }
               },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
+              "defaultColor": "info",
+              "defaultIcon": "info"
             },
             {
               "refBase": "66734",
@@ -1503,7 +1515,9 @@
                   "gt": 160
                 }
               },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
+              "defaultColor": "info",
+              "defaultIcon": "info"
             },
             {
               "refBase": "66736",
@@ -1563,7 +1577,9 @@
                   "gt": 160
                 }
               },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
+              "defaultColor": "info",
+              "defaultIcon": "info"
             }
           ]
         },

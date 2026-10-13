@@ -240,6 +240,9 @@ Grille de cartes produits avec variantes coloris.
 | `showIfAny` | array | non | Conditions de visibilité en OU (voir section Visibilité) |
 | `defaultIf` | object | non | Même forme que `showIf`, mais influence **uniquement** le choix de l'option par défaut — jamais la visibilité. Voir « Sélection par défaut conditionnelle » ci-dessous |
 | `defaultMessage` | string | non | Texte affiché au-dessus de la grille de produits (après le label du champ) dès que le `defaultIf` de **cette option** correspond à la sélection courante — **indépendamment de ce qui est réellement sélectionné**. Reste visible même si l'utilisateur choisit une autre option (ex : "Sans"). Sans effet sans `defaultIf` |
+| `defaultTitle` | string | non | Titre de la box `defaultMessage` (ex : "Support intermédiaire recommandé"). Absent, retombe sur `"{label du champ} recommandé"` (calculé via `resolveLabel`, gère `labelByConfig`) |
+| `defaultColor` | string | non | Variante de couleur de la box `defaultMessage` : `"info"` (défaut si absent), `"success"`, `"warning"`, `"danger"`, `"dark"` — voir `DEFAULT_MESSAGE_COLORS` dans `product-field.js`. Palette standard du projet, pas de design system externe |
+| `defaultIcon` | string | non | Icône de la box `defaultMessage` : `"info"` (défaut si absent) ou `"lightbulb"` — voir `DEFAULT_MESSAGE_ICONS` dans `product-field.js` |
 | `variants` | object | non | Variantes par coloris (absent si produit sans coloris) |
 | `variantType` | string | non | `"image"` (défaut) ou `"coloris"` — source du visuel des pastilles coloris de cette option : photo du produit dans la couleur (`variants[coloris].image`), ou vignette de coloris dédiée (`collection.coloris[].thumbnail`, indépendante du produit) |
 | `id` | string | non | Référence complète si produit sans coloris (pas de `variants`) |

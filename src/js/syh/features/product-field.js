@@ -1,10 +1,40 @@
 import { Base } from '@studiometa/js-toolkit';
 import { isVisible, resolveLabel } from './show-if.js';
 
+// Classes de mise en page de la box defaultMessage (voir le data-ref="defaultMessage" du Twig) —
+// dupliquées ici pour pouvoir reconstruire className en entier à chaque rendu (layout + couleur),
+// sans dépendre de ce qui s'y trouvait avant.
+const DEFAULT_MESSAGE_BASE_CLASS = 'mb-3 flex items-start xs:items-center gap-2 rounded-md border p-3';
+
+// Variantes de couleur (option.defaultColor) — palette standard du projet, pas de design system
+// externe : ce projet ne déclare pas de tokens "brand/softer/subtle" dans tailwind.config.js.
+// "warning" reste le défaut si l'option ne précise rien (comportement déjà en place avant).
+const DEFAULT_MESSAGE_COLORS = {
+  info: 'text-blue-800 bg-blue-50 border-blue-200',
+  danger: 'text-red-800 bg-red-50 border-red-200',
+  success: 'text-green-800 bg-green-50 border-green-200',
+  warning: 'text-amber-900 bg-amber-50 border-amber-300',
+  dark: 'text-gray-800 bg-gray-100 border-gray-300',
+};
+
+// Icônes (option.defaultIcon) — SVG inline, pas de sprite externe (hors périmètre SYH).
+// "info" reste le défaut si l'option ne précise rien.
+const DEFAULT_MESSAGE_ICONS = {
+  info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mt-0.5 xs:mt-0"><path d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>',
+  lightbulb: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-4 h-4 mt-0.5 xs:mt-0"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-6 6c0 2.2 1.1 3.5 2 4.5.6.7 1 1.2 1 2.5h6c0-1.3.4-1.8 1-2.5.9-1 2-2.3 2-4.5a6 6 0 0 0-6-6Z"/></svg>',
+};
+
 export default class ProductField extends Base {
   static config = {
     name: 'ProductField',
-    refs: ['label', 'cards', 'defaultMessage', 'defaultMessageTitle', 'defaultMessageText'],
+    refs: [
+      'label',
+      'cards',
+      'defaultMessage',
+      'defaultMessageIcon',
+      'defaultMessageTitle',
+      'defaultMessageText',
+    ],
     emits: ['changed'],
   };
 
@@ -171,10 +201,13 @@ export default class ProductField extends Base {
    * autre option, tant que la condition (ex : longueur) reste remplie. Masqué uniquement si aucune
    * option ne correspond à son `defaultIf`.
    *
-   * Icône fixe dans le Twig (box jaune) ; titre et texte viennent de la donnée. Le titre est
-   * généré ici, pas déclaré dans le JSON — "{label du champ} recommandé" (ex : "Support
-   * intermédiaire recommandé"), via `resolveLabel` pour rester cohérent avec le label affiché
-   * au-dessus de la grille (`labelByConfig` déjà résolu le cas échéant).
+   * Couleur (`option.defaultColor`) et icône (`option.defaultIcon`) viennent de la donnée —
+   * valeurs possibles : voir `DEFAULT_MESSAGE_COLORS`/`DEFAULT_MESSAGE_ICONS` ci-dessus. Absentes,
+   * elles retombent sur "warning"/"info" (comportement déjà en place avant leur introduction).
+   * Le titre vient de `option.defaultTitle` ; absent, il retombe sur "{label du champ}
+   * recommandé" (ex : "Support intermédiaire recommandé"), via `resolveLabel` pour rester
+   * cohérent avec le label affiché au-dessus de la grille (`labelByConfig` déjà résolu le cas
+   * échéant).
    *
    * @param {object[]} visible - Options déjà filtrées par `showIf`.
    * @param {object} effectiveSelection - Sélection courante (diamètre déjà résolu avant/arrière).
@@ -190,7 +223,14 @@ export default class ProductField extends Base {
     const message = matching?.defaultMessage?.trim() || null;
 
     if (message) {
-      this.$refs.defaultMessageTitle.textContent = `${resolveLabel(this._field, this._selection)} recommandé`;
+      const colors = DEFAULT_MESSAGE_COLORS[matching.defaultColor] ?? DEFAULT_MESSAGE_COLORS.warning;
+      const icon = DEFAULT_MESSAGE_ICONS[matching.defaultIcon] ?? DEFAULT_MESSAGE_ICONS.info;
+      // className entièrement reconstruit (layout + couleur) : évite de dépendre de la couleur
+      // posée au rendu précédent, qui peut changer d'une option matching à l'autre.
+      el.className = `${DEFAULT_MESSAGE_BASE_CLASS} ${colors}`;
+      this.$refs.defaultMessageIcon.innerHTML = icon;
+      this.$refs.defaultMessageTitle.textContent =
+        matching.defaultTitle || `${resolveLabel(this._field, this._selection)} recommandé`;
       this.$refs.defaultMessageText.textContent = message;
       // style.display plutôt que .hidden : la box porte la classe Tailwind "flex", qui
       // l'emporterait sinon sur [hidden] dans la cascade (utilities après preflight).
