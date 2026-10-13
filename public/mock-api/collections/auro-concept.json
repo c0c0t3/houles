@@ -149,11 +149,10 @@
               "id": "corner",
               "label": "Corner",
               "image": "/assets/syh/picto_corner.webp",
-              "showIf": {
-                "diametre": [
-                  "25"
-                ]
-              }
+              "showIfAny": [
+                { "diametre": ["25"] },
+                { "type_de_support": ["double"], "diametre": ["16+25"] }
+              ]
             }
           ]
         },
@@ -218,7 +217,7 @@
           "id": "support",
           "label": "Support lateral",
           "type": "product",
-          "default": "first_visible",
+          "default": "null",
           "quantity": {
             "mode": "fixed",
             "value": 1,
@@ -761,6 +760,10 @@
                 ],
                 "diametre": [
                   "16+25"
+                ],
+                "type_pose": [
+                  "mur",
+                  "plafond"
                 ]
               },
               "variants": {
@@ -901,17 +904,18 @@
               "productUrl": "https://www.houles.com/produit/66744",
               "replacesEmbouts": true,
               "qtyParUnite": 2,
-              "showIf": {
-                "type_de_support": [
-                  "simple"
-                ],
-                "type_pose": [
-                  "corner"
-                ],
-                "diametre": [
-                  "25"
-                ]
-              },
+              "showIfAny": [
+                {
+                  "type_de_support": ["simple"],
+                  "type_pose": ["corner"],
+                  "diametre": ["25"]
+                },
+                {
+                  "type_de_support": ["double"],
+                  "type_pose": ["corner"],
+                  "diametre": ["16+25"]
+                }
+              ],
               "variants": {
                 "24": {
                   "id": "66744-24",
@@ -2088,6 +2092,57 @@
             {
               "refBase": "66804",
               "label": "6 Anneaux fermes Ø 16 mm (lot de 6)",
+              "productUrl": "https://www.houles.com/produit/66804",
+              "qtyParUnite": 6,
+              "showIf": {
+                "diametre": [
+                  "16"
+                ],
+                "selected:support": {
+                  "not": [
+                    "66764",
+                    "66769"
+                  ]
+                }
+              },
+              "_note": "Fermes par defaut. Masques si support anneaux ouverts (66764/66769).",
+              "variants": {
+                "24": {
+                  "id": "66804-24",
+                  "prix": 55.09,
+                  "stock": 2,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_24_S1_1.jpg"
+                },
+                "31": {
+                  "id": "66804-31",
+                  "prix": 56.09,
+                  "stock": 141,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_31_S1_1.jpg"
+                },
+                "34": {
+                  "id": "66804-34",
+                  "prix": 29.56,
+                  "stock": 169,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_34_S1_1.jpg"
+                },
+                "35": {
+                  "id": "66804-35",
+                  "prix": 15.46,
+                  "stock": 34,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_35_S1_1.jpg"
+                },
+                "38": {
+                  "id": "66804-38",
+                  "prix": 27.04,
+                  "stock": 27,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66804/66804_38_S1_1.jpg"
+                }
+              },
+              "variantType": "coloris"
+            },
+                        {
+              "refBase": "66804",
+              "label": "6 Anneaux fermes LOL Ø 16 mm (lot de 6)",
               "productUrl": "https://www.houles.com/produit/66804",
               "qtyParUnite": 6,
               "showIf": {
