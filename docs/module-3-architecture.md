@@ -315,14 +315,15 @@ options est donc significatif : le premier visible = le défaut.
 
 > **Précision (2026-08-23) :** le champ `default` (`refBase` fixe ou `"first_visible"`) décrit à
 > l'origine dans ce document n'est **pas lu par le moteur** — il n'a jamais été implémenté ainsi.
-> Le vrai mécanisme est le premier-visible décrit ci-dessus, éventuellement réordonné par
-> `defaultIf` (propriété d'option, voir `json-schema-reference.md` et Module 5) pour faire
-> gagner en priorité une option dont une condition (souvent un seuil de longueur) est remplie,
-> sans jamais la retirer de la liste des choix possibles. `default` reste toléré dans le JSON
-> (ignoré silencieusement) mais ne doit plus être utilisé comme documentation du comportement réel.
+> Le vrai mécanisme est le premier-visible décrit ci-dessus, éventuellement réordonné par une règle
+> de `field.recommendations` (tableau au niveau du champ, voir `json-schema-reference.md` et
+> Module 5) pour faire gagner en priorité une option dont une condition (souvent un seuil de
+> longueur) est remplie, sans jamais la retirer de la liste des choix possibles. `default` reste
+> toléré dans le JSON (ignoré silencieusement) mais ne doit plus être utilisé comme documentation
+> du comportement réel.
 
-La résolution détaillée (filtrage produits, priorité `defaultIf`, puis résolution coloris avec
-fallback) est décrite au Module 5.
+La résolution détaillée (filtrage produits, priorité `recommendations`, puis résolution coloris
+avec fallback) est décrite au Module 5.
 
 ### Contexte
 

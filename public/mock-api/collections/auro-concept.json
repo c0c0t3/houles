@@ -150,8 +150,19 @@
               "label": "Corner",
               "image": "/assets/syh/picto_corner.webp",
               "showIfAny": [
-                { "diametre": ["25"] },
-                { "type_de_support": ["double"], "diametre": ["16+25"] }
+                {
+                  "diametre": [
+                    "25"
+                  ]
+                },
+                {
+                  "type_de_support": [
+                    "double"
+                  ],
+                  "diametre": [
+                    "16+25"
+                  ]
+                }
               ]
             }
           ]
@@ -906,14 +917,26 @@
               "qtyParUnite": 2,
               "showIfAny": [
                 {
-                  "type_de_support": ["simple"],
-                  "type_pose": ["corner"],
-                  "diametre": ["25"]
+                  "type_de_support": [
+                    "simple"
+                  ],
+                  "type_pose": [
+                    "corner"
+                  ],
+                  "diametre": [
+                    "25"
+                  ]
                 },
                 {
-                  "type_de_support": ["double"],
-                  "type_pose": ["corner"],
-                  "diametre": ["16+25"]
+                  "type_de_support": [
+                    "double"
+                  ],
+                  "type_pose": [
+                    "corner"
+                  ],
+                  "diametre": [
+                    "16+25"
+                  ]
                 }
               ],
               "variants": {
@@ -1143,15 +1166,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66764/66764_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultIf": {
-                "longueur": {
-                  "gt": 160
-                }
-              },
-              "defaultMessage": "Pour une tringle superieure a 160cm, nous vous reocmmandons l'ajout d'un support intermediaire.",
-              "defaultColor": "info",
-              "defaultIcon": "info"
+              "variantType": "coloris"
             },
             {
               "refBase": "66769",
@@ -1199,26 +1214,13 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66769/66769_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultIf": {
-                "longueur": {
-                  "gt": 220
-                }
-              },
-              "defaultMessage": "Recommandé au-delà de 220 cm d'entraxe.",
-              "defaultColor": "info",
-              "defaultIcon": "info"
+              "variantType": "coloris"
             },
             {
               "refBase": "66776",
               "label": "2 Supports mur extensibles 110mm Ø 16 mm (interm.)",
               "productUrl": "https://www.houles.com/produit/66776",
               "qtyParUnite": 2,
-              "defaultIf": {
-                "longueur": {
-                  "gt": 160
-                }
-              },
               "showIf": {
                 "type_pose": [
                   "mur",
@@ -1266,10 +1268,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66776/66776_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
-              "defaultColor": "dark",
-              "defaultIcon": "info"
+              "variantType": "coloris"
             },
             {
               "refBase": "66778",
@@ -1279,7 +1278,8 @@
               "showIf": {
                 "type_pose": [
                   "mur",
-                  "plafond"
+                  "plafond",
+                  "mur_mur"
                 ],
                 "diametre": [
                   "25"
@@ -1323,15 +1323,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66778/66778_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultIf": {
-                "longueur": {
-                  "gt": 160
-                }
-              },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
-              "defaultColor": "info",
-              "defaultIcon": "info"
+              "variantType": "coloris"
             },
             {
               "refBase": "66779",
@@ -1341,7 +1333,8 @@
               "showIf": {
                 "type_pose": [
                   "mur",
-                  "plafond"
+                  "plafond",
+                  "mur_mur"
                 ],
                 "diametre": [
                   "31"
@@ -1385,15 +1378,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66779/66779_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultIf": {
-                "longueur": {
-                  "gt": 160
-                }
-              },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
-              "defaultColor": "info",
-              "defaultIcon": "info"
+              "variantType": "coloris"
             },
             {
               "refBase": "66732",
@@ -1447,15 +1432,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66732/66732_38_P1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultIf": {
-                "longueur": {
-                  "gt": 160
-                }
-              },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
-              "defaultColor": "info",
-              "defaultIcon": "info"
+              "variantType": "coloris"
             },
             {
               "refBase": "66734",
@@ -1509,15 +1486,7 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66734/66734_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris",
-              "defaultIf": {
-                "longueur": {
-                  "gt": 160
-                }
-              },
-              "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
-              "defaultColor": "info",
-              "defaultIcon": "info"
+              "variantType": "coloris"
             },
             {
               "refBase": "66736",
@@ -1571,13 +1540,41 @@
                   "image": "https://www.houles.com/commun/visuels_articles/6/66736/66736_38_L1_1.jpg"
                 }
               },
-              "variantType": "coloris",
+              "variantType": "coloris"
+            }
+          ],
+          "recommendations": [
+            {
+              "refBases": [
+                "66764",
+                "66776",
+                "66778",
+                "66779",
+                "66732",
+                "66734",
+                "66736"
+              ],
               "defaultIf": {
                 "longueur": {
                   "gt": 160
                 }
               },
+              "defaultTitle": "Support intermédiaire recommandé",
               "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
+              "defaultColor": "danger",
+              "defaultIcon": "warning"
+            },
+            {
+              "refBases": [
+                "66769"
+              ],
+              "defaultIf": {
+                "longueur": {
+                  "gt": 220
+                }
+              },
+              "defaultTitle": "Support intermédiaire recommandé",
+              "defaultMessage": "Recommandé au-delà de 220 cm d'entraxe.",
               "defaultColor": "info",
               "defaultIcon": "info"
             }
@@ -1593,6 +1590,9 @@
             "value": 1,
             "unitSource": "qtyParUnite"
           },
+          "defaultMessage": "Pour une tringle superieure a 160cm, nous vous reocmmandons l'ajout d'un support intermediaire.",
+          "defaultColor": "info",
+          "defaultIcon": "info",
           "options": [
             {
               "refBase": "66480",
@@ -2156,7 +2156,7 @@
               },
               "variantType": "coloris"
             },
-                        {
+            {
               "refBase": "66804",
               "label": "6 Anneaux fermes LOL Ø 16 mm (lot de 6)",
               "productUrl": "https://www.houles.com/produit/66804",

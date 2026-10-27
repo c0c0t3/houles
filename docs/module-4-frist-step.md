@@ -122,8 +122,8 @@ contre `custom.min` / `custom.max` ; tant que la valeur est invalide, elle n'est
 Affiche **toutes les options visibles** du champ sous forme de grille de cartes (radio) — pas de
 mini-modale, pas de produit unique caché derrière un choix « voir les alternatives ». Le choix
 pré-sélectionné suit l'algorithme décrit dans `json-schema-reference.md` (« Sélection par défaut
-conditionnelle ») : ordre de déclaration du JSON + `defaultIf` + option `isNone` en filet de
-sécurité. Détail du comportement produit, du défaut et des dépendances : Module 5.
+conditionnelle ») : ordre de déclaration du JSON + `field.recommendations` + option `isNone` en
+filet de sécurité. Détail du comportement produit, du défaut et des dépendances : Module 5.
 
 > La propriété `default` (`"first_visible"` / `null`) encore présente sur certains champs `product`
 > des JSON de collection n'est **plus lue par le moteur** — vestige d'une version antérieure de

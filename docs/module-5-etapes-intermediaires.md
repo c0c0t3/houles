@@ -26,9 +26,9 @@ sélection amont, et une **mini-modale** pour choisir une alternative.
 
 ### Comportement
 
-- Le produit par défaut est le premier qui passe `showIf`, sauf priorité donnée par `defaultIf`
-  (voir ci-dessous).
-- Les options sont filtrées par `showIf` (voir Module 3) — `defaultIf` n'y participe jamais.
+- Le produit par défaut est le premier qui passe `showIf`, sauf priorité donnée par une règle de
+  `field.recommendations` (voir ci-dessous).
+- Les options sont filtrées par `showIf` (voir Module 3) — `recommendations` n'y participe jamais.
 - Une mini-modale informative présente les alternatives (visuel, label, prix, variantes coloris).
 - Le coloris du produit est pré-rempli par le coloris global de l'étape 1, mais reste modifiable
   par pièce (voir section Coloris).
@@ -39,23 +39,35 @@ Certains champs produit sont optionnels : jambes de force, supports intermédiai
 accessoires. Ils ne sont **pas** rendus optionnels par une propriété `default: null` au niveau du
 champ (cette propriété n'est pas lue par le moteur) — l'unique mécanisme réel est une option
 `isNone` dans `options[]` (voir `json-schema-reference.md`, section "Champs produit optionnels").
-Placée en premier et sans `defaultIf`, elle devient le choix par défaut tant qu'aucune autre option
-ne remplit sa condition (voir `defaultIf` ci-dessous) ; placée en dernier, elle ne joue le rôle de
-défaut que si aucune option réelle n'est visible du tout.
+Placée en premier et non couverte par une règle de `recommendations`, elle devient le choix par
+défaut tant qu'aucune option couverte par une règle ne remplit sa condition (voir ci-dessous) ;
+placée en dernier, elle ne joue le rôle de défaut que si aucune option réelle n'est visible du tout.
 
-### Sélection par défaut : premier visible, priorité `defaultIf`
+### Sélection par défaut : premier visible, priorité `recommendations`
 
-**L'ordre de déclaration reste prioritaire** — `defaultIf` ne fait jamais sauter une option devant
-une option normale (sans condition) déclarée avant elle dans le JSON ; il comble seulement l'absence
-d'alternative. Implémenté dans `ProductField._resolveDefault()`
-(`src/js/syh/features/product-field.js`) :
+**L'ordre de déclaration reste prioritaire** — une règle de `recommendations` ne fait jamais sauter
+une option devant une option normale (sans règle) déclarée avant elle dans le JSON ; elle comble
+seulement l'absence d'alternative. Implémenté dans `ProductField._resolveDefault()` /
+`_findRecommendation()` (`src/js/syh/features/product-field.js`) :
 
 ```js
-function resolveDefault(visibleOptions, selection) {
-  // 1. Parmi les options réelles (hors isNone), dans l'ordre de déclaration : la première qui n'a
-  //    pas de defaultIf (toujours éligible), ou dont le defaultIf correspond à la sélection.
-  const real = visibleOptions.filter((o) => !o.isNone);
-  const eligible = real.find((o) => !o.defaultIf || isVisible({ showIf: o.defaultIf }, selection));
+function findRecommendation(field, refBase) {
+  return (field.recommendations ?? []).find((r) => r.refBases?.includes(refBase)) ?? null;
+}
+
+function resolveDefault(field, visibleOptions, selection) {
+  const noneIndex = visibleOptions.findIndex((o) => o.isNone);
+
+  // 1. Dans l'ordre de déclaration, la première option réelle (hors isNone) qui est éligible :
+  //    pas précédée d'un isNone → toujours éligible ; précédée d'un isNone → éligible seulement
+  //    si la règle qui la couvre a un defaultIf qui correspond à la sélection.
+  const eligible = visibleOptions.find((o, index) => {
+    if (o.isNone) return false;
+    const defaultIf = findRecommendation(field, o.refBase)?.defaultIf;
+    const precededByNone = noneIndex !== -1 && noneIndex < index;
+    if (!defaultIf) return !precededByNone;
+    return isVisible({ showIf: defaultIf }, selection);
+  });
   if (eligible) return eligible;
 
   // 2. Sinon (tout est gaté, rien ne correspond), la première option isNone si le champ en a une.
@@ -67,11 +79,15 @@ function resolveDefault(visibleOptions, selection) {
 }
 ```
 
-Une option gatée par `defaultIf` ne devient donc jamais le défaut si une option non gatée la
-précède dans la liste — même quand sa condition est remplie. Elle ne prend le relais que si elle
-est la première option réelle **ou** si toutes les options qui la précèdent sont elles-mêmes gatées
-et ne correspondent pas. C'est cette règle qui a corrigé un bug initial (2026-08-23) où une option
-gatée doublait systématiquement une option normale mieux placée dès que sa condition devenait vraie.
+Une option couverte par une règle ne devient donc jamais le défaut si une option non gatée (ou non
+couverte par une règle) la précède dans la liste — même quand la règle correspond. Elle ne prend le
+relais que si elle est la première option réelle **ou** si toutes les options qui la précèdent sont
+elles-mêmes gatées (derrière un `isNone` antérieur) et ne correspondent pas à leur propre règle.
+C'est cette logique qui a corrigé un bug initial (2026-08-23) où une option conditionnelle doublait
+systématiquement une option normale mieux placée dès que sa condition devenait vraie — puis un
+second bug (2026-09-29) où la position de l'option `isNone` elle-même n'était pas respectée : une
+option sans règle du tout devenait éligible même précédée d'un `isNone`, empêchant certains champs
+(jambe de force réglable, anneaux de blocage) de partir sur "Sans" par défaut comme prévu.
 
 Puis résolution du coloris de l'option retenue :
 
@@ -86,23 +102,28 @@ function resolveColoris(produit, selection) {
 
 Points importants :
 
-- **`showIf` et `defaultIf` ont des rôles strictement séparés.** `showIf` décide ce qui est
-  sélectionnable ; `defaultIf` décide seulement ce qui est pré-sélectionné. Une option jamais
-  choisie par défaut reste toujours sélectionnable manuellement — c'est précisément le problème que
-  `defaultIf` résout : avant son introduction (2026-08-23), un seuil numérique dans `showIf` (ex :
-  « support intermédiaire conseillé au-delà de 160 cm ») rendait l'option totalement invisible en
-  dessous du seuil, alors que le client final doit pouvoir la choisir quand même.
-- **L'ordre de déclaration des options compte partout, y compris pour `defaultIf`** : ranger les
-  options par ordre de préférence commerciale reste la règle générale. Une option `defaultIf` ne
-  gagne que si aucune option non gatée ne la précède — elle ne double jamais une alternative
-  normale mieux placée dans la liste, même quand sa condition est remplie.
-- **`defaultMessage`** (string, sur l'option) : texte affiché au-dessus de la grille de produits,
-  après le label du champ, dès qu'une option visible du champ a un `defaultIf` qui correspond à la
-  configuration courante — **indépendamment de la sélection réelle**. C'est une recommandation liée
-  à la config (ex : la longueur), pas à ce que l'utilisateur a choisi : si celui-ci sélectionne
-  "Sans support intermédiaire" malgré la recommandation, le message reste affiché tant que la
-  condition est remplie — il ne disparaît que si la config repasse sous le seuil. Sans effet sans
-  `defaultIf`. Voir `json-schema-reference.md`.
+- **`showIf` et `recommendations` ont des rôles strictement séparés.** `showIf` décide ce qui est
+  sélectionnable ; `recommendations` décide seulement ce qui est pré-sélectionné (et affiche ou non
+  un bandeau de recommandation). Une option jamais choisie par défaut reste toujours sélectionnable
+  manuellement — c'est précisément le problème que ce mécanisme résout : avant son introduction
+  (2026-08-23), un seuil numérique dans `showIf` (ex : « support intermédiaire conseillé au-delà de
+  160 cm ») rendait l'option totalement invisible en dessous du seuil, alors que le client final
+  doit pouvoir la choisir quand même.
+- **L'ordre de déclaration des options compte partout, y compris pour `recommendations`** : ranger
+  les options par ordre de préférence commerciale reste la règle générale. Une option couverte par
+  une règle ne gagne que si aucune option non gatée ne la précède — elle ne double jamais une
+  alternative normale mieux placée dans la liste, même quand sa condition est remplie.
+- **`recommendations` est un tableau au niveau du champ, pas une propriété de chaque option** — une
+  règle peut couvrir plusieurs `refBase` à la fois (`refBases: [...]`), pour ne pas dupliquer le
+  même seuil/message sur chaque variante (une par diamètre/pose, par exemple). Chaque règle porte
+  `defaultIf` (même forme que `showIf`) et, optionnellement, `defaultMessage`/`defaultTitle`/
+  `defaultColor`/`defaultIcon` pour le bandeau de recommandation — voir `json-schema-reference.md`.
+  Le bandeau s'affiche dès qu'une règle a un `defaultIf` qui correspond à la configuration courante
+  **et** couvre au moins une option actuellement visible — **indépendamment de la sélection
+  réelle**. C'est une recommandation liée à la config (ex : la longueur), pas à ce que l'utilisateur
+  a choisi : si celui-ci sélectionne "Sans support intermédiaire" malgré la recommandation, le
+  bandeau reste affiché tant que la condition est remplie — il ne disparaît que si la config
+  repasse sous le seuil, ou si aucune des options couvertes n'est plus visible.
 - **Fallback coloris** : si le coloris global de l'étape 1 n'existe pas pour ce produit, le moteur
   prend le premier coloris disponible. Pour les collections où tous les produits ont tous les coloris
   (ex : ACEA, Auro), ce cas ne se présente pas. Pour les collections hétérogènes, à décider :
@@ -116,35 +137,53 @@ Points importants :
   jamais réécrasé silencieusement. État porté par `ProductField._isDefaultSelection` (bascule à
   `false` au premier clic).
 
-### Exemple réel : support intermédiaire conseillé au-delà de 160 cm
+### Exemple réel : support intermédiaire conseillé au-delà de 160 cm / 220 cm
+
+Données réelles de `opt_support_interm` (`auro-concept.json`) : une règle couvre 7 variantes à
+160 cm, une autre couvre la seule variante Ø 31 mm à 220 cm (entraxe plus grand, seuil différent) :
 
 ```json
-{ "refBase": "none", "label": "Sans support intermédiaire", "isNone": true },
 {
-  "refBase": "66732",
-  "label": "2 Supports mixtes plafond-mur Ø 16 mm (interm.)",
-  "showIf": { "type_pose": ["mur", "plafond"], "diametre": ["16"] },
-  "defaultIf": { "longueur": { "gt": 160 } },
-  "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+  "id": "opt_support_interm",
+  "type": "product",
+  "options": [
+    { "refBase": "none", "label": "Sans support intermédiaire", "isNone": true },
+    { "refBase": "66732", "label": "…", "showIf": { "...": "..." } },
+    { "refBase": "66769", "label": "…", "showIf": { "...": "..." } }
+  ],
+  "recommendations": [
+    {
+      "refBases": ["66764", "66776", "66778", "66779", "66732", "66734", "66736"],
+      "defaultIf": { "longueur": { "gt": 160 } },
+      "defaultTitle": "Support intermédiaire recommandé",
+      "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
+      "defaultColor": "info",
+      "defaultIcon": "info"
+    },
+    {
+      "refBases": ["66769"],
+      "defaultIf": { "longueur": { "gt": 220 } },
+      "defaultTitle": "Support intermédiaire recommandé",
+      "defaultMessage": "Recommandé au-delà de 220 cm d'entraxe.",
+      "defaultColor": "info",
+      "defaultIcon": "info"
+    }
+  ]
 }
 ```
 
-- Longueur ≤ 160 cm : les deux options sont visibles ; 66732 ne remplit pas son `defaultIf` → l'option
-  `none` (seule option réelle éligible — elle n'a pas de `defaultIf`) est retenue → rien n'est ajouté
-  au panier, mais l'utilisateur peut sélectionner 66732 manuellement s'il le souhaite. Pas de message.
-- Longueur > 160 cm : 66732 remplit son `defaultIf` et est la seule option réelle → elle devient le
-  défaut, sans jamais avoir été masquée aux longueurs inférieures, et `defaultMessage` s'affiche
-  au-dessus de la grille. **Le message reste affiché même si l'utilisateur clique ensuite "Sans
-  support intermédiaire"** : il dépend de la longueur configurée, pas de la sélection réelle — il ne
-  disparaît que si la longueur repasse à 160 cm ou moins.
-
-**Remarque sur `support` (champ obligatoire, pas `opt_support_interm`)** : les refBase 66732,
-66734, 66736 y sont précédées par une alternative sans condition (66776, 66778, 66779 —
-« Supports extensibles »), qui gagne donc toujours au niveau 1 malgré le seuil de longueur. Leur
-`defaultIf` n'y déclenche jamais la présélection automatique — il reste utile si l'utilisateur les
-sélectionne manuellement (`defaultMessage` s'affiche alors pour confirmer que le choix est dans la
-plage recommandée), mais n'agit comme véritable défaut que dans `opt_support_interm`, où elles sont
-les seules options réelles disponibles pour ce cas.
+- Longueur ≤ 160 cm : les options réelles visibles ne remplissent aucune de leurs règles →
+  l'option `none` (seule option réelle éligible — non couverte par une règle) est retenue → rien
+  n'est ajouté au panier, mais l'utilisateur peut sélectionner un support intermédiaire manuellement
+  s'il le souhaite. Pas de bandeau.
+- Longueur > 160 cm (ex : diamètre 16) : l'option visible correspondante est couverte par la
+  première règle, qui remplit son `defaultIf` → elle devient le défaut, sans jamais avoir été
+  masquée aux longueurs inférieures, et le bandeau de la règle s'affiche. **Il reste affiché même si
+  l'utilisateur clique ensuite "Sans support intermédiaire"** : il dépend de la longueur configurée,
+  pas de la sélection réelle — il ne disparaît que si la longueur repasse à 160 cm ou moins.
+- Diamètre 31 mm spécifiquement : la variante correspondante (`66769`) n'est couverte que par la
+  **seconde** règle (seuil 220 cm, pas 160) — l'entraxe maximal acceptable est plus grand pour ce
+  diamètre, donc le seuil de recommandation l'est aussi.
 
 ### Dépendance produit → produit
 

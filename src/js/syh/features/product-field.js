@@ -22,6 +22,7 @@ const DEFAULT_MESSAGE_COLORS = {
 const DEFAULT_MESSAGE_ICONS = {
   info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mt-0.5 xs:mt-0"><path d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>',
   lightbulb: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-4 h-4 mt-0.5 xs:mt-0"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-6 6c0 2.2 1.1 3.5 2 4.5.6.7 1 1.2 1 2.5h6c0-1.3.4-1.8 1-2.5.9-1 2-2.3 2-4.5a6 6 0 0 0-6-6Z"/></svg>',
+  warning: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="w-4 h-4 mt-0.5 xs:mt-0"><circle cx="12" cy="17" r="1" fill="currentColor"/><path d="M12 10L12 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.44722 18.1056L10.2111 4.57771C10.9482 3.10361 13.0518 3.10362 13.7889 4.57771L20.5528 18.1056C21.2177 19.4354 20.2507 21 18.7639 21H5.23607C3.7493 21 2.78231 19.4354 3.44722 18.1056Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 };
 
 export default class ProductField extends Base {
@@ -147,16 +148,30 @@ export default class ProductField extends Base {
   }
 
   /**
+   * Trouve, dans `field.recommendations` (voir json-schema-reference.md), la règle qui couvre ce
+   * `refBase` — une règle peut couvrir plusieurs options (`refBases: [...]`) qui partagent le
+   * même seuil et le même message (ex : 6 variantes de support intermédiaire, toutes "recommandé
+   * au-delà de 160cm"), pour éviter de dupliquer `defaultIf`/`defaultMessage` sur chacune.
+   *
+   * @param {string} refBase
+   * @returns {object|null} La règle (defaultIf, defaultMessage, defaultTitle, defaultColor,
+   *   defaultIcon, refBases), ou `null` si ce refBase n'est couvert par aucune règle.
+   */
+  _findRecommendation(refBase) {
+    return (this._field?.recommendations ?? []).find((r) => r.refBases?.includes(refBase)) ?? null;
+  }
+
+  /**
    * Résout l'option par défaut parmi les options visibles. L'ordre de déclaration reste
    * prioritaire, `isNone` inclus — c'est ce qui permet à sa **position** de piloter le défaut :
    *   1. Dans l'ordre de déclaration, la première option réelle (hors `isNone`) qui est éligible :
    *      - si aucune option `isNone` ne la précède dans le tableau, elle est **toujours éligible**
-   *        qu'elle ait un `defaultIf` ou non (`isNone` en dernier, ou absent → "en dernier" du
-   *        tableau ci-dessous) ;
-   *      - si une option `isNone` la précède, elle n'est éligible que si son `defaultIf` correspond
-   *        à la sélection courante — sans `defaultIf` du tout, elle n'est **jamais** auto-éligible
-   *        (`isNone` en premier → "en premier" ci-dessous, y compris sans aucun `defaultIf` nulle
-   *        part dans le champ, ex : accessoires purement optionnels).
+   *        qu'elle soit couverte par une règle de `recommendations` ou non (`isNone` en dernier,
+   *        ou absent → "en dernier" du tableau ci-dessous) ;
+   *      - si une option `isNone` la précède, elle n'est éligible que si la règle qui la couvre a
+   *        un `defaultIf` qui correspond à la sélection courante — sans règle du tout, elle n'est
+   *        **jamais** auto-éligible (`isNone` en premier → "en premier" ci-dessous, y compris sans
+   *        aucune règle nulle part dans le champ, ex : accessoires purement optionnels).
    *      Une option gatée ne devient donc le défaut que si aucune option éligible ne la précède.
    *   2. Sinon (aucune option réelle éligible), la première option `isNone` si le champ en a une
    *      (ex : "Sans support intermédiaire" tant que la longueur ne dépasse pas le seuil).
@@ -166,7 +181,7 @@ export default class ProductField extends Base {
    * | Position de `isNone` | Défaut |
    * |---|---|
    * | Absente, ou après toutes les options réelles | La première option réelle visible |
-   * | Avant une ou plusieurs options réelles | `isNone`, sauf si l'une de ces options a un `defaultIf` qui correspond |
+   * | Avant une ou plusieurs options réelles | `isNone`, sauf si une règle couvrant l'une de ces options a un `defaultIf` qui correspond |
    *
    * `defaultIf` (même forme que `showIf`) ne filtre jamais la visibilité — seulement le choix du
    * défaut. Une option non retenue comme défaut reste sélectionnable manuellement par
@@ -181,9 +196,10 @@ export default class ProductField extends Base {
 
     const eligible = visible.find((o, index) => {
       if (o.isNone) return false;
+      const defaultIf = this._findRecommendation(o.refBase)?.defaultIf;
       const precededByNone = noneIndex !== -1 && noneIndex < index;
-      if (!o.defaultIf) return !precededByNone;
-      return isVisible({ showIf: o.defaultIf }, effectiveSelection);
+      if (!defaultIf) return !precededByNone;
+      return isVisible({ showIf: defaultIf }, effectiveSelection);
     });
     if (eligible) return eligible;
 
@@ -194,20 +210,19 @@ export default class ProductField extends Base {
   }
 
   /**
-   * Affiche le message qui justifie une recommandation (option.defaultMessage) dès qu'une option
-   * visible du champ a un `defaultIf` qui correspond **actuellement** à la sélection — que cette
-   * option soit sélectionnée ou non. C'est une recommandation liée à la configuration, pas à la
-   * sélection : elle reste affichée même si l'utilisateur choisit explicitement "Sans" ou une
-   * autre option, tant que la condition (ex : longueur) reste remplie. Masqué uniquement si aucune
-   * option ne correspond à son `defaultIf`.
+   * Affiche le message qui justifie une recommandation (`field.recommendations`, voir
+   * `_findRecommendation` ci-dessus) dès que l'une de ses règles a un `defaultIf` qui correspond
+   * **actuellement** à la sélection, et couvre au moins une option actuellement visible — que
+   * cette option soit sélectionnée ou non. C'est une recommandation liée à la configuration, pas à
+   * la sélection : elle reste affichée même si l'utilisateur choisit explicitement "Sans" ou une
+   * autre option, tant que la condition (ex : longueur) reste remplie. Masquée uniquement si
+   * aucune règle ne correspond.
    *
-   * Couleur (`option.defaultColor`) et icône (`option.defaultIcon`) viennent de la donnée —
-   * valeurs possibles : voir `DEFAULT_MESSAGE_COLORS`/`DEFAULT_MESSAGE_ICONS` ci-dessus. Absentes,
-   * elles retombent sur "warning"/"info" (comportement déjà en place avant leur introduction).
-   * Le titre vient de `option.defaultTitle` ; absent, il retombe sur "{label du champ}
-   * recommandé" (ex : "Support intermédiaire recommandé"), via `resolveLabel` pour rester
-   * cohérent avec le label affiché au-dessus de la grille (`labelByConfig` déjà résolu le cas
-   * échéant).
+   * Couleur (`defaultColor`) et icône (`defaultIcon`) viennent de la règle — valeurs possibles :
+   * voir `DEFAULT_MESSAGE_COLORS`/`DEFAULT_MESSAGE_ICONS` ci-dessus. Absentes, elles retombent sur
+   * "warning"/"info". Le titre vient de `defaultTitle` ; absent, il retombe sur "{label du champ}
+   * recommandé", via `resolveLabel` pour rester cohérent avec le label affiché au-dessus de la
+   * grille (`labelByConfig` déjà résolu le cas échéant).
    *
    * @param {object[]} visible - Options déjà filtrées par `showIf`.
    * @param {object} effectiveSelection - Sélection courante (diamètre déjà résolu avant/arrière).
@@ -216,9 +231,14 @@ export default class ProductField extends Base {
     const el = this.$refs.defaultMessage;
     if (!el) return;
 
+    const visibleRefBases = new Set(visible.map((o) => o.refBase));
     // trim() : exclut aussi un defaultMessage réduit à des espaces, pas seulement vide/absent.
-    const matching = visible.find(
-      (o) => o.defaultIf && o.defaultMessage?.trim() && isVisible({ showIf: o.defaultIf }, effectiveSelection)
+    const matching = (this._field?.recommendations ?? []).find(
+      (r) =>
+        r.defaultIf &&
+        r.defaultMessage?.trim() &&
+        r.refBases?.some((ref) => visibleRefBases.has(ref)) &&
+        isVisible({ showIf: r.defaultIf }, effectiveSelection),
     );
     const message = matching?.defaultMessage?.trim() || null;
 
@@ -226,7 +246,7 @@ export default class ProductField extends Base {
       const colors = DEFAULT_MESSAGE_COLORS[matching.defaultColor] ?? DEFAULT_MESSAGE_COLORS.warning;
       const icon = DEFAULT_MESSAGE_ICONS[matching.defaultIcon] ?? DEFAULT_MESSAGE_ICONS.info;
       // className entièrement reconstruit (layout + couleur) : évite de dépendre de la couleur
-      // posée au rendu précédent, qui peut changer d'une option matching à l'autre.
+      // posée au rendu précédent, qui peut changer d'une règle matching à l'autre.
       el.className = `${DEFAULT_MESSAGE_BASE_CLASS} ${colors}`;
       this.$refs.defaultMessageIcon.innerHTML = icon;
       this.$refs.defaultMessageTitle.textContent =

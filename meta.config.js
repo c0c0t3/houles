@@ -9,11 +9,6 @@ import prototyping from '@studiometa/webpack-config-preset-prototyping';
 // Netlify) sans toucher au build FTP par défaut.
 const DEPLOY_SUBFOLDER = process.env.SYH_DEPLOY_SUBFOLDER ?? '/assets/houles';
 
-// DEBUG TEMPORAIRE — diagnostic du 404 fonts sur Netlify (sous-dossier appliqué à tort). À retirer
-// une fois la cause confirmée dans le build log.
-console.log('[DEBUG deploy-subfolder] process.env.SYH_DEPLOY_SUBFOLDER =', JSON.stringify(process.env.SYH_DEPLOY_SUBFOLDER));
-console.log('[DEBUG deploy-subfolder] DEPLOY_SUBFOLDER (résolu)         =', JSON.stringify(DEPLOY_SUBFOLDER));
-
 export default defineConfig({
   presets: [
     prototyping({
@@ -55,8 +50,6 @@ export default defineConfig({
       name: 'syh-deploy-subfolder',
       handler(config, { extendWebpack }) {
         config.public = isDev ? undefined : `${DEPLOY_SUBFOLDER}/`;
-        // DEBUG TEMPORAIRE — voir plus haut.
-        console.log('[DEBUG deploy-subfolder] isDev =', isDev, '| config.public =', JSON.stringify(config.public));
         extendWebpack(config, (webpackConfig) => {
           webpackConfig.plugins.push(
             new WebpackDefinePlugin({

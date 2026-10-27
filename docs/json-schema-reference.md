@@ -223,6 +223,7 @@ Grille de cartes produits avec variantes coloris.
 | `diametreFrom` | string | `"avant"` ou `"arriere"` — lit la part de diamètre correspondante en config double |
 | `options` | array | Liste des produits disponibles |
 | `layerOrder` | number | Ordre d'empilement (z-index) du calque de rendu visuel — modes `live` / `live_colored` uniquement (voir Module 6) |
+| `recommendations` | array | Règles de présélection automatique et de bandeau "recommandé", voir « Sélection par défaut conditionnelle » ci-dessous. Absent si le champ n'a aucune recommandation |
 
 > **Note :** `required` n'existe pas sur les champs `product`. Tout champ produit optionnel utilise une option `isNone` (voir ci-dessous). `required` reste réservé aux champs `radio` et `length` pour la validation de progression future.
 
@@ -238,11 +239,6 @@ Grille de cartes produits avec variantes coloris.
 | `qtyParUnite` | number | non | Conditionnement — divise la quantité calculée (défaut : 1) |
 | `showIf` | object | non | Conditions de visibilité de cette option |
 | `showIfAny` | array | non | Conditions de visibilité en OU (voir section Visibilité) |
-| `defaultIf` | object | non | Même forme que `showIf`, mais influence **uniquement** le choix de l'option par défaut — jamais la visibilité. Voir « Sélection par défaut conditionnelle » ci-dessous |
-| `defaultMessage` | string | non | Texte affiché au-dessus de la grille de produits (après le label du champ) dès que le `defaultIf` de **cette option** correspond à la sélection courante — **indépendamment de ce qui est réellement sélectionné**. Reste visible même si l'utilisateur choisit une autre option (ex : "Sans"). Sans effet sans `defaultIf` |
-| `defaultTitle` | string | non | Titre de la box `defaultMessage` (ex : "Support intermédiaire recommandé"). Absent, retombe sur `"{label du champ} recommandé"` (calculé via `resolveLabel`, gère `labelByConfig`) |
-| `defaultColor` | string | non | Variante de couleur de la box `defaultMessage` : `"info"` (défaut si absent), `"success"`, `"warning"`, `"danger"`, `"dark"` — voir `DEFAULT_MESSAGE_COLORS` dans `product-field.js`. Palette standard du projet, pas de design system externe |
-| `defaultIcon` | string | non | Icône de la box `defaultMessage` : `"info"` (défaut si absent) ou `"lightbulb"` — voir `DEFAULT_MESSAGE_ICONS` dans `product-field.js` |
 | `variants` | object | non | Variantes par coloris (absent si produit sans coloris) |
 | `variantType` | string | non | `"image"` (défaut) ou `"coloris"` — source du visuel des pastilles coloris de cette option : photo du produit dans la couleur (`variants[coloris].image`), ou vignette de coloris dédiée (`collection.coloris[].thumbnail`, indépendante du produit) |
 | `id` | string | non | Référence complète si produit sans coloris (pas de `variants`) |
@@ -365,25 +361,46 @@ Chaque entrée du tableau est un bloc `showIf` complet (AND interne). Il suffit 
 
 ---
 
-## Sélection par défaut conditionnelle — `defaultIf`
+## Sélection par défaut conditionnelle — `recommendations`
 
-`defaultIf` porte la **même forme** que `showIf` (mêmes formes de condition : liste de valeurs, seuils
-`gt`/`gte`/`lt`/`lte`, `not`, `selected:`), mais son rôle est différent : il n'affecte **jamais** la
-visibilité d'une option, seulement son éligibilité à devenir le choix pré-sélectionné par défaut.
+`field.recommendations` est un tableau de règles, **au niveau du champ** (pas de l'option). Chaque
+règle couvre une ou plusieurs options par `refBase` — pratique quand plusieurs variantes (une par
+diamètre/pose, par exemple) partagent exactement le même seuil et le même message, sans dupliquer
+`defaultIf`/`defaultMessage` sur chacune (la duplication a déjà causé une vraie divergence de texte
+entre deux options censées dire la même chose — raison d'être de ce regroupement) :
 
 ```json
 {
-  "refBase": "66732",
-  "label": "2 Supports mixtes plafond-mur Ø 16 mm",
-  "showIf": { "type_pose": ["mur", "plafond"], "diametre": ["16"] },
-  "defaultIf": { "longueur": { "gt": 160 } }
+  "id": "opt_support_interm",
+  "type": "product",
+  "options": [ ... ],
+  "recommendations": [
+    {
+      "refBases": ["66732", "66734", "66736"],
+      "defaultIf": { "longueur": { "gt": 160 } },
+      "defaultTitle": "Support intermédiaire recommandé",
+      "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe.",
+      "defaultColor": "info",
+      "defaultIcon": "info"
+    }
+  ]
 }
 ```
 
-Dans cet exemple, l'option est **visible et sélectionnable manuellement quelle que soit la
-longueur** (le `showIf` ne porte plus de condition de longueur) ; mais elle ne devient le choix
-**automatique** que si la longueur configurée dépasse 160 cm **et** qu'aucune option non gatée ne
-la précède dans la liste (voir algorithme ci-dessous).
+| Propriété | Type | Obligatoire | Description |
+|---|---|---|---|
+| `refBases` | array | oui | `refBase` des options couvertes par cette règle (une ou plusieurs) |
+| `defaultIf` | object | oui | Même forme que `showIf` (valeurs, seuils `gt`/`gte`/`lt`/`lte`, `not`, `selected:`). N'affecte **jamais** la visibilité des options — seulement leur éligibilité à devenir le choix par défaut, et l'affichage du bandeau de recommandation |
+| `defaultMessage` | string | non | Texte du bandeau de recommandation. Sans lui (ou vide), la règle ne pilote que le défaut, pas de bandeau |
+| `defaultTitle` | string | non | Titre du bandeau. Absent, retombe sur `"{label du champ} recommandé"` (via `resolveLabel`, gère `labelByConfig`) |
+| `defaultColor` | string | non | Variante de couleur du bandeau : `"info"` (défaut si absent), `"success"`, `"warning"`, `"danger"`, `"dark"` — voir `DEFAULT_MESSAGE_COLORS` dans `product-field.js`. Palette standard du projet, pas de design system externe |
+| `defaultIcon` | string | non | Icône du bandeau : `"info"` (défaut si absent), `"lightbulb"` ou `"warning"` — voir `DEFAULT_MESSAGE_ICONS` dans `product-field.js` |
+
+Dans l'exemple, les options `66732`/`66734`/`66736` restent **visibles et sélectionnables
+manuellement quelle que soit la longueur** (c'est `showIf`, sur chaque option, qui gère ça — sans
+rapport avec `recommendations`) ; mais l'une d'elles ne devient le choix **automatique** que si la
+longueur configurée dépasse 160 cm **et** qu'aucune option non gatée ne la précède dans la liste
+(voir algorithme ci-dessous).
 
 ### Algorithme de résolution du défaut
 
@@ -392,44 +409,51 @@ position de piloter le défaut (tableau ci-dessus). Parmi les options visibles (
 `showIf`) :
 
 1. Dans l'ordre de déclaration, la première option **réelle** (hors `isNone`) qui est éligible :
-   - si aucune option `isNone` ne la précède dans le tableau, elle est **toujours éligible**, qu'elle
-     ait un `defaultIf` ou non ;
-   - si une option `isNone` la précède, elle n'est éligible **que si** son `defaultIf` correspond à
-     la sélection courante — sans `defaultIf` du tout, elle n'est alors **jamais** auto-éligible.
-2. Si aucune ne qualifie (toutes gatées derrière un `isNone` antérieur, aucune ne correspond), la
-   première option `isNone` du champ, s'il en a une.
+   - si aucune option `isNone` ne la précède dans le tableau, elle est **toujours éligible**, que la
+     règle de `recommendations` qui la couvre existe ou non ;
+   - si une option `isNone` la précède, elle n'est éligible **que si** la règle qui la couvre a un
+     `defaultIf` qui correspond à la sélection courante — si elle n'est couverte par aucune règle,
+     elle n'est alors **jamais** auto-éligible.
+2. Si aucune ne qualifie (toutes gatées derrière un `isNone` antérieur, aucune règle ne correspond),
+   la première option `isNone` du champ, s'il en a une.
 3. Sinon, la première option visible tout court — filet de sécurité qui garantit qu'un champ
    obligatoire n'est jamais laissé sans sélection.
 
-Une option `defaultIf` déclarée après une option non gatée (pas précédée d'`isNone`) ne prend donc
-jamais le dessus sur elle, même quand sa condition est remplie — sauf s'il n'y a rien d'autre. Une
-option jamais choisie par défaut reste toujours sélectionnable manuellement par l'utilisateur — c'est
-tout l'intérêt de séparer `defaultIf` de `showIf`.
+Une option couverte par une règle déclarée après une option non gatée (pas précédée d'`isNone`) ne
+prend donc jamais le dessus sur elle, même quand la règle correspond — sauf s'il n'y a rien d'autre.
+Une option jamais choisie par défaut reste toujours sélectionnable manuellement par l'utilisateur —
+c'est tout l'intérêt de séparer `recommendations` de `showIf`.
 
 ### Combiner avec une option `isNone`
 
 Pour qu'un champ optionnel ne présélectionne **rien** tant qu'aucune option n'est recommandée,
-combiner `defaultIf` avec une option `isNone` (voir plus bas) placée sans `defaultIf` : elle sert de
-palier 2 (choix par défaut « neutre ») tant qu'aucune option réelle ne remplit son `defaultIf`.
+placer une option `isNone` (voir plus bas) **avant** les options couvertes par une règle de
+`recommendations` : elle sert de palier 2 (choix par défaut « neutre ») tant qu'aucune de ces
+options ne remplit la condition.
 
 ```json
-{ "refBase": "none", "label": "Sans support intermédiaire", "isNone": true },
 {
-  "refBase": "66732",
-  "label": "…",
-  "showIf": { "...": "..." },
-  "defaultIf": { "longueur": { "gt": 160 } },
-  "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+  "options": [
+    { "refBase": "none", "label": "Sans support intermédiaire", "isNone": true },
+    { "refBase": "66732", "label": "…", "showIf": { "...": "..." } }
+  ],
+  "recommendations": [
+    {
+      "refBases": ["66732"],
+      "defaultIf": { "longueur": { "gt": 160 } },
+      "defaultMessage": "Recommandé au-delà de 160 cm d'entraxe."
+    }
+  ]
 }
 ```
 
-En dessous de 160 cm : l'option réelle ne remplit pas son `defaultIf` → l'option `isNone` (palier 2)
-est retenue par défaut, et aucun message ne s'affiche. Au-dessus de 160 cm : l'option réelle remplit
-son `defaultIf` → elle passe en palier 1 et devient le défaut, sans jamais avoir été masquée ; le
-`defaultMessage` s'affiche au-dessus de la grille de produits pour signaler la recommandation —
-**et continue de s'afficher même si l'utilisateur choisit ensuite "Sans support intermédiaire"**
-manuellement, tant que la longueur reste au-dessus de 160 cm. Le message dépend uniquement de la
-configuration, jamais de ce qui est effectivement sélectionné.
+En dessous de 160 cm : `66732` ne remplit pas le `defaultIf` de la règle qui la couvre → l'option
+`isNone` (palier 2) est retenue par défaut, et aucun bandeau ne s'affiche. Au-dessus de 160 cm :
+elle remplit la condition → elle passe en palier 1 et devient le défaut, sans jamais avoir été
+masquée ; le bandeau s'affiche pour signaler la recommandation — **et continue de s'afficher même
+si l'utilisateur choisit ensuite "Sans support intermédiaire"** manuellement, tant que la longueur
+reste au-dessus de 160 cm. Le bandeau dépend uniquement de la configuration, jamais de ce qui est
+effectivement sélectionné.
 
 ---
 
