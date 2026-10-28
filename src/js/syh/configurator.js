@@ -10,7 +10,7 @@ import { renderStepper, updateStepperState } from './features/stepper.js';
 import { updateStepNav } from './features/step-nav.js';
 import { refreshTubeStep } from './features/tube-step.js';
 import { initConfiguratorModals } from './features/configurator-modals.js';
-import { purgeEmboutsIfReplaced, refreshEmboutsStep } from './features/embouts.js';
+import { purgeEmboutsIfReplaced, refreshEmboutsStep, SUPPORT_FIELD_IDS } from './features/embouts.js';
 import { computeCartPayload, computeAddToCartPayload } from './features/cart-payload.js';
 import { renderRecap, renderProductSummary } from './features/recap.js';
 import { refreshLivePreview } from './features/live-preview.js';
@@ -209,8 +209,9 @@ export default class Configurator extends Base {
     } else {
       this.selection.produits[fieldId] = value;
     }
-    // Un nouveau support "naissance murale" remplace les embouts : purge la sélection embout existante.
-    if (fieldId === 'support') this._purgeEmboutsIfReplaced();
+    // Un nouveau support "naissance murale" remplace les embouts : purge la sélection embout
+    // existante. SUPPORT_FIELD_IDS couvre aussi support_avant/support_arriere (double mur à mur).
+    if (SUPPORT_FIELD_IDS.includes(fieldId)) this._purgeEmboutsIfReplaced();
     this._refreshCurrentStep();
     this._renderRecap();
     this._refreshLivePreview();

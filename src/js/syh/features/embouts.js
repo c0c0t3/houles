@@ -7,21 +7,31 @@
  */
 
 /**
- * Vrai si le support actuellement sélectionné remplace les embouts (naissances murales, corners).
- * Lu depuis le flag `replacesEmbouts` porté par l'option support choisie dans le JSON.
+ * Champs candidats à porter le support "principal" — `support` en simple et en double
+ * mur/plafond/corner (produit unique), `support_avant`/`support_arriere` en double mur à mur
+ * (deux naissances murales indépendantes, voir docs/module-5-etapes-intermediaires.md).
+ */
+export const SUPPORT_FIELD_IDS = ['support', 'support_avant', 'support_arriere'];
+
+/**
+ * Vrai si au moins un des supports actuellement sélectionnés remplace les embouts (naissances
+ * murales, corners). Lu depuis le flag `replacesEmbouts` porté par l'option support choisie dans
+ * le JSON. En double mur à mur, avant et arrière sont deux champs distincts (`SUPPORT_FIELD_IDS`)
+ * qui peuvent chacun porter ce flag — un seul suffit à remplacer les embouts des deux côtés.
  *
  * @param {object} schema
  * @param {object} selection
  * @returns {boolean}
  */
 export function supportReplacesEmbouts(schema, selection) {
-  const sel = selection.produits?.support;
-  if (!sel?.refBase) return false;
-  const supportField = schema.steps
-    .flatMap((step) => step.fields)
-    .find((field) => field.id === 'support');
-  const option = supportField?.options?.find((o) => o.refBase === sel.refBase);
-  return option?.replacesEmbouts === true;
+  const fields = schema.steps.flatMap((step) => step.fields);
+  return SUPPORT_FIELD_IDS.some((fieldId) => {
+    const sel = selection.produits?.[fieldId];
+    if (!sel?.refBase) return false;
+    const field = fields.find((f) => f.id === fieldId);
+    const option = field?.options?.find((o) => o.refBase === sel.refBase);
+    return option?.replacesEmbouts === true;
+  });
 }
 
 /**

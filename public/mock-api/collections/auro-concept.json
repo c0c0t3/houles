@@ -976,6 +976,185 @@
           ]
         },
         {
+          "id": "support_avant",
+          "label": "Support (avant)",
+          "type": "product",
+          "diametreFrom": "avant",
+          "_note": "Double + mur a mur uniquement : la naissance murale cote avant depend du diametre avant (25 ou 31, jamais 16 dans les combos actuels). Copie des options 66739/66741 du champ support, voir docs/module-5-etapes-intermediaires.md.",
+          "showIf": {
+            "type_pose": [
+              "mur_mur"
+            ],
+            "type_de_support": [
+              "double"
+            ]
+          },
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "66739",
+              "label": "2 Naissances murales Ø 25 mm",
+              "productUrl": "https://www.houles.com/produit/66739",
+              "qtyParUnite": 2,
+              "replacesEmbouts": true,
+              "showIf": {
+                "diametre": [
+                  "25"
+                ]
+              },
+              "variants": {
+                "24": {
+                  "id": "66739-24",
+                  "prix": 50.52,
+                  "stock": 8,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_24_S1_1.jpg"
+                },
+                "31": {
+                  "id": "66739-31",
+                  "prix": 10.15,
+                  "stock": 55,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_31_S1_1.jpg"
+                },
+                "34": {
+                  "id": "66739-34",
+                  "prix": 24.75,
+                  "stock": 154,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_34_S1_1.jpg"
+                },
+                "35": {
+                  "id": "66739-35",
+                  "prix": 9.91,
+                  "stock": 50,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_35_S1_1.jpg"
+                },
+                "38": {
+                  "id": "66739-38",
+                  "prix": 59.55,
+                  "stock": 179,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66739/66739_38_S1_1.jpg"
+                }
+              },
+              "variantType": "coloris"
+            },
+            {
+              "refBase": "66741",
+              "label": "2 Naissances murales Ø 31 mm",
+              "productUrl": "https://www.houles.com/produit/66741",
+              "qtyParUnite": 2,
+              "replacesEmbouts": true,
+              "showIf": {
+                "diametre": [
+                  "31"
+                ]
+              },
+              "variants": {
+                "24": {
+                  "id": "66741-24",
+                  "prix": 47.24,
+                  "stock": 56,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_24_S1_1.jpg"
+                },
+                "31": {
+                  "id": "66741-31",
+                  "prix": 40.34,
+                  "stock": 71,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_31_S1_1.jpg"
+                },
+                "34": {
+                  "id": "66741-34",
+                  "prix": 66.28,
+                  "stock": 1,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_34_S1_1.jpg"
+                },
+                "35": {
+                  "id": "66741-35",
+                  "prix": 62.63,
+                  "stock": 40,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_35_S1_1.jpg"
+                },
+                "38": {
+                  "id": "66741-38",
+                  "prix": 58.27,
+                  "stock": 87,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66741/66741_38_S1_1.jpg"
+                }
+              },
+              "variantType": "coloris"
+            }
+          ]
+        },
+        {
+          "id": "support_arriere",
+          "label": "Support (arrière)",
+          "type": "product",
+          "diametreFrom": "arriere",
+          "_note": "Double + mur a mur uniquement : la naissance murale cote arriere est toujours Ø16 dans les combos actuels (16+25, 16+31). Copie de l'option 66737 du champ support.",
+          "showIf": {
+            "type_pose": [
+              "mur_mur"
+            ],
+            "type_de_support": [
+              "double"
+            ]
+          },
+          "quantity": {
+            "mode": "fixed",
+            "value": 1,
+            "unitSource": "qtyParUnite"
+          },
+          "options": [
+            {
+              "refBase": "66737",
+              "label": "2 Naissances murales Ø 16 mm",
+              "productUrl": "https://www.houles.com/produit/66737",
+              "qtyParUnite": 2,
+              "replacesEmbouts": true,
+              "showIf": {
+                "diametre": [
+                  "16"
+                ]
+              },
+              "variants": {
+                "24": {
+                  "id": "66737-24",
+                  "prix": 54.04,
+                  "stock": 6,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_24_S1_1.jpg"
+                },
+                "31": {
+                  "id": "66737-31",
+                  "prix": 61.39,
+                  "stock": 62,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_31_S1_1.jpg"
+                },
+                "34": {
+                  "id": "66737-34",
+                  "prix": 24.07,
+                  "stock": 188,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_34_S1_1.jpg"
+                },
+                "35": {
+                  "id": "66737-35",
+                  "prix": 15.38,
+                  "stock": 189,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_35_S1_1.jpg"
+                },
+                "38": {
+                  "id": "66737-38",
+                  "prix": 72.24,
+                  "stock": 22,
+                  "image": "https://www.houles.com/commun/visuels_articles/6/66737/66737_38_S1_1.jpg"
+                }
+              },
+              "variantType": "label"
+            }
+          ]
+        },
+        {
           "id": "opt_adaptateur_corner",
           "label": "Adaptateur de tube pour corner",
           "type": "product",
@@ -2214,7 +2393,8 @@
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
-                  "25"
+                  "25",
+                  "16+25"
                 ],
                 "selected:support": {
                   "not": [
@@ -2264,7 +2444,8 @@
               "qtyParUnite": 6,
               "showIf": {
                 "diametre": [
-                  "31"
+                  "31",
+                  "16+31"
                 ],
                 "selected:support": {
                   "not": [
