@@ -212,7 +212,9 @@ export default class Configurator extends Base {
     // Un nouveau support "naissance murale" remplace les embouts : purge la sélection embout
     // existante. SUPPORT_FIELD_IDS couvre aussi support_avant/support_arriere (double mur à mur).
     if (SUPPORT_FIELD_IDS.includes(fieldId)) this._purgeEmboutsIfReplaced();
-    this._refreshCurrentStep();
+    // Toutes les étapes, pas seulement la courante : un autre champ produit peut dépendre de
+    // celui-ci (ex : selected:support) même sur une étape non affichée — voir _refreshAllSteps().
+    this._refreshAllSteps();
     this._renderRecap();
     this._refreshLivePreview();
     console.log('[SYH] selection', { ...this.selection });
@@ -233,30 +235,37 @@ export default class Configurator extends Base {
         child.applyGlobalColoris(value);
       }
     }
-    // Invalidation limitée à l'étape courante — les étapes produit se resynchronisent à l'affichage.
+    // Invalidation limitée à l'étape courante (params seulement — les produits n'y vivent pas :
+    // ils sont recalculés juste après par _refreshAllSteps(), quelle que soit leur étape).
     invalidateDownstream(this.schema.steps[this.currentStepIndex], this.selection, fieldId);
     initDefaultSelection(this.schema, this.selection);
     // Le défaut recalculé du support peut désormais remplacer les embouts (ex : changement de diamètre).
     this._purgeEmboutsIfReplaced();
-    this._refreshCurrentStep();
+    // Toutes les étapes : un changement de paramètre (ex : diamètre) peut changer le défaut d'un
+    // champ produit situé sur une étape que l'utilisateur n'a pas encore visitée (ex : tube) — ne
+    // pas se limiter à l'étape courante, sinon ce champ reste figé sur son ancien défaut jusqu'à
+    // ce que l'utilisateur affiche enfin son étape. Voir docs/module-5-etapes-intermediaires.md.
+    this._refreshAllSteps();
     this._renderRecap();
     this._refreshLivePreview();
     console.log('[SYH] selection', { ...this.selection });
   }
 
   /**
-   * Met à jour la visibilité des champs et rafraîchit les composants de l'étape courante.
-   * Appelé après chaque changement de sélection et à chaque navigation.
-   * Seuls les composants visibles reçoivent refresh() — les cachés gardent leur état figé.
+   * Met à jour la visibilité des champs et rafraîchit les composants d'une étape donnée.
+   * Seuls les composants visibles reçoivent refresh() — les cachés gardent leur état figé
+   * (mais restent à jour au prochain passage où leur champ redevient visible).
+   *
+   * @param {number} stepIndex
    */
-  _refreshCurrentStep() {
-    const stepEl = this._stepEls[this.currentStepIndex];
+  _refreshStep(stepIndex) {
+    const stepEl = this._stepEls[stepIndex];
     // Sécurité : appelé avant _renderAllSteps() si le schéma n'est pas encore chargé.
     if (!stepEl) return;
 
     // 1. Visibilité au niveau champ (showIf sur le field lui-même).
     // On utilise les champs expandés (splitByConfig déjà résolu) pour avoir tous les IDs réels.
-    const expandedFields = this._expandedStepFields[this.currentStepIndex] ?? [];
+    const expandedFields = this._expandedStepFields[stepIndex] ?? [];
     for (const field of expandedFields) {
       const fieldEl = stepEl.querySelector(`[data-field-id="${field.id}"]`);
       // Le champ peut être absent du DOM si son template était manquant au render initial.
@@ -267,11 +276,11 @@ export default class Configurator extends Base {
     refreshTubeStep(stepEl, this.selection, expandedFields);
 
     // 2bis. Étape Embouts : message + masquage si le support sélectionné remplace les embouts.
-    if (this.schema.steps[this.currentStepIndex]?.id === 'embouts') {
+    if (this.schema.steps[stepIndex]?.id === 'embouts') {
       refreshEmboutsStep(stepEl, this.schema, this.selection);
     }
 
-    // 3. Double filtre : composants de l'étape active ET dont le champ est visible.
+    // 3. Double filtre : composants de cette étape ET dont le champ est visible.
     const allChildren = [
       ...(this.$children.RadioField ?? []),
       ...(this.$children.LengthField ?? []),
@@ -280,6 +289,29 @@ export default class Configurator extends Base {
 
     for (const child of allChildren) {
       child.refresh(this.selection);
+    }
+  }
+
+  /**
+   * Rafraîchit uniquement l'étape actuellement affichée — utilisé à la navigation (showStep),
+   * où seule la visibilité DOM de l'étape qui apparaît a besoin d'être resynchronisée.
+   */
+  _refreshCurrentStep() {
+    this._refreshStep(this.currentStepIndex);
+  }
+
+  /**
+   * Rafraîchit TOUTES les étapes, pas seulement celle affichée. Nécessaire après tout changement
+   * de sélection (paramètre ou produit) : un champ produit d'une étape non visitée doit recalculer
+   * son défaut immédiatement (ex : changer le diamètre doit mettre à jour le tube par défaut même
+   * si on reste sur l'étape 1) — voir docs/module-5-etapes-intermediaires.md, "la résolution reste
+   * dynamique tant que l'utilisateur n'a rien cliqué". `_refreshStep` ne resynchronise chaque champ
+   * produit qu'après avoir recalculé le `hidden` de son étape, donc pas de risque de faire émettre
+   * un champ dont le `showIf` de champ ne passe pas dans la config courante.
+   */
+  _refreshAllSteps() {
+    for (let i = 0; i < this.schema.steps.length; i++) {
+      this._refreshStep(i);
     }
   }
 
