@@ -31,6 +31,13 @@ export function initDefaultSelection(schema, selection) {
         continue;
       }
 
+      // Les champs number n'ont pas d'options[] non plus — valeur initiale = field.default
+      // (voir docs/module-9-systeme-tirage.md, section 3.1).
+      if (field.type === 'number') {
+        selection[field.id] = field.default ?? null;
+        continue;
+      }
+
       let opts = [];
       if (field.dependsOn) {
         // Options groupées par valeur parente, ex : options["simple"] ou options["double"].

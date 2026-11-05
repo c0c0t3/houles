@@ -10,15 +10,35 @@ import { isVisible } from './show-if.js';
  */
 
 /**
+ * Longueur effective de rail à utiliser pour tout calcul de segments/coupes. En tirage
+ * (`systeme_tirage: "oui"`), le rail est coupé plus court que la longueur affichée pour laisser la
+ * place au mécanisme de tirage en bout de course (`collection.retraitsLongueur`, par pose — plus
+ * grand en mur à mur). Hors tirage, la longueur brute est utilisée telle quelle (inchangé).
+ * Voir docs/module-9-systeme-tirage.md, section 5.
+ *
+ * @param {object} selection
+ * @param {object} [collection] - `schema.collection` (retraitsLongueur) ; absent hors tirage (AURO...).
+ * @returns {number}
+ */
+export function resolveRailLongueur(selection, collection) {
+  const longueur = Number(selection.longueur);
+  if (selection.systeme_tirage !== 'oui') return longueur;
+  const poseKey = selection.type_pose === 'mur_a_mur' ? 'mur_a_mur' : 'autre';
+  const retrait = collection?.retraitsLongueur?.[poseKey];
+  return retrait ? longueur - retrait : longueur;
+}
+
+/**
  * Construit le tableau des tubes à analyser depuis la sélection courante.
  *
  * @param {object} selection         - Sélection courante (selection.longueur, selection.produits)
  * @param {object[]} expandedFields  - Champs expandés de l'étape tube (_expandedStepFields)
+ * @param {object} [collection]      - `schema.collection`, pour le retrait de longueur en tirage
  * @returns {Array<{reference: string, quantite: number, longueurStock: number}>}
  */
-export function buildTubeInputs(selection, expandedFields) {
+export function buildTubeInputs(selection, expandedFields, collection) {
   const tubeFieldIds = ['tube', 'tube_avant', 'tube_arriere'];
-  const longueur = Number(selection.longueur);
+  const longueur = resolveRailLongueur(selection, collection);
   const inputs = [];
 
   for (const fieldId of tubeFieldIds) {
@@ -52,10 +72,11 @@ export function buildTubeInputs(selection, expandedFields) {
  * @param {object} selection      - Sélection courante (selection.longueur, selection.produits)
  * @param {string} tubeFieldId    - Id du champ tube (ex : 'tube', 'tube_avant', 'tube_arriere')
  * @param {object[]} expandedFields - Champs expandés de l'étape courante
+ * @param {object} [collection]   - `schema.collection`, pour le retrait de longueur en tirage
  * @returns {number}
  */
-export function computeTubeQty(selection, tubeFieldId, expandedFields) {
-  const longueur = Number(selection.longueur);
+export function computeTubeQty(selection, tubeFieldId, expandedFields, collection) {
+  const longueur = resolveRailLongueur(selection, collection);
   if (!longueur) return 0;
   const tubeField = expandedFields.find((f) => f.id === tubeFieldId);
   const sel = selection.produits[tubeFieldId];

@@ -153,6 +153,28 @@
           </template>
 
           {# ------------------------------------------------------------------ #}
+          {# Template NumberField — saisie numérique bornée (min/max/default)  #}
+          {# Distinct de LengthField : pas de presets ni de "sur-mesure", une   #}
+          {# simple valeur bornée (ex : hauteur du cordon de tirage). Voir      #}
+          {# docs/module-9-systeme-tirage.md, section 3.1.                     #}
+          {# ------------------------------------------------------------------ #}
+          <template data-template="number">
+            <div data-component="NumberField" class="mb-6 min-w-0 max-w-full">
+              <fieldset class="border-0 p-0 m-0 min-w-0 max-w-full">
+                <legend data-ref="label" class="block text-sm font-medium uppercase mb-3"></legend>
+                <div class="flex items-center gap-2">
+                  <input
+                    type="number"
+                    data-ref="input"
+                    class="w-28 px-3 py-2 rounded ring-1 ring-purple/20 bg-transparent outline-none text-sm"
+                  />
+                  <span data-ref="unit" class="text-sm text-gray-500"></span>
+                </div>
+              </fieldset>
+            </div>
+          </template>
+
+          {# ------------------------------------------------------------------ #}
           {# Template ProductField — grille de toutes les options visibles   #}
           {# ------------------------------------------------------------------ #}
           <template data-template="product">

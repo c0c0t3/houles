@@ -6,6 +6,41 @@
 
 ---
 
+## 2026-11-05 — Système de tirage (nouvelle collection Alium)
+
+Nouvelle collection de démonstration **Alium** (rail de tringlerie), avec un système de tirage
+optionnel (cordon) — première collection à utiliser ce mécanisme.
+
+**Choix « Avec tirage » à l'étape 1.** Active automatiquement un jeu de choix adapté : le rideau
+double passe par un mode « avec/sans recouvrement » propre au tirage plutôt que par le doublement
+habituel du support, un réglage de hauteur et de position du cordon apparaît, et l'étape Galets
+propose les bons produits (rouleurs/galets de tirage) plutôt que les anneaux classiques.
+
+**Les champs à réponse unique ne sont plus affichés.** Quand un réglage (ex : « Diamètre », « Tube
+ou rail ») n'a qu'un seul choix possible compte tenu de la configuration en cours, il n'est plus
+montré à l'utilisateur — inutile de lui demander de choisir quand il n'y a rien à choisir. La
+valeur reste résolue automatiquement et reste visible dans le récapitulatif. Seul le coloris
+échappe à cette règle : une seule couleur disponible reste affichée.
+
+**Nouveau champ de saisie numérique bornée**, utilisé pour la hauteur du cordon de tirage (entre
+100 et 600 cm) — une simple valeur à taper, sans les préréglages du champ longueur habituel.
+
+**Couleurs propres aux articles de tirage.** Certains articles de tirage (galets, rouleurs) ont
+leurs propres couleurs (blanc/noir/gris), indépendantes de la finition choisie pour le reste de la
+tringlerie — la première couleur disponible est retenue par défaut. Correctif au passage : les
+pastilles de couleur de ces articles s'affichaient vides faute de visuel dédié — elles affichent
+maintenant la couleur en aplat.
+
+**Longueur de rail recalculée en tirage.** Le rail est coupé plus court que la longueur affichée,
+pour laisser la place au mécanisme en bout de course — le calcul de quantité (et de découpe) en
+tient compte automatiquement, selon le type de pose.
+
+**Forfait de montage.** En tirage, certains articles (galets, pattes de retour, accessoires...) ne
+sont pas facturés à la pièce : ils apparaissent dans le récapitulatif sans prix unitaire, et une
+ligne « Forfait de montage » résume le service.
+
+---
+
 ## 2026-09-29 — Nouvelle étape Accessoires + correctif sur les présélections automatiques
 
 **Étape « Accessoire » ajoutée** après Embouts, sur Auro Concept : lance-rideau, gond et crochet,

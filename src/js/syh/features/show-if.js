@@ -59,3 +59,37 @@ export function isVisible(option, selection) {
     return true;
   });
 }
+
+/**
+ * Résout la liste d'options d'un champ `radio` selon la sélection courante — gère `dependsOn`
+ * (options groupées par valeur parente, ex : `diametre.options["simple"]` / `["double"]`). Même
+ * logique que `default-selection.js` / `recap.js`, centralisée ici pour `isFieldHidden`.
+ */
+function resolveFieldOptions(field, selection) {
+  if (field.dependsOn) {
+    return field.options?.[selection[field.dependsOn]] ?? [];
+  }
+  return Array.isArray(field.options) ? field.options : [];
+}
+
+/**
+ * Vrai si ce champ doit être masqué à l'affichage. Combine le `showIf` classique du champ avec la
+ * règle « radio à une seule option visible » (Module 9, §3.2) : un `radio` dont une seule option
+ * passe son `showIf` est choisi d'office (voir `initDefaultSelection`, qui prend déjà la première
+ * option visible) mais n'a pas besoin d'être montré à l'utilisateur — rien à choisir. Exception :
+ * `coloris`, un nuancier à une seule couleur reste affiché.
+ *
+ * @param {object} field
+ * @param {object} selection
+ * @returns {boolean}
+ */
+export function isFieldHidden(field, selection) {
+  if (!isVisible(field, selection)) return true;
+  if (field.type === 'radio' && field.id !== 'coloris') {
+    const visibleCount = resolveFieldOptions(field, selection).filter((o) =>
+      isVisible(o, selection),
+    ).length;
+    if (visibleCount === 1) return true;
+  }
+  return false;
+}

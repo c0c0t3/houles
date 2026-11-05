@@ -1,0 +1,1615 @@
+{
+  "collection": {
+    "id": "alium",
+    "modeleId": 1029,
+    "name": "ALIUM",
+    "renderMode": "none",
+    "serviceCoupeEan": "3566681696149",
+    "coloris": [
+      {
+        "id": "55",
+        "label": "Bronze Brossé mat",
+        "thumbnail": null
+      },
+      {
+        "id": "56",
+        "label": "Blanc Mat",
+        "thumbnail": null
+      },
+      {
+        "id": "57",
+        "label": "Nickel Brossé Mat",
+        "thumbnail": null
+      },
+      {
+        "id": "58",
+        "label": "Noir Brossé Mat",
+        "thumbnail": null
+      },
+      {
+        "id": "noir",
+        "label": "Noir",
+        "hex": "#1E1E1E",
+        "couleurPropre": true
+      },
+      {
+        "id": "blanc",
+        "label": "Blanc",
+        "hex": "#FFFFFF",
+        "couleurPropre": true
+      },
+      {
+        "id": "gris",
+        "label": "Gris",
+        "hex": "#9A9A9A",
+        "couleurPropre": true
+      }
+    ],
+    "forfait": {
+      "id": "89199",
+      "label": "FORFAIT MONTAGE AVEC CORDON DE TIRAGE - SANS SUPPORTS"
+    },
+    "retraitsLongueur": {
+      "mur_a_mur": 6,
+      "autre": 5.4
+    }
+  },
+  "steps": [
+    {
+      "id": "configuration",
+      "label": "Configuration",
+      "fields": [
+        {
+          "id": "systeme_tirage",
+          "label": "Configuration de tirage",
+          "type": "radio",
+          "variant": "label",
+          "isParam": true,
+          "options": [
+            {
+              "id": "non",
+              "label": "Non"
+            },
+            {
+              "id": "oui",
+              "label": "Oui"
+            }
+          ]
+        },
+        {
+          "id": "type_de_support",
+          "label": "Type de configuration",
+          "type": "radio",
+          "variant": "label_image",
+          "isParam": true,
+          "options": [
+            {
+              "id": "simple",
+              "label": "Simple"
+            },
+            {
+              "id": "double",
+              "label": "Double",
+              "showIf": {
+                "systeme_tirage": [
+                  "non"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "type_tringle",
+          "label": "Tube ou rail",
+          "type": "radio",
+          "variant": "label_image",
+          "isParam": true,
+          "options": [
+            {
+              "id": "rail",
+              "label": "Rail"
+            }
+          ]
+        },
+        {
+          "id": "type_tringle_arriere",
+          "label": "Tube ou rail (arrière)",
+          "type": "radio",
+          "variant": "label_image",
+          "isParam": true,
+          "showIf": {
+            "type_de_support": [
+              "double"
+            ]
+          },
+          "options": [
+            {
+              "id": "rail",
+              "label": "Rail"
+            }
+          ]
+        },
+        {
+          "id": "diametre",
+          "label": "Diametre",
+          "type": "radio",
+          "variant": "label",
+          "isParam": true,
+          "dependsOn": "type_de_support",
+          "options": {
+            "simple": [
+              {
+                "id": "28",
+                "label": "Ø 28 mm"
+              }
+            ],
+            "double": [
+              {
+                "id": "28+28",
+                "label": "Ø 28 mm avant / Ø 28 mm arrière",
+                "avant": "28",
+                "arriere": "28"
+              }
+            ]
+          }
+        },
+        {
+          "id": "type_rideau",
+          "label": "Type de rideau",
+          "type": "radio",
+          "variant": "label_image",
+          "isParam": true,
+          "options": [
+            {
+              "id": "simple",
+              "label": "Simple"
+            },
+            {
+              "id": "double",
+              "label": "Double",
+              "showIf": {
+                "systeme_tirage": [
+                  "non"
+                ]
+              }
+            },
+            {
+              "id": "double_avec_recouvre",
+              "label": "Double avec recouvrement",
+              "showIf": {
+                "systeme_tirage": [
+                  "oui"
+                ]
+              }
+            },
+            {
+              "id": "double_sans_recouvre",
+              "label": "Double sans recouvrement",
+              "showIf": {
+                "systeme_tirage": [
+                  "oui"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "type_pose",
+          "label": "Type de pose",
+          "type": "radio",
+          "variant": "label_image",
+          "isParam": true,
+          "options": [
+            {
+              "id": "mur_plafond",
+              "label": "Mur / plafond"
+            },
+            {
+              "id": "mur_a_mur",
+              "label": "Mur à mur"
+            }
+          ]
+        },
+        {
+          "id": "longueur",
+          "label": "Longueur",
+          "type": "length",
+          "isParam": true,
+          "presets": [
+            180,
+            240,
+            300
+          ],
+          "custom": {
+            "enabled": true,
+            "min": 40,
+            "max": 600
+          }
+        },
+        {
+          "id": "hauteur_cordon",
+          "label": "Hauteur du cordon",
+          "isParam": true,
+          "type": "number",
+          "min": 100,
+          "max": 600,
+          "default": 200,
+          "unit": "cm",
+          "showIf": {
+            "systeme_tirage": [
+              "oui"
+            ]
+          }
+        },
+        {
+          "id": "position_cordon",
+          "label": "Position du cordon",
+          "isParam": true,
+          "type": "radio",
+          "variant": "label",
+          "options": [
+            {
+              "id": "gauche",
+              "label": "Cordon à gauche"
+            },
+            {
+              "id": "droite",
+              "label": "Cordon à droite"
+            }
+          ],
+          "showIf": {
+            "systeme_tirage": [
+              "oui"
+            ]
+          }
+        },
+        {
+          "id": "coloris",
+          "label": "Coloris",
+          "type": "radio",
+          "variant": "label_thumbnail",
+          "isParam": true,
+          "options": [
+            {
+              "id": "55",
+              "label": "Bronze Brossé mat",
+              "thumbnail": null
+            },
+            {
+              "id": "56",
+              "label": "Blanc Mat",
+              "thumbnail": null
+            },
+            {
+              "id": "57",
+              "label": "Nickel Brossé Mat",
+              "thumbnail": null
+            },
+            {
+              "id": "58",
+              "label": "Noir Brossé Mat",
+              "thumbnail": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "support",
+      "label": "Support",
+      "fields": [
+        {
+          "id": "support",
+          "label": "Support principal",
+          "type": "product",
+          "default": "first_visible",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "options": [
+            {
+              "refBase": "64070",
+              "label": "2 SUPPORTS MUR POUR RAILS ALIUM Ø 28MM",
+              "productUrl": "/FR-fr/product/2-supports-mur-pour-rails-alium-28mm-64070",
+              "qtyParUnite": 2,
+              "showIf": {
+                "diametre": [
+                  "28"
+                ],
+                "type_de_support": [
+                  "simple"
+                ],
+                "type_pose": [
+                  "mur_plafond"
+                ]
+              },
+              "variants": {
+                "55": {
+                  "id": "64070-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_55_S1_1.jpg"
+                },
+                "56": {
+                  "id": "64070-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_56_S1_1.jpg"
+                },
+                "57": {
+                  "id": "64070-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_57_S1_1.jpg"
+                },
+                "58": {
+                  "id": "64070-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_58_S1_1.jpg"
+                }
+              }
+            },
+            {
+              "refBase": "64072",
+              "label": "2 SUPPORTS DOUBLES POUR RAILS ALIUM Ø 28MM",
+              "productUrl": "/FR-fr/product/2-supports-doubles-pour-rails-alium-28mm-64072",
+              "qtyParUnite": 2,
+              "showIf": {
+                "diametre": [
+                  "28+28"
+                ],
+                "type_de_support": [
+                  "double"
+                ],
+                "type_pose": [
+                  "mur_plafond"
+                ]
+              },
+              "variants": {
+                "55": {
+                  "id": "64072-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64072-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64072-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64072-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_58_L1_1.jpg"
+                }
+              }
+            },
+            {
+              "refBase": "64075",
+              "label": "2 NAISSANCES MURALES Ø 28MM",
+              "productUrl": "/FR-fr/product/2-naissances-murales-28mm-64075",
+              "qtyParUnite": 2,
+              "replacesEmbouts": true,
+              "showIf": {
+                "type_pose": [
+                  "mur_a_mur"
+                ]
+              },
+              "variants": {
+                "55": {
+                  "id": "64075-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64075/64075_55_S1_1.jpg"
+                },
+                "56": {
+                  "id": "64075-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64075/64075_56_S1_1.jpg"
+                },
+                "57": {
+                  "id": "64075-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64075/64075_57_S1_1.jpg"
+                },
+                "58": {
+                  "id": "64075-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64075/64075_58_S1_1.jpg"
+                }
+              }
+            },
+            {
+              "refBase": "64074",
+              "label": "2 SUPPORTS PLAFOND FINS ALIUM",
+              "productUrl": "/FR-fr/product/2-supports-plafond-fins-alium-64074",
+              "qtyParUnite": 2,
+              "variants": {
+                "55": {
+                  "id": "64074-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64074/64074_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64074-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64074/64074_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64074-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64074/64074_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64074-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64074/64074_58_L1_1.jpg"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_jambe_force",
+          "label": "Jambe de force",
+          "type": "product",
+          "default": "first_visible",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "options": [
+            {
+              "refBase": "64079",
+              "label": "2 JAMBES DE FORCE ALIUM",
+              "productUrl": "/FR-fr/product/2-jambes-de-force-alium-64079",
+              "qtyParUnite": 2,
+              "showIf": {
+                "type_de_support": [
+                  "double"
+                ]
+              },
+              "variants": {
+                "55": {
+                  "id": "64079-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64079/64079_55_S1_1.jpg"
+                },
+                "56": {
+                  "id": "64079-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64079/64079_56_S1_1.jpg"
+                },
+                "57": {
+                  "id": "64079-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64079/64079_57_S1_1.jpg"
+                },
+                "58": {
+                  "id": "64079-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64079/64079_58_S1_1.jpg"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_support_interm",
+          "label": "Support intermédiaire",
+          "type": "product",
+          "default": "first_visible",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans support intermédiaire",
+              "isNone": true
+            },
+            {
+              "refBase": "64071",
+              "label": "SUPPORT INTERMEDIAIRE POUR RAIL ALIUM Ø 28MM",
+              "productUrl": "/FR-fr/product/support-intermediaire-pour-rail-alium-28mm-64071",
+              "showIfAny": [
+                {
+                  "type_de_support": [
+                    "simple"
+                  ]
+                },
+                {
+                  "type_de_support": [
+                    "simple"
+                  ],
+                  "type_pose": [
+                    "mur_a_mur"
+                  ]
+                }
+              ],
+              "variants": {
+                "55": {
+                  "id": "64071-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64071/64071_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64071-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64071/64071_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64071-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64071/64071_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64071-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64071/64071_58_L1_1.jpg"
+                }
+              }
+            },
+            {
+              "refBase": "64070",
+              "label": "2 SUPPORTS MUR POUR RAILS ALIUM Ø 28MM",
+              "productUrl": "/FR-fr/product/2-supports-mur-pour-rails-alium-28mm-64070",
+              "qtyParUnite": 2,
+              "showIf": {
+                "diametre": [
+                  "28"
+                ],
+                "type_de_support": [
+                  "simple"
+                ],
+                "type_pose": [
+                  "mur_plafond"
+                ]
+              },
+              "variants": {
+                "55": {
+                  "id": "64070-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_55_S1_1.jpg"
+                },
+                "56": {
+                  "id": "64070-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_56_S1_1.jpg"
+                },
+                "57": {
+                  "id": "64070-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_57_S1_1.jpg"
+                },
+                "58": {
+                  "id": "64070-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_58_S1_1.jpg"
+                }
+              }
+            },
+            {
+              "refBase": "64073",
+              "label": "SUPPORT INTERM. DBL POUR RAILS ALIUM Ø 28MM",
+              "productUrl": "/FR-fr/product/support-interm-dbl-pour-rails-alium-28mm-64073",
+              "showIfAny": [
+                {
+                  "type_de_support": [
+                    "double"
+                  ],
+                  "type_pose": [
+                    "mur_plafond"
+                  ]
+                },
+                {
+                  "type_de_support": [
+                    "double"
+                  ],
+                  "type_pose": [
+                    "mur_a_mur"
+                  ]
+                }
+              ],
+              "variants": {
+                "55": {
+                  "id": "64073-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64073/64073_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64073-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64073/64073_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64073-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64073/64073_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64073-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64073/64073_58_L1_1.jpg"
+                }
+              }
+            },
+            {
+              "refBase": "64072",
+              "label": "2 SUPPORTS DOUBLES POUR RAILS ALIUM Ø 28MM",
+              "productUrl": "/FR-fr/product/2-supports-doubles-pour-rails-alium-28mm-64072",
+              "qtyParUnite": 2,
+              "showIf": {
+                "diametre": [
+                  "28+28"
+                ],
+                "type_de_support": [
+                  "double"
+                ],
+                "type_pose": [
+                  "mur_plafond"
+                ]
+              },
+              "variants": {
+                "55": {
+                  "id": "64072-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64072-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64072-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64072-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_58_L1_1.jpg"
+                }
+              }
+            }
+          ],
+          "recommendations": [
+            {
+              "refBases": [
+                "64071",
+                "64070",
+                "64073",
+                "64072"
+              ],
+              "defaultIf": {
+                "longueur": {
+                  "gt": 160
+                }
+              },
+              "defaultMessage": "Jambes de force fortement conseillées pour les supports longs ou doubles.",
+              "defaultColor": "warning",
+              "defaultIcon": "lightbulb"
+            }
+          ]
+        },
+        {
+          "id": "opt_jambe_force_interm",
+          "label": "Jambe de force intermédiaire",
+          "type": "product",
+          "default": "first_visible",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans jambe de force intermédiaire",
+              "isNone": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tube",
+      "label": "Rail",
+      "fields": [
+        {
+          "id": "tube",
+          "label": "Rail",
+          "type": "product",
+          "default": "first_visible",
+          "splitByConfig": "type_de_support",
+          "configs": {
+            "simple": [
+              {
+                "id": "tube"
+              }
+            ],
+            "double": [
+              {
+                "id": "tube_avant",
+                "label": "Rail (avant)",
+                "diametreFrom": "avant"
+              },
+              {
+                "id": "tube_arriere",
+                "label": "Rail (arrière)",
+                "diametreFrom": "arriere"
+              }
+            ]
+          },
+          "quantity": {
+            "mode": "segmented"
+          },
+          "options": [
+            {
+              "refBase": "64060",
+              "label": "RAIL ALIUM ø 28mm L 180CM",
+              "productUrl": "/FR-fr/product/rail-alium-28mm-l-180cm-64060",
+              "tubeLength": 180,
+              "variants": {
+                "55": {
+                  "id": "64060-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64060/64060_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64060-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64060/64060_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64060-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64060/64060_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64060-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64060/64060_58_L1_1.jpg"
+                }
+              },
+              "showIfAny": [
+                {
+                  "systeme_tirage": [
+                    "non"
+                  ],
+                  "longueur": {
+                    "lte": 180
+                  }
+                },
+                {
+                  "systeme_tirage": [
+                    "non"
+                  ],
+                  "longueur": {
+                    "gt": 300,
+                    "lte": 360
+                  }
+                },
+                {
+                  "systeme_tirage": [
+                    "oui"
+                  ],
+                  "longueur": {
+                    "lte": 185
+                  }
+                },
+                {
+                  "systeme_tirage": [
+                    "oui"
+                  ],
+                  "longueur": {
+                    "gt": 305,
+                    "lte": 365
+                  }
+                }
+              ]
+            },
+            {
+              "refBase": "64061",
+              "label": "RAIL ALIUM ø 28mm L 240CM",
+              "productUrl": "/FR-fr/product/rail-alium-28mm-l-240cm-64061",
+              "tubeLength": 240,
+              "variants": {
+                "55": {
+                  "id": "64061-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64061/64061_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64061-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64061/64061_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64061-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64061/64061_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64061-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64061/64061_58_L1_1.jpg"
+                }
+              },
+              "showIfAny": [
+                {
+                  "systeme_tirage": [
+                    "non"
+                  ],
+                  "longueur": {
+                    "gt": 180,
+                    "lte": 240
+                  }
+                },
+                {
+                  "systeme_tirage": [
+                    "non"
+                  ],
+                  "longueur": {
+                    "gt": 360,
+                    "lte": 480
+                  }
+                },
+                {
+                  "systeme_tirage": [
+                    "oui"
+                  ],
+                  "longueur": {
+                    "gt": 185,
+                    "lte": 245
+                  }
+                },
+                {
+                  "systeme_tirage": [
+                    "oui"
+                  ],
+                  "longueur": {
+                    "gt": 365,
+                    "lte": 485
+                  }
+                }
+              ]
+            },
+            {
+              "refBase": "64062",
+              "label": "RAIL ALIUM ø 28mm L 300CM",
+              "productUrl": "/FR-fr/product/rail-alium-28mm-l-300cm-64062",
+              "tubeLength": 300,
+              "variants": {
+                "55": {
+                  "id": "64062-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64062/64062_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64062-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64062/64062_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64062-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64062/64062_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64062-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64062/64062_58_L1_1.jpg"
+                }
+              },
+              "showIfAny": [
+                {
+                  "systeme_tirage": [
+                    "non"
+                  ],
+                  "longueur": {
+                    "gt": 240,
+                    "lte": 300
+                  }
+                },
+                {
+                  "systeme_tirage": [
+                    "non"
+                  ],
+                  "longueur": {
+                    "gt": 480
+                  }
+                },
+                {
+                  "systeme_tirage": [
+                    "oui"
+                  ],
+                  "longueur": {
+                    "gt": 245,
+                    "lte": 305
+                  }
+                },
+                {
+                  "systeme_tirage": [
+                    "oui"
+                  ],
+                  "longueur": {
+                    "gt": 485
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "about_tube",
+          "label": "About de rail",
+          "type": "product",
+          "default": "first_visible",
+          "splitByConfig": "type_de_support",
+          "configs": {
+            "simple": [
+              {
+                "id": "about_tube"
+              }
+            ],
+            "double": [
+              {
+                "id": "about_tube_avant",
+                "label": "About de rail (avant)",
+                "diametreFrom": "avant"
+              },
+              {
+                "id": "about_tube_arriere",
+                "label": "About de rail (arrière)",
+                "diametreFrom": "arriere"
+              }
+            ]
+          },
+          "quantity": {
+            "mode": "segmented_minus_1"
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans about de rail",
+              "isNone": true
+            },
+            {
+              "refBase": "64069",
+              "label": "ABOUT DE RAIL ALIUM",
+              "productUrl": "/FR-fr/product/about-de-rail-alium-64069",
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "28"
+                  ]
+                },
+                {
+                  "diametre": [
+                    "28"
+                  ],
+                  "type_de_support": [
+                    "double"
+                  ]
+                }
+              ],
+              "noColoris": true,
+              "id": "64069"
+            }
+          ],
+          "forfait": true
+        }
+      ]
+    },
+    {
+      "id": "anneaux",
+      "label": "Galets",
+      "fields": [
+        {
+          "id": "anneaux",
+          "label": "Galets",
+          "type": "product",
+          "default": "first_visible",
+          "splitByConfig": "type_de_support",
+          "configs": {
+            "simple": [
+              {
+                "id": "anneaux"
+              }
+            ],
+            "double": [
+              {
+                "id": "anneaux_avant",
+                "label": "Galets (avant)",
+                "diametreFrom": "avant"
+              },
+              {
+                "id": "anneaux_arriere",
+                "label": "Galets (arrière)",
+                "diametreFrom": "arriere"
+              }
+            ]
+          },
+          "quantity": {
+            "mode": "fixed",
+            "value": 30
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans galets",
+              "isNone": true
+            },
+            {
+              "refBase": "carte-23397",
+              "label": "KIT WAVE 3M - GALETS 6CM",
+              "productUrl": "/FR-fr/product/kit-wave-3m-galets-6cm-noir-23397",
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "28"
+                  ]
+                },
+                {
+                  "diametre": [
+                    "28"
+                  ],
+                  "type_de_support": [
+                    "double"
+                  ]
+                }
+              ],
+              "couleurPropre": true,
+              "variantType": "coloris",
+              "variants": {
+                "noir": {
+                  "id": "23397"
+                },
+                "blanc": {
+                  "id": "23396"
+                }
+              }
+            },
+            {
+              "refBase": "carte-23398",
+              "label": "KIT WAVE 3M - GALETS 8CM",
+              "productUrl": "/FR-fr/product/kit-wave-3m-galets-8cm-23398",
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "28"
+                  ]
+                },
+                {
+                  "diametre": [
+                    "28"
+                  ],
+                  "type_de_support": [
+                    "double"
+                  ]
+                }
+              ],
+              "couleurPropre": true,
+              "variantType": "coloris",
+              "variants": {
+                "blanc": {
+                  "id": "23398"
+                },
+                "noir": {
+                  "id": "23399"
+                }
+              }
+            },
+            {
+              "refBase": "carte-23400",
+              "label": "KIT ROULEURS WAVE 3M - 8CM",
+              "productUrl": "/FR-fr/product/kit-rouleurs-wave-3m-8cm-blanc-23400",
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "28"
+                  ]
+                },
+                {
+                  "diametre": [
+                    "28"
+                  ],
+                  "type_de_support": [
+                    "double"
+                  ]
+                }
+              ],
+              "couleurPropre": true,
+              "variantType": "coloris",
+              "variants": {
+                "blanc": {
+                  "id": "23400"
+                },
+                "noir": {
+                  "id": "23401"
+                }
+              }
+            },
+            {
+              "refBase": "23085",
+              "label": "32 ROULEURS SILENCIEUX POUR RAIL",
+              "productUrl": "/FR-fr/product/32-rouleurs-silencieux-pour-rail-23085",
+              "qtyParUnite": 32,
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "28"
+                  ]
+                },
+                {
+                  "diametre": [
+                    "28"
+                  ],
+                  "type_de_support": [
+                    "double"
+                  ]
+                }
+              ],
+              "noColoris": true,
+              "id": "23085"
+            },
+            {
+              "refBase": "23071",
+              "label": "30 GALETS POUR RAIL",
+              "productUrl": "/FR-fr/product/30-galets-pour-rail-23071",
+              "qtyParUnite": 30,
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "28"
+                  ]
+                },
+                {
+                  "diametre": [
+                    "28"
+                  ],
+                  "type_de_support": [
+                    "double"
+                  ]
+                }
+              ],
+              "variants": {}
+            },
+            {
+              "refBase": "23073",
+              "label": "30 GALETS TURN POUR RAIL",
+              "productUrl": "/FR-fr/product/30-galets-turn-pour-rail-23073",
+              "qtyParUnite": 30,
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "28"
+                  ]
+                },
+                {
+                  "diametre": [
+                    "28"
+                  ],
+                  "type_de_support": [
+                    "double"
+                  ]
+                }
+              ],
+              "variants": {}
+            },
+            {
+              "refBase": "23072",
+              "label": "100 GALETS POUR RAIL",
+              "productUrl": "/FR-fr/product/100-galets-pour-rail-23072",
+              "qtyParUnite": 100,
+              "variants": {}
+            },
+            {
+              "refBase": "23074",
+              "label": "100 GALETS TURN POUR RAIL",
+              "productUrl": "/FR-fr/product/100-galets-turn-pour-rail-23074",
+              "qtyParUnite": 100,
+              "variants": {}
+            },
+            {
+              "refBase": "23106",
+              "label": "GALETS POUR SYSTÈME VAGUE 6CM - 58M - NOIR",
+              "productUrl": "/FR-fr/product/galets-pour-syst-me-vague-6cm-58m-noir-23106",
+              "qtyParUnite": 58,
+              "noColoris": true,
+              "id": "23106"
+            },
+            {
+              "refBase": "23108",
+              "label": "GALETS POUR SYSTÈME VAGUE 8CM - 75M - NOIR",
+              "productUrl": "/FR-fr/product/galets-pour-syst-me-vague-8cm-75m-noir-23108",
+              "qtyParUnite": 75,
+              "noColoris": true,
+              "id": "23108"
+            },
+            {
+              "refBase": "23238",
+              "label": "ROULEURS POUR SYSTÈME VAGUE 8CM - 37M BLANC",
+              "productUrl": "/FR-fr/product/rouleurs-pour-syst-me-vague-8cm-37m-blanc-23238",
+              "noColoris": true,
+              "id": "23238"
+            },
+            {
+              "refBase": "23239",
+              "label": "ROULEURS POUR SYSTÈME VAGUE 8CM - 37M NOIR",
+              "productUrl": "/FR-fr/product/rouleurs-pour-syst-me-vague-8cm-37m-noir-23239",
+              "noColoris": true,
+              "id": "23239"
+            }
+          ],
+          "showIf": {
+            "systeme_tirage": [
+              "non"
+            ]
+          }
+        },
+        {
+          "id": "galets_tirage",
+          "label": "Galets",
+          "type": "product",
+          "default": "first_visible",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "options": [
+            {
+              "refBase": "23908",
+              "label": "ROULEUR SILENCIEUX POUR RAIL",
+              "productUrl": "/FR-fr/product/rouleur-silencieux-pour-rail-23908",
+              "noColoris": true,
+              "id": "23908"
+            },
+            {
+              "refBase": "carte-23911-16",
+              "label": "GALET RAIL",
+              "productUrl": "/FR-fr/product/galet-rail-23911",
+              "couleurPropre": true,
+              "variantType": "coloris",
+              "variants": {
+                "blanc": {
+                  "id": "23911-16"
+                },
+                "gris": {
+                  "id": "23911-18"
+                },
+                "noir": {
+                  "id": "23911-17"
+                }
+              }
+            },
+            {
+              "refBase": "carte-23902",
+              "label": "GALETS POUR SYSTÈME VAGUE 6CM",
+              "productUrl": "/FR-fr/product/galets-pour-syst-me-vague-6cm-23902",
+              "couleurPropre": true,
+              "variantType": "coloris",
+              "variants": {
+                "blanc": {
+                  "id": "23902"
+                },
+                "noir": {
+                  "id": "23904"
+                }
+              }
+            },
+            {
+              "refBase": "carte-23903",
+              "label": "GALETS POUR SYSTÈME VAGUE 8CM",
+              "productUrl": "/FR-fr/product/galets-pour-syst-me-vague-8cm-23903",
+              "couleurPropre": true,
+              "variantType": "coloris",
+              "variants": {
+                "blanc": {
+                  "id": "23903"
+                },
+                "noir": {
+                  "id": "23905"
+                }
+              }
+            },
+            {
+              "refBase": "carte-23907",
+              "label": "ROULEURS POUR SYSTÈME VAGUE 8CM -",
+              "productUrl": "/FR-fr/product/rouleurs-pour-syst-me-vague-8cm-noir-23907",
+              "couleurPropre": true,
+              "variantType": "coloris",
+              "variants": {
+                "noir": {
+                  "id": "23907"
+                },
+                "blanc": {
+                  "id": "23906"
+                }
+              }
+            }
+          ],
+          "showIf": {
+            "systeme_tirage": [
+              "oui"
+            ]
+          },
+          "forfait": true
+        },
+        {
+          "id": "opt_anneaux_blocage",
+          "label": "Anneaux de blocage",
+          "type": "product",
+          "default": "first_visible",
+          "splitByConfig": "type_de_support",
+          "configs": {
+            "simple": [
+              {
+                "id": "opt_anneaux_blocage"
+              }
+            ],
+            "double": [
+              {
+                "id": "opt_anneaux_blocage_avant",
+                "label": "Anneaux de blocage (avant)",
+                "diametreFrom": "avant"
+              },
+              {
+                "id": "opt_anneaux_blocage_arriere",
+                "label": "Anneaux de blocage (arrière)",
+                "diametreFrom": "arriere"
+              }
+            ]
+          },
+          "quantity": {
+            "mode": "fixed",
+            "value": 2
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans anneaux de blocage",
+              "isNone": true
+            },
+            {
+              "refBase": "23076",
+              "label": "30 ARRETS DE BLOCAGE POUR RAIL",
+              "productUrl": "/FR-fr/product/30-arrets-de-blocage-pour-rail-23076",
+              "qtyParUnite": 30,
+              "variants": {}
+            }
+          ]
+        },
+        {
+          "id": "opt_guide_wave",
+          "label": "Guide Wave",
+          "type": "product",
+          "default": "first_visible",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans guide Wave",
+              "isNone": true
+            },
+            {
+              "refBase": "A9014-W000",
+              "label": "GUIDE WAVE",
+              "productUrl": "/FR-fr/product/guide-wave-A9014",
+              "noColoris": true,
+              "id": "A9014-W000"
+            }
+          ],
+          "showIf": {
+            "systeme_tirage": [
+              "oui"
+            ],
+            "selected:galets_tirage": [
+              "carte-23902",
+              "carte-23903",
+              "carte-23907"
+            ]
+          },
+          "forfait": true
+        }
+      ]
+    },
+    {
+      "id": "embouts",
+      "label": "Embouts",
+      "fields": [
+        {
+          "id": "embout",
+          "label": "Embout",
+          "type": "product",
+          "default": "first_visible",
+          "position": "avant",
+          "diametreFrom": "avant",
+          "options": [
+            {
+              "refBase": "64063",
+              "label": "2 EMBOUTS \"CAPI\" Ø 28MM POUR RAILS ALIUM",
+              "productUrl": "/FR-fr/product/2-embouts-capi-28mm-pour-rails-alium-64063",
+              "qtyParUnite": 2,
+              "showIf": {
+                "diametre": [
+                  "28"
+                ]
+              },
+              "variants": {
+                "55": {
+                  "id": "64063-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64063-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64063-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64063-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_58_L1_1.jpg"
+                }
+              }
+            },
+            {
+              "refBase": "64064",
+              "label": "2 EMBOUTS \"MINI\" Ø 28MM POUR RAILS ALIUM",
+              "productUrl": "/FR-fr/product/2-embouts-mini-28mm-pour-rails-alium-64064",
+              "qtyParUnite": 2,
+              "showIf": {
+                "diametre": [
+                  "28"
+                ]
+              },
+              "variants": {
+                "55": {
+                  "id": "64064-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64064-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64064-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64064-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_58_L1_1.jpg"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "embout_arriere",
+          "label": "Embout arrière",
+          "type": "product",
+          "default": "first_visible",
+          "position": "arriere",
+          "diametreFrom": "arriere",
+          "options": [
+            {
+              "refBase": "64063",
+              "label": "2 EMBOUTS \"CAPI\" Ø 28MM POUR RAILS ALIUM",
+              "productUrl": "/FR-fr/product/2-embouts-capi-28mm-pour-rails-alium-64063",
+              "qtyParUnite": 2,
+              "showIf": {
+                "diametre": [
+                  "28"
+                ],
+                "type_de_support": [
+                  "double"
+                ]
+              },
+              "variants": {
+                "55": {
+                  "id": "64063-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64063-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64063-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64063-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_58_L1_1.jpg"
+                }
+              }
+            },
+            {
+              "refBase": "64064",
+              "label": "2 EMBOUTS \"MINI\" Ø 28MM POUR RAILS ALIUM",
+              "productUrl": "/FR-fr/product/2-embouts-mini-28mm-pour-rails-alium-64064",
+              "qtyParUnite": 2,
+              "showIf": {
+                "diametre": [
+                  "28"
+                ],
+                "type_de_support": [
+                  "double"
+                ]
+              },
+              "variants": {
+                "55": {
+                  "id": "64064-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64064-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64064-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64064-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_58_L1_1.jpg"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "accessoire",
+      "label": "Accessoires",
+      "fields": [
+        {
+          "id": "opt_pattes_retour",
+          "label": "Pattes de retour",
+          "type": "product",
+          "default": "first_visible",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans pattes de retour",
+              "isNone": true
+            },
+            {
+              "refBase": "64076",
+              "label": "2 PATTES DE RETOUR POUR RAILS ALIUM",
+              "productUrl": "/FR-fr/product/2-pattes-de-retour-pour-rails-alium-64076",
+              "qtyParUnite": 2,
+              "variants": {
+                "55": {
+                  "id": "64076-55",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64076/64076_55_L1_1.jpg"
+                },
+                "56": {
+                  "id": "64076-56",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64076/64076_56_L1_1.jpg"
+                },
+                "57": {
+                  "id": "64076-57",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64076/64076_57_L1_1.jpg"
+                },
+                "58": {
+                  "id": "64076-58",
+                  "image": "https://www.houles.com/commun/visuels_articles/6/64076/64076_58_L1_1.jpg"
+                }
+              }
+            }
+          ],
+          "forfait": true
+        },
+        {
+          "id": "opt_poulies",
+          "label": "Accessoires pour tirage",
+          "type": "product",
+          "default": "first_visible",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "options": [
+            {
+              "refBase": "none",
+              "label": "Sans accessoires pour tirage",
+              "isNone": true
+            },
+            {
+              "refBase": "60040",
+              "label": "CLIP POUR CORDON DE TIRAGE TRANSPARENT",
+              "productUrl": "/FR-fr/product/clip-pour-cordon-de-tirage-transparent-60040",
+              "noColoris": true,
+              "id": "60040"
+            },
+            {
+              "refBase": "60041",
+              "label": "POULIE LESTEEE 110G",
+              "productUrl": "/FR-fr/product/poulie-lesteee-110g-60041",
+              "noColoris": true,
+              "id": "60041"
+            },
+            {
+              "refBase": "60042",
+              "label": "POULIE DE TENSION POUR CORDON DE TIRAGE",
+              "productUrl": "/FR-fr/product/poulie-de-tension-pour-cordon-de-tirage-60042",
+              "noColoris": true,
+              "id": "60042"
+            }
+          ],
+          "forfait": true
+        }
+      ]
+    }
+  ],
+  "avertissements": [
+    "Ces champs sont configurés mais ne contiennent aucune occurrence d'article : support > opt_adaptateur_corner. Ils sont compilés avec \"options\": [] tant qu'aucun article ne leur est affecté dans l'onglet Articles.",
+    "Aucun critère diamètre (diametre / diametre_avant / diametre_arriere) n'est enregistré en base pour ces occurrences du field « support » : 64075, 64074. Le showIf compilé ne peut pas contenir de clé \"diametre\" tant que ce critère n'est pas saisi sur l'article dans le BO."
+  ]
+}

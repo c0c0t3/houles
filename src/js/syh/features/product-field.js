@@ -277,6 +277,20 @@ export default class ProductField extends Base {
    * n'y a pas de variante par coloris — n'importe quelle couleur de la palette est valide.
    */
   _resolveColoris(option) {
+    // couleurPropre (Module 9, §3.3) : la pastille n'est pas pilotée par le coloris global
+    // (finition du modèle) mais par les couleurs propres de l'article (ses propres `variants`,
+    // ex : blanc/noir/gris pour un galet Wave) — 1ʳᵉ couleur retenue d'office, jamais réécrite par
+    // `applyGlobalColoris` (qui ne touche de toute façon jamais ces options : leurs clés `variants`
+    // ne correspondent à aucun id de coloris global).
+    if (option.couleurPropre) {
+      const cachedPropre = this._cardColoris.get(option.refBase);
+      if (cachedPropre && option.variants?.[cachedPropre]) return cachedPropre;
+      if (!option.variants) return null;
+      const colorisPropre = Object.keys(option.variants)[0];
+      this._cardColoris.set(option.refBase, colorisPropre);
+      return colorisPropre;
+    }
+
     if (option.noColoris) {
       const cachedNone = this._cardColoris.get(option.refBase);
       if (cachedNone && this._coloris.some((c) => String(c.id) === String(cachedNone))) return cachedNone;
@@ -463,7 +477,15 @@ export default class ProductField extends Base {
       btn.title = info?.label ?? colorisId;
       btn.classList.toggle('is-active', colorisId === activeColoris);
       const swatchImage = useColorisThumbnail ? info?.thumbnail : option.variants[colorisId]?.image;
-      if (swatchImage) { btn.style.backgroundImage = `url(${swatchImage})`; btn.style.backgroundSize = 'cover'; }
+      if (swatchImage) {
+        btn.style.backgroundImage = `url(${swatchImage})`;
+        btn.style.backgroundSize = 'cover';
+      } else if (useColorisThumbnail && info?.hex) {
+        // Pas de vignette dédiée pour ce coloris (ex : couleurPropre — noir/blanc/gris n'ont que
+        // `hex` dans collection.coloris, voir Module 9 §3.3) : couleur unie en fond, même repli
+        // que la branche noColoris ci-dessus.
+        btn.style.backgroundColor = info.hex;
+      }
       container.appendChild(btn);
     }
   }

@@ -2,8 +2,9 @@ import { Base } from '@studiometa/js-toolkit';
 import { fetchCollection } from './configuratorApi.js';
 import RadioField from './features/radio-field.js';
 import LengthField from './features/length-field.js';
+import NumberField from './features/number-field.js';
 import ProductField from './features/product-field.js';
-import { isVisible } from './features/show-if.js';
+import { isVisible, isFieldHidden } from './features/show-if.js';
 import { initDefaultSelection, invalidateDownstream } from './features/default-selection.js';
 import { renderAllSteps } from './features/steps-renderer.js';
 import { renderStepper, updateStepperState } from './features/stepper.js';
@@ -45,7 +46,7 @@ export default class Configurator extends Base {
       'prevStepButton',
       'nextStepButton',
     ],
-    components: { RadioField, LengthField, ProductField },
+    components: { RadioField, LengthField, NumberField, ProductField },
   };
 
   schema = null;
@@ -197,6 +198,12 @@ export default class Configurator extends Base {
     this._applyChange(fieldId, value);
   }
 
+  // Handler JS Toolkit : convention on{ChildName}{EventName}. Reçoit { args: [{ fieldId, value }] }.
+  onNumberFieldChanged({ args }) {
+    const { fieldId, value } = args[0];
+    this._applyChange(fieldId, value);
+  }
+
   // Mise à jour de selection.produits (séparé des params) sans invalider les champs aval.
   onProductFieldChanged({ args }) {
     const { fieldId, value } = args[0];
@@ -263,13 +270,14 @@ export default class Configurator extends Base {
     // Sécurité : appelé avant _renderAllSteps() si le schéma n'est pas encore chargé.
     if (!stepEl) return;
 
-    // 1. Visibilité au niveau champ (showIf sur le field lui-même).
-    // On utilise les champs expandés (splitByConfig déjà résolu) pour avoir tous les IDs réels.
+    // 1. Visibilité au niveau champ (showIf sur le field lui-même, + règle radio mono-option
+    // cachée, Module 9 §3.2). On utilise les champs expandés (splitByConfig déjà résolu) pour
+    // avoir tous les IDs réels.
     const expandedFields = this._expandedStepFields[stepIndex] ?? [];
     for (const field of expandedFields) {
       const fieldEl = stepEl.querySelector(`[data-field-id="${field.id}"]`);
       // Le champ peut être absent du DOM si son template était manquant au render initial.
-      if (fieldEl) fieldEl.hidden = !isVisible(field, this.selection);
+      if (fieldEl) fieldEl.hidden = isFieldHidden(field, this.selection);
     }
 
     // 2. About_tube : visibilité calculée en JS (qty tubes > 1) et qty injectée dans le descripteur.

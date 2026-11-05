@@ -26,10 +26,11 @@ const formatPrice = (value) => priceFormatter.format(value);
 function recapValue(field, schema, selection) {
   // Paramètres de configuration (type_de_support, diametre, longueur…).
   if (field.isParam) {
-    // Les champs length ont une valeur numérique directe, pas un id d'option.
-    if (field.type === 'length') {
+    // Les champs length et number ont une valeur numérique directe, pas un id d'option.
+    if (field.type === 'length' || field.type === 'number') {
       const val = selection[field.id];
-      return val != null ? `${val} cm` : null;
+      const unit = field.type === 'number' ? (field.unit ?? 'cm') : 'cm';
+      return val != null ? `${val} ${unit}` : null;
     }
     const val = selection[field.id];
     // Paramètre non encore renseigné.
@@ -90,6 +91,11 @@ export function renderRecap(container, schema, selection, longueurTotalAvecEmbou
 
   for (const field of schema.steps[0]?.fields ?? []) {
     if (!showColoris && field.id === 'coloris') continue;
+    // showIf de champ uniquement (pas isFieldHidden) : un champ radio mono-option reste masqué
+    // dans le stepper mais sa valeur résolue (ex : "Diamètre : Ø 28mm") a sa place ici. On évite
+    // seulement qu'une valeur figée pour un champ réellement masqué (ex : hauteur_cordon hors
+    // tirage) ne traîne dans le bandeau — voir docs/module-9-systeme-tirage.md.
+    if (!isVisible(field, selection)) continue;
 
     const value = recapValue(field, schema, selection);
     // Champ sans valeur (non encore renseigné) : pas de chip dans le bandeau.
@@ -141,11 +147,15 @@ function buildSummaryRow(field, schema, selection, longueur, allExpanded) {
   const option = field.options?.find((o) => o.refBase === sel.refBase);
   if (!option) return null;
 
-  const qty = resolveQty(field, option, longueur, allExpanded, selection);
+  const qty = resolveQty(field, option, longueur, allExpanded, selection, schema.collection);
   if (qty <= 0) return null;
 
   const value = recapValue(field, schema, selection);
   if (value == null) return null;
+
+  // field.forfait : en tirage, cet article est dans le forfait de montage — affiché sans prix
+  // unitaire, même logique que `buildProductItems` dans cart-payload.js. Module 9 §5.
+  const isForfaitArticle = field.forfait === true && selection.systeme_tirage === 'oui';
 
   const variant = option.variants?.[sel.coloris];
   // Convention Houlès : l'URL de fiche produit se termine toujours par "-{coloris}".
@@ -158,7 +168,7 @@ function buildSummaryRow(field, schema, selection, longueur, allExpanded) {
     label: resolveLabel(field, selection),
     name: value,
     qty,
-    prixUnitaire: variant?.prix ?? option.prix ?? 0,
+    prixUnitaire: isForfaitArticle ? null : (variant?.prix ?? option.prix ?? 0),
     productUrl,
   };
 }
@@ -210,15 +220,34 @@ export function renderProductSummary(container, schema, selection, expandedStepF
 
   const longueur = Number(selection.longueur);
   const allExpanded = expandedStepFields.flat();
+  const visibleProductFields = allExpanded
+    .filter((field) => field.type === 'product' || field.type === 'product_toggle')
+    // Respecte le showIf du champ (ex : variantes avant/arrière non actives en config simple).
+    .filter((field) => isVisible(field, selection));
 
   // .flat() suit l'ordre des étapes (expandedStepFields est indexé comme schema.steps) : les
   // lignes restent naturellement groupées par étape sans qu'il faille le marquer explicitement.
-  const rows = allExpanded
-    .filter((field) => field.type === 'product' || field.type === 'product_toggle')
-    // Respecte le showIf du champ (ex : variantes avant/arrière non actives en config simple).
-    .filter((field) => isVisible(field, selection))
+  const rows = visibleProductFields
     .map((field) => buildSummaryRow(field, schema, selection, longueur, allExpanded))
     .filter((row) => row != null);
+
+  // Forfait de montage (Module 9 §5) : une seule ligne, dès qu'au moins un article "dans le
+  // forfait" est présent en tirage — même logique que `buildProductItems` dans cart-payload.js.
+  const hasForfaitArticle = visibleProductFields.some(
+    (field) =>
+      field.forfait === true &&
+      selection.systeme_tirage === 'oui' &&
+      selection.produits?.[field.id]?.refBase,
+  );
+  if (hasForfaitArticle && schema.collection.forfait) {
+    rows.push({
+      label: 'Service',
+      name: schema.collection.forfait.label,
+      qty: 1,
+      prixUnitaire: null,
+      productUrl: null,
+    });
+  }
 
   // Ligne forfait coupe : pas un champ produit, ajoutée à part si des coupes sont nécessaires.
   if (forfait) {

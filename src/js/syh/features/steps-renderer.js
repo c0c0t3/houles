@@ -1,4 +1,4 @@
-import { isVisible } from './show-if.js';
+import { isFieldHidden } from './show-if.js';
 import { createEmboutsMessageElement } from './embouts.js';
 
 /**
@@ -105,8 +105,9 @@ export function renderAllSteps({ rootEl, container, schema, selection }) {
       el._syhSelection = selection;
       el._syhColoris = schema.collection.coloris ?? [];
       el._syhRenderMode = schema.collection.renderMode;
-      // Visibilité initiale au niveau champ (showIf field-level, ex : embout_arriere en simple).
-      el.hidden = !isVisible(field, selection);
+      // Visibilité initiale au niveau champ (showIf field-level, ex : embout_arriere en simple ;
+      // + règle radio mono-option cachée, Module 9 §3.2).
+      el.hidden = isFieldHidden(field, selection);
       stepEl.appendChild(el);
     }
 
