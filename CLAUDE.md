@@ -104,6 +104,7 @@ Les champs du formulaire sont des composants Twig réutilisables, pilotés par l
 - **Ne pas installer de nouvelles dépendances** sans validation explicite
 - **Ne pas générer de logique métier** (calcul de prix réel, validation stock, logique de commande)
 - **Ne pas écrire de code PHP** — ce projet est front uniquement
+- **Debug : ne jamais créer de harness ou d’émulation DOM/JS.** Ajouter des console.log préfixés [SYH], me demander de reproduire, attendre la sortie. Retirer les logs une fois le bug résolu.
 - En production : le chemin du SVG provient de la réponse API (champ `svgUrl` par variante), jamais codé en dur
 - **Par défaut, ne créer/modifier QUE dans les chemins listés dans le périmètre.- ** Tout fichier hors de ces chemins nécessite une validation explicite avant modification.
 
