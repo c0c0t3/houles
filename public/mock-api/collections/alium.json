@@ -27,15 +27,15 @@
         "thumbnail": null
       },
       {
-        "id": "noir",
-        "label": "Noir",
-        "hex": "#1E1E1E",
-        "couleurPropre": true
-      },
-      {
         "id": "blanc",
         "label": "Blanc",
         "hex": "#FFFFFF",
+        "couleurPropre": true
+      },
+      {
+        "id": "noir",
+        "label": "Noir",
+        "hex": "#1E1E1E",
         "couleurPropre": true
       },
       {
@@ -85,11 +85,13 @@
           "options": [
             {
               "id": "simple",
-              "label": "Simple"
+              "label": "Simple",
+              "image": "/assets/syh/picto_config_simple.webp"
             },
             {
               "id": "double",
               "label": "Double",
+              "image": "/assets/syh/picto_config_double.webp",
               "showIf": {
                 "systeme_tirage": [
                   "non"
@@ -162,11 +164,13 @@
           "options": [
             {
               "id": "simple",
-              "label": "Simple"
+              "label": "Simple",
+              "image": "/assets/syh/picto_simple_rideau.webp"
             },
             {
               "id": "double",
               "label": "Double",
+              "image": "/assets/syh/picto_double_rideaux.webp",
               "showIf": {
                 "systeme_tirage": [
                   "non"
@@ -202,11 +206,13 @@
           "options": [
             {
               "id": "mur_plafond",
-              "label": "Mur / plafond"
+              "label": "Mur / plafond",
+              "image": "/assets/syh/picto_mur_plafond.webp"
             },
             {
               "id": "mur_a_mur",
-              "label": "Mur à mur"
+              "label": "Mur à mur",
+              "image": "/assets/syh/picto_mur_a_mur.webp"
             }
           ]
         },
@@ -327,19 +333,19 @@
               "variants": {
                 "55": {
                   "id": "64070-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_55_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64070/64070_55_S1_1.jpg"
                 },
                 "56": {
                   "id": "64070-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_56_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64070/64070_56_S1_1.jpg"
                 },
                 "57": {
                   "id": "64070-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_57_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64070/64070_57_S1_1.jpg"
                 },
                 "58": {
                   "id": "64070-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_58_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64070/64070_58_S1_1.jpg"
                 }
               }
             },
@@ -362,19 +368,19 @@
               "variants": {
                 "55": {
                   "id": "64072-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64072/64072_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64072-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64072/64072_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64072-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64072/64072_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64072-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64072/64072_58_L1_1.jpg"
                 }
               }
             },
@@ -392,19 +398,19 @@
               "variants": {
                 "55": {
                   "id": "64075-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64075/64075_55_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64075/64075_55_S1_1.jpg"
                 },
                 "56": {
                   "id": "64075-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64075/64075_56_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64075/64075_56_S1_1.jpg"
                 },
                 "57": {
                   "id": "64075-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64075/64075_57_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64075/64075_57_S1_1.jpg"
                 },
                 "58": {
                   "id": "64075-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64075/64075_58_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64075/64075_58_S1_1.jpg"
                 }
               }
             },
@@ -416,19 +422,19 @@
               "variants": {
                 "55": {
                   "id": "64074-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64074/64074_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64074/64074_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64074-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64074/64074_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64074/64074_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64074-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64074/64074_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64074/64074_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64074-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64074/64074_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64074/64074_58_L1_1.jpg"
                 }
               }
             }
@@ -457,19 +463,19 @@
               "variants": {
                 "55": {
                   "id": "64079-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64079/64079_55_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64079/64079_55_S1_1.jpg"
                 },
                 "56": {
                   "id": "64079-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64079/64079_56_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64079/64079_56_S1_1.jpg"
                 },
                 "57": {
                   "id": "64079-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64079/64079_57_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64079/64079_57_S1_1.jpg"
                 },
                 "58": {
                   "id": "64079-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64079/64079_58_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64079/64079_58_S1_1.jpg"
                 }
               }
             }
@@ -512,19 +518,19 @@
               "variants": {
                 "55": {
                   "id": "64071-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64071/64071_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64071/64071_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64071-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64071/64071_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64071/64071_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64071-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64071/64071_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64071/64071_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64071-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64071/64071_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64071/64071_58_L1_1.jpg"
                 }
               }
             },
@@ -547,19 +553,19 @@
               "variants": {
                 "55": {
                   "id": "64070-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_55_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64070/64070_55_S1_1.jpg"
                 },
                 "56": {
                   "id": "64070-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_56_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64070/64070_56_S1_1.jpg"
                 },
                 "57": {
                   "id": "64070-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_57_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64070/64070_57_S1_1.jpg"
                 },
                 "58": {
                   "id": "64070-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64070/64070_58_S1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64070/64070_58_S1_1.jpg"
                 }
               }
             },
@@ -588,19 +594,19 @@
               "variants": {
                 "55": {
                   "id": "64073-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64073/64073_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64073/64073_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64073-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64073/64073_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64073/64073_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64073-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64073/64073_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64073/64073_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64073-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64073/64073_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64073/64073_58_L1_1.jpg"
                 }
               }
             },
@@ -623,19 +629,19 @@
               "variants": {
                 "55": {
                   "id": "64072-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64072/64072_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64072-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64072/64072_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64072-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64072/64072_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64072-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64072/64072_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64072/64072_58_L1_1.jpg"
                 }
               }
             }
@@ -719,19 +725,19 @@
               "variants": {
                 "55": {
                   "id": "64060-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64060/64060_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64060/64060_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64060-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64060/64060_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64060/64060_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64060-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64060/64060_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64060/64060_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64060-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64060/64060_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64060/64060_58_L1_1.jpg"
                 }
               },
               "showIfAny": [
@@ -779,19 +785,19 @@
               "variants": {
                 "55": {
                   "id": "64061-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64061/64061_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64061/64061_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64061-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64061/64061_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64061/64061_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64061-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64061/64061_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64061/64061_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64061-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64061/64061_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64061/64061_58_L1_1.jpg"
                 }
               },
               "showIfAny": [
@@ -841,19 +847,19 @@
               "variants": {
                 "55": {
                   "id": "64062-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64062/64062_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64062/64062_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64062-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64062/64062_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64062/64062_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64062-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64062/64062_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64062/64062_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64062-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64062/64062_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64062/64062_58_L1_1.jpg"
                 }
               },
               "showIfAny": [
@@ -991,101 +997,6 @@
           },
           "options": [
             {
-              "refBase": "none",
-              "label": "Sans galets",
-              "isNone": true
-            },
-            {
-              "refBase": "carte-23397",
-              "label": "KIT WAVE 3M - GALETS 6CM",
-              "productUrl": "/FR-fr/product/kit-wave-3m-galets-6cm-noir-23397",
-              "showIfAny": [
-                {
-                  "diametre": [
-                    "28"
-                  ]
-                },
-                {
-                  "diametre": [
-                    "28"
-                  ],
-                  "type_de_support": [
-                    "double"
-                  ]
-                }
-              ],
-              "couleurPropre": true,
-              "variantType": "coloris",
-              "variants": {
-                "noir": {
-                  "id": "23397"
-                },
-                "blanc": {
-                  "id": "23396"
-                }
-              }
-            },
-            {
-              "refBase": "carte-23398",
-              "label": "KIT WAVE 3M - GALETS 8CM",
-              "productUrl": "/FR-fr/product/kit-wave-3m-galets-8cm-23398",
-              "showIfAny": [
-                {
-                  "diametre": [
-                    "28"
-                  ]
-                },
-                {
-                  "diametre": [
-                    "28"
-                  ],
-                  "type_de_support": [
-                    "double"
-                  ]
-                }
-              ],
-              "couleurPropre": true,
-              "variantType": "coloris",
-              "variants": {
-                "blanc": {
-                  "id": "23398"
-                },
-                "noir": {
-                  "id": "23399"
-                }
-              }
-            },
-            {
-              "refBase": "carte-23400",
-              "label": "KIT ROULEURS WAVE 3M - 8CM",
-              "productUrl": "/FR-fr/product/kit-rouleurs-wave-3m-8cm-blanc-23400",
-              "showIfAny": [
-                {
-                  "diametre": [
-                    "28"
-                  ]
-                },
-                {
-                  "diametre": [
-                    "28"
-                  ],
-                  "type_de_support": [
-                    "double"
-                  ]
-                }
-              ],
-              "couleurPropre": true,
-              "variantType": "coloris",
-              "variants": {
-                "blanc": {
-                  "id": "23400"
-                },
-                "noir": {
-                  "id": "23401"
-                }
-              }
-            },
-            {
               "refBase": "23085",
               "label": "32 ROULEURS SILENCIEUX POUR RAIL",
               "productUrl": "/FR-fr/product/32-rouleurs-silencieux-pour-rail-23085",
@@ -1153,48 +1064,99 @@
               "variants": {}
             },
             {
-              "refBase": "23072",
-              "label": "100 GALETS POUR RAIL",
-              "productUrl": "/FR-fr/product/100-galets-pour-rail-23072",
-              "qtyParUnite": 100,
-              "variants": {}
+              "refBase": "carte-23396",
+              "label": "KIT WAVE 3M - GALETS 6CM",
+              "productUrl": "/FR-fr/product/kit-wave-3m-galets-6cm-23396",
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "28"
+                  ]
+                },
+                {
+                  "diametre": [
+                    "28"
+                  ],
+                  "type_de_support": [
+                    "double"
+                  ]
+                }
+              ],
+              "couleurPropre": true,
+              "variantType": "coloris",
+              "variants": {
+                "blanc": {
+                  "id": "23396"
+                },
+                "noir": {
+                  "id": "23397"
+                }
+              }
             },
             {
-              "refBase": "23074",
-              "label": "100 GALETS TURN POUR RAIL",
-              "productUrl": "/FR-fr/product/100-galets-turn-pour-rail-23074",
-              "qtyParUnite": 100,
-              "variants": {}
+              "refBase": "carte-23398",
+              "label": "KIT WAVE 3M - GALETS 8CM",
+              "productUrl": "/FR-fr/product/kit-wave-3m-galets-8cm-23398",
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "28"
+                  ]
+                },
+                {
+                  "diametre": [
+                    "28"
+                  ],
+                  "type_de_support": [
+                    "double"
+                  ]
+                }
+              ],
+              "couleurPropre": true,
+              "variantType": "coloris",
+              "variants": {
+                "blanc": {
+                  "id": "23398"
+                },
+                "noir": {
+                  "id": "23399"
+                }
+              }
             },
             {
-              "refBase": "23106",
-              "label": "GALETS POUR SYSTÈME VAGUE 6CM - 58M - NOIR",
-              "productUrl": "/FR-fr/product/galets-pour-syst-me-vague-6cm-58m-noir-23106",
-              "qtyParUnite": 58,
-              "noColoris": true,
-              "id": "23106"
+              "refBase": "carte-23400",
+              "label": "KIT ROULEURS WAVE 3M - 8CM",
+              "productUrl": "/FR-fr/product/kit-rouleurs-wave-3m-8cm-blanc-23400",
+              "showIfAny": [
+                {
+                  "diametre": [
+                    "28"
+                  ]
+                },
+                {
+                  "diametre": [
+                    "28"
+                  ],
+                  "type_de_support": [
+                    "double"
+                  ]
+                }
+              ],
+              "couleurPropre": true,
+              "variantType": "coloris",
+              "variants": {
+                "blanc": {
+                  "id": "23400"
+                },
+                "noir": {
+                  "id": "23401"
+                }
+              }
             },
             {
-              "refBase": "23108",
-              "label": "GALETS POUR SYSTÈME VAGUE 8CM - 75M - NOIR",
-              "productUrl": "/FR-fr/product/galets-pour-syst-me-vague-8cm-75m-noir-23108",
-              "qtyParUnite": 75,
-              "noColoris": true,
-              "id": "23108"
-            },
-            {
-              "refBase": "23238",
-              "label": "ROULEURS POUR SYSTÈME VAGUE 8CM - 37M BLANC",
-              "productUrl": "/FR-fr/product/rouleurs-pour-syst-me-vague-8cm-37m-blanc-23238",
-              "noColoris": true,
-              "id": "23238"
-            },
-            {
-              "refBase": "23239",
-              "label": "ROULEURS POUR SYSTÈME VAGUE 8CM - 37M NOIR",
-              "productUrl": "/FR-fr/product/rouleurs-pour-syst-me-vague-8cm-37m-noir-23239",
-              "noColoris": true,
-              "id": "23239"
+              "refBase": "none",
+              "label": "Sans galets",
+              "isNone": true
             }
           ],
           "showIf": {
@@ -1397,19 +1359,19 @@
               "variants": {
                 "55": {
                   "id": "64063-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64063/64063_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64063-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64063/64063_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64063-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64063/64063_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64063-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64063/64063_58_L1_1.jpg"
                 }
               }
             },
@@ -1426,19 +1388,19 @@
               "variants": {
                 "55": {
                   "id": "64064-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64064/64064_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64064-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64064/64064_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64064-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64064/64064_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64064-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64064/64064_58_L1_1.jpg"
                 }
               }
             }
@@ -1460,27 +1422,24 @@
               "showIf": {
                 "diametre": [
                   "28"
-                ],
-                "type_de_support": [
-                  "double"
                 ]
               },
               "variants": {
                 "55": {
                   "id": "64063-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64063/64063_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64063-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64063/64063_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64063-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64063/64063_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64063-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64063/64063_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64063/64063_58_L1_1.jpg"
                 }
               }
             },
@@ -1492,31 +1451,33 @@
               "showIf": {
                 "diametre": [
                   "28"
-                ],
-                "type_de_support": [
-                  "double"
                 ]
               },
               "variants": {
                 "55": {
                   "id": "64064-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64064/64064_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64064-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64064/64064_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64064-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64064/64064_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64064-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64064/64064_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64064/64064_58_L1_1.jpg"
                 }
               }
             }
-          ]
+          ],
+          "showIf": {
+            "type_de_support": [
+              "double"
+            ]
+          }
         }
       ]
     },
@@ -1547,19 +1508,19 @@
               "variants": {
                 "55": {
                   "id": "64076-55",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64076/64076_55_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64076/64076_55_L1_1.jpg"
                 },
                 "56": {
                   "id": "64076-56",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64076/64076_56_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64076/64076_56_L1_1.jpg"
                 },
                 "57": {
                   "id": "64076-57",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64076/64076_57_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64076/64076_57_L1_1.jpg"
                 },
                 "58": {
                   "id": "64076-58",
-                  "image": "https://www.houles.com/commun/visuels_articles/6/64076/64076_58_L1_1.jpg"
+                  "image": "/commun/visuels_articles/6/64076/64076_58_L1_1.jpg"
                 }
               }
             }

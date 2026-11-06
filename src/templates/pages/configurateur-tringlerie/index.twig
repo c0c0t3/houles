@@ -81,8 +81,8 @@
               {# Template d'une option : label + image (photo produit, opt.image) #}
               <template data-template="radio-option--label_image">
                 <label class="group relative flex flex-col aspect-square shrink-0 m:aspect-auto justify-center items-center gap-2 cursor-pointer  px-4 py-3 rounded ring-1 has-[:checked]:ring-2 has-[:checked]:ring-purple/80 ring-purple/20">
-                  <div class="size-8 rounded-full hidden text-white group-has-[:checked]:flex absolute top-2 right-2 bg-purple items-center justify-center">
-                    <svg fill="currentColor" class="size-4" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                  <div class="size-4 rounded-tr rounded-bl hidden text-white group-has-[:checked]:flex absolute top-0 right-0 bg-purple items-center justify-center">
+                    <svg fill="currentColor" class="size-2" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1743.858 267.012 710.747 1300.124 176.005 765.382 0 941.387l710.747 710.871 1209.24-1209.116z" fill-rule="evenodd"/>
                     </svg>
                   </div>
@@ -304,7 +304,7 @@
       </div>
       </div>
       {# Récapitulatif persistant de la sélection courante #}
-      <div data-ref="recap" class="max-w-full flex m:overflow-auto overflow-scroll items-start m:flex-wrap m:items-center gap-x-6 gap-y-1 px-6 py-3 text-sm min-h-10 sticky bottom-0 left-0 right-0 z-10 bg-sand border-y border-purple">
+      <div data-ref="recap" class="max-w-full flex m:overflow-auto overflow-scroll items-start m:items-center gap-x-6 gap-y-1 px-6 py-3 text-sm min-h-10 sticky bottom-0 left-0 right-0 z-10 bg-sand border-y border-purple">
         {# Ouvre la modale "Changer de collection" (panel #extra, clé collections) — voir          #}
         {# modal-router.js. Le data-modal="collections" suffit : le clic global du router ouvre    #}
         {# le panel automatiquement, aucun wiring JS dédié à ce bouton. Premier enfant du recap —   #}

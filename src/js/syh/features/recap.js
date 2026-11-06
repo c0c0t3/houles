@@ -102,7 +102,7 @@ export function renderRecap(container, schema, selection, longueurTotalAvecEmbou
     if (value == null) continue;
 
     const el = document.createElement('span');
-    el.className = 'flex items-baseline gap-1.5';
+    el.className = 'flex items-baseline gap-1.5 shrink-0';
     el.innerHTML = `<span class="text-gray-400 text-xs uppercase tracking-wide">${field.label}</span><span class="font-medium text-gray-900">${value}</span>`;
     container.appendChild(el);
   }
