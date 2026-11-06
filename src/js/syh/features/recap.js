@@ -66,22 +66,31 @@ function recapValue(field, schema, selection) {
   return null;
 }
 
+// Bandeau persistant uniquement (compact: true) — ces champs de l'étape 1 seulement, le reste
+// (coloris, diamètre, type de rideau...) est volontairement retiré pour garder le bandeau court.
+// L'étape Récapitulatif (compact: false) reste complète, voir plus bas. systeme_tirage n'existe
+// que sur les collections tirage (Module 9) — absent du JSON pour les autres (ex : Auro), donc
+// ignoré automatiquement ci-dessous (field introuvable).
+const RECAP_COMPACT_FIELD_IDS = ['systeme_tirage', 'longueur', 'type_pose'];
+
 /**
- * Reconstruit le bandeau de récapitulatif de l'étape 1, plus le dernier total avec embouts
- * calculé dans la modale "Calcul de longueur" (s'il a déjà servi), plus le total prix de la
- * configuration en cours (somme des lignes produit résolues, toujours affiché).
+ * Reconstruit un bloc de récapitulatif — le bandeau persistant (compact, en haut de chaque étape)
+ * ou le haut de l'étape Récapitulatif (complet) selon `compact`. Dans les deux cas : nom de la
+ * collection en premier, puis le dernier total avec embouts calculé dans la modale "Calcul de
+ * longueur" (s'il a déjà servi), puis le total prix de la configuration en cours (somme des
+ * lignes produit résolues, toujours affiché).
  *
- * @param {HTMLElement} container - Élément recap (Configurator.$refs.recap)
+ * @param {HTMLElement} container - Élément recap (bandeau persistant ou recapStepContent)
  * @param {object} schema
  * @param {object} selection
  * @param {number|null} longueurTotalAvecEmbouts
  * @param {number} total - Total de la configuration en cours (somme des lignes produit résolues,
  *   voir `computeCartPayload` dans cart-payload.js). Prix placeholders de démo.
- * @param {boolean} [showColoris] - `false` masque le chip "coloris" — redondant avec le coloris déjà
- *   affiché par produit (carte / tableau récap). `true` par défaut ; les deux appelants actuels
- *   (bandeau et étape recap) passent explicitement `false`.
+ * @param {boolean} [compact] - `true` pour le bandeau persistant (liste restreinte, voir
+ *   `RECAP_COMPACT_FIELD_IDS`) ; `false` (défaut) pour l'étape Récapitulatif, qui reste complète :
+ *   tous les paramètres de l'étape 1, coloris excepté (déjà affiché par produit juste en dessous).
  */
-export function renderRecap(container, schema, selection, longueurTotalAvecEmbouts, total, showColoris = true) {
+export function renderRecap(container, schema, selection, longueurTotalAvecEmbouts, total, compact = false) {
   // Le bouton "Changer de collection" (data-modal="collections") est le premier enfant statique
   // du recap dans le twig — on le préserve à travers les reconstructions du bandeau plutôt que de
   // le recréer, pour ne pas perdre le nœud sur lequel modal-router.js s'appuie.
@@ -89,16 +98,27 @@ export function renderRecap(container, schema, selection, longueurTotalAvecEmbou
   container.innerHTML = '';
   if (collectionsButton) container.appendChild(collectionsButton);
 
-  for (const field of schema.steps[0]?.fields ?? []) {
-    if (!showColoris && field.id === 'coloris') continue;
+  // Nom de la collection, toujours en premier, dans les deux modes.
+  if (schema.collection?.name) {
+    const el = document.createElement('span');
+    el.className = 'flex items-baseline gap-1.5 shrink-0';
+    el.innerHTML = `<span class="font-semibold text-gray-900">${schema.collection.name}</span>`;
+    container.appendChild(el);
+  }
+
+  const fields = compact
+    ? RECAP_COMPACT_FIELD_IDS.map((id) => schema.steps[0]?.fields.find((f) => f.id === id)).filter(Boolean)
+    : (schema.steps[0]?.fields ?? []).filter((f) => f.id !== 'coloris');
+
+  for (const field of fields) {
     // showIf de champ uniquement (pas isFieldHidden) : un champ radio mono-option reste masqué
     // dans le stepper mais sa valeur résolue (ex : "Diamètre : Ø 28mm") a sa place ici. On évite
     // seulement qu'une valeur figée pour un champ réellement masqué (ex : hauteur_cordon hors
-    // tirage) ne traîne dans le bandeau — voir docs/module-9-systeme-tirage.md.
+    // tirage) ne traîne dans le récap — voir docs/module-9-systeme-tirage.md.
     if (!isVisible(field, selection)) continue;
 
     const value = recapValue(field, schema, selection);
-    // Champ sans valeur (non encore renseigné) : pas de chip dans le bandeau.
+    // Champ sans valeur (non encore renseigné) : pas de chip.
     if (value == null) continue;
 
     const el = document.createElement('span');

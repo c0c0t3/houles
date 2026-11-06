@@ -3,6 +3,32 @@
 {% block body %}
   
     <div data-component="Syh" data-option-collection="auro-concept-live">
+      <section class="my-10 m:mt-24 m:mb-36">
+        <div class="container">
+          <div class="grid grid-cols-2">
+            <div class="flex flex-col items-center justify-center">
+              <p class="text-xs text-brown uppercase font-medium tracking-wider leading-none mt-4 mb-2">
+                Configurateur de tringlerie
+              </p>
+              <h1 data-ref="hero_title" class="font-serif text-2xl m:text-4xl uppercase leading-none text-gray">Alium</h1>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                  <img class="object-cover aspect-square max-w-full rounded" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="">
+              </div>
+              <div>
+                  <img class="object-cover aspect-square max-w-full rounded" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="">
+              </div>
+              <div>
+                  <img class="object-cover aspect-square max-w-full rounded" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="">
+              </div>
+              <div>
+                  <img class="object-cover aspect-square max-w-full rounded" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <div class="container">
       <div  class="flex max-w-full gap-4">
         {# min-w-0 sur les deux colonnes : un enfant flex-1 refuse par défaut de rétrécir sous la  #}
@@ -20,7 +46,7 @@
 
           {# Stepper horizontal — boutons générés dynamiquement par JS (_renderStepper) #}
           {# items-start : les pastilles restent alignées quel que soit le nb de lignes du libellé #}
-          <nav data-ref="stepper" class=" sticky z-10 top-28 -translate-y-[14px] flex items-start overflow-x-auto max-w-full pt-4 pb-2 bg-sand border-b "></nav>
+          <nav data-ref="stepper" class=" sticky z-10 top-28 -translate-y-[14px] flex items-start overflow-x-auto max-w-full pt-4 pb-2 bg-sand border-brown/20 border-b border-t"></nav>
 
           {# Zone de l'étape courante — réécrite à chaque step #}
           <div data-ref="stepContent" class="py-8"></div>

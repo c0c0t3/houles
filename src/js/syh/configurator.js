@@ -350,17 +350,17 @@ export default class Configurator extends Base {
     // Recalculé à la volée à chaque appel — cohérent avec buildCartPayload(), pas d'état mis en cache.
     const { total, forfait } = computeCartPayload(this.schema, this.selection, this._expandedStepFields);
 
-    // Coloris masqué ici aussi : redondant avec le coloris affiché par produit sur les cartes.
-    renderRecap(this.$refs.recap, this.schema, this.selection, this._longueurTotalAvecEmbouts, total, false);
+    // compact: true — le bandeau persistant n'affiche qu'une liste restreinte (voir recap.js).
+    renderRecap(this.$refs.recap, this.schema, this.selection, this._longueurTotalAvecEmbouts, total, true);
 
     const recapStepIndex = this.schema.steps.findIndex((s) => s.id === 'recap');
     const recapStepEl = this._stepEls[recapStepIndex];
 
     const recapStepContent = recapStepEl?.querySelector('[data-ref="recapStepContent"]');
     if (recapStepContent) {
-      // Ni Total (déjà en pied du tableau produits juste en dessous) ni coloris (déjà affiché par
-      // produit dans ce même tableau) — contrairement au bandeau persistant, qui garde les deux.
-      renderRecap(recapStepContent, this.schema, this.selection, this._longueurTotalAvecEmbouts, null, false);
+      // Pas de Total ici (déjà en pied du tableau produits juste en dessous) — contrairement au
+      // bandeau persistant, qui le garde.
+      renderRecap(recapStepContent, this.schema, this.selection, this._longueurTotalAvecEmbouts, null);
     }
 
     const recapProductSummary = recapStepEl?.querySelector('[data-ref="recapProductSummary"]');
