@@ -177,10 +177,15 @@ export default class Configurator extends Base {
   // de l'étape commence juste sous lui, et non masqué derrière.
   _scrollToStepTop(index) {
     const stepEl = this._stepEls[index];
-    if (stepEl) {
-      const targetTop = window.top;
-      window.scrollTo({ top: targetTop, behavior: 'smooth' });
-    }
+    if (!stepEl) return;
+    // Position actuelle (post-scroll courant) du bas du stepper sticky, et du haut de l'étape
+    // ciblée (stepEl est déjà dé-masqué à ce stade par _showStep, son rect est donc valide) —
+    // window.top (objet Window, pas une coordonnée) était une erreur : scrollTo({top}) attend un
+    // nombre, pas une référence de fenêtre, d'où le retour systématique en haut de la page.
+    const stepperBottom = this.$refs.stepper.getBoundingClientRect().bottom;
+    const stepTop = stepEl.getBoundingClientRect().top;
+    const targetTop = window.scrollY + stepTop - stepperBottom;
+    window.scrollTo({ top: targetTop, behavior: 'smooth' });
   }
 
   /**

@@ -27,8 +27,22 @@ export function initConfiguratorModals(host) {
       initLongueurCalculator(contentEl, {
         getEmbout: () => selectedEmboutInfo(host.schema, host.selection),
         onValider: (longueurTube) => {
+          // Capturé avant close() : le panel #extra (composant partagé, hors périmètre SYH) remet
+          // le scroll à 0 à sa fermeture (scroll-lock mal restauré, confirmé par diagnostic) — on
+          // réapplique cette position nous-mêmes une fois la frame suivante passée.
+          const scrollYBeforeClose = window.scrollY;
           host._applyChange('longueur', longueurTube);
           document.querySelector('#extra')?.close();
+          requestAnimationFrame(() => {
+            window.scrollTo(0, scrollYBeforeClose);
+            // Cible le contrôle réellement actif du champ longueur (.is-active, voir
+            // _renderPresets dans length-field.js) — le preset "180 cm" si la longueur calculée
+            // tombe pile dessus, l'input "sur-mesure" sinon. Plus robuste que viser directement
+            // l'input : il reste caché (display:none) tant qu'aucune valeur sur-mesure n'est active.
+            const active = document.querySelector('[data-field-id="longueur"] .is-active');
+            active?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            active?.querySelector('input')?.focus({ preventScroll: true });
+          });
         },
         onCompute: (total) => {
           host._longueurTotalAvecEmbouts = total;
