@@ -41,7 +41,10 @@ export default class LengthField extends Base {
     for (const p of presets) {
       const btn = this._clonePresetTemplate();
       if (!btn) continue;
-      btn.textContent = `${p} cm`;
+      // Pas btn.textContent (écraserait le badge "coché" posé en dur dans le template, lui aussi
+      // enfant du bouton) — on cible le span dédié.
+      const label = btn.querySelector('[data-ref="presetLabel"]');
+      if (label) label.textContent = `${p} cm`;
       btn.dataset.value = p;
       btn.classList.toggle('is-active', String(p) === String(this._value));
       container.appendChild(btn);

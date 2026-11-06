@@ -45,6 +45,8 @@ export default class Configurator extends Base {
       'colG',
       'prevStepButton',
       'nextStepButton',
+      'hero_title',
+      'hero_grid_images',
     ],
     components: { RadioField, LengthField, NumberField, ProductField },
   };
@@ -71,6 +73,30 @@ export default class Configurator extends Base {
       const params = new URLSearchParams(window.location.search);
       const slug = params.get('collection') ?? this.$el.dataset.optionCollection ?? 'auro-concept';
       this.schema = await fetchCollection(slug);
+
+      // Titre du bandeau héro — nom de la collection (ex : "Alium"), remplace le texte statique du
+      // Twig. Accès en camelCase : @studiometa/js-toolkit expose toujours $refs sous ce format,
+      // même quand `data-ref`/`static.config.refs` restent en snake_case (hero_title) pour matcher
+      // l'attribut HTML — this.$refs.hero_title n'existe pas, seul this.$refs.heroTitle existe.
+      if (this.$refs.heroTitle) this.$refs.heroTitle.textContent = this.schema.collection.name;
+
+      // Grille héro (photos d'ambiance) — collection.heroGridImages. Absent sur certaines
+      // collections (ex : Auro) : toute la grille est alors masquée plutôt que de garder les
+      // images placeholder du Twig.
+      if (this.$refs.heroGridImages) {
+        const heroGridImages = this.schema.collection.heroGridImages;
+        if (heroGridImages?.length) {
+          this.$refs.heroGridImages.innerHTML = heroGridImages
+            .map(
+              (img) =>
+                `<div><img class="object-cover aspect-[3/2] max-w-full rounded" src="${img.src}" alt="" /></div>`,
+            )
+            .join('');
+          this.$refs.heroGridImages.hidden = false;
+        } else {
+          this.$refs.heroGridImages.hidden = true;
+        }
+      }
 
       // La colonne visuelle n'est visible qu'en mode live/live_colored (rendu SVG temps réel).
       this._hasLive = ['live', 'live_colored'].includes(this.schema.collection.renderMode);

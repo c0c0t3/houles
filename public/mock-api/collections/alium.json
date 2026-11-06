@@ -52,7 +52,13 @@
     "retraitsLongueur": {
       "mur_a_mur": 6,
       "autre": 5.4
-    }
+    },
+    "heroGridImages": [
+      {"src":"https://www.houles.com/commun/ambiance_collection/1029-1-65a55173457a4.jpeg"},
+      {"src":"https://www.houles.com/commun/ambiance_collection/1029-2-65a57e231c6e9.jpeg"},
+      {"src":"https://www.houles.com/commun/ambiance_collection/1029-1-65a55173457a4.jpeg"},
+      {"src":"https://www.houles.com/commun/ambiance_collection/1029-2-65a57e231c6e9.jpeg"}
+    ]
   },
   "steps": [
     {
